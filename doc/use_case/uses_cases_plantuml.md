@@ -4,38 +4,34 @@ left to right direction
 skinparam packageStyle rectangle
 skinparam linetype polyline
 
-together {
+
 actor "cliente" as c
 actor "assistente" as a
-}
 
-together {
+
 actor "servizio mappe" as sm
 actor "servizio pagamento" as sp
-}
 
-rectangle "JustIT" {
+package JustIT {
 
-  c -> (navigare tra assistenti)
-  c -> (chiedere intervento)
+  c -> (prenotare intervento*)
+  c -d-> (aggiungere recensione*)
+  c -d-> (ricerca assistente)
 
-
-
+  (ricerca assistente) ..> (navigare tra assistenti) : <<extend>>
   (esaminare profilo assistente) ..> (navigare tra assistenti) : <<include>>
-  (chiedere intervento) ..> (esaminare profilo assistente) : <<include>>
-  (chiedere intervento) ..> (pagamento) : <<include>>
+  (prenotare intervento*) ..> (esaminare profilo assistente) : <<include>>
+  (prenotare intervento*) ..> (pagamento) : <<include>>
   (filtro assistente posizione) ..> (navigare tra assistenti) : <<extend>>
 
-  a -> (valutare intervento)
-  (valutare intervento) ..> (chiedere intervento) : <<extend>>
-  a -> (gestire pagina assistente)
-  (gestire pagina assistente) ..> (login) : <<include>>
-  (valutare intervento) ..> (login) : <<include>>
-
-  (filtro assistente posizione) -> sm
-  (pagamento) -> sp
+  a -d-> (valutare intervento*)
+  (valutare intervento*) ..> (prenotare intervento*) : <<extend>>
+  a -r-> (gestire pagina assistente*)
+  (filtro assistente posizione) -d-> sm
+  (pagamento) -d-> sp
+  (aggiungere recensione*) --> (esaminare profilo assistente) : <<include>>
+  a -> (gestire recensioni*)
 
 }
-
 @enduml
 ```
