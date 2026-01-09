@@ -91,7 +91,7 @@ class   Page             <<(E,#708a93)entity>>{
 -homeAssistance : Boolean
 }
 
-class   PageDao             <<(B,#FBBE9F)dao>>{
+class   PageDao             <<(D,#FBBE9F)dao>>{
 +updatePage(Page : Page)
 +insertPage(Page : Page)
 }
