@@ -21,9 +21,9 @@ public class MainApp extends Application {
         Scene scene = new Scene(root, 900, 600);
         stage.setScene(scene);
         stage.setTitle("JustIT");
+        stage.setResizable(false);
         stage.show();
 
-        // schermata iniziale
         NavigationService.navigate(Screen.LAUNCHER);
     }
 }

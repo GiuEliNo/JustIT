@@ -13,8 +13,15 @@ public class NavigationService {
         viewFactory = factory;
     }
 
-    public static void navigate(Screen screen) {
+    public static Parent navigate(Screen screen) {
         Parent view = viewFactory.load(screen);
         root.getChildren().setAll(view);
+        return view;
     }
+
+    public static Parent load(Screen screen) {
+        return viewFactory.load(screen);
+    }
+
+
 }
