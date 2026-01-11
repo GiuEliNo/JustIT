@@ -6,6 +6,6 @@
 <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.gui.SidebarListPageGController">
     <children>
         <TextField fx:id="searchField" />
-        <ListView fx:id="listView" VBox.vgrow="ALWAYS" />
+        <ListView fx:id="listView" VBox.vgrow="ALWAYS" onMouseClicked="#handleMouseClick"/>
     </children>
 </VBox>
