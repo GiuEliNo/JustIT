@@ -1,6 +1,7 @@
 package it.dosti.justit.DAO;
 
 import it.dosti.justit.DB.ConnectionDB;
+import it.dosti.justit.DB.query.ShopQuery;
 import it.dosti.justit.model.Shop;
 
 import java.sql.Connection;
@@ -16,14 +17,15 @@ public class ShopDAO {
     public List<Shop>  getShops()
     {
         Statement stmt = null;
-        ResultSet rs = null;
         Connection conn = null;
         List<Shop> shops = new ArrayList<>();
         try{
 
             conn = ConnectionDB.getInstance().connectDB();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from Shop");
+
+            ResultSet rs = ShopQuery.getAllShops(stmt);
+
             while(rs.next()){
                 String name = rs.getString("name");
                 String address = rs.getString("address");
