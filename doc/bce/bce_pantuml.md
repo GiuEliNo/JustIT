@@ -65,7 +65,11 @@ class   AddReview                       <<controller>>{
 WriteReview()
 NotifyTechnician()
 }
-class   Review                          <<(E,#708a93)entity>>
+class   Review                          <<(E,#708a93)entity>>{
+-Title
+-stars
+-Review
+}
 class   ReadReview                      <<controller>>{
 ReadReview()
 }
