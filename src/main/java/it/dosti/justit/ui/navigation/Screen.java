@@ -5,7 +5,8 @@ public enum Screen {
     LAUNCHER("/launcher.fxml"),
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
     MAIN("/main.fxml"),
-    PAGE_SHOP("/pageShop.fxml");
+    PAGE_SHOP("/pageShop.fxml"),
+    BOOKING_PAGE("/bookingPage.fxml");
 
     private final String fxmlPath;
 
