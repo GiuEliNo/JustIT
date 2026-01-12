@@ -3,7 +3,6 @@ package it.dosti.justit.controller.gui;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
 public class MainGController {
@@ -12,8 +11,13 @@ public class MainGController {
     private StackPane leftPane;
 
     @FXML
+    private StackPane centerPane;
+
+    @FXML
     public void initialize() {
-        Parent sidebar = NavigationService.load(Screen.SIDEBAR_SEARCH_LIST);
-        leftPane.getChildren().setAll(sidebar);
+        NavigationService.setCenterPane(centerPane);
+        NavigationService.setLeftPane(leftPane);
+
+        NavigationService.navigateToLeft(Screen.SIDEBAR_SEARCH_LIST);
     }
 }

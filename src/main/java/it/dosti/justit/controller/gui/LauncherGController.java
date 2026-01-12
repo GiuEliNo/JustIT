@@ -8,6 +8,6 @@ public class LauncherGController {
 
     @FXML
     private void onHelloButtonClick() {
-        NavigationService.navigate(Screen.MAIN);
+        NavigationService.navigateToRoot(Screen.MAIN);
     }
 }

@@ -3,10 +3,11 @@ package it.dosti.justit.controller.gui;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.SidebarListPageController;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.ui.navigation.NavigationService;
+import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.util.List;
 
@@ -39,7 +40,11 @@ public class SidebarListPageGController {
         listView.getItems().setAll(results);
     }
 
-    public void handleMouseClick(MouseEvent mouseEvent) {
-        System.out.println("elemento: " + listView.getSelectionModel().getSelectedItem());
+    public void onSelectPage() {
+        Shop selected = listView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            appController.pageSelected(selected);
+            NavigationService.navigateToCenter(Screen.PAGE_SHOP);
+        }
     }
 }

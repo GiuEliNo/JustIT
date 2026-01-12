@@ -17,6 +17,12 @@ public class SidebarListPageController {
             new Shop("CurryRiparo")
     );
 
+    public void pageSelected(Shop selectedItem) {
+        if (selectedItem != null) {
+            MainController.getInstance().setSelectShop(selectedItem);
+        }
+    }
+
     public List<Shop> search(SearchBean bean) {
         String query = bean.getSearchText();
         List<Shop> filteredShops;

@@ -4,7 +4,8 @@ public enum Screen {
 
     LAUNCHER("/launcher.fxml"),
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
-    MAIN("/main.fxml");
+    MAIN("/main.fxml"),
+    PAGE_SHOP("/pageShop.fxml");
 
     private final String fxmlPath;
 

@@ -24,6 +24,6 @@ public class MainApp extends Application {
         stage.setResizable(false);
         stage.show();
 
-        NavigationService.navigate(Screen.LAUNCHER);
+        NavigationService.navigateToRoot(Screen.LAUNCHER);
     }
 }

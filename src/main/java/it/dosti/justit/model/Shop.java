@@ -17,6 +17,8 @@ public class Shop {
     public String getName() {
         return name;
     }
+
+    // javaFX chiama toString per mostrare l'oggetto in una lista
     @Override
     public String toString() {
         return name;
