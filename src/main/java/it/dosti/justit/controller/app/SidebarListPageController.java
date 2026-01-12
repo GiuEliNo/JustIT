@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.DAO.ShopDAO;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.model.Shop;
 import java.util.ArrayList;
@@ -8,14 +9,17 @@ import java.util.stream.Collectors;
 
 public class SidebarListPageController {
 
-    //solo per testing in assenza di DAO
+/*    //solo per testing in assenza di DAO
     private final List<Shop> shops = List.of(
             new Shop("Mammelloni Samueloni"),
             new Shop("Il meglio indiano di Torpigna"),
             new Shop("El Gugno Maduro"),
             new Shop("Bombai PC riparazione"),
             new Shop("CurryRiparo")
-    );
+    ); */
+
+    ShopDAO shopDAO = new ShopDAO();
+    private List<Shop> shops = shopDAO.getShops();
 
     public void pageSelected(Shop selectedItem) {
         if (selectedItem != null) {
