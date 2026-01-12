@@ -2,7 +2,7 @@ package it.dosti.justit.ui.navigation;
 
 public enum Screen {
 
-    LAUNCHER("/launcher.fxml"),
+    LAUNCHER("/login.fxml"),
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
     MAIN("/main.fxml"),
     PAGE_SHOP("/pageShop.fxml"),

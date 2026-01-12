@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.gui.LoginGController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label fx:id="welcomeText" text="Welcome to JustIT" />
+   <Label fx:id="outputLabel" />
+   <TextField fx:id="user" promptText="User" />
+   <TextField fx:id="password" promptText="Password" />
+    <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="200.0" spacing="20.0">
+        <RadioButton fx:id="clientRadio" mnemonicParsing="false" selected="true" text="Client">
+           <toggleGroup>
+               <ToggleGroup fx:id="userType" />
+           </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="technicianRadio" mnemonicParsing="false" text="Technician" toggleGroup="$userType" />
+    </HBox>
+    <HBox prefHeight="100.0" prefWidth="200.0">
+        <Button onAction="#onLogin" text="Login" />
+        <Button onAction="#onSignin" text="Sign in" />
+    </HBox>
+</VBox>
