@@ -2,11 +2,11 @@ package it.dosti.justit.controller.gui;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.PageShopController;
 import it.dosti.justit.ui.navigation.CustomMapLayer;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.model.Shop;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -62,24 +62,23 @@ public class PageShopGController {
 
         mapContainer.getChildren().add(mapView);
 
-        Shop shop = appController.getShop();
+        ShopBean shopBean = appController.getShopBean();
 
-        if (shop != null) {
-            shopName.setText(shop.getName());
-            shopAddress.setText(shop.getAddress());
-            shopDescription.setText(shop.getDescription());
-            shopPhone.setText(shop.getPhone());
-            shopEmail.setText(shop.getEmail());
-            openingHours.setText(shop.getOpeningHours());
-            //shopImage.setImage(new Image(shop.getImage()));
+        if (shopBean != null) {
+            shopName.setText(shopBean.getName());
+            shopAddress.setText(shopBean.getAddress());
+            shopDescription.setText(shopBean.getDescription());
+            shopPhone.setText(shopBean.getPhone());
+            shopEmail.setText(shopBean.getEmail());
+            openingHours.setText(shopBean.getOpeningHours());
+            //shopImage.setImage(new Image(shopBean.getImage()));
 
-            if (shop.isHomeAssistance()) {
-                homeAssistanceLabel.setText("Assistenza a domicilio disponibile");
+            homeAssistanceLabel.setText(shopBean.getHomeAssistanceMessage());
+            if (shopBean.isHomeAssistance()) {
                 homeAssistanceLabel.setStyle(
                         "-fx-background-color: #e8f5e9; -fx-text-fill: #2e7d32; -fx-padding: 5 10 5 10; -fx-background-radius: 5;"
                 );
             } else {
-                homeAssistanceLabel.setText("Assistenza a domicilio non disponibile");
                 homeAssistanceLabel.setStyle(
                         "-fx-background-color: #ffebee; -fx-text-fill: #c62828; -fx-padding: 5 10 5 10; -fx-background-radius: 5;"
                 );
