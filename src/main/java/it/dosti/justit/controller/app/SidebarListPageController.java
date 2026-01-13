@@ -1,6 +1,6 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.DAO.ShopDAO;
+import it.dosti.justit.DAO.ShopDAOJDBC;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.model.Shop;
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ public class SidebarListPageController {
             new Shop("CurryRiparo")
     ); */
 
-    ShopDAO shopDAO = new ShopDAO();
-    private List<Shop> shops = shopDAO.getShops();
+    ShopDAOJDBC shopDAOJDBC = new ShopDAOJDBC();
+    private List<Shop> shops = shopDAOJDBC.retrieveAllShops();
 
     public void pageSelected(Shop selectedItem) {
         if (selectedItem != null) {
