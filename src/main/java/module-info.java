@@ -5,6 +5,7 @@ module it.dosti.justit {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires java.sql;
+    requires com.gluonhq.maps;
 
     opens it.dosti.justit to javafx.fxml;
     exports it.dosti.justit;

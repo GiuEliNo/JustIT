@@ -1,4 +1,4 @@
 package it.dosti.justit.DAO;
 
-public class ReviewDAO {
+public interface ReviewDAO {
 }
