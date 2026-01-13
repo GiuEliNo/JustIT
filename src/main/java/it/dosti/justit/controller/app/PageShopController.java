@@ -10,7 +10,7 @@ public class PageShopController {
         shop = MainController.getInstance().getSelectedShop();
     }
 
-    public String getShopName() {
-        return shop.getName();
+    public Shop getShop() {
+        return shop;
     }
 }

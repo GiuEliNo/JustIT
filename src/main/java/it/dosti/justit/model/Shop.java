@@ -29,6 +29,34 @@ public class Shop {
         return name;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public boolean isHomeAssistance() {
+        return homeAssistance;
+    }
+
     // javaFX chiama toString per mostrare l'oggetto in una lista
     @Override
     public String toString() {

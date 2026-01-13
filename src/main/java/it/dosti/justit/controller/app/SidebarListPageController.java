@@ -38,8 +38,6 @@ public class SidebarListPageController {
                     .collect(Collectors.toList());
         }
 
-        return filteredShops.stream()
-                .map(s -> new Shop(s.getName()))
-                .collect(Collectors.toList());
+        return filteredShops;
     }
 }
