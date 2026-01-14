@@ -2,8 +2,10 @@ package it.dosti.justit.controller.gui;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.PageShopController;
+import it.dosti.justit.controller.app.ReviewPageShopController;
 import it.dosti.justit.ui.navigation.CustomMapLayer;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
@@ -11,9 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 public class PageShopGController {
@@ -47,22 +48,27 @@ public class PageShopGController {
     @FXML
     private StackPane mapContainer;
 
+    @FXML
+    private ListView<ReviewBean> listReview;
+
     private MapView mapView;
 
-    private PageShopController appController;
+    private ReviewPageShopController appControllerReviewPageShop;
 
     public void initialize() {
-        appController = new PageShopController();
+        PageShopController appControllerPageShop = new PageShopController();
+        appControllerReviewPageShop = new ReviewPageShopController();
 
         mapView = new MapView();
         mapView.setCenter(new MapPoint(41.880018, 12.542675));
 
         mapView.addLayer(new CustomMapLayer());
+
         mapView.setZoom(15);
 
         mapContainer.getChildren().add(mapView);
 
-        ShopBean shopBean = appController.getShopBean();
+        ShopBean shopBean = appControllerPageShop.getShopBean();
 
         if (shopBean != null) {
             shopName.setText(shopBean.getName());
@@ -84,6 +90,9 @@ public class PageShopGController {
                 );
             }
         }
+
+        listReview.setCellFactory(lv -> new ReviewCardGController.ReviewListCell());
+        listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
     }
 
     @FXML
