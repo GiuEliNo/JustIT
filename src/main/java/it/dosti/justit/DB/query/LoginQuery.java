@@ -14,4 +14,13 @@ public class LoginQuery {
 
         return pstmt.executeQuery(sql);
     }
+
+    public static ResultSet loginTechnician(Connection conn, String username, String password) throws SQLException {
+        String sql;
+        sql = "SELECT * FROM Technician WHERE username = ? AND password = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        return pstmt.executeQuery(sql);
+    }
 }

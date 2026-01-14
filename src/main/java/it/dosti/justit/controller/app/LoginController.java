@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.model.TechnicianModel;
 import it.dosti.justit.model.UserModel;
 
 public class LoginController {
@@ -10,7 +11,9 @@ public class LoginController {
             //return userModel.loginClient(user, password);
         }
         else if(roleType == 1){
-            return false;
+            TechnicianModel technicianModel = new TechnicianModel();
+            return true;
+            //return technicianModel.loginTechnician(user, password);
         }
         return false;
     }

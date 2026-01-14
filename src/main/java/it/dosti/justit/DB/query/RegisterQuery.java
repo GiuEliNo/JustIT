@@ -5,7 +5,7 @@ import java.sql.*;
 public class RegisterQuery {
     private RegisterQuery() {}
 
-    public static void RegisterUser(Connection conn, String username, String password, String email, String name) throws SQLException {
+    public static boolean RegisterUser(Connection conn, String username, String password, String email, String name) throws SQLException {
         String sql;
         sql = "INSERT INTO USER(username, password, email, name) VALUES (?, ?, ?, ?)";
 
@@ -15,11 +15,31 @@ public class RegisterQuery {
         pstmt.setString(2, password);
         pstmt.setString(3, email);
         pstmt.setString(4, name);
-
-        pstmt.executeUpdate(sql);
+        try{
+            pstmt.executeUpdate(sql);
+            return true;
+        }catch(SQLException e){
+            return false;
+        }
     }
 
 
-    public static void RegisterTechnician(Connection conn, String username, String password, String email) throws SQLException {}
+    public static boolean RegisterTechnician(Connection conn, String username, String password, String email, String Shop) throws SQLException {
+        String sql;
+        sql = "INSERT INTO TECHNICIAN (username, password, email, name, shop_id) " +
+                "VALUES (?, ?, ?, ?, (SELECT id FROM Shop WHERE name = ?))";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        pstmt.setString(3, email);
+        pstmt.setString(4, Shop);
+        pstmt.setString(5, Shop);
+        try{
+            pstmt.executeUpdate(sql);
+            return true;
+        }catch(SQLException e){
+            return false;
+        }
+    }
 
 }

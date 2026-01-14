@@ -12,4 +12,10 @@ public class ShopQuery {
         sql = "SELECT * FROM Shop";
         return stmt.executeQuery(sql);
     }
+
+    public static ResultSet getShop(Statement stmt, String shop) throws SQLException {
+        String sql;
+        sql = "SELECT * FROM Shop WHERE name = ?";
+        return stmt.executeQuery(sql);
+    }
 }

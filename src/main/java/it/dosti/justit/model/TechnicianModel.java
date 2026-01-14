@@ -9,4 +9,8 @@ public class TechnicianModel {
     public TechnicianModel() {
         this.technicianDAO = new TechnicianDAOJDBC();
     }
+
+    public boolean loginTechnician(String email, String password){
+        return technicianDAO.loginTechnician(email, password);
+    }
 }
