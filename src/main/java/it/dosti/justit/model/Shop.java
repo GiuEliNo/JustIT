@@ -1,6 +1,7 @@
 package it.dosti.justit.model;
 
 public class Shop {
+    private Integer id;
     private String name;
     private String address;
     private String phone;
@@ -14,7 +15,8 @@ public class Shop {
         this.name = name;
     }
 
-    public Shop(String name, String address, String phone, String email, String description, String image, String openingHours, boolean homeAssistance) {
+    public Shop(Integer id, String name, String address, String phone, String email, String description, String image, String openingHours, boolean homeAssistance) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -23,6 +25,10 @@ public class Shop {
         this.image = image;
         this.openingHours = openingHours;
         this.homeAssistance = homeAssistance;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {

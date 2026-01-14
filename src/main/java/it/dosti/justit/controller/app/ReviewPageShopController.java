@@ -21,11 +21,7 @@ public class ReviewPageShopController {
     public List<ReviewBean> getReviews() {
         Shop selectedShop = SessionModel.getInstance().getSelectedShop();
 
-        //List<Review> reviews = reviewDAO.retrieveReviewsByShop(selectedShop.getName());
-        List<Review> reviews = List.of(
-                new Review("Piccante", 2, "Troppo Piccante il telefono", null),
-                new Review("Che schifo AMD", 1, "che povertà", null)
-        );
+        List<Review> reviews = reviewDAO.retrieveReviewsByShop(selectedShop.getId());
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
         for (Review review : reviews) {

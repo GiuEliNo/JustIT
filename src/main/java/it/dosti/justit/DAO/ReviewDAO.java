@@ -1,5 +1,9 @@
 package it.dosti.justit.DAO;
 
+import it.dosti.justit.model.Review;
+
+import java.util.List;
+
 public interface ReviewDAO {
-    void retrieveReviewsByShop(String shopName);
+    List<Review> retrieveReviewsByShop(Integer shopId);
 }

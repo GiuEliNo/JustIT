@@ -26,6 +26,7 @@ public class ShopDAOJDBC implements ShopDAO{
             ResultSet rs = ShopQuery.getAllShops(stmt);
 
             while(rs.next()){
+                Integer id = rs.getInt("id");
                 String name = rs.getString("name");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
@@ -34,7 +35,7 @@ public class ShopDAOJDBC implements ShopDAO{
                 String image = rs.getString("image");
                 String openingHours = rs.getString("openingHours");
                 boolean homeAssistance = rs.getBoolean("homeAssistance");
-                Shop shop = new Shop(name, address, phone, email, description, image, openingHours, homeAssistance);
+                Shop shop = new Shop(id, name, address, phone, email, description, image, openingHours, homeAssistance);
                 shops.add(shop);
             }
         }catch(SQLException e){
