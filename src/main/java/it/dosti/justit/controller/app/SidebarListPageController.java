@@ -1,29 +1,21 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.DAO.ShopDAOJDBC;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.ShopModel;
+import it.dosti.justit.model.SessionModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SidebarListPageController {
 
-/*    //solo per testing in assenza di DAO
-    private final List<Shop> shops = List.of(
-            new Shop("Mammelloni Samueloni"),
-            new Shop("Il meglio indiano di Torpigna"),
-            new Shop("El Gugno Maduro"),
-            new Shop("Bombai PC riparazione"),
-            new Shop("CurryRiparo")
-    ); */
-
-    ShopDAOJDBC shopDAOJDBC = new ShopDAOJDBC();
-    private List<Shop> shops = shopDAOJDBC.retrieveAllShops();
+    private final ShopModel shopModel = new ShopModel();
+    private List<Shop> shops = shopModel.getAllShops();
 
     public void pageSelected(Shop selectedItem) {
         if (selectedItem != null) {
-            MainController.getInstance().setSelectShop(selectedItem);
+            SessionModel.getInstance().setSelectShop(selectedItem);
         }
     }
 

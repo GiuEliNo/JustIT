@@ -2,13 +2,14 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.SessionModel;
 
 public class PageShopController {
 
     private Shop shop;
 
     public PageShopController() {
-        shop = MainController.getInstance().getSelectedShop();
+        shop = SessionModel.getInstance().getSelectedShop();
     }
 
     public ShopBean getShopBean() {

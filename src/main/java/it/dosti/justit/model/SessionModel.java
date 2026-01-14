@@ -1,18 +1,15 @@
-package it.dosti.justit.controller.app;
-
-
-import it.dosti.justit.model.Shop;
+package it.dosti.justit.model;
 
 //singleton
-public class MainController {
-    private static MainController instance;
+public class SessionModel {
+    private static SessionModel instance;
     private Shop selectedShop;
 
-    private MainController() {}
+    private SessionModel() {}
 
-    public static MainController getInstance() {
+    public static SessionModel getInstance() {
         if (instance == null) {
-            instance = new MainController();
+            instance = new SessionModel();
         }
         return instance;
     }
