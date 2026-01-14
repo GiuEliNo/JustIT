@@ -94,7 +94,7 @@ public class PageShopGController {
         }
 
         listReview.setCellFactory(lv -> new ReviewCardGController.ReviewListCell());
-        listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
+        this.updateReviewList();
     }
 
     @FXML
@@ -129,9 +129,14 @@ public class PageShopGController {
             if(result == ButtonType.OK){
                 reviewBean.setTitle(textField.getText());
                 reviewBean.setReview(textArea.getText());
-                reviewBean.setStars((int) rating.getRating());}
+                reviewBean.setStars((int) rating.getRating());
+                ReviewPageShopController.addReview(reviewBean);
+                this.updateReviewList();
+            }
         });
+    }
 
-        ReviewPageShopController.addReview(reviewBean);
+    public void updateReviewList() {
+        listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
     }
 }
