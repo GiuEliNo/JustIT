@@ -15,8 +15,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         return true;
     }
 
-
-    public boolean registerTechnician(String username, String password, String email, String Shop) throws SQLException {
+    public boolean registerTechnician(String username, String password, String email,String name, String Shop) {
 
         Connection conn = null;
         Statement stmt = null;
@@ -24,7 +23,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             conn = ConnectionDB.getInstance().connectDB();
             stmt = conn.createStatement();
             if (ShopQuery.getShop(stmt, Shop) != null) {
-                return RegisterQuery.RegisterTechnician(conn, username, password, email, Shop);
+                return RegisterQuery.RegisterTechnician(conn, username, password, email, name, Shop);
             }
         }catch(SQLException e){
             e.printStackTrace();

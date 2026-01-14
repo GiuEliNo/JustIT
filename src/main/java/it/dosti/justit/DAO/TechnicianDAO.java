@@ -2,5 +2,9 @@ package it.dosti.justit.DAO;
 
 public interface TechnicianDAO {
 
-    public boolean loginTechnician(String username, String password);
+     boolean loginTechnician(String username, String password);
+
+
+     boolean registerTechnician(String username, String password, String email,String name, String Shop);
+
 }
