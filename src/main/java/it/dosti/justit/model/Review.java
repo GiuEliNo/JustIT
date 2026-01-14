@@ -4,19 +4,19 @@ public class Review {
     private String title;
     private Integer star;  //deve andare da 1 a 5 stelle
     private String review;
-    private Shop shop;
+    private Integer shop;
 
-    public Review(String title, Integer star, String review, Shop shop) {
+    public Review(String title, Integer star, String review, Integer shop) {
         this.title = title;
         this.star = star;
         this.review = review;
         this.shop = shop;
     }
 
-    public Shop getShop() {
+    public Integer getShop() {
         return shop;
     }
-    public void setShop(Shop shop) {
+    public void setShop(Integer shop) {
         this.shop = shop;
     }
     public String getTitle() {

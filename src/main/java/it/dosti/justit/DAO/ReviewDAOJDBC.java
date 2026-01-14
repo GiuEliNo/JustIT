@@ -6,6 +6,7 @@ import it.dosti.justit.model.Review;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +30,20 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 Review review = new Review(title, star, text, null);
                 reviews.add(review);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return reviews;
+    }
+
+    public void addReviewToShop(Review instance) {
+        try {
+            Connection conn = ConnectionDB.getInstance().connectDB();
+
+            ReviewQuery.addReview(conn, instance);
+
+            } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

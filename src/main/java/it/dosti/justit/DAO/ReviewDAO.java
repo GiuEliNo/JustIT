@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ReviewDAO {
     List<Review> retrieveReviewsByShop(Integer shopId);
+    void addReviewToShop(Review instance);
 }

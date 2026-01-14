@@ -11,11 +11,13 @@ import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.controlsfx.control.Rating;
+
+import java.util.Optional;
 
 public class PageShopGController {
     @FXML
@@ -101,4 +103,35 @@ public class PageShopGController {
         NavigationService.navigateToRoot(Screen.BOOKING_PAGE);
     }
 
+    public void addReview() {
+
+        ReviewBean reviewBean = new ReviewBean();
+
+        Dialog addReviewDialog = new Dialog();
+        TextArea textArea = new TextArea();
+        TextField textField = new TextField();
+        textArea.setPromptText("Review ...");
+        textField.setPromptText("Title ...");
+        addReviewDialog.setTitle("Add a Review");
+
+        Rating rating = new Rating();
+        rating.setMax(5);
+
+        GridPane grid = new GridPane();
+        grid.add(textField, 0, 1);
+        grid.add(textArea, 0, 2);
+        grid.add(rating, 0,3);
+
+        addReviewDialog.getDialogPane().setContent(grid);
+        addReviewDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        addReviewDialog.showAndWait().ifPresent(result -> {
+            if(result == ButtonType.OK){
+                reviewBean.setTitle(textField.getText());
+                reviewBean.setReview(textArea.getText());
+                reviewBean.setStars((int) rating.getRating());}
+        });
+
+        ReviewPageShopController.addReview(reviewBean);
+    }
 }

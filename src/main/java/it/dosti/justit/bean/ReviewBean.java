@@ -3,7 +3,8 @@ package it.dosti.justit.bean;
 public class ReviewBean {
     private String title;
     private String review;
-    private int stars;
+    private Integer stars;
+    private Integer shopID;
 
     public String getTitle() {
         return title;
@@ -21,11 +22,19 @@ public class ReviewBean {
         this.review = review;
     }
 
-    public int getStars() {
+    public Integer getStars() {
         return stars;
     }
 
     public void setStars(int stars) {
         this.stars = stars;
+    }
+
+    public void setShopID(int shopID) {
+        this.shopID = shopID;
+    }
+
+    public Integer getShopID(){
+        return this.shopID;
     }
 }
