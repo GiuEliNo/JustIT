@@ -15,7 +15,7 @@ public class ShopQuery {
 
     public static ResultSet getShop(Statement stmt, String shop) throws SQLException {
         String sql;
-        sql = "SELECT * FROM Shop WHERE name = ?";
+        sql = String.format("SELECT * FROM Shop WHERE name = '%s'", shop);
         return stmt.executeQuery(sql);
     }
 }

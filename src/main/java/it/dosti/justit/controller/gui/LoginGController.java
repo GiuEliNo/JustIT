@@ -46,5 +46,7 @@ public class LoginGController {
     @FXML
     public void onSignIn() {
 
+        NavigationService.navigateToRoot(Screen.REGISTER_VIEW);
+
     }
 }

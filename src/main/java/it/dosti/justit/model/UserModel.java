@@ -13,4 +13,8 @@ public class UserModel {
     public boolean loginClient(String username, String password) {
         return clientUserDAO.login(username, password);
     }
+
+    public boolean registerClient(String username, String password, String name, String email) {
+        return clientUserDAO.registerClient(username, password, name, email);
+    }
 }
