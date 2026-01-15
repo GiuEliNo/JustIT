@@ -1,9 +1,9 @@
 package it.dosti.justit.model;
 
-//singleton
 public class SessionModel {
     private static SessionModel instance;
     private Shop selectedShop;
+    private RoleType userRole;
 
     private SessionModel() {}
 
@@ -21,4 +21,13 @@ public class SessionModel {
     public void setSelectShop(Shop shop) {
         this.selectedShop = shop;
     }
+
+    public RoleType getUserRole(){
+        return userRole;
+    }
+
+    public void setUserRole(RoleType userRole) {
+        this.userRole = userRole;
+    }
+
 }

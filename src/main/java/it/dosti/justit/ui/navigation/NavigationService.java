@@ -1,7 +1,6 @@
 package it.dosti.justit.ui.navigation;
 
 import javafx.scene.Parent;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.StackPane;
 
 

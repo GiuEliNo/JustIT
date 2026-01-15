@@ -1,6 +1,8 @@
 package it.dosti.justit.controller.gui;
 
 import it.dosti.justit.controller.app.LoginController;
+import it.dosti.justit.model.RoleType;
+import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
@@ -29,13 +31,16 @@ public class LoginGController {
         appController = new LoginController();
     }
     @FXML
-    private void onLogin() {
+    private void onLogin() throws Exception {
 
-        Integer roleType = clientRadio.isSelected() ? 0 : 1;
+        RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
 
         if(appController.checkLogin(user.getText(), password.getText(), roleType)) {
-            if(clientRadio.isSelected()) {
-                NavigationService.navigateToRoot(Screen.MAIN);
+            switch(SessionModel.getInstance().getUserRole()){
+                case CLIENT:
+                    NavigationService.navigateToRoot(Screen.MAIN_USER);
+                case TECHNICIAN:
+                    NavigationService.navigateToRoot(Screen.MAIN_TECH);
             }
         }
         else {

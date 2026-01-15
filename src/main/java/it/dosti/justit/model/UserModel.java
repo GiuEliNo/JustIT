@@ -5,6 +5,7 @@ import it.dosti.justit.DAO.ClientUserDAOJDBC;
 
 public class UserModel {
     private final ClientUserDAO clientUserDAO;
+    private  String roleType;
 
     public UserModel() {
         this.clientUserDAO = new ClientUserDAOJDBC();
@@ -16,5 +17,9 @@ public class UserModel {
 
     public boolean registerClient(String username, String password, String name, String email) {
         return clientUserDAO.registerClient(username, password, name, email);
+    }
+
+    public void setRoleType(String roleType){
+        this.roleType = roleType;
     }
 }

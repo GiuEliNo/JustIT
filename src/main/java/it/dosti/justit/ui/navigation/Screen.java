@@ -4,7 +4,8 @@ public enum Screen {
 
     LAUNCHER("/login.fxml"),
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
-    MAIN("/main.fxml"),
+    MAIN_USER("/mainUser.fxml"),
+    MAIN_TECH("/mainTech.fxml"),
     PAGE_SHOP("/pageShop.fxml"),
     BOOKING_PAGE("/bookingPage.fxml"),
     REVIEWS_BOX("/reviewsBox.fxml"),
