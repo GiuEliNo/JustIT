@@ -7,18 +7,25 @@ public class RegisterQuery {
 
     public static boolean RegisterUser(Connection conn, String username, String password, String email, String name) throws SQLException {
         String sql;
-        sql = "INSERT INTO USER(username, password, email, name) VALUES (?, ?, ?, ?)";
+        sql = "INSERT INTO User(name, username, email, password) VALUES (?, ?, ?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-        pstmt.setString(1, username);
-        pstmt.setString(2, password);
+        pstmt.setString(1, name);
+        pstmt.setString(2, username);
         pstmt.setString(3, email);
-        pstmt.setString(4, name);
+        pstmt.setString(4, password);
         try{
-            pstmt.executeUpdate(sql);
-            return true;
+
+            if(pstmt.executeUpdate()==1) {
+                return true;
+            }
+            else{
+                System.out.println("Qualcosa è andato storto");
+                return false;
+            }
         }catch(SQLException e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -35,8 +42,12 @@ public class RegisterQuery {
         pstmt.setString(4, name);
         pstmt.setString(5, Shop);
         try{
-            pstmt.executeUpdate(sql);
-            return true;
+            if(pstmt.executeUpdate()==1) {
+                return true;
+            }
+            else{
+                return false;
+            }
         }catch(SQLException e){
             return false;
         }

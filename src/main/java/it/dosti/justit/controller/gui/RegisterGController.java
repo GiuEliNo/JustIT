@@ -41,6 +41,9 @@ public class RegisterGController {
     @FXML
     public void signInPressed() {
 
+        bean = new RegisterBean();
+        controller = new RegisterController();
+
         bean.setName(nameField.getText());
         bean.setPassword(passwordField.getText());
         bean.setEmail(emailField.getText());
