@@ -14,7 +14,5 @@ public class MainTechGController{
         NavigationService.setLeftPane(leftPane);
         NavigationService.setCenterPane(centerPane);
         NavigationService.setTopPane(topPane);
-
-        NavigationService.navigateToLeft(Screen.SIDEBAR_SEARCH_LIST); //altrimenti non va user io boh
     }
 }

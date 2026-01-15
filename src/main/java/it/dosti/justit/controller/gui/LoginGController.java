@@ -39,8 +39,10 @@ public class LoginGController {
             switch(SessionModel.getInstance().getUserRole()){
                 case CLIENT:
                     NavigationService.navigateToRoot(Screen.MAIN_USER);
+                    break;
                 case TECHNICIAN:
                     NavigationService.navigateToRoot(Screen.MAIN_TECH);
+                    break;
             }
         }
         else {
