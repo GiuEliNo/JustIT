@@ -6,7 +6,8 @@ public enum Screen {
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
     MAIN("/main.fxml"),
     PAGE_SHOP("/pageShop.fxml"),
-    BOOKING_PAGE("/bookingPage.fxml");
+    BOOKING_PAGE("/bookingPage.fxml"),
+    REVIEWS_BOX("/reviewsBox.fxml");
 
     private final String fxmlPath;
 

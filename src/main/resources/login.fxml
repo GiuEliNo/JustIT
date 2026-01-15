@@ -51,7 +51,7 @@
                 <Font name="System Bold" size="14.0" />
             </font>
         </Button>
-        <Button onAction="#onSignin" prefHeight="40.0" prefWidth="140.0" text="Sign In">
+        <Button onAction="#onSignIn" prefHeight="40.0" prefWidth="140.0" text="Sign In">
             <font>
                 <Font size="14.0" />
             </font>

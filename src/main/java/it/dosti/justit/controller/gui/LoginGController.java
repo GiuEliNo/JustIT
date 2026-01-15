@@ -44,6 +44,7 @@ public class LoginGController {
     }
 
     @FXML
-    public void onSignin() {
+    public void onSignIn() {
+
     }
 }

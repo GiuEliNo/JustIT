@@ -16,7 +16,7 @@ public class ReviewPageShopController {
     private static final ReviewModel reviewModel = new ReviewModel();
     private static final Shop selectedShop = SessionModel.getInstance().getSelectedShop();
 
-    public static void addReview(ReviewBean reviewBean) {
+    public void addReview(ReviewBean reviewBean) {
         reviewBean.setShopID(selectedShop.getId());
         reviewModel.addReviewToShop(selectedShop, reviewBean);
     }

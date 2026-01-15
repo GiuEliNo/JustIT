@@ -80,9 +80,7 @@
                </font>
             </Label>
             <StackPane fx:id="mapContainer" prefHeight="200.0" prefWidth="700.0" style="-fx-border-color: #e0e0e0;" />
-            <Label text="Review" />
-            <ListView fx:id="listReview" prefHeight="200.0" prefWidth="200.0" />
-            <Button mnemonicParsing="false" onAction="#addReview" text="Add Review" />
+            <fx:include source="reviewsBox.fxml" />
          </VBox>
       </VBox>
    </ScrollPane>
