@@ -13,17 +13,20 @@ import java.util.List;
 
 public class ReviewPageShopController {
 
-    private static final ReviewModel reviewModel = new ReviewModel();
-    private static final Shop selectedShop = SessionModel.getInstance().getSelectedShop();
+    private final ReviewModel reviewModel = new ReviewModel();
+
+    private Shop getSelectedShop() {
+        return SessionModel.getInstance().getSelectedShop();
+    }
 
     public void addReview(ReviewBean reviewBean) {
+        Shop selectedShop = getSelectedShop();
         reviewBean.setShopID(selectedShop.getId());
         reviewModel.addReviewToShop(selectedShop, reviewBean);
     }
 
     public List<ReviewBean> getReviews() {
-
-
+        Shop selectedShop = getSelectedShop();
         List<Review> reviews = reviewModel.retrieveReviewsByShop(selectedShop.getId());
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
