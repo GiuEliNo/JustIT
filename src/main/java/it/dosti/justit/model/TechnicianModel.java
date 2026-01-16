@@ -13,4 +13,13 @@ public class TechnicianModel {
     public boolean loginTechnician(String email, String password){
         return technicianDAO.loginTechnician(email, password);
     }
+
+
+    public boolean registerTechnician(String username, String password, String name, String email, String shop){
+        return technicianDAO.registerTechnician(username, password, name, email, shop);
+    }
+
+    public Integer getShopIDbyName(String shopName){
+        return technicianDAO.getShopIDbyName(shopName);
+    }
 }

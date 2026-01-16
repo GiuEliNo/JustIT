@@ -9,7 +9,8 @@ public enum Screen {
     PAGE_SHOP("/pageShop.fxml"),
     BOOKING_PAGE("/bookingPage.fxml"),
     REVIEWS_BOX("/reviewsBox.fxml"),
-    REGISTER_VIEW("/register.fxml");
+    REGISTER_VIEW("/register.fxml"),
+    REGISTERTEC_VIEW("/registerB.fxml"),;
 
     private final String fxmlPath;
 

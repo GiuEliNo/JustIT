@@ -53,7 +53,10 @@ public class LoginGController {
     @FXML
     public void onSignIn() {
 
-        NavigationService.navigateToRoot(Screen.REGISTER_VIEW);
+        RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
 
+        if (clientRadio.isSelected()) NavigationService.navigateToRoot(Screen.REGISTER_VIEW);
+
+        else NavigationService.navigateToRoot(Screen.REGISTERTEC_VIEW);
     }
 }

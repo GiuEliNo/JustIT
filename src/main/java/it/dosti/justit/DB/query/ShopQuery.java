@@ -18,4 +18,10 @@ public class ShopQuery {
         sql = String.format("SELECT * FROM Shop WHERE name = '%s'", shop);
         return stmt.executeQuery(sql);
     }
+
+    public static Integer getShopID(Statement stmt, String shop) throws SQLException {
+        String sql;
+        sql = String.format("SELECT ID FROM Shop WHERE name = '%s'", shop);
+        return stmt.executeQuery(sql).getInt(1);
+    }
 }

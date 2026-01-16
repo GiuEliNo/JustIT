@@ -32,4 +32,18 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         return false;
     }
 
+    public Integer getShopIDbyName(String shopName){
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            conn=ConnectionDB.getInstance().connectDB();
+            stmt = conn.createStatement();
+            return ShopQuery.getShopID(stmt, shopName);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
