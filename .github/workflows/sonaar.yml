@@ -1,0 +1,41 @@
+name: Main Scan
+on:
+  push:
+    branches:
+      - main
+
+
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+
+
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - name:  Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set-up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Sonar Cloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        run:
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=dosti_justit-prova
