@@ -10,8 +10,16 @@ import java.util.stream.Collectors;
 
 public class SidebarListPageController {
 
-    private final ShopModel shopModel = new ShopModel();
-    private List<Shop> shops = shopModel.getAllShops();
+    private final List<Shop> shops;
+
+    public SidebarListPageController() {
+        ShopModel shopModel = new ShopModel();
+        this.shops = shopModel.getAllShops();
+    }
+
+    public List<Shop> getAllShops() {
+        return new ArrayList<>(shops);
+    }
 
     public void pageSelected(Shop selectedItem) {
         if (selectedItem != null) {

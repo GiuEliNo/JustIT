@@ -25,7 +25,7 @@ public class SidebarListPageGController {
     public void initialize() {
         appController = new SidebarListPageController();
 
-        updateListView("");
+        listView.getItems().setAll(appController.getAllShops());
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             updateListView(newValue);
