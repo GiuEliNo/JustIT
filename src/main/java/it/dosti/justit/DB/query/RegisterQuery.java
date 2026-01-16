@@ -34,7 +34,7 @@ public class RegisterQuery {
     public static boolean RegisterTechnician(Connection conn, String username, String password, String name, String email, String Shop) throws SQLException {
         String sql;
         sql = "INSERT INTO TECHNICIAN (username, password, email, name, shop) " +
-                "VALUES (?, ?, ?, ?, (SELECT id FROM Shop WHERE name = ?))";
+               "VALUES (?, ?, ?, ?, (SELECT id FROM Shop WHERE name = ?))";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
         pstmt.setString(2, password);
