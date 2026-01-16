@@ -1,9 +1,8 @@
 package it.dosti.justit;
 
-import javafx.application.Application;
-
 public class Launcher {
     public static void main(String[] args) {
-        Application.launch(MainApp.class, args);
+        AppMode appMode = AppModeFactory.createAppMode(args);
+        appMode.start(args);
     }
 }
