@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.gui;
 
+import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.model.RoleType;
 import it.dosti.justit.model.SessionModel;
@@ -34,8 +35,9 @@ public class LoginGController {
     private void onLogin() throws Exception {
 
         RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
+        LoginBean loginBean = new LoginBean(user.getText(), password.getText(), roleType);
 
-        if(appController.checkLogin(user.getText(), password.getText(), roleType)) {
+        if(appController.checkLogin(loginBean)) {
             switch(SessionModel.getInstance().getUserRole()){
                 case CLIENT:
                     NavigationService.navigateToRoot(Screen.MAIN_USER);

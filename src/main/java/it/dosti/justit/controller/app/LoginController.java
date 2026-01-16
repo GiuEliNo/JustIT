@@ -1,16 +1,14 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.controller.gui.MainTechGController;
-import it.dosti.justit.controller.gui.MainUserGController;
-import it.dosti.justit.model.RoleType;
+import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.TechnicianModel;
 import it.dosti.justit.model.UserModel;
 
 public class LoginController {
-    public boolean checkLogin(String user, String password, RoleType userRole) throws Exception {
-        SessionModel.getInstance().setUserRole(userRole);
-        switch (userRole) {
+    public boolean checkLogin(LoginBean loginBean) throws Exception {
+        SessionModel.getInstance().setUserRole(loginBean.getRoleType());
+        switch (loginBean.getRoleType()) {
             case CLIENT:
                 UserModel userModel = new UserModel();
                 return true;
@@ -21,7 +19,7 @@ public class LoginController {
                 return true;
                 //return technicianModel.loginTechnician(user, password);
             default:
-                throw new Exception("Invalid type : " + userRole);
+                throw new Exception("Invalid type : " + loginBean.getRoleType());
         }
     }
 }

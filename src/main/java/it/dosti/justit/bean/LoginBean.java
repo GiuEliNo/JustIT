@@ -1,0 +1,39 @@
+package it.dosti.justit.bean;
+
+import it.dosti.justit.model.RoleType;
+
+public class LoginBean {
+    private String username;
+    private String password;
+    private RoleType roleType;
+
+    public LoginBean(String usernameField, String passwordField, RoleType roleTypeField) {
+        this.setUsername(usernameField);
+        this.setPassword(passwordField);
+        this.setRoleType(roleTypeField);
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    private void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    private void setPassword(String password){
+        this.password = password;
+    }
+
+    private void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+}
