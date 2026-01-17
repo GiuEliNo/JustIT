@@ -1,11 +1,12 @@
 package it.dosti.justit;
 
-import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.ui.navigation.ViewFactory;
+import it.dosti.justit.ui.navigation.NavigationService;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -24,18 +25,20 @@ public class GUIMode extends BaseAppMode implements AppMode{
     public static class GUIApplication extends Application {
         @Override
         public void start(Stage stage) {
-            ViewFactory viewFactory = new ViewFactory();
-            StackPane root = new StackPane();
-            NavigationService.init(root, viewFactory);
+            BorderPane root = new BorderPane();
+
+            NavigationService navigation = new GUINavigationService(root);
 
             Scene scene = new Scene(root, 900, 600);
+
             stage.setScene(scene);
             stage.setTitle("JustIT");
             stage.setResizable(false);
             stage.show();
             Platform.runLater(stage::centerOnScreen);
 
-            NavigationService.navigateToRoot(Screen.LAUNCHER);
+            navigation.navigate(Screen.LAUNCHER);
+
         }
     }
 }

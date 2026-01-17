@@ -1,14 +1,13 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
-import javafx.event.ActionEvent;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class RegisterGController {
-
+public class RegisterGController  extends BaseGController{
     private RegisterBean bean;
     private RegisterController controller;
 
@@ -27,7 +26,6 @@ public class RegisterGController {
 
     @FXML
     private TextField usernameField;
-
 
 
     @FXML

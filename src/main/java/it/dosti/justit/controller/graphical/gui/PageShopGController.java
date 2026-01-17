@@ -1,18 +1,18 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.PageShopController;
-import it.dosti.justit.ui.navigation.CustomMapLayer;
-import it.dosti.justit.ui.navigation.NavigationService;
+import it.dosti.justit.ui.navigation.gui.CustomMapLayer;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-public class PageShopGController {
+public class PageShopGController extends BaseGController {
     @FXML
     private Label shopName;
 
@@ -82,6 +82,6 @@ public class PageShopGController {
     @FXML
     public void onBookingClicked() {
         System.out.println("Prenotato");
-        NavigationService.navigateToRoot(Screen.BOOKING_PAGE);
+        navigation.navigate(Screen.BOOKING_PAGE);
     }
 }

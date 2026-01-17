@@ -1,18 +1,18 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.model.RoleType;
 import it.dosti.justit.model.SessionModel;
-import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-public class LoginGController {
+public class LoginGController extends BaseGController {
     @FXML
     private TextField user;
     @FXML
@@ -40,10 +40,10 @@ public class LoginGController {
         if(appController.checkLogin(loginBean)) {
             switch(SessionModel.getInstance().getUserRole()){
                 case CLIENT:
-                    NavigationService.navigateToRoot(Screen.MAIN_USER);
+                    navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
                     break;
                 case TECHNICIAN:
-                    NavigationService.navigateToRoot(Screen.MAIN_TECH);
+                    navigation.navigate(Screen.MAIN_TECH);
                     break;
             }
         }
@@ -57,8 +57,8 @@ public class LoginGController {
 
         RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
 
-        if (clientRadio.isSelected()) NavigationService.navigateToRoot(Screen.REGISTER_VIEW);
+        if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_VIEW);
 
-        else NavigationService.navigateToRoot(Screen.REGISTERTEC_VIEW);
+        else navigation.navigate(Screen.REGISTERTEC_VIEW);
     }
 }

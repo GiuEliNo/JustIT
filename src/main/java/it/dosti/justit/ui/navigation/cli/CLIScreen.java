@@ -1,6 +1,6 @@
-package it.dosti.justit.ui.navigation;
+package it.dosti.justit.ui.navigation.cli;
 
-public enum Screen {
+public enum CLIScreen {
     LAUNCHER,
     SIDEBAR_SEARCH_LIST,
     MAIN_USER,

@@ -1,5 +1,9 @@
 package it.dosti.justit;
 
+import it.dosti.justit.ui.navigation.NavigationService;
+import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.ui.navigation.cli.CLINavigationService;
+
 import java.sql.SQLException;
 
 public class CLIMode extends BaseAppMode {
@@ -8,6 +12,11 @@ public class CLIMode extends BaseAppMode {
         try {
             connectToDB();
             System.out.println("CLI Mode");
+
+            NavigationService navigation = new CLINavigationService();
+
+            navigation.navigate(Screen.LAUNCHER);
+
         } catch (SQLException ignored) {
         }
     }

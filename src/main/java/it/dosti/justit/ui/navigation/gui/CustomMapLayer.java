@@ -1,4 +1,4 @@
-package it.dosti.justit.ui.navigation;
+package it.dosti.justit.ui.navigation.gui;
 
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;

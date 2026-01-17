@@ -1,15 +1,15 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.model.TechnicianModel;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class RegisterTecGController {
-
+public class RegisterTecGController extends BaseGController{
     @FXML
     private TextField emailField;
 

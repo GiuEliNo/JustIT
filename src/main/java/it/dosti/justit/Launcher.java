@@ -6,5 +6,3 @@ public class Launcher {
         appMode.start(args);
     }
 }
-
-//testing

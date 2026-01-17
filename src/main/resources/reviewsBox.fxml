@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.dosti.justit.controller.gui.ReviewsGController">
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.dosti.justit.controller.graphical.gui.ReviewsGController">
    <Label text="Review">
       <font>
          <Font name="System Bold" size="18.0"/>

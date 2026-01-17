@@ -1,9 +1,9 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.SidebarListPageController;
 import it.dosti.justit.model.Shop;
-import it.dosti.justit.ui.navigation.NavigationService;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 
 import java.util.List;
 
-public class SidebarListPageGController {
+public class SidebarListPageGController extends BaseGController{
 
     @FXML
     private TextField searchField;
@@ -44,7 +44,7 @@ public class SidebarListPageGController {
         Shop selected = listView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             appController.pageSelected(selected);
-            NavigationService.navigateToCenter(Screen.PAGE_SHOP);
+            navigation.navigate(Screen.PAGE_SHOP);
         }
     }
 }

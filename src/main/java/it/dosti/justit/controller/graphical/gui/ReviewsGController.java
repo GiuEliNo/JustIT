@@ -1,18 +1,20 @@
-package it.dosti.justit.controller.gui;
+package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.controller.app.ReviewPageShopController;
+import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import it.dosti.justit.view.gui.DialogAddReview;
 import it.dosti.justit.view.gui.ReviewListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class ReviewsGController {
+public class ReviewsGController extends BaseGController{
 
     @FXML
     private ListView<ReviewBean> listReview;
 
     private ReviewPageShopController appControllerReviewPageShop;
+
 
     @FXML
     public void initialize() {

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public abstract class BaseAppMode implements AppMode {
     protected ConnectionDB db;
 
-    public BaseAppMode() {
+    protected BaseAppMode() {
         this.db = new ConnectionDB();
     }
 
