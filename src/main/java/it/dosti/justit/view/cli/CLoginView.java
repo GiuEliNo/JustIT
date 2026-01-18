@@ -2,19 +2,13 @@ package it.dosti.justit.view.cli;
 
 import java.util.Scanner;
 
-public class CLoginView implements CLIView {
+public class CLoginView extends BaseCliView {
 
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void render() {
         System.out.println("===== LOGIN =====");
-    }
-
-    @Override
-    public void clear() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     public String askUsername() {
