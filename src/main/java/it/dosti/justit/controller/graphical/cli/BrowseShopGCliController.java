@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBrowseShopView;
 
 import java.util.List;
@@ -21,15 +22,15 @@ public class BrowseShopGCliController extends BaseCliController{
         switch (choice) {
             case "1":
                 this.askShop(this.allShop());
-                //navigation.navigate(Screen.SHOP_DETAILS);
+                navigation.navigate(Screen.PAGE_SHOP);
                 break;
             case "2":
                 this.askShop(this.searchShop());
-                //navigation.navigate(Screen.SHOP_DETAILS);
+                navigation.navigate(Screen.PAGE_SHOP);
                 break;
             case "3":
                 this.randomShop();
-                //navigation.navigate(Screen.SHOP_DETAILS);
+                //navigation.navigate(Screen.PAGE_SHOP);
                 break;
         }
 

@@ -31,6 +31,8 @@ public class CLINavigationService implements NavigationService {
                 return new CMainUserView();
             case SIDEBAR_SEARCH_LIST:
                 return new CBrowseShopView();
+            case PAGE_SHOP:
+                return new CPageShopCliView();
         };
         return null;
     }
@@ -45,6 +47,8 @@ public class CLINavigationService implements NavigationService {
                 return new MainUserGCliController();
             case SIDEBAR_SEARCH_LIST:
                 return new BrowseShopGCliController();
+            case PAGE_SHOP:
+                return new PageShopGCliController();
         };
         return null;
     }
