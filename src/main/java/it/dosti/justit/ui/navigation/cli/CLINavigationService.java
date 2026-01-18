@@ -29,6 +29,8 @@ public class CLINavigationService implements NavigationService {
                 return new CLoginView();
             case MAIN_USER:
                 return new CMainUserView();
+            case SIDEBAR_SEARCH_LIST:
+                return new CBrowseShopView();
         };
         return null;
     }
@@ -40,7 +42,9 @@ public class CLINavigationService implements NavigationService {
             case LOGIN:
                 return new LoginGCliController();
             case MAIN_USER:
-                return new CMainUserGCliController();
+                return new MainUserGCliController();
+            case SIDEBAR_SEARCH_LIST:
+                return new BrowseShopGCliController();
         };
         return null;
     }

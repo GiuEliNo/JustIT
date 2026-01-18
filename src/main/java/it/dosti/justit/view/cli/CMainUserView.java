@@ -10,6 +10,6 @@ public class CMainUserView extends BaseCliView{
     }
 
     public String askChoice() {
-        return null;
+        return scanner.nextLine();
     }
 }

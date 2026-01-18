@@ -3,7 +3,7 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CMainUserView;
 
-public class CMainUserGCliController extends BaseCliController{
+public class MainUserGCliController extends BaseCliController{
     @Override
     public void initialize() throws Exception {
         CMainUserView launcherView = (CMainUserView) view;
@@ -15,7 +15,7 @@ public class CMainUserGCliController extends BaseCliController{
                 navigation.navigate(Screen.LOGIN);
                 break;
             case "2":
-                navigation.navigate(Screen.REGISTER_VIEW);
+                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
                 break;
             default:
                 navigation.navigate(Screen.LAUNCHER);

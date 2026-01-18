@@ -1,9 +1,8 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.SearchBean;
-import it.dosti.justit.controller.app.SidebarListPageController;
+import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.model.Shop;
-import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -19,11 +18,11 @@ public class SidebarListPageGController extends BaseGController{
     @FXML
     private ListView<Shop> listView;
 
-    private SidebarListPageController appController;
+    private BrowseShopController appController;
 
     @FXML
     public void initialize() {
-        appController = new SidebarListPageController();
+        appController = new BrowseShopController();
 
         listView.getItems().setAll(appController.getAllShops());
 

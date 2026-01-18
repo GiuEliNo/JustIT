@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SidebarListPageController {
+public class BrowseShopController {
 
     private final List<Shop> shops;
 
-    public SidebarListPageController() {
+    public BrowseShopController() {
         ShopModel shopModel = new ShopModel();
         this.shops = shopModel.getAllShops();
     }
