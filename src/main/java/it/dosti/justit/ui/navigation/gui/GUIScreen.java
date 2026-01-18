@@ -11,8 +11,8 @@ public enum GUIScreen {
     REVIEWS_BOX("/reviewsBox.fxml"),
     REGISTER_VIEW("/register.fxml"),
     REGISTERTEC_VIEW("/registerB.fxml"),
-    TOPBAR("/topBar.fxml")
-    ;
+    TOPBAR("/topBar.fxml"),
+    REGISTER_SHOP("/registerShop.fxml");
 
     private final String fxmlPath;
 

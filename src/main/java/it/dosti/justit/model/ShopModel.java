@@ -14,4 +14,10 @@ public class ShopModel {
     public List<Shop> getAllShops() {
         return shopDAO.retrieveAllShops();
     }
+
+    public boolean registerShop(Shop shop) {
+
+        return shopDAO.registerShop(shop);
+
+    }
 }

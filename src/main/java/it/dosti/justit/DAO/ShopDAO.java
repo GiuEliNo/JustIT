@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ShopDAO {
     List<Shop> retrieveAllShops();
+
+    boolean registerShop(Shop shop);
 }

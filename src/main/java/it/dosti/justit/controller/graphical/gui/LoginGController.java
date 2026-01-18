@@ -48,8 +48,6 @@ public class LoginGController extends BaseGController {
     @FXML
     public void onSignIn() {
 
-        RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
-
         if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_VIEW);
 
         else navigation.navigate(Screen.REGISTERTEC_VIEW);

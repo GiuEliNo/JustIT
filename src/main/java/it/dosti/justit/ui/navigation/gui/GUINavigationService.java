@@ -96,6 +96,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.BOOKING_PAGE;
             case TOPBAR:
                 return GUIScreen.TOPBAR;
+            case  REGISTER_SHOP:
+                return GUIScreen.REGISTER_SHOP;
         };
         return null;
     }

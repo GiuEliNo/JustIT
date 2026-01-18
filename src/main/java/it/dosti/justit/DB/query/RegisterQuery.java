@@ -1,5 +1,7 @@
 package it.dosti.justit.DB.query;
 
+import it.dosti.justit.model.Shop;
+
 import java.sql.*;
 
 public class RegisterQuery {
@@ -53,30 +55,34 @@ public class RegisterQuery {
         }
     }
 
-    public static boolean RegisterShop(Connection conn, String name, String address, String phone, String email, String descriptions, String image, String openingHours, boolean homeAssistance) throws SQLException {
+    public static boolean RegisterShop(Connection conn, Shop shop) throws SQLException {
 
         String sql;
 
 
-        sql="INSERT INTO SHOP (name,address,phone,email,descriptions,image,openingHours,homeAssistance) " +
+        sql="INSERT INTO SHOP (name,address,phone,email,description,image,openingHours,homeAssistance) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-        pstmt.setString(1, name);
-        pstmt.setString(2, address);
-        pstmt.setString(3, phone);
-        pstmt.setString(4, email);
-        pstmt.setString(5, descriptions);
-        pstmt.setString(6, image);
-        pstmt.setString(7, openingHours);
-        pstmt.setBoolean(8,homeAssistance);
+        pstmt.setString(1, shop.getName());
+        pstmt.setString(2, shop.getAddress());
+        pstmt.setString(3, shop.getPhone());
+        pstmt.setString(4, shop.getEmail());
+        pstmt.setString(5, shop.getDescription());
+        pstmt.setString(6, shop.getImage());
+        pstmt.setString(7, shop.getOpeningHours());
+        pstmt.setBoolean(8, shop.isHomeAssistance());
 
         try{
-            pstmt.executeUpdate(sql);
-            return true;
+            if(pstmt.executeUpdate()==1){
+            return true;}
+            else{
+                return false;
+            }
         }
         catch(SQLException e){
+            e.printStackTrace();
             return false;
         }
     }
