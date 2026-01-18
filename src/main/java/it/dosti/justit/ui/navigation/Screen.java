@@ -11,5 +11,6 @@ public enum Screen {
     REGISTER_VIEW,
     REGISTERTEC_VIEW,
     TOPBAR,
+    LOGIN,
     REGISTER_SHOP;
 }

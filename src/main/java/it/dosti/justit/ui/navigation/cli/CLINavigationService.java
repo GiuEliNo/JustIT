@@ -5,11 +5,12 @@ import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CLIView;
 import it.dosti.justit.controller.graphical.cli.*;
 import it.dosti.justit.view.cli.CLauncherView;
+import it.dosti.justit.view.cli.CLoginView;
 
 public class CLINavigationService implements NavigationService {
 
     @Override
-    public void navigate(Screen screen) {
+    public void navigate(Screen screen) throws Exception {
         CLIView view = loadView(screen);
         BaseCliController controller = createController(screen);
         
@@ -17,6 +18,7 @@ public class CLINavigationService implements NavigationService {
         view.render();
 
         controller.setNavigation(this);
+        controller.setView(view);
         controller.initialize();
     }
 
@@ -25,6 +27,8 @@ public class CLINavigationService implements NavigationService {
         switch(screen) {
             case LAUNCHER:
                 return new CLauncherView();
+            case LOGIN:
+                return new CLoginView();
         };
         return null;
     }
@@ -32,7 +36,9 @@ public class CLINavigationService implements NavigationService {
     public BaseCliController createController(Screen screen) {
         switch (screen) {
             case LAUNCHER:
-                return new LauncherGBaseCliController();
+                return new LauncherGCliController();
+            case LOGIN:
+                return new LoginGCliController();
         };
         return null;
     }

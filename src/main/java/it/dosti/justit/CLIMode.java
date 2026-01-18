@@ -18,6 +18,8 @@ public class CLIMode extends BaseAppMode {
             navigation.navigate(Screen.LAUNCHER);
 
         } catch (SQLException ignored) {
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
