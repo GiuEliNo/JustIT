@@ -9,5 +9,6 @@ public enum Screen {
     BOOKING_PAGE,
     REVIEWS_BOX,
     REGISTER_VIEW,
-    REGISTERTEC_VIEW;
+    REGISTERTEC_VIEW,
+    TOPBAR;
 }

@@ -47,6 +47,10 @@ public class GUINavigationService implements NavigationService {
                 root.setCenter(null);
                 break;
 
+            case TOPBAR:
+                root.setTop(view);
+                break;
+
             default:
                 root.setCenter(view);
                 break;
@@ -90,6 +94,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.PAGE_SHOP;
             case BOOKING_PAGE:
                 return GUIScreen.BOOKING_PAGE;
+            case TOPBAR:
+                return GUIScreen.TOPBAR;
         };
         return null;
     }

@@ -38,14 +38,7 @@ public class LoginGController extends BaseGController {
         LoginBean loginBean = new LoginBean(user.getText(), password.getText(), roleType);
 
         if(appController.checkLogin(loginBean)) {
-            switch(SessionModel.getInstance().getUserRole()){
-                case CLIENT:
-                    navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
-                    break;
-                case TECHNICIAN:
-                    navigation.navigate(Screen.MAIN_TECH);
-                    break;
-            }
+            new MainGController(navigation);
         }
         else {
             outputLabel.setText("User or Password incorrect");
