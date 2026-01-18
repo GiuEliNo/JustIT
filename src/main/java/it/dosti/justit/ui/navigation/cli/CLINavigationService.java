@@ -11,12 +11,12 @@ public class CLINavigationService implements NavigationService {
     @Override
     public void navigate(Screen screen) {
         CLIView view = loadView(screen);
-        CLIController controller = createController(screen);
-
-
+        BaseCliController controller = createController(screen);
+        
         view.clear();
         view.render();
 
+        controller.setNavigation(this);
         controller.initialize();
     }
 
@@ -29,10 +29,10 @@ public class CLINavigationService implements NavigationService {
         return null;
     }
 
-    public CLIController createController(Screen screen) {
+    public BaseCliController createController(Screen screen) {
         switch (screen) {
             case LAUNCHER:
-                return new LauncherGCliController(this);
+                return new LauncherGBaseCliController();
         };
         return null;
     }

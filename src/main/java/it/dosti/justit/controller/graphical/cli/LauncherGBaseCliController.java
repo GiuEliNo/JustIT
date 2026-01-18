@@ -1,21 +1,12 @@
 package it.dosti.justit.controller.graphical.cli;
 
-
-import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
-
 import java.util.Scanner;
 
-public class LauncherGCliController implements CLIController {
-
-    private final NavigationService navigation;
-
-    public LauncherGCliController(NavigationService navigation) {
-        this.navigation = navigation;
-    }
+public class LauncherGBaseCliController extends BaseCliController {
 
     @Override
-    public boolean initialize() {
+    public void initialize() {
             Scanner inputSelection = new Scanner(System.in);
 
             switch (inputSelection.nextLine()) {
@@ -26,6 +17,5 @@ public class LauncherGCliController implements CLIController {
                     navigation.navigate(Screen.REGISTER_VIEW);
                     break;
             }
-            return false;
         }
     }
