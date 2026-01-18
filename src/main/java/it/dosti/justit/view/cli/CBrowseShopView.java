@@ -19,7 +19,7 @@ public class CBrowseShopView extends BaseCliView{
     }
 
     //TODO forse si deve passare un bean, da vedere
-    public void renderAllShops(List<Shop> allShops) {
+    public void renderShops(List<Shop> allShops) {
         if (allShops == null || allShops.isEmpty()) {
             System.out.println("Shop not found");
             return;
@@ -46,5 +46,19 @@ public class CBrowseShopView extends BaseCliView{
         }
 
         System.out.println(separatorLine);
+    }
+
+    public Integer askShopSelection() {
+        System.out.print("Select shop number: ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public String askQueryShop() {
+        System.out.print("Search shops: ");
+        return scanner.nextLine();
     }
 }
