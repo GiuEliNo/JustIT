@@ -15,15 +15,15 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         return true;
     }
 
-    public boolean registerTechnician(String username, String password, String email,String name, String Shop) {
+    public boolean registerTechnician(String username, String password, String email,String name, String shopName) {
 
         Connection conn = null;
         Statement stmt = null;
         try {
             conn = ConnectionDB.getInstance().connectDB();
             stmt = conn.createStatement();
-            if (ShopQuery.getShop(stmt, Shop) != null) {
-                return RegisterQuery.RegisterTechnician(conn, username, password, email, name, Shop);
+            if (ShopQuery.getShop(stmt, shopName) != null) {
+                return RegisterQuery.RegisterTechnician(conn, username, password, email, name, shopName);
             }
         }catch(SQLException e){
             e.printStackTrace();
