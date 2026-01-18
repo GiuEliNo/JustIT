@@ -24,7 +24,7 @@ public class GUIMode extends BaseAppMode implements AppMode{
 
     public static class GUIApplication extends Application {
         @Override
-        public void start(Stage stage) {
+        public void start(Stage stage) throws Exception {
             BorderPane root = new BorderPane();
 
             NavigationService navigation = new GUINavigationService(root);
