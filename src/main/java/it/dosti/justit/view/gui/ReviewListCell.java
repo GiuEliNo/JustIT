@@ -27,6 +27,7 @@ public class ReviewListCell extends ListCell<ReviewBean> {
             Rating rating = new Rating(5);
             rating.setRating(reviewBean.getStars());
             rating.setUpdateOnHover(false);
+            rating.setMouseTransparent(true);
 
             topRow.getChildren().addAll(titleLabel, usernameLabel, rating);
 
