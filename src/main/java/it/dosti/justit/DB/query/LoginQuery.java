@@ -12,7 +12,7 @@ public class LoginQuery {
         pstmt.setString(1, username);
         pstmt.setString(2, password);
 
-        return pstmt.executeQuery(sql);
+        return pstmt.executeQuery();
     }
 
     public static ResultSet loginTechnician(Connection conn, String username, String password) throws SQLException {
@@ -21,6 +21,6 @@ public class LoginQuery {
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
         pstmt.setString(2, password);
-        return pstmt.executeQuery(sql);
+        return pstmt.executeQuery();
     }
 }

@@ -1,8 +1,12 @@
 package it.dosti.justit.DAO;
 
+import it.dosti.justit.model.ClientUser;
+
 public interface ClientUserDAO {
 
-    public boolean login(String username, String password);
+    boolean login(String username, String password);
 
-    public boolean registerClient(String username, String password, String name, String email);
+    boolean registerClient(String username, String password, String name, String email);
+
+    ClientUser findByUsername(String username);
 }

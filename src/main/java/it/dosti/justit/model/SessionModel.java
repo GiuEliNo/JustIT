@@ -4,6 +4,7 @@ public class SessionModel {
     private static SessionModel instance;
     private Shop selectedShop;
     private RoleType userRole;
+    private ClientUser user;
 
     private SessionModel() {}
 
@@ -29,5 +30,14 @@ public class SessionModel {
     public void setUserRole(RoleType userRole) {
         this.userRole = userRole;
     }
+
+    public ClientUser getUser() {
+        return user;
+    }
+
+    public void setUser(ClientUser user) {
+        this.user = user;
+    }
+
 
 }

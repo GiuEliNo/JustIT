@@ -7,6 +7,12 @@ public class ClientUser implements User {
     private String email;
     private String name;
 
+    public ClientUser(String username, String name, String email) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }

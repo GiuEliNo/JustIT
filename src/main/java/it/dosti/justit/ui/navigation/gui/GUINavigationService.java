@@ -43,6 +43,7 @@ public class GUINavigationService implements NavigationService {
                 break;
 
             case SIDEBAR_SEARCH_LIST:
+            case SIDEBAR_LIST_SETTING_USER:
                 root.setLeft(view);
                 root.setCenter(null);
                 break;
@@ -98,7 +99,11 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.TOPBAR;
             case  REGISTER_SHOP:
                 return GUIScreen.REGISTER_SHOP;
-        };
+            case SIDEBAR_LIST_SETTING_USER:
+                return GUIScreen.SIDEBAR_LIST_SETTING_USER;
+            case ACCOUNT_PAGE:
+                return GUIScreen.ACCOUNT_PAGE;
+        }
         return null;
     }
 }

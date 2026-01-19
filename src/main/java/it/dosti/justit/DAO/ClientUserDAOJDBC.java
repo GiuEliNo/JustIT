@@ -3,11 +3,35 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.LoginQuery;
 import it.dosti.justit.DB.query.RegisterQuery;
+import it.dosti.justit.DB.query.UserQuery;
+import it.dosti.justit.model.ClientUser;
 
 import java.sql.*;
 
 public class ClientUserDAOJDBC implements ClientUserDAO {
-    public ClientUserDAOJDBC() {}
+
+    public ClientUser findByUsername(String username) {
+
+        Connection conn = null;
+
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
+            ResultSet rs = UserQuery.findByUsername(conn, username);
+
+            if (rs.next()) {
+                return new ClientUser(
+                        rs.getString("username"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public boolean login(String username, String password)
     {

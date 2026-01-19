@@ -12,7 +12,9 @@ public enum GUIScreen {
     REGISTER_VIEW("/register.fxml"),
     REGISTERTEC_VIEW("/registerB.fxml"),
     TOPBAR("/topBar.fxml"),
-    REGISTER_SHOP("/registerShop.fxml");
+    REGISTER_SHOP("/registerShop.fxml"),
+    ACCOUNT_PAGE("/accountPage.fxml"),
+    SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml");
 
     private final String fxmlPath;
 

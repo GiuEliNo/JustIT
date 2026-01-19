@@ -11,8 +11,7 @@ public class LoginController {
         switch (loginBean.getRoleType()) {
             case CLIENT:
                 UserModel userModel = new UserModel();
-                return true;
-                //return userModel.loginClient(user, password);
+                return userModel.loginClient(loginBean.getUsername(), loginBean.getPassword());
 
             case TECHNICIAN:
                 TechnicianModel technicianModel = new TechnicianModel();
