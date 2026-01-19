@@ -14,7 +14,8 @@ public enum GUIScreen {
     TOPBAR("/topBar.fxml"),
     REGISTER_SHOP("/registerShop.fxml"),
     ACCOUNT_PAGE("/accountPage.fxml"),
-    SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml");
+    SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml"),
+    BOOKINGS("/bookings.fxml");
 
     private final String fxmlPath;
 

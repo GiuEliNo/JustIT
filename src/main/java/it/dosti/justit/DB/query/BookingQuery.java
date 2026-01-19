@@ -41,7 +41,8 @@ public class BookingQuery {
 
 
     public static ResultSet getBookingByUser(Connection conn, User user){
-        String sql="SELECT id, idShop, idUser, date, timeSlot, description FROM Booking WHERE idUser=?";
+        //String sql="SELECT id, idShop, idUser, date, timeSlot, description FROM Booking WHERE idUser=?";
+        String sql="SELECT B.id, S.name,B.idUser,B.date,B.timeSlot,B.description FROM Booking B join Shop S ON B.idShop = S.id WHERE B.idUser = ?";
         try{
             PreparedStatement pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,user.getId());

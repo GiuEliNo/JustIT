@@ -16,5 +16,6 @@ public enum Screen {
     REGISTERTEC_VIEW,
     TOPBAR,
     LOGIN,
-    REGISTER_SHOP;
+    REGISTER_SHOP,
+    BOOKINGS;
 }

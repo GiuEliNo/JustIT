@@ -51,7 +51,13 @@ public class GUINavigationService implements NavigationService {
             case TOPBAR:
                 root.setTop(view);
                 break;
-
+            case BOOKINGS:
+                root.setTop(null);
+                root.setLeft(null);
+                root.setCenter(view);
+                root.setRight(null);
+                root.setBottom(null);
+                break;
             default:
                 root.setCenter(view);
                 break;
@@ -103,6 +109,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.SIDEBAR_LIST_SETTING_USER;
             case ACCOUNT_PAGE:
                 return GUIScreen.ACCOUNT_PAGE;
+            case  BOOKINGS:
+                return GUIScreen.BOOKINGS;
         }
         return null;
     }

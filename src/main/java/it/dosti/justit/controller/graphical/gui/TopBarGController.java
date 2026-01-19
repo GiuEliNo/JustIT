@@ -11,7 +11,7 @@ public class TopBarGController extends BaseGController {
     }
 
     public void onBookings() {
-        //TODO lista delle prenotazioni
+        navigation.navigate(Screen.BOOKINGS);
     }
 
     public void onLogout() {
