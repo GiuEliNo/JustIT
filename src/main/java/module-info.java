@@ -10,6 +10,7 @@ module it.dosti.justit {
 
     opens it.dosti.justit to javafx.fxml;
     exports it.dosti.justit;
+    exports it.dosti.justit.bean;
     exports it.dosti.justit.ui.navigation.gui;
     exports it.dosti.justit.ui.navigation;
     exports it.dosti.justit.DB;

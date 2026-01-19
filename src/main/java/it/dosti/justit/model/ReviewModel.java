@@ -13,8 +13,8 @@ public class ReviewModel {
         this.reviewDAO = new ReviewDAOJDBC();
     }
 
-    public void addReviewToShop(Shop selectedShop, ReviewBean reviewBean) {
-        Review instance = new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), reviewBean.getShopID());
+    public void addReviewToShop(ReviewBean reviewBean) {
+        Review instance = new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), reviewBean.getShopID(), reviewBean.getUsername());
         this.reviewDAO.addReviewToShop(instance);
     }
 

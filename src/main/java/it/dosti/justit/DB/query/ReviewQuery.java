@@ -16,7 +16,7 @@ public class ReviewQuery {
     }
 
     public static void addReview(Connection conn, Review review) throws SQLException {
-        String sql = "INSERT INTO reviews (title, stars, review, shop_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO reviews (title, stars, review, shop_id, username) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
 
@@ -24,6 +24,7 @@ public class ReviewQuery {
         pstmt.setInt(2, review.getStar());
         pstmt.setString(3, review.getReview());
         pstmt.setInt(4, review.getShop());
+        pstmt.setString(5, review.getUsername());
 
         pstmt.executeUpdate();
     }

@@ -20,13 +20,15 @@ public class ReviewListCell extends ListCell<ReviewBean> {
             HBox topRow = new HBox(10);
 
             Label titleLabel = new Label(reviewBean.getTitle());
+            Label usernameLabel = new Label(reviewBean.getUsername());
+
             titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
             Rating rating = new Rating(5);
             rating.setRating(reviewBean.getStars());
             rating.setUpdateOnHover(false);
 
-            topRow.getChildren().addAll(titleLabel, rating);
+            topRow.getChildren().addAll(titleLabel, usernameLabel, rating);
 
             Label reviewLabel = new Label(reviewBean.getReview());
             reviewLabel.setWrapText(true);

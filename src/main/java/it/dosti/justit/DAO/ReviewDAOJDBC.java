@@ -26,8 +26,9 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 String title = rs.getString("title");
                 Integer star = rs.getInt("stars");
                 String text = rs.getString("review");
+                String username = rs.getString("username");
 
-                Review review = new Review(title, star, text, null);
+                Review review = new Review(title, star, text, null, username);
                 reviews.add(review);
             }
         } catch (SQLException e) {

@@ -1,7 +1,5 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.DAO.ReviewDAO;
-import it.dosti.justit.DAO.ReviewDAOJDBC;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.ReviewModel;
@@ -22,7 +20,8 @@ public class ReviewPageShopController {
     public void addReview(ReviewBean reviewBean) {
         Shop selectedShop = getSelectedShop();
         reviewBean.setShopID(selectedShop.getId());
-        reviewModel.addReviewToShop(selectedShop, reviewBean);
+        reviewBean.setUsername(SessionModel.getInstance().getUser().getUsername());
+        reviewModel.addReviewToShop(reviewBean);
     }
 
     public List<ReviewBean> getReviews() {
@@ -33,6 +32,7 @@ public class ReviewPageShopController {
         for (Review review : reviews) {
             ReviewBean reviewBean = new ReviewBean();
             reviewBean.setTitle(review.getTitle());
+            reviewBean.setUsername(review.getUsername());
             reviewBean.setReview(review.getReview());
             reviewBean.setStars(review.getStar());
             reviewBeans.add(reviewBean);

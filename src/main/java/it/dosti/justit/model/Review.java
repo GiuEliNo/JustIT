@@ -5,12 +5,14 @@ public class Review {
     private Integer star;  //deve andare da 1 a 5 stelle
     private String review;
     private Integer shop;
+    private String username;
 
-    public Review(String title, Integer star, String review, Integer shop) {
+    public Review(String title, Integer star, String review, Integer shop, String username) {
         this.title = title;
         this.star = star;
         this.review = review;
         this.shop = shop;
+        this.username = username;
     }
 
     public Integer getShop() {
@@ -36,5 +38,13 @@ public class Review {
     }
     public void setReview(String review) {
         this.review = review;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
