@@ -44,5 +44,13 @@ public class ClientUser implements User {
         this.name = name;
     }
 
+    public ClientUser(Integer id, String username, String email, String name) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.name = name;
+
+    }
+
 
 }

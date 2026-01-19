@@ -20,6 +20,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
             if (rs.next()) {
                 return new ClientUser(
+                        rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("name"),
                         rs.getString("email")
