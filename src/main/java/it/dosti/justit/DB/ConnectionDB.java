@@ -1,7 +1,7 @@
 package it.dosti.justit.DB;
 
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,6 +12,9 @@ public class ConnectionDB {
     private static ConnectionDB instance = null;
     private Connection con = null;
 
+    private Path dbPath;
+
+
 
     public static ConnectionDB getInstance() {
         if (instance == null) {
@@ -20,16 +23,15 @@ public class ConnectionDB {
         return instance;
     }
 
+    public void setDBPath(Path path) {
+        this.dbPath = path;
+    }
+
 
     public synchronized Connection connectDB() throws SQLException {
         if (con == null) {
-            try {
-                String path = this.getClass().getResource("/DB/justit.db").getPath();
-                System.out.println(path);
-                this.con = DriverManager.getConnection("jdbc:sqlite:"+this.getClass().getResource("/DB/justit.db").getPath());
-            } catch (SQLException | NullPointerException e) {
-                e.printStackTrace(System.err);
-            }
+
+            this.con = DriverManager.getConnection("jdbc:sqlite:" + dbPath.toString());
         }
         return this.con;
     }

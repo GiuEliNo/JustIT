@@ -10,7 +10,10 @@ public class CLIMode extends BaseAppMode {
     @Override
     public void start(String[] args) {
         try {
+            initDataDirectory();
+            db.setDBPath(dbPath);
             connectToDB();
+
             System.out.println("CLI Mode");
 
             NavigationService navigation = new CLINavigationService();

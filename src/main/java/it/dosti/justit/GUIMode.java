@@ -16,6 +16,8 @@ public class GUIMode extends BaseAppMode implements AppMode{
     @Override
     public void start(String[] args) {
         try {
+            initDataDirectory();
+            db.setDBPath(dbPath);
             connectToDB();
             Application.launch(GUIApplication.class, args);
         } catch (SQLException ignored) {

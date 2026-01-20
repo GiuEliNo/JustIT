@@ -30,15 +30,14 @@
 
         <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Button onAction="#onEditProfile" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Button onAction="#onEditName" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
         <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <Label fx:id="usernameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Button onAction="#onEditProfile" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
         <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <Label fx:id="emailLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button onAction="#onEditProfile" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Button onAction="#onEditEmail" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
         <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <Label text="*******" GridPane.columnIndex="1" GridPane.rowIndex="3" />

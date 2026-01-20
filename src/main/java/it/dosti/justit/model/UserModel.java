@@ -5,8 +5,6 @@ import it.dosti.justit.DAO.ClientUserDAOJDBC;
 
 public class UserModel {
     private final ClientUserDAO clientUserDAO;
-    private  String roleType;
-    private User user;
 
     public UserModel() {
         this.clientUserDAO = new ClientUserDAOJDBC();
@@ -14,7 +12,7 @@ public class UserModel {
 
     public boolean loginClient(String username, String password) {
         if(clientUserDAO.login(username, password)){
-            SessionModel.getInstance().setUser(clientUserDAO.findByUsername(username));
+            this.updateSessionUser(username);
             return true;
         }
         else {
@@ -22,20 +20,38 @@ public class UserModel {
         }
     }
 
+    private void updateSessionUser(String username){
+        SessionModel.getInstance().setUser(clientUserDAO.findByUsername(username));
+    }
 
     public boolean registerClient(String username, String password, String name, String email) {
-        return clientUserDAO.registerClient(username, password, name, email);
+        if(clientUserDAO.registerClient(username, password, name, email)){
+            this.updateSessionUser(username);
+            return true;
+        }
+        else return false;
     }
 
-    public void setRoleType(String roleType){
-        this.roleType = roleType;
+    public boolean updateNameClient(String name) {
+        String username = SessionModel.getInstance().getUser().getUsername();
+        if(clientUserDAO.updateName(username, name)){
+            updateSessionUser(username);
+            return true;
+        }
+        else return false;
     }
 
-    public User getUser() {
-        return user;
+    public boolean updateEmailClient(String email) {
+        String username = SessionModel.getInstance().getUser().getUsername();
+        if(clientUserDAO.updateEmail(username, email)){
+            updateSessionUser(username);
+            return true;
+        }
+        else return false;
     }
 
-    public void setUser(User user){
-        this.user = user;
+    public boolean updatePasswordClient(String password) {
+        // TODO return clientUserDAO.updatePassword(user.getId(), password);
+        return true;
     }
 }

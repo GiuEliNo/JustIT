@@ -7,12 +7,6 @@ public class ClientUser implements User {
     private String email;
     private String name;
 
-    public ClientUser(String username, String name, String email) {
-        this.username = username;
-        this.name = name;
-        this.email = email;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -29,22 +23,8 @@ public class ClientUser implements User {
         return id;
     }
 
-    public ClientUser(String username, String password, String email, String name) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-    }
 
-    public ClientUser(Integer id, String username, String password, String email, String name) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-    }
-
-    public ClientUser(Integer id, String username, String email, String name) {
+    public ClientUser(Integer id, String name, String username, String email) {
         this.id = id;
         this.username = username;
         this.email = email;
