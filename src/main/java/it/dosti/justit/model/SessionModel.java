@@ -1,10 +1,12 @@
 package it.dosti.justit.model;
 
-public class SessionModel {
+public final class SessionModel {
+
     private static SessionModel instance;
+
+    private User loggedUser;
     private Shop selectedShop;
-    private RoleType userRole;
-    private ClientUser user;
+    private Shop ownedShop;
 
     private SessionModel() {}
 
@@ -15,29 +17,47 @@ public class SessionModel {
         return instance;
     }
 
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(User user) {
+        this.loggedUser = user;
+    }
+
+    public boolean isClient() {
+        return loggedUser instanceof ClientUser;
+    }
+
+    public boolean isTechnician() {
+        return loggedUser instanceof TechnicianUser;
+    }
+
     public Shop getSelectedShop() {
         return selectedShop;
     }
 
-    public void setSelectShop(Shop shop) {
+    public void setSelectedShop(Shop shop) {
         this.selectedShop = shop;
     }
 
-    public RoleType getUserRole(){
-        return userRole;
+    public Shop getOwnedShop() {
+        return ownedShop;
     }
 
-    public void setUserRole(RoleType userRole) {
-        this.userRole = userRole;
+    public void setOwnedShop(Shop shop) {
+        this.ownedShop = shop;
     }
 
-    public ClientUser getUser() {
-        return user;
+    public Shop getCurrentShop() {
+        if (isClient()) return selectedShop;
+        if (isTechnician()) return ownedShop;
+        return null;
     }
 
-    public void setUser(ClientUser user) {
-        this.user = user;
+    public void logout() {
+        loggedUser = null;
+        selectedShop = null;
+        ownedShop = null;
     }
-
-
 }

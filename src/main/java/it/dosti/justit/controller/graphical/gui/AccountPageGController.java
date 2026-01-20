@@ -11,6 +11,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import org.controlsfx.control.Notifications;
 
+import java.sql.SQLException;
+
 public class AccountPageGController extends BaseGController {
 
     @FXML
@@ -67,23 +69,27 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onEditName() {
-        DialogEditUser dialog = new DialogEditUser("Edit Name", SessionModel.getInstance().getUser().getName());
+        DialogEditUser dialog = new DialogEditUser("Edit Name", SessionModel.getInstance().getLoggedUser().getName());
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
                 UserBean userBean = new UserBean();
 
                 userBean.setName(dialog.getNewValue());
-                if(!appController.editName(userBean)){
-                    Notifications.create()
-                            .title("Edit Name")
-                            .text("Error name not changed!")
-                            .showError();
-                } else {
-                    Notifications.create()
-                            .title("Edit Name")
-                            .text("Success!")
-                            .showConfirm();
+                try {
+                    if(!appController.editName(userBean)){
+                        Notifications.create()
+                                .title("Edit Name")
+                                .text("Error name not changed!")
+                                .showError();
+                    } else {
+                        Notifications.create()
+                                .title("Edit Name")
+                                .text("Success!")
+                                .showConfirm();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -92,23 +98,27 @@ public class AccountPageGController extends BaseGController {
     }
 
     public void onEditEmail() {
-        DialogEditUser dialog = new DialogEditUser("Edit Email", SessionModel.getInstance().getUser().getEmail());
+        DialogEditUser dialog = new DialogEditUser("Edit Email", SessionModel.getInstance().getLoggedUser().getEmail());
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 UserBean userBean = new UserBean();
 
                 userBean.setEmail(dialog.getNewValue());
-                if (!appController.editEmail(userBean)) {
-                    Notifications.create()
-                            .title("Edit Email")
-                            .text("Error Email not changed!")
-                            .showError();
-                } else {
-                    Notifications.create()
-                            .title("Edit Email")
-                            .text("Success!")
-                            .showConfirm();
+                try {
+                    if (!appController.editEmail(userBean)) {
+                        Notifications.create()
+                                .title("Edit Email")
+                                .text("Error Email not changed!")
+                                .showError();
+                    } else {
+                        Notifications.create()
+                                .title("Edit Email")
+                                .text("Success!")
+                                .showConfirm();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });

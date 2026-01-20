@@ -8,4 +8,6 @@ public interface ShopDAO {
     List<Shop> retrieveAllShops();
 
     boolean registerShop(Shop shop);
+
+    Shop retrieveShopById(Integer id);
 }

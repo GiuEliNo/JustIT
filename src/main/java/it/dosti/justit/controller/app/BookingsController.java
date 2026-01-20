@@ -12,7 +12,7 @@ public class BookingsController {
 
         BookingModel bookingModel = new BookingModel();
 
-        User user = SessionModel.getInstance().getUser();
+        User user = SessionModel.getInstance().getLoggedUser();
 
         List<LoggedUserBooking> bookings = bookingModel.getBookingsByUser(user);
 

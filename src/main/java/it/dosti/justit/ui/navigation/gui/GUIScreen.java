@@ -6,7 +6,7 @@ public enum GUIScreen {
     SIDEBAR_SEARCH_LIST("/sidebarListPage.fxml"),
     MAIN_USER("/mainUser.fxml"),
     MAIN_TECH("/mainTech.fxml"),
-    PAGE_SHOP("/pageShop.fxml"),
+    PAGE_SHOP("/pageShopUser.fxml"),
     BOOKING_PAGE("/bookingPage.fxml"),
     REVIEWS_BOX("/reviewsBox.fxml"),
     REGISTER_VIEW("/register.fxml"),
@@ -15,6 +15,7 @@ public enum GUIScreen {
     REGISTER_SHOP("/registerShop.fxml"),
     ACCOUNT_PAGE("/accountPage.fxml"),
     SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml"),
+    PAGE_SHOP_TECH("/pageShopTech.fxml"),
     BOOKINGS("/bookings.fxml");
 
     private final String fxmlPath;

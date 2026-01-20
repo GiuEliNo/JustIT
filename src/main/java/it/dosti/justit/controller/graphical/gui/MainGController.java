@@ -6,22 +6,24 @@ import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 
 public class MainGController extends BaseGController {
 
-    public MainGController(GUINavigationService navigation) {
+    public MainGController(GUINavigationService navigation){
         this.setNavigation(navigation);
-        switch (SessionModel.getInstance().getUserRole()) {
-            case CLIENT:
-                this.initialize_client();
-            case TECHNICIAN:
-                this.initialize_tech();
+        SessionModel session = SessionModel.getInstance();
+
+
+        if (session.isClient()) {
+            initializeClient();
+        } else if (session.isTechnician()) {
+            initializeTechnician();
         }
     }
 
-    private void initialize_tech() {
+    private void initializeTechnician() {
         //navigation.navigate(Screen.TOPBAR);
-        //navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+        navigation.navigate(Screen.PAGE_SHOP_TECH);
     }
 
-    private void initialize_client() {
+    private void initializeClient() {
         navigation.navigate(Screen.TOPBAR);
         navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
     }

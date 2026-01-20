@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
+
 public class RegisterGController  extends BaseGController{
     private RegisterBean bean;
     private RegisterController controller;
@@ -37,7 +39,7 @@ public class RegisterGController  extends BaseGController{
 
 
     @FXML
-    public void signInPressed() {
+    public void signInPressed() throws SQLException {
 
         bean = new RegisterBean();
         controller = new RegisterController();

@@ -1,22 +1,20 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.LoginBean;
-import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.TechnicianModel;
-import it.dosti.justit.model.UserModel;
+import it.dosti.justit.model.ClientUserModel;
 
 public class LoginController {
     public boolean checkLogin(LoginBean loginBean) throws Exception {
-        SessionModel.getInstance().setUserRole(loginBean.getRoleType());
         switch (loginBean.getRoleType()) {
             case CLIENT:
-                UserModel userModel = new UserModel();
-                return userModel.loginClient(loginBean.getUsername(), loginBean.getPassword());
+                ClientUserModel clientUserModel = new ClientUserModel();
+                return clientUserModel.loginClient(loginBean.getUsername(), loginBean.getPassword());
 
             case TECHNICIAN:
                 TechnicianModel technicianModel = new TechnicianModel();
-                return true;
-                //return technicianModel.loginTechnician(user, password);
+                return technicianModel.loginTechnician(loginBean.getUsername(),  loginBean.getPassword());
+
             default:
                 throw new Exception("Invalid type : " + loginBean.getRoleType());
         }

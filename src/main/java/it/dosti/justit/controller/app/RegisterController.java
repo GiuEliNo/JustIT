@@ -6,17 +6,19 @@ import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.ShopModel;
 import it.dosti.justit.model.TechnicianModel;
-import it.dosti.justit.model.UserModel;
+import it.dosti.justit.model.ClientUserModel;
+
+import java.sql.SQLException;
 
 public class RegisterController {
 
 
 
-    public void registerNewUser(RegisterBean registerBean) {
+    public void registerNewUser(RegisterBean registerBean) throws SQLException {
 
-        UserModel userModel = new UserModel();
+        ClientUserModel clientUserModel = new ClientUserModel();
 
-        if(userModel.registerClient(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail())){
+        if(clientUserModel.registerClient(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail())){
             System.out.println("Register successful");
         }
         else {
@@ -26,7 +28,7 @@ public class RegisterController {
 
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) {
         TechnicianModel technicianModel = new TechnicianModel();
-        Integer shopId =technicianModel.getShopIDbyName(registerBean.getShopName());
+        Integer shopId = technicianModel.getShopIDbyName(registerBean.getShopName());
         if ( shopId == 0){
             System.out.println("Shop name not found");
             System.out.println("Register failed");

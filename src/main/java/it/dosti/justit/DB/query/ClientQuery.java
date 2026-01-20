@@ -2,7 +2,7 @@ package it.dosti.justit.DB.query;
 
 import java.sql.*;
 
-public class UserQuery {
+public class ClientQuery {
 
 
     public static ResultSet findByUsername(Connection conn, String username) throws SQLException {

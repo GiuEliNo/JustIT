@@ -3,8 +3,12 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.RegisterQuery;
 import it.dosti.justit.DB.query.ShopQuery;
+import it.dosti.justit.DB.query.TechnicianQuery;
+import it.dosti.justit.model.TechnicianUser;
+import it.dosti.justit.model.User;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -44,6 +48,31 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        Connection conn = null;
+
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
+            ResultSet rs = TechnicianQuery.findByUsername(conn, username);
+
+            if (rs.next()) {
+                return new TechnicianUser(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getInt("shop")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

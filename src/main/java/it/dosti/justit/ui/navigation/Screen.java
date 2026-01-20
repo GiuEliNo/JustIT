@@ -17,5 +17,6 @@ public enum Screen {
     TOPBAR,
     LOGIN,
     REGISTER_SHOP,
+    PAGE_SHOP_TECH,
     BOOKINGS;
 }

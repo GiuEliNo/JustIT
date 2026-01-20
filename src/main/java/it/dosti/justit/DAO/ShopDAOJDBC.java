@@ -3,6 +3,7 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.RegisterQuery;
 import it.dosti.justit.DB.query.ShopQuery;
+import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.Shop;
 
 import java.sql.*;
@@ -60,5 +61,37 @@ public class ShopDAOJDBC implements ShopDAO{
             return false;
         }
         return false;
+    }
+
+    public Shop retrieveShopById(Integer shopId) {
+        Statement stmt = null;
+        Connection conn = null;
+        List<Shop> shops = new ArrayList<>();
+        try{
+
+            conn = ConnectionDB.getInstance().connectDB();
+            stmt = conn.createStatement();
+
+            ResultSet rs = ShopQuery.retrieveShopById(stmt, shopId);
+
+            if (rs.next()) {
+                return new Shop(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("description"),
+                        rs.getString("image"),
+                        rs.getString("openingHours"),
+                        rs.getBoolean("homeAssistance")
+                );
+
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

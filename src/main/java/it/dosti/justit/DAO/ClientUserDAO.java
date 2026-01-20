@@ -1,6 +1,8 @@
 package it.dosti.justit.DAO;
 
-import it.dosti.justit.model.ClientUser;
+import it.dosti.justit.model.User;
+
+import java.sql.SQLException;
 
 public interface ClientUserDAO {
 
@@ -8,7 +10,7 @@ public interface ClientUserDAO {
 
     boolean registerClient(String username, String password, String name, String email);
 
-    ClientUser findByUsername(String username);
+    User findByUsername(String username) throws SQLException;
 
     boolean updateName(String username, String password);
 

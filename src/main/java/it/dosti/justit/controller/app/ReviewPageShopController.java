@@ -20,7 +20,7 @@ public class ReviewPageShopController {
     public void addReview(ReviewBean reviewBean) {
         Shop selectedShop = getSelectedShop();
         reviewBean.setShopID(selectedShop.getId());
-        reviewBean.setUsername(SessionModel.getInstance().getUser().getUsername());
+        reviewBean.setUsername(SessionModel.getInstance().getLoggedUser().getUsername());
         reviewModel.addReviewToShop(reviewBean);
     }
 

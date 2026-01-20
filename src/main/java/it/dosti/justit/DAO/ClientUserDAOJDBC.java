@@ -1,23 +1,23 @@
 package it.dosti.justit.DAO;
 
 import it.dosti.justit.DB.ConnectionDB;
-import it.dosti.justit.DB.query.LoginQuery;
-import it.dosti.justit.DB.query.RegisterQuery;
-import it.dosti.justit.DB.query.UserQuery;
+import it.dosti.justit.DB.query.*;
 import it.dosti.justit.model.ClientUser;
+import it.dosti.justit.model.User;
 
 import java.sql.*;
 
 public class ClientUserDAOJDBC implements ClientUserDAO {
 
     @Override
-    public ClientUser findByUsername(String username) {
+    public User findByUsername(String username) throws SQLException {
 
         Connection conn = null;
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = UserQuery.findByUsername(conn, username);
+
+            ResultSet rs = ClientQuery.findByUsername(conn, username);
 
             if (rs.next()) {
                 return new ClientUser(
@@ -26,13 +26,12 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                         rs.getString("username"),
                         rs.getString("email")
                 );
+
             }
+            return null;
+        } finally {
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
     @Override
@@ -76,7 +75,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            return UserQuery.updateName(conn, username, name) == 1;
+            return ClientQuery.updateName(conn, username, name) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,7 +89,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            return UserQuery.updateEmail(conn, username, email) == 1;
+            return ClientQuery.updateEmail(conn, username, email) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,7 +103,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            int response = UserQuery.updatePassword(conn, username, newPassword, oldPassword);
+            int response = ClientQuery.updatePassword(conn, username, newPassword, oldPassword);
             return (response == 1);
         } catch (SQLException e) {
             e.printStackTrace();

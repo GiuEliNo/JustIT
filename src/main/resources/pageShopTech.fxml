@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.geometry.Insets?>
+<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="600" spacing="30" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PageShopTechGController">
+
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="30" />
+    </padding>
+
+    <GridPane hgap="15" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120.0" />
+            <ColumnConstraints minWidth="300.0" />
+            <ColumnConstraints minWidth="120.0" />
+        </columnConstraints>
+
+        <Label text="Name Shop" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Button onAction="#onEditName" text="Edit" GridPane.columnIndex="2" />
+
+        <Label text="Address" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Button onAction="#onAddress" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Label fx:id="addressLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Description" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button onAction="#onEditDescription" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+        <Label text="Email" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label fx:id="emailLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Button onAction="#onEditEmail" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+        <Label text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="phoneLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Button onAction="#onEditPhone" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+        <Label text="Opening Hours" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label fx:id="openingHoursLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Button onAction="#onEditOpeningHours" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+
+        <Label text="Home Assistance" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Label fx:id="homeAssistanceLabel"  GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <Button onAction="#onEditOpeningHours" text="Edit" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+
+
+
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+</VBox>

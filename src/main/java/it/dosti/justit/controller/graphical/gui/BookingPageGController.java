@@ -30,7 +30,7 @@ public class BookingPageGController extends BaseGController {
         BookingBean bookingBean = new BookingBean();
 
         bookingBean.setShop(sessionModel.getSelectedShop());
-        bookingBean.setUser(sessionModel.getUser());
+        bookingBean.setUser(sessionModel.getLoggedUser());
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());

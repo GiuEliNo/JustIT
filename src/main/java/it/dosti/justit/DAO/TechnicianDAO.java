@@ -1,5 +1,7 @@
 package it.dosti.justit.DAO;
 
+import it.dosti.justit.model.User;
+
 public interface TechnicianDAO {
 
      boolean loginTechnician(String username, String password);
@@ -9,4 +11,6 @@ public interface TechnicianDAO {
 
 
      Integer getShopIDbyName(String shopName);
+
+    User findByUsername(String username);
 }

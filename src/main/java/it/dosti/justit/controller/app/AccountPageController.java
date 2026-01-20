@@ -2,31 +2,33 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
-import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.SessionModel;
-import it.dosti.justit.model.UserModel;
+import it.dosti.justit.model.ClientUserModel;
+import it.dosti.justit.model.User;
+
+import java.sql.SQLException;
 
 public class AccountPageController {
-    private final UserModel userModel;
+    private final ClientUserModel clientUserModel;
 
     public AccountPageController(){
-        userModel = new UserModel();
+        clientUserModel = new ClientUserModel();
     }
 
     public UserBean getUserBean() {
-        ClientUser user = SessionModel.getInstance().getUser();
+        User user = SessionModel.getInstance().getLoggedUser();
         return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
-    public Boolean editName(UserBean userBean) {
-        return userModel.updateNameClient(userBean.getName());
+    public Boolean editName(UserBean userBean) throws SQLException {
+        return clientUserModel.updateNameClient(userBean.getName());
     }
 
-    public Boolean editEmail(UserBean userBean) {
-        return userModel.updateEmailClient(userBean.getEmail());
+    public Boolean editEmail(UserBean userBean) throws SQLException {
+        return clientUserModel.updateEmailClient(userBean.getEmail());
     }
 
     public Boolean changePassword(PasswordBean passwordBean) {
-        return userModel.updatePasswordClient(passwordBean.getNewPassword(), passwordBean.getOldPassword());
+        return clientUserModel.updatePasswordClient(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 }
