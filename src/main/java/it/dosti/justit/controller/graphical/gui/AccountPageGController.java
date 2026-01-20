@@ -1,15 +1,15 @@
 package it.dosti.justit.controller.graphical.gui;
 
-import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountPageController;
 import it.dosti.justit.model.SessionModel;
-import it.dosti.justit.view.gui.DialogAddReview;
+import it.dosti.justit.view.gui.DialogChangePassword;
 import it.dosti.justit.view.gui.DialogEditUser;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import org.controlsfx.control.Notifications;
 
 public class AccountPageGController extends BaseGController {
 
@@ -42,6 +42,27 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onChangePassword() {
+        DialogChangePassword dialog = new DialogChangePassword();
+
+        dialog.showAndWait().ifPresent(response -> {
+            if(response == ButtonType.OK){
+                PasswordBean passwordBean = new PasswordBean();
+
+                passwordBean.setNewPassword(dialog.getNewPassword());
+                passwordBean.setOldPassword(dialog.getOldPassword());
+                if(!appController.changePassword(passwordBean)){
+                    Notifications.create()
+                            .title("Password change")
+                            .text("Old password not correct!")
+                            .showError();
+                } else {
+                    Notifications.create()
+                            .title("Password change")
+                            .text("Success")
+                            .showConfirm();
+                }
+            }
+        });
     }
 
     @FXML
@@ -53,7 +74,17 @@ public class AccountPageGController extends BaseGController {
                 UserBean userBean = new UserBean();
 
                 userBean.setName(dialog.getNewValue());
-                appController.editName(userBean);
+                if(!appController.editName(userBean)){
+                    Notifications.create()
+                            .title("Edit Name")
+                            .text("Error name not changed!")
+                            .showError();
+                } else {
+                    Notifications.create()
+                            .title("Edit Name")
+                            .text("Success!")
+                            .showConfirm();
+                }
             }
         });
         this.getPageInfo();
@@ -64,11 +95,21 @@ public class AccountPageGController extends BaseGController {
         DialogEditUser dialog = new DialogEditUser("Edit Email", SessionModel.getInstance().getUser().getEmail());
 
         dialog.showAndWait().ifPresent(response -> {
-            if(response == ButtonType.OK){
+            if (response == ButtonType.OK) {
                 UserBean userBean = new UserBean();
 
                 userBean.setEmail(dialog.getNewValue());
-                appController.editEmail(userBean);
+                if (!appController.editEmail(userBean)) {
+                    Notifications.create()
+                            .title("Edit Email")
+                            .text("Error Email not changed!")
+                            .showError();
+                } else {
+                    Notifications.create()
+                            .title("Edit Email")
+                            .text("Success!")
+                            .showConfirm();
+                }
             }
         });
         this.getPageInfo();

@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.SessionModel;
@@ -17,15 +18,15 @@ public class AccountPageController {
         return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
-    public void editName(UserBean userBean) {
-        userModel.updateNameClient(userBean.getName());
+    public Boolean editName(UserBean userBean) {
+        return userModel.updateNameClient(userBean.getName());
     }
 
-    public void editEmail(UserBean userBean) {
-        userModel.updateEmailClient(userBean.getEmail());
+    public Boolean editEmail(UserBean userBean) {
+        return userModel.updateEmailClient(userBean.getEmail());
     }
 
-    public void editPassword(UserBean userBean) {
-        userModel.updateNameClient(userBean.getPassword());
+    public Boolean changePassword(PasswordBean passwordBean) {
+        return userModel.updatePasswordClient(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 }

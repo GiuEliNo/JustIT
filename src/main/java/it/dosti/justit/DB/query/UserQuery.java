@@ -29,11 +29,12 @@ public class UserQuery {
         return pstmt.executeUpdate();
     }
 
-    public static int updatePassword(Connection conn, String username, String newPassword) throws SQLException {
-        String sql = "UPDATE User SET password = ? WHERE username = ?";
+    public static int updatePassword(Connection conn, String username, String newPassword, String oldPassword) throws SQLException {
+        String sql = "UPDATE User SET password = ? WHERE username = ? AND password = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, newPassword);
         pstmt.setString(2, username);
+        pstmt.setString(3, oldPassword);
         return pstmt.executeUpdate();
     }
 }

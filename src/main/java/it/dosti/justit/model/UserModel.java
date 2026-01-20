@@ -50,8 +50,8 @@ public class UserModel {
         else return false;
     }
 
-    public boolean updatePasswordClient(String password) {
-        // TODO return clientUserDAO.updatePassword(user.getId(), password);
-        return true;
+    public boolean updatePasswordClient(String newPassword, String oldPassword) {
+        String username = SessionModel.getInstance().getUser().getUsername();
+        return clientUserDAO.updatePassword(username, newPassword, oldPassword);
     }
 }

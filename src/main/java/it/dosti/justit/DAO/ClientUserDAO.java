@@ -14,5 +14,5 @@ public interface ClientUserDAO {
 
     boolean updateEmail(String username, String password);
 
-    boolean updatePassword(String username, String password);
+    boolean updatePassword(String username, String newPassword, String oldPassword);
 }

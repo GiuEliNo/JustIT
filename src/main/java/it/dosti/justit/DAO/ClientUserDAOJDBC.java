@@ -99,12 +99,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean updatePassword(String username, String password) {
+    public boolean updatePassword(String username, String newPassword, String oldPassword) {
         Connection conn = null;
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            return UserQuery.updatePassword(conn, username, password) == 1;
+            int response = UserQuery.updatePassword(conn, username, newPassword, oldPassword);
+            return (response == 1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
