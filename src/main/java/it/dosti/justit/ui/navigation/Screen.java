@@ -18,5 +18,7 @@ public enum Screen {
     LOGIN,
     REGISTER_SHOP,
     PAGE_SHOP_TECH,
-    BOOKINGS;
+    BOOKINGS,
+    SIDEBAR_TECH_LIST,
+    BOOKING_PAGE_TECH
 }

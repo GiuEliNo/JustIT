@@ -20,7 +20,7 @@ public class MainGController extends BaseGController {
 
     private void initializeTechnician() {
         //navigation.navigate(Screen.TOPBAR);
-        navigation.navigate(Screen.PAGE_SHOP_TECH);
+        navigation.navigate(Screen.SIDEBAR_TECH_LIST);
     }
 
     private void initializeClient() {

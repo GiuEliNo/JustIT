@@ -34,6 +34,7 @@ public class GUINavigationService implements NavigationService {
             case LAUNCHER:
             case REGISTER_VIEW:
             case REGISTERTEC_VIEW:
+            case BOOKINGS:
             case BOOKING_PAGE:
                 root.setTop(null);
                 root.setLeft(null);
@@ -42,6 +43,7 @@ public class GUINavigationService implements NavigationService {
                 root.setBottom(null);
                 break;
 
+            case SIDEBAR_TECH_LIST:
             case SIDEBAR_SEARCH_LIST:
             case SIDEBAR_LIST_SETTING_USER:
                 root.setLeft(view);
@@ -50,13 +52,6 @@ public class GUINavigationService implements NavigationService {
 
             case TOPBAR:
                 root.setTop(view);
-                break;
-            case BOOKINGS:
-                root.setTop(null);
-                root.setLeft(null);
-                root.setCenter(view);
-                root.setRight(null);
-                root.setBottom(null);
                 break;
             default:
                 root.setCenter(view);
@@ -113,6 +108,11 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.BOOKINGS;
             case PAGE_SHOP_TECH:
                 return GUIScreen.PAGE_SHOP_TECH;
+            case SIDEBAR_TECH_LIST:
+                return GUIScreen.SIDEBAR_TECH_LIST;
+            case BOOKING_PAGE_TECH:
+                return GUIScreen.BOOKING_PAGE_TECH;
+
         }
         return null;
     }

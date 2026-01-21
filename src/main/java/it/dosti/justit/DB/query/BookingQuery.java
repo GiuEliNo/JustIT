@@ -1,15 +1,13 @@
 package it.dosti.justit.DB.query;
 
 import it.dosti.justit.model.Booking;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
+
 
 public class BookingQuery {
 
@@ -46,6 +44,19 @@ public class BookingQuery {
         try{
             PreparedStatement pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,user.getId());
+
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet getBookingByShop(Connection conn, Integer shopId) {
+        String sql="SELECT id, idUser, date, timeslot, description FROM Booking WHERE idShop=?";
+        try{
+            PreparedStatement pstmt=conn.prepareStatement(sql);
+            pstmt.setInt(1,shopId);
 
             return pstmt.executeQuery();
         } catch (SQLException e) {

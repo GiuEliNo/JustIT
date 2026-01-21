@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BookingDaoJdbc implements BookingDao {
+public class BookingDAOJDBC implements BookingDao {
 
+    @Override
     public boolean addBooking(Booking booking) {
         Connection conn = null;
         try
@@ -26,6 +27,7 @@ public class BookingDaoJdbc implements BookingDao {
         }
     }
 
+    @Override
     public List<LoggedUserBooking> getBookingsByUser(User user ) {
         Connection conn = null;
 
@@ -52,5 +54,29 @@ public class BookingDaoJdbc implements BookingDao {
         }
     }
 
+    @Override
+    public List<Booking> getBookingsByShop(Integer shopId) {
+        Connection conn;
 
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
+            ResultSet rs = BookingQuery.getBookingByShop(conn, shopId);
+            List<Booking> bookings = new ArrayList<>();
+            while (rs.next()) {
+                Integer bookingId = rs.getInt("idUser");
+                Integer userId = rs.getInt("idUser");
+                String dateString = rs.getString("date");
+                String timeSlotString = rs.getString("timeSlot");
+                String description = rs.getString("description");
+                LocalDate date =  LocalDate.parse(dateString);
+                TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+                Booking booking = new Booking(bookingId,userId,date,timeSlot,description);
+                bookings.add(booking);
+            }
+            return bookings;
+        }catch(SQLException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 }
