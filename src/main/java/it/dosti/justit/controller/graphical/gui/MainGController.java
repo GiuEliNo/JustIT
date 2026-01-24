@@ -19,12 +19,12 @@ public class MainGController extends BaseGController {
     }
 
     private void initializeTechnician() {
-        //navigation.navigate(Screen.TOPBAR);
+        navigation.navigate(Screen.TOPBARTEC);
         navigation.navigate(Screen.SIDEBAR_TECH_LIST);
     }
 
     private void initializeClient() {
-        navigation.navigate(Screen.TOPBAR);
+        navigation.navigate(Screen.TOPBARUSER);
         navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
     }
 }
