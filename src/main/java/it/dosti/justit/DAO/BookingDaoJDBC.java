@@ -121,4 +121,33 @@ public class BookingDAOJDBC implements BookingDao {
         }
         return false;
     }
+
+    @Override
+    public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date) {
+        Connection conn;
+
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
+            ResultSet rs = BookingQuery.getOccupiedSlotsDateByShop(
+                    conn,
+                    shopId,
+                    date.toString()
+            );
+
+            List<TimeSlot> occupiedSlots = new ArrayList<>();
+
+            while (rs.next()) {
+                String timeSlotString = rs.getString("timeSlot");
+                TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+                occupiedSlots.add(timeSlot);
+            }
+
+            return occupiedSlots;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
 }

@@ -7,6 +7,8 @@ import it.dosti.justit.model.TimeSlot;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.time.LocalDate;
+
 public class BookingPageGController extends BaseGController {
 
     private SessionModel sessionModel;
@@ -23,10 +25,55 @@ public class BookingPageGController extends BaseGController {
     @FXML
     private DatePicker datePicker;
 
+    private BookingPageController appController;
+
+    @FXML
+    void initialize() {
+        appController = new BookingPageController();
+        Integer shopId = SessionModel.getInstance().getSelectedShop().getId();
+
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (empty || date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    return;
+                }
+
+                boolean hasSlots = appController.hasAvailableSlots(shopId, date);
+
+                setDisable(!hasSlots);
+
+                if (!hasSlots) {
+                    setStyle("-fx-background-color: #eee;");
+                }
+            }
+        });
+
+        datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                updateTimeSlots(newDate);
+            }
+        });
+    }
+
+    private void updateTimeSlots(LocalDate date) {
+        Integer shopId = sessionModel.getSelectedShop().getId();
+
+        timeSlotChoiceBox.getItems().clear();
+
+        timeSlotChoiceBox.getItems().addAll(appController.getAvailableSlots(shopId, date));
+
+        if (!timeSlotChoiceBox.getItems().isEmpty()) {
+            timeSlotChoiceBox.getSelectionModel().selectFirst();
+        }
+    }
+
     @FXML
     void bookButtonPressed() {
 
-        BookingPageController bookingPageController = new BookingPageController();
         BookingBean bookingBean = new BookingBean();
 
         bookingBean.setShop(sessionModel.getSelectedShop());
@@ -39,21 +86,9 @@ public class BookingPageGController extends BaseGController {
         System.out.println("userId = " + bookingBean.getUser().getId());
 
 
-        if(bookingPageController.addBooking(bookingBean)){
+        if(appController.addBooking(bookingBean)){
             new MainGController(navigation);
         }
-
-
-
-    }
-
-    @FXML
-    void initialize() {
-        sessionModel = SessionModel.getInstance();
-        timeSlotChoiceBox.getItems().add(TimeSlot.MORNING);
-        timeSlotChoiceBox.getItems().add(TimeSlot.AFTERNOON);
-        timeSlotChoiceBox.getItems().add(TimeSlot.EVENING);
-        timeSlotChoiceBox.getSelectionModel().selectFirst();
     }
 }
 

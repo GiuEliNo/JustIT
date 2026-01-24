@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 
 public class BookingQuery {
@@ -90,6 +91,16 @@ public class BookingQuery {
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
         pstmt.setInt(2, shopID);
+
+        return pstmt.executeQuery();
+    }
+
+    public static ResultSet getOccupiedSlotsDateByShop(Connection conn, Integer shopId, String date) throws SQLException {
+        String sql;
+        sql = "SELECT timeSlot FROM Booking WHERE idShop = ? AND date = ? AND state IN ('PENDING', 'CONFIRMED')";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, shopId);
+        pstmt.setString(2, date);
 
         return pstmt.executeQuery();
     }

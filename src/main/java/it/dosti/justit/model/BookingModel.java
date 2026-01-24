@@ -5,6 +5,9 @@ import it.dosti.justit.DAO.BookingDAOJDBC;
 import it.dosti.justit.model.booking.*;
 import it.dosti.justit.model.booking.state.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookingModel {
@@ -50,5 +53,23 @@ public class BookingModel {
     public void completeBooking(Booking booking) {
         booking.goNext(BookingEvent.COMPLETE);
         bookingDao.updateStatus(booking.getBookingId(), booking.getStatus());
+    }
+
+    public List<TimeSlot> getAvailableSlots(Integer shopId, LocalDate date) {
+
+        List<TimeSlot> occupied = bookingDao.getOccupiedSlots(shopId, date);
+        List<TimeSlot> available = new ArrayList<>();
+
+        for (TimeSlot slot : TimeSlot.values()) {
+            if (!occupied.contains(slot)) {
+                available.add(slot);
+            }
+        }
+
+        return available;
+    }
+
+    public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
+        return !getAvailableSlots(shopId, date).isEmpty();
     }
 }
