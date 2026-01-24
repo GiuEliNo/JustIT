@@ -2,11 +2,13 @@ package it.dosti.justit.DAO;
 
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.BookingQuery;
+import it.dosti.justit.DB.query.LoginQuery;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -99,5 +101,24 @@ public class BookingDAOJDBC implements BookingDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {
+        Connection conn;
+        try {
+
+            conn = ConnectionDB.getInstance().connectDB();
+
+
+            ResultSet rs = BookingQuery.checkConfirmedBookingWithShop(conn, username, shopID);
+
+            if(rs.next()) {
+                return true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

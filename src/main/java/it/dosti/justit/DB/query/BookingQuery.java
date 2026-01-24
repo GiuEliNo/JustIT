@@ -83,4 +83,14 @@ public class BookingQuery {
             return null;
         }
     }
+
+    public static ResultSet checkConfirmedBookingWithShop(Connection conn, String username, Integer shopID) throws SQLException {
+        String sql;
+        sql = "SELECT 1 FROM Booking WHERE idUser = ? AND idShop = ? AND state IN ('COMPLETED') LIMIT 1";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, username);
+        pstmt.setInt(2, shopID);
+
+        return pstmt.executeQuery();
+    }
 }

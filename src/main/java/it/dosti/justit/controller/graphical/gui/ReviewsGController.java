@@ -2,11 +2,11 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.controller.app.ReviewPageShopController;
-import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import it.dosti.justit.view.gui.DialogAddReview;
 import it.dosti.justit.view.gui.ReviewListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.controlsfx.control.Notifications;
 
 public class ReviewsGController extends BaseGController{
 
@@ -27,7 +27,13 @@ public class ReviewsGController extends BaseGController{
         ReviewBean reviewBean = new ReviewBean();
         DialogAddReview dialog = new DialogAddReview();
 
-
+        if(!appControllerReviewPageShop.canReview()){
+            Notifications.create()
+                .title("Add Review")
+                .text("You can't review a shop without ever booking.")
+                .showError();
+            return;
+        }
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
@@ -36,6 +42,7 @@ public class ReviewsGController extends BaseGController{
                 reviewBean.setStars((int) dialog.getRatingStars());
                 appControllerReviewPageShop.addReview(reviewBean);
                 this.updateReviewList();
+
             }
         });
     }
@@ -43,4 +50,5 @@ public class ReviewsGController extends BaseGController{
     public void updateReviewList() {
         listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
     }
+
 }

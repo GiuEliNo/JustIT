@@ -1,10 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.ReviewBean;
-import it.dosti.justit.model.Review;
-import it.dosti.justit.model.ReviewModel;
-import it.dosti.justit.model.SessionModel;
-import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +9,27 @@ import java.util.List;
 public class ReviewPageShopController {
 
     private final ReviewModel reviewModel = new ReviewModel();
+    private final BookingModel bookingModel = new BookingModel();
 
-    private Shop getSelectedShop() {
-        return SessionModel.getInstance().getSelectedShop();
+    private final String username;
+    private final Integer selectedShopID;
+
+    public ReviewPageShopController() {
+        this.username = SessionModel.getInstance().getLoggedUser().getUsername();
+        this.selectedShopID = SessionModel.getInstance().getSelectedShop().getId();
     }
 
-    public void addReview(ReviewBean reviewBean) {
-        Shop selectedShop = getSelectedShop();
-        reviewBean.setShopID(selectedShop.getId());
-        reviewBean.setUsername(SessionModel.getInstance().getLoggedUser().getUsername());
+    public Boolean addReview(ReviewBean reviewBean) {
+
+        reviewBean.setShopID(selectedShopID);
+        reviewBean.setUsername(username);
         reviewModel.addReviewToShop(reviewBean);
+
+        return true;
     }
 
     public List<ReviewBean> getReviews() {
-        Shop selectedShop = getSelectedShop();
-        List<Review> reviews = reviewModel.retrieveReviewsByShop(selectedShop.getId());
+        List<Review> reviews = reviewModel.retrieveReviewsByShop(selectedShopID);
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
         for (Review review : reviews) {
@@ -39,5 +42,9 @@ public class ReviewPageShopController {
         }
 
         return reviewBeans;
+    }
+
+    public Boolean canReview() {
+        return bookingModel.checkConfirmedBookingWithShop(username, selectedShopID);
     }
 }

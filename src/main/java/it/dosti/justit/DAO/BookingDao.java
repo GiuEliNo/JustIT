@@ -16,4 +16,6 @@ public interface BookingDao {
     List<Booking> getBookingsByShop(Integer shopId);
 
     void updateStatus(Integer bookingId, BookingStatus status);
+
+    Boolean checkConfirmedBookingWithShop(String username, Integer shopID);
 }

@@ -33,6 +33,10 @@ public class BookingModel {
         return bookings;
     }
 
+    public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {
+        return bookingDao.checkConfirmedBookingWithShop(username, shopID);
+    }
+
     public void confirmBooking(Booking booking) {
         booking.goNext(BookingEvent.CONFIRM);
         bookingDao.updateStatus(booking.getBookingId(),booking.getStatus());
