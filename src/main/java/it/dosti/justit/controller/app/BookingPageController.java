@@ -21,7 +21,7 @@ public class BookingPageController {
 
     public boolean addBooking(BookingBean bookingBean){
 
-        Booking newBooking = new Booking(bookingBean.getShop().getId(), bookingBean.getUser().getId(),bookingBean.getDate(), bookingBean.getTimeSlot(), bookingBean.getDescription());
+        Booking newBooking = new Booking(bookingBean.getShop().getId(), bookingBean.getUsername() ,bookingBean.getDate(), bookingBean.getTimeSlot(), bookingBean.getDescription());
 
         if(bookingModel.addBooking(newBooking)){
             System.out.println("Booking added successfully");

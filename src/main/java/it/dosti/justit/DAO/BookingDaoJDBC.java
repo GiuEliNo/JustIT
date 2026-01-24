@@ -2,13 +2,11 @@ package it.dosti.justit.DAO;
 
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.BookingQuery;
-import it.dosti.justit.DB.query.LoginQuery;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -21,9 +19,8 @@ public class BookingDAOJDBC implements BookingDao {
     @Override
     public boolean addBooking(Booking booking) {
         Connection conn = null;
-        try
-        {
-            conn= ConnectionDB.getInstance().connectDB();
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
             return BookingQuery.addBooking(conn, booking);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,29 +29,31 @@ public class BookingDAOJDBC implements BookingDao {
     }
 
     @Override
-    public List<LoggedUserBooking> getBookingsByUser(User user ) {
+    public List<Booking> getBookingsByUser(String username) {
         Connection conn = null;
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = BookingQuery.getBookingByUser(conn, user);
-            List<LoggedUserBooking> bookings = new ArrayList<>();
+            ResultSet rs = BookingQuery.getBookingByUser(conn, username);
+            List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
                 Integer bookingId = rs.getInt("id");
                 String shopName = rs.getString("name");
-                Integer userId = rs.getInt("idUser");
                 String dateString = rs.getString("date");
                 String timeSlotString = rs.getString("timeSlot");
                 String description = rs.getString("description");
-                LocalDate date =  LocalDate.parse(dateString);
+                BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+
+
+                LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                LoggedUserBooking booking = new LoggedUserBooking(bookingId,userId,shopName,date,timeSlot,description);
+                Booking booking = new Booking(bookingId, shopName, username, date, timeSlot, description, status);
 
 
                 bookings.add(booking);
             }
             return bookings;
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
@@ -70,22 +69,22 @@ public class BookingDAOJDBC implements BookingDao {
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
                 Integer bookingId = rs.getInt("id");
-                Integer userId = rs.getInt("idUser");
+                String username = rs.getString("username");
                 String dateString = rs.getString("date");
                 String timeSlotString = rs.getString("timeSlot");
                 String description = rs.getString("description");
                 BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
 
-                LocalDate date =  LocalDate.parse(dateString);
+                LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
 
-                Booking booking = new Booking(bookingId,userId,date,timeSlot,description, status);
+                Booking booking = new Booking(bookingId, username, date, timeSlot, description, status);
                 bookings.add(booking);
 
             }
             return bookings;
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
@@ -94,9 +93,8 @@ public class BookingDAOJDBC implements BookingDao {
     @Override
     public void updateStatus(Integer bookingId, BookingStatus status) {
         Connection conn = null;
-        try
-        {
-            conn= ConnectionDB.getInstance().connectDB();
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
             BookingQuery.updateStatus(conn, bookingId, status);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,10 +111,10 @@ public class BookingDAOJDBC implements BookingDao {
 
             ResultSet rs = BookingQuery.checkConfirmedBookingWithShop(conn, username, shopID);
 
-            if(rs.next()) {
+            if (rs.next()) {
                 return true;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -150,4 +148,33 @@ public class BookingDAOJDBC implements BookingDao {
         }
     }
 
+    @Override
+    public Booking getBookingById(Integer bookingId) {
+        Connection conn;
+
+        try {
+            conn = ConnectionDB.getInstance().connectDB();
+            ResultSet rs = BookingQuery.getBookingById(conn, bookingId);
+
+            Integer shopId = rs.getInt("idShop");
+            String username = rs.getString("username");
+            String dateString = rs.getString("date");
+            String timeSlotString = rs.getString("timeSlot");
+            String description = rs.getString("description");
+            BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+
+            LocalDate date = LocalDate.parse(dateString);
+            TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+
+
+            Booking booking = new Booking(bookingId, shopId, username, date, timeSlot, description, status);
+
+
+            return booking;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

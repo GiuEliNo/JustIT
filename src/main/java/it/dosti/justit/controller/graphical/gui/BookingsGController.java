@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.controller.app.BookingsController;
-import it.dosti.justit.model.LoggedUserBooking;
+import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.view.gui.BookingListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +14,7 @@ public class BookingsGController extends BaseGController {
     private BookingsController bookingsController;
 
     @FXML
-    private ListView<LoggedUserBooking> bookingListView;
+    private ListView<Booking> bookingListView;
 
     @FXML
     private Button backButton;

@@ -9,27 +9,40 @@ import java.time.LocalDate;
 public class Booking {
     private Integer bookingId;
     private Integer shopId;
-    private Integer userId;
+    private String username;
     private LocalDate date;
     private TimeSlot timeSlot;
     private String description;
+    private String shopName;
 
     private BookingState currentState;
     private BookingStatus status;
 
 
-    public Booking(Integer bookingId,  Integer shopId, Integer userId, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
+    public Booking(Integer bookingId, Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
         this.bookingId = bookingId;
-        this.userId = userId;
+        this.username = username;
         this.shopId = shopId;
         this.date = date;
         this.timeSlot = timeSlot;
         this.description = description;
+        this.status = status;
+        this.currentState = BookingStateFactory.fromStatus(status);
+    }
+
+    public Booking(Integer bookingId, String shopName, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
+        this.bookingId = bookingId;
+        this.username = username;
+        this.shopName = shopName;
+        this.date = date;
+        this.timeSlot = timeSlot;
+        this.description = description;
+        this.status = status;
         this.currentState = BookingStateFactory.fromStatus(status);
     }
     
-    public Booking(Integer shopId, Integer userId, LocalDate date, TimeSlot timeSlot, String description) {
-        this.userId = userId;
+    public Booking(Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description) {
+        this.username = username;
         this.shopId = shopId;
         this.date = date;
         this.timeSlot = timeSlot;
@@ -37,20 +50,21 @@ public class Booking {
         
     }
 
-    public Booking(Integer bookingId, Integer userId, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
+    public Booking(Integer bookingId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
         this.bookingId = bookingId;
-        this.userId = userId;
+        this.username = username;
         this.date = date;
         this.timeSlot = timeSlot;
         this.description = description;
         this.status = status;
+        this.currentState = BookingStateFactory.fromStatus(status);
     }
 
     public Integer getBookingId() {
         return bookingId;
     }
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
     public Integer getShopId() {
         return shopId;
@@ -66,6 +80,9 @@ public class Booking {
     }
     public BookingStatus getStatus() {
         return status;
+    }
+    public String getShopName() {
+        return shopName;
     }
 
     public void initStateMachine(BookingState initialState, BookingStatus status) {

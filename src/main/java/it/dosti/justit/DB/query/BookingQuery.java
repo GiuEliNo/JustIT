@@ -8,21 +8,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 
 public class BookingQuery {
 
     public static boolean addBooking(Connection conn, Booking booking){
 
-        String sql="INSERT INTO Booking(idShop, idUser, date, timeSlot, description)"+
+        String sql="INSERT INTO Booking(idShop, username, date, timeSlot, description)"+
                 " VALUES (?,?,?,?,?)";
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, booking.getShopId());
-            pstmt.setInt(2, booking.getUserId());
+            pstmt.setString(2, booking.getUsername());
             pstmt.setString(3, booking.getDate().toString());
             pstmt.setString(4, booking.getTimeSlot().toString());
             pstmt.setString(5, booking.getDescription());
@@ -58,12 +57,11 @@ public class BookingQuery {
 
 
 
-    public static ResultSet getBookingByUser(Connection conn, User user){
-        //String sql="SELECT id, idShop, idUser, date, timeSlot, description FROM Booking WHERE idUser=?";
-        String sql="SELECT B.id, S.name,B.idUser,B.date,B.timeSlot,B.description FROM Booking B join Shop S ON B.idShop = S.id WHERE B.idUser = ?";
+    public static ResultSet getBookingByUser(Connection conn, String username){
+        String sql="SELECT B.id, S.name,B.date,B.timeSlot,B.description, B.state FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
         try{
             PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setInt(1,user.getId());
+            pstmt.setString(1,username);
 
             return pstmt.executeQuery();
         } catch (SQLException e) {
@@ -73,7 +71,7 @@ public class BookingQuery {
     }
 
     public static ResultSet getBookingByShop(Connection conn, Integer shopId) {
-        String sql="SELECT id, idUser, date, timeSlot, description, state FROM Booking WHERE idShop=?";
+        String sql="SELECT id, username, date, timeSlot, description, state FROM Booking WHERE idShop=?";
         try{
             PreparedStatement pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,shopId);
@@ -87,7 +85,7 @@ public class BookingQuery {
 
     public static ResultSet checkConfirmedBookingWithShop(Connection conn, String username, Integer shopID) throws SQLException {
         String sql;
-        sql = "SELECT 1 FROM Booking WHERE idUser = ? AND idShop = ? AND state IN ('COMPLETED') LIMIT 1";
+        sql = "SELECT 1 FROM Booking WHERE username = ? AND idShop = ? AND state IN ('COMPLETED') LIMIT 1";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
         pstmt.setInt(2, shopID);
@@ -103,5 +101,15 @@ public class BookingQuery {
         pstmt.setString(2, date);
 
         return pstmt.executeQuery();
+    }
+
+    public static ResultSet getBookingById(Connection conn, Integer bookingId) throws SQLException {
+        String sql;
+        sql = "SELECT idShop, username, date, timeSlot, description, state FROM Booking WHERE id = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, bookingId);
+
+        return pstmt.executeQuery();
+
     }
 }

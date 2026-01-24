@@ -1,15 +1,15 @@
 package it.dosti.justit.view.gui;
 
-import it.dosti.justit.model.LoggedUserBooking;
+import it.dosti.justit.model.booking.Booking;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class BookingListCell extends ListCell<LoggedUserBooking> {
+public class BookingListCell extends ListCell<Booking> {
 
     @Override
-    protected void updateItem(LoggedUserBooking item, boolean empty) {
+    protected void updateItem(Booking item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
@@ -29,7 +29,9 @@ public class BookingListCell extends ListCell<LoggedUserBooking> {
 
             Label descriptionLabel = new Label(item.getDescription());
 
-            topRow.getChildren().addAll(shopLabel, dateLabel, timeSlotLabel, descriptionLabel);
+            Label statusLabel = new Label(item.getStatus().toString());
+
+            topRow.getChildren().addAll(shopLabel, dateLabel, timeSlotLabel, descriptionLabel, statusLabel);
 
             vbox.getChildren().addAll(topRow);
             setGraphic(vbox);

@@ -2,7 +2,6 @@ package it.dosti.justit.DAO;
 
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.LoggedUserBooking;
 import it.dosti.justit.model.User;
 import it.dosti.justit.model.booking.BookingStatus;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public interface BookingDao {
     boolean addBooking(Booking booking);
 
-    List<LoggedUserBooking> getBookingsByUser(User user);
+    List<Booking> getBookingsByUser(String username);
 
     List<Booking> getBookingsByShop(Integer shopId);
 
@@ -22,4 +21,6 @@ public interface BookingDao {
     Boolean checkConfirmedBookingWithShop(String username, Integer shopID);
 
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
+
+    Booking getBookingById(Integer bookingId);
 }

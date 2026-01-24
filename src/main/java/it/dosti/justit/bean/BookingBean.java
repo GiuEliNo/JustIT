@@ -3,15 +3,19 @@ package it.dosti.justit.bean;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.User;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDate;
 
 public class BookingBean {
+    private Integer bookingID;
     private Shop shop;
-    private User user;
+    private String username;
     private LocalDate date;
     private TimeSlot timeSlot;
     private String description;
+    private BookingStatus status;
 
 
 
@@ -21,11 +25,11 @@ public class BookingBean {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String user) {
+        this.username = user;
     }
     public LocalDate getDate() {
         return date;
@@ -44,6 +48,18 @@ public class BookingBean {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public Integer getBookingID() {
+        return this.bookingID;
+    }
+    public void setBookingID(Integer bookingID) {
+        this.bookingID = bookingID;
+    }
+    public BookingStatus getStatus() {
+        return this.status;
+    }
+    public void setStatus(BookingStatus status) {
+        this.status = status;
     }
 }
 

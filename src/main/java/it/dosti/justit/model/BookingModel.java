@@ -7,7 +7,6 @@ import it.dosti.justit.model.booking.state.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BookingModel {
@@ -21,8 +20,14 @@ public class BookingModel {
         return bookingDao.addBooking(booking);
     }
 
-    public List<LoggedUserBooking> getBookingsByUser(User user) {
-        return bookingDao.getBookingsByUser(user);
+    public List<Booking> getBookingsByUser(String username) {
+        List<Booking> bookings = bookingDao.getBookingsByUser(username);
+        for (Booking b : bookings) {
+            BookingStatus status = b.getStatus();
+            b.initStateMachine(BookingStateFactory.fromStatus(status), status);
+        }
+
+        return bookings;
     }
 
     public List<Booking> getBookingsByShop(Integer shopId) {
@@ -34,6 +39,12 @@ public class BookingModel {
         }
 
         return bookings;
+    }
+
+    public Booking getBookingById(Integer bookingId) {
+        Booking booking = bookingDao.getBookingById(bookingId);
+        booking.initStateMachine(BookingStateFactory.fromStatus(booking.getStatus()), booking.getStatus());
+        return booking;
     }
 
     public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {

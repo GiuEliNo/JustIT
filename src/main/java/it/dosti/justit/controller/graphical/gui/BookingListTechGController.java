@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
+import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingPageTechController;
-import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,16 +18,16 @@ public class BookingListTechGController extends BaseGController{
     private MasterDetailPane masterDetailPane;
 
     @FXML
-    private TableView<Booking> bookingTable;
+    private TableView<BookingBean> bookingTable;
 
     @FXML
-    private TableColumn<Booking, String> userCol;
+    private TableColumn<BookingBean, String> userCol;
     @FXML
-    private TableColumn<Booking, String> dateCol;
+    private TableColumn<BookingBean, String> dateCol;
     @FXML
-    private TableColumn<Booking, String> timeCol;
+    private TableColumn<BookingBean, String> timeCol;
     @FXML
-    private TableColumn<Booking, BookingStatus> statusCol;
+    private TableColumn<BookingBean, BookingStatus> statusCol;
 
     @FXML
     private Label lblUser;
@@ -59,13 +59,13 @@ public class BookingListTechGController extends BaseGController{
                 .addListener((obs, oldB, newB) -> showDetail(newB));
     }
 
-    private void showDetail(Booking booking) {
+    private void showDetail(BookingBean booking) {
         if (booking == null) {
             masterDetailPane.setShowDetailNode(false);
             return;
         }
 
-        lblUser.setText("User: " + booking.getUserId());
+        lblUser.setText("User: " + booking.getUsername());
         lblDate.setText("Date: " + booking.getDate());
         lblTime.setText("Time Slot: " + booking.getTimeSlot());
         lblStatus.setText("Status: " + booking.getStatus());
@@ -74,13 +74,13 @@ public class BookingListTechGController extends BaseGController{
         masterDetailPane.setShowDetailNode(true);
     }
 
-    private Booking getSelectedBooking() {
+    private BookingBean getSelectedBooking() {
         return bookingTable.getSelectionModel().getSelectedItem();
     }
 
     @FXML
     public void onApprove() {
-        Booking selected = getSelectedBooking();
+        BookingBean selected = getSelectedBooking();
         appController.approveBooking(bookingTable.getSelectionModel().getSelectedItem());
         bookingTable.refresh();
         showDetail(selected);
@@ -88,7 +88,7 @@ public class BookingListTechGController extends BaseGController{
 
     @FXML
     public void onReject() {
-        Booking selected = getSelectedBooking();
+        BookingBean selected = getSelectedBooking();
         appController.rejectBooking(bookingTable.getSelectionModel().getSelectedItem());
         bookingTable.refresh();
         showDetail(selected);
@@ -96,7 +96,7 @@ public class BookingListTechGController extends BaseGController{
 
     @FXML
     public void onCompleted() {
-        Booking selected = getSelectedBooking();
+        BookingBean selected = getSelectedBooking();
         appController.completeBooking(bookingTable.getSelectionModel().getSelectedItem());
         bookingTable.refresh();
         showDetail(selected);
