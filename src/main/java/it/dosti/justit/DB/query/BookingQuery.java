@@ -1,7 +1,8 @@
 package it.dosti.justit.DB.query;
 
-import it.dosti.justit.model.Booking;
+import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.User;
+import it.dosti.justit.model.booking.BookingStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,6 +38,24 @@ public class BookingQuery {
         return false;
     }
 
+    public static boolean updateStatus(Connection conn, int bookingId, BookingStatus status) {
+
+        String sql = "UPDATE Booking SET state = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status.name());
+            pstmt.setInt(2, bookingId);
+
+            return pstmt.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     public static ResultSet getBookingByUser(Connection conn, User user){
         //String sql="SELECT id, idShop, idUser, date, timeSlot, description FROM Booking WHERE idUser=?";
@@ -53,7 +72,7 @@ public class BookingQuery {
     }
 
     public static ResultSet getBookingByShop(Connection conn, Integer shopId) {
-        String sql="SELECT id, idUser, date, timeslot, description FROM Booking WHERE idShop=?";
+        String sql="SELECT id, idUser, date, timeSlot, description, state FROM Booking WHERE idShop=?";
         try{
             PreparedStatement pstmt=conn.prepareStatement(sql);
             pstmt.setInt(1,shopId);

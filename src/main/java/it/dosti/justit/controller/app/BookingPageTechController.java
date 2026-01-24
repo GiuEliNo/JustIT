@@ -1,6 +1,6 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.model.Booking;
+import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.BookingModel;
 import it.dosti.justit.model.SessionModel;
 
@@ -12,5 +12,17 @@ public class BookingPageTechController {
 
     public List<Booking> getBookingsByShop() {
         return bookingModel.getBookingsByShop(shopID);
+    }
+
+    public void approveBooking(Booking booking) {
+        bookingModel.confirmBooking(booking);
+    }
+
+    public void rejectBooking(Booking booking) {
+        bookingModel.rejectBooking(booking);
+    }
+
+    public void completeBooking(Booking booking) {
+        bookingModel.completeBooking(booking);
     }
 }

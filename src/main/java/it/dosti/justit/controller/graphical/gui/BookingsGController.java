@@ -1,8 +1,6 @@
 package it.dosti.justit.controller.graphical.gui;
 
-import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingsController;
-import it.dosti.justit.model.Booking;
 import it.dosti.justit.model.LoggedUserBooking;
 import it.dosti.justit.view.gui.BookingListCell;
 import javafx.fxml.FXML;

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.model.*;
+import it.dosti.justit.model.booking.Booking;
 
 
 public class BookingPageController {

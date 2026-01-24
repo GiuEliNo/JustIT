@@ -20,6 +20,7 @@
                 <TableColumn fx:id="userCol" text="User" />
                 <TableColumn fx:id="dateCol" text="Date" />
                 <TableColumn fx:id="timeCol" text="Time Slot" />
+                <TableColumn fx:id="statusCol" text="Status"/>
             </columns>
 
         </TableView>
@@ -35,8 +36,7 @@
             <Label fx:id="lblDate"/>
             <Label fx:id="lblTime"/>
 
-            <Label fx:id="lblStatus"
-                   style="-fx-font-weight: bold"/>
+            <Label fx:id="lblStatus"/>
 
             <Separator/>
 
@@ -52,6 +52,9 @@
                 <Button fx:id="rejectButton"
                         text="Reject"
                         onAction="#onReject"/>
+                <Button fx:id="completedButton"
+                        text="Completed"
+                        onAction="#onCompleted"/>
             </HBox>
 
         </VBox>

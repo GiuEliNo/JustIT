@@ -3,6 +3,8 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.BookingQuery;
 import it.dosti.justit.model.*;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,6 +47,8 @@ public class BookingDAOJDBC implements BookingDao {
                 LocalDate date =  LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 LoggedUserBooking booking = new LoggedUserBooking(bookingId,userId,shopName,date,timeSlot,description);
+
+
                 bookings.add(booking);
             }
             return bookings;
@@ -63,20 +67,37 @@ public class BookingDAOJDBC implements BookingDao {
             ResultSet rs = BookingQuery.getBookingByShop(conn, shopId);
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
-                Integer bookingId = rs.getInt("idUser");
+                Integer bookingId = rs.getInt("id");
                 Integer userId = rs.getInt("idUser");
                 String dateString = rs.getString("date");
                 String timeSlotString = rs.getString("timeSlot");
                 String description = rs.getString("description");
+                BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+
                 LocalDate date =  LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                Booking booking = new Booking(bookingId,userId,date,timeSlot,description);
+
+
+                Booking booking = new Booking(bookingId,userId,date,timeSlot,description, status);
                 bookings.add(booking);
+
             }
             return bookings;
         }catch(SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void updateStatus(Integer bookingId, BookingStatus status) {
+        Connection conn = null;
+        try
+        {
+            conn= ConnectionDB.getInstance().connectDB();
+            BookingQuery.updateStatus(conn, bookingId, status);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,8 +1,10 @@
 package it.dosti.justit.DAO;
 
-import it.dosti.justit.model.Booking;
+import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.LoggedUserBooking;
 import it.dosti.justit.model.User;
+import it.dosti.justit.model.booking.BookingStatus;
+
 import java.util.List;
 
 
@@ -12,4 +14,6 @@ public interface BookingDao {
     List<LoggedUserBooking> getBookingsByUser(User user);
 
     List<Booking> getBookingsByShop(Integer shopId);
+
+    void updateStatus(Integer bookingId, BookingStatus status);
 }

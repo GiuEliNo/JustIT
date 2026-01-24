@@ -1,7 +1,5 @@
 package it.dosti.justit.view.gui;
 
-import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.model.Booking;
 import it.dosti.justit.model.LoggedUserBooking;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
