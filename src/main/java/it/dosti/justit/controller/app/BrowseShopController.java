@@ -23,7 +23,7 @@ public class BrowseShopController {
 
     public void pageSelected(Shop selectedItem) {
         if (selectedItem != null) {
-            SessionModel.getInstance().setSelectedShop(selectedItem);
+            SessionModel.getInstance().setCurrentShop(selectedItem);
         }
     }
 

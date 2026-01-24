@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BookingPageTechController {
     private final BookingModel bookingModel = new BookingModel();
-    private final Integer shopID = SessionModel.getInstance().getOwnedShop().getId();
+    private final Integer shopID = SessionModel.getInstance().getCurrentShop().getId();
 
     public List<Booking> getBookingsByShop() {
         return bookingModel.getBookingsByShop(shopID);

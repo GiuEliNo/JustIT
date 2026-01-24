@@ -9,7 +9,7 @@ public class PageShopController {
     private Shop shop;
 
     public PageShopController() {
-        shop = SessionModel.getInstance().getSelectedShop();
+        shop = SessionModel.getInstance().getCurrentShop();
     }
 
     public ShopBean getShopBean() {

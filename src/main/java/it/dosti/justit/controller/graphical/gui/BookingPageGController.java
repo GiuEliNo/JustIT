@@ -11,8 +11,6 @@ import java.time.LocalDate;
 
 public class BookingPageGController extends BaseGController {
 
-    private SessionModel sessionModel;
-
     @FXML
     private TextArea descriptionArea;
 
@@ -30,7 +28,7 @@ public class BookingPageGController extends BaseGController {
     @FXML
     void initialize() {
         appController = new BookingPageController();
-        Integer shopId = SessionModel.getInstance().getSelectedShop().getId();
+        Integer shopId = SessionModel.getInstance().getCurrentShop().getId();
 
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -60,7 +58,7 @@ public class BookingPageGController extends BaseGController {
     }
 
     private void updateTimeSlots(LocalDate date) {
-        Integer shopId = sessionModel.getSelectedShop().getId();
+        Integer shopId = SessionModel.getInstance().getCurrentShop().getId();
 
         timeSlotChoiceBox.getItems().clear();
 
@@ -76,8 +74,8 @@ public class BookingPageGController extends BaseGController {
 
         BookingBean bookingBean = new BookingBean();
 
-        bookingBean.setShop(sessionModel.getSelectedShop());
-        bookingBean.setUser(sessionModel.getLoggedUser());
+        bookingBean.setShop(SessionModel.getInstance().getCurrentShop());
+        bookingBean.setUser(SessionModel.getInstance().getLoggedUser());
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());

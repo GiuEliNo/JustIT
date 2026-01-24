@@ -33,20 +33,9 @@ public final class SessionModel {
         return loggedUser instanceof TechnicianUser;
     }
 
-    public Shop getSelectedShop() {
-        return selectedShop;
-    }
-
-    public void setSelectedShop(Shop shop) {
-        this.selectedShop = shop;
-    }
-
-    public Shop getOwnedShop() {
-        return ownedShop;
-    }
-
-    public void setOwnedShop(Shop shop) {
-        this.ownedShop = shop;
+    public void setCurrentShop(Shop shop) {
+        if (isClient()) this.selectedShop = shop;
+        if (isTechnician()) this.ownedShop = shop;
     }
 
     public Shop getCurrentShop() {

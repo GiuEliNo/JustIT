@@ -16,7 +16,7 @@ public class ReviewPageShopController {
 
     public ReviewPageShopController() {
         this.username = SessionModel.getInstance().getLoggedUser().getUsername();
-        this.selectedShopID = SessionModel.getInstance().getSelectedShop().getId();
+        this.selectedShopID = SessionModel.getInstance().getCurrentShop().getId();
     }
 
     public Boolean addReview(ReviewBean reviewBean) {

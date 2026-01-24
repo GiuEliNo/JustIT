@@ -9,7 +9,7 @@ public class PageShopTechController {
     private final Shop shop;
 
     public PageShopTechController(){
-        shop = SessionModel.getInstance().getOwnedShop();
+        shop = SessionModel.getInstance().getCurrentShop();
     }
     public ShopBean getShopBean() {
 

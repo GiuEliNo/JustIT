@@ -26,7 +26,7 @@ public class TechnicianModel {
 
     private void updateSessionUser(String username) {
         SessionModel.getInstance().setLoggedUser(technicianDAO.findByUsername(username));
-        SessionModel.getInstance().setOwnedShop(shopDAO.retrieveShopById(SessionModel.getInstance().getLoggedUser().getShopId()));
+        SessionModel.getInstance().setCurrentShop(shopDAO.retrieveShopById(SessionModel.getInstance().getLoggedUser().getShopId()));
     }
 
 
