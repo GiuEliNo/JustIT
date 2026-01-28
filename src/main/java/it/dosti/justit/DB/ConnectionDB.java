@@ -31,6 +31,7 @@ public class ConnectionDB {
     public synchronized Connection connectDB() throws SQLException {
         if (con == null) {
 
+
             this.con = DriverManager.getConnection("jdbc:sqlite:" + dbPath.toString());
         }
         return this.con;

@@ -7,6 +7,7 @@ module it.dosti.justit {
     requires java.sql;
     requires com.gluonhq.maps;
     requires java.desktop;
+    requires java.net.http;
 
     opens it.dosti.justit to javafx.fxml;
     exports it.dosti.justit;

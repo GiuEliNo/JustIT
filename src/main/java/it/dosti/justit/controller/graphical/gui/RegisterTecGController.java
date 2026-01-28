@@ -1,14 +1,9 @@
 package it.dosti.justit.controller.graphical.gui;
-
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
-import it.dosti.justit.model.TechnicianModel;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.ui.navigation.gui.GUINavigationService;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class RegisterTecGController extends BaseGController{
@@ -34,6 +29,15 @@ public class RegisterTecGController extends BaseGController{
     private Button signShopButton;
 
     @FXML
+    private Button backButton;
+
+    @FXML
+    void backButtonPressed(){
+        new MainGController(navigation);
+        navigation.navigate(Screen.LAUNCHER);
+    }
+
+    @FXML
     void signInPressed() {
         RegisterController registerController = new RegisterController();
         TechnicRegisterBean technicRegisterBean = new TechnicRegisterBean();
@@ -52,6 +56,10 @@ public class RegisterTecGController extends BaseGController{
             signShopButton.setVisible(true);
 
 
+        }
+        else{
+            new MainGController(navigation);
+            navigation.navigate(Screen.LAUNCHER);
         }
 
     }

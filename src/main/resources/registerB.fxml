@@ -39,5 +39,6 @@
       </VBox>
       <Button fx:id="signInButton" layoutX="370.0" layoutY="535.0" mnemonicParsing="false" onAction="#signInPressed" prefHeight="50.0" prefWidth="500.0" text="Register" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="535.0" />
       <Button fx:id="signShopButton" layoutX="370.0" layoutY="547.0" mnemonicParsing="false" onAction="#onSignShopButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Register Shop" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="535.0" />
+      <Button fx:id="backButton" layoutX="120.0" layoutY="547.0" mnemonicParsing="false" onAction="#backButtonPressed" text="Back" />
    </children>
 </AnchorPane>

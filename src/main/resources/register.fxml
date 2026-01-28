@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.RegisterGController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.RegisterGController">
    <children>
       <Label alignment="CENTER" layoutX="232.0" layoutY="14.0" prefHeight="64.0" prefWidth="342.0" text="JustIT" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="15.0">
          <font>
@@ -36,5 +36,6 @@
          </padding>
       </VBox>
       <Button fx:id="signInButton" layoutX="370.0" layoutY="535.0" mnemonicParsing="false" onAction="#signInPressed" prefHeight="50.0" prefWidth="500.0" text="Register" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="535.0" />
+      <Button fx:id="backButton" layoutX="100.0" layoutY="547.0" mnemonicParsing="false" onAction="#onBackButtonPressed" text="Back" />
    </children>
 </AnchorPane>

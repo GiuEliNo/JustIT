@@ -16,6 +16,15 @@ import java.util.List;
 
 public class BookingDAOJDBC implements BookingDao {
 
+    private static final String TIMESLOT = "timeSlot";
+    private static final String ID = "id";
+    private static final String DATE = "date";
+    private static final String NAME = "name";
+    private static final String DESCRIPTION = "description";
+    private static final String STATE = "state";
+    private static final String USERNAME = "username";
+    private static final String IDSHOP = "idShop";
+
     @Override
     public boolean addBooking(Booking booking) {
         Connection conn = null;
@@ -37,12 +46,12 @@ public class BookingDAOJDBC implements BookingDao {
             ResultSet rs = BookingQuery.getBookingByUser(conn, username);
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
-                Integer bookingId = rs.getInt("id");
-                String shopName = rs.getString("name");
-                String dateString = rs.getString("date");
-                String timeSlotString = rs.getString("timeSlot");
-                String description = rs.getString("description");
-                BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+                Integer bookingId = rs.getInt(ID);
+                String shopName = rs.getString(NAME);
+                String dateString = rs.getString(DATE);
+                String timeSlotString = rs.getString(TIMESLOT);
+                String description = rs.getString(DESCRIPTION);
+                BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
 
 
                 LocalDate date = LocalDate.parse(dateString);
@@ -68,12 +77,12 @@ public class BookingDAOJDBC implements BookingDao {
             ResultSet rs = BookingQuery.getBookingByShop(conn, shopId);
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
-                Integer bookingId = rs.getInt("id");
-                String username = rs.getString("username");
-                String dateString = rs.getString("date");
-                String timeSlotString = rs.getString("timeSlot");
-                String description = rs.getString("description");
-                BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+                Integer bookingId = rs.getInt(ID);
+                String username = rs.getString(USERNAME);
+                String dateString = rs.getString(DATE);
+                String timeSlotString = rs.getString(TIMESLOT);
+                String description = rs.getString(DESCRIPTION);
+                BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
 
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
@@ -135,7 +144,7 @@ public class BookingDAOJDBC implements BookingDao {
             List<TimeSlot> occupiedSlots = new ArrayList<>();
 
             while (rs.next()) {
-                String timeSlotString = rs.getString("timeSlot");
+                String timeSlotString = rs.getString(TIMESLOT);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 occupiedSlots.add(timeSlot);
             }
@@ -156,21 +165,18 @@ public class BookingDAOJDBC implements BookingDao {
             conn = ConnectionDB.getInstance().connectDB();
             ResultSet rs = BookingQuery.getBookingById(conn, bookingId);
 
-            Integer shopId = rs.getInt("idShop");
-            String username = rs.getString("username");
-            String dateString = rs.getString("date");
-            String timeSlotString = rs.getString("timeSlot");
-            String description = rs.getString("description");
-            BookingStatus status = BookingStatus.valueOf(rs.getString("state"));
+            Integer shopId = rs.getInt(IDSHOP);
+            String username = rs.getString(USERNAME);
+            String dateString = rs.getString(DATE);
+            String timeSlotString = rs.getString(TIMESLOT);
+            String description = rs.getString(DESCRIPTION);
+            BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
 
             LocalDate date = LocalDate.parse(dateString);
             TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
 
-            Booking booking = new Booking(bookingId, shopId, username, date, timeSlot, description, status);
-
-
-            return booking;
+            return new Booking(bookingId, shopId, username, date, timeSlot, description, status);
 
         } catch (SQLException e) {
             e.printStackTrace();

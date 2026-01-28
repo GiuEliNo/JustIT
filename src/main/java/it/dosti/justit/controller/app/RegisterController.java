@@ -7,22 +7,23 @@ import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.ShopModel;
 import it.dosti.justit.model.TechnicianModel;
 import it.dosti.justit.model.ClientUserModel;
-
 import java.sql.SQLException;
 
 public class RegisterController {
 
 
 
-    public void registerNewUser(RegisterBean registerBean) throws SQLException {
+    public boolean registerNewUser(RegisterBean registerBean) throws SQLException {
 
         ClientUserModel clientUserModel = new ClientUserModel();
 
         if(clientUserModel.registerClient(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail())){
             System.out.println("Register successful");
+            return true;
         }
         else {
             System.out.println("Register failed");
+            return false;
         }
     }
 
@@ -35,9 +36,9 @@ public class RegisterController {
             return false;
         }
         else {
-            technicianModel.registerTechnician(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail(), registerBean.getShopName());
+
             System.out.println("Register successful");
-            return true;
+            return technicianModel.registerTechnician(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail(), registerBean.getShopName());
         }
 
     }

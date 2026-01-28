@@ -16,17 +16,21 @@ public class TechnicianModel {
 
     public boolean loginTechnician(String username, String password){
         if(technicianDAO.loginTechnician(username, password)){
-            this.updateSessionUser(username);
-            return true;
+            return this.updateSessionUser(username);
         }
         else {
             return false;
         }
     }
 
-    private void updateSessionUser(String username) {
+    private boolean updateSessionUser(String username) {
+
         SessionModel.getInstance().setLoggedUser(technicianDAO.findByUsername(username));
-        SessionModel.getInstance().setCurrentShop(shopDAO.retrieveShopById(SessionModel.getInstance().getLoggedUser().getShopId()));
+        if(SessionModel.getInstance().getLoggedUser() != null) {
+            SessionModel.getInstance().setCurrentShop(shopDAO.retrieveShopById(SessionModel.getInstance().getLoggedUser().getShopId()));
+            return true;
+        }
+        return false;
     }
 
 

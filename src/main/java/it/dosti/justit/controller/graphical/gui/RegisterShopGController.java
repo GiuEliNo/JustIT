@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.RegisterController;
+import it.dosti.justit.ui.navigation.Screen;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,7 +18,7 @@ public class RegisterShopGController extends BaseGController {
     private TextField imageField;
 
     @FXML
-    private TextField OpeningField;
+    private TextField openingField;
 
     @FXML
     private TextField addressField;
@@ -44,7 +45,7 @@ public class RegisterShopGController extends BaseGController {
         shopBean.setEmail(emailField.getText());
         shopBean.setPhone(phoneField.getText());
         shopBean.setImage(imageField.getText());
-        shopBean.setOpeningHours(OpeningField.getText());
+        shopBean.setOpeningHours(openingField.getText());
         shopBean.setDescription(descriptionField.getText());
         shopBean.setAddress(addressField.getText());
         shopBean.setHomeAssistance(true);
@@ -52,6 +53,8 @@ public class RegisterShopGController extends BaseGController {
         if(registerController.registerNewShop(shopBean))
             {
             System.out.println("Register shop successful");
+            new MainGController(navigation);
+            navigation.navigate(Screen.REGISTERTEC_VIEW);
             }
         else{
             System.out.println("Register shop failed");
