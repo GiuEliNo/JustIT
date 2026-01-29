@@ -10,17 +10,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class NominatimService {
 
-    //query esempio = "https://nominatim.openstreetmap.org/search?q=Piazza+Duomo+Milano&format=json&addressdetails=1&limit=1";
+    String esempio  = "https://nominatim.openstreetmap.org/search?q=Piazza+Duomo+Milano&format=json&addressdetails=1&limit=1";
 
-    private final String NOMINATIM_BASE = "https://nominatim.openstreetmap.org/search?";
+    private static final String NOMINATIM = "https://nominatim.openstreetmap.org/search?";
     private final HttpClient client = HttpClient.newHttpClient();
 
 
     public CompletableFuture<String> searchAddress(String query) {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
-        String urlString = String.format(NOMINATIM_BASE + "?q=%s&format=json&limit=1", encodedQuery);
+        String urlString = String.format("%s?q=%s&format=json&limit=1",NOMINATIM, encodedQuery);
 
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(urlString)).header("User-Agent", "UniversityProject-JustIT/1.0 (giuelinomail@gmail.com)").GET().build();
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
+
 }

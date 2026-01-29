@@ -3,10 +3,9 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.ui.navigation.Screen;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 public class RegisterShopGController extends BaseGController {
@@ -18,7 +17,10 @@ public class RegisterShopGController extends BaseGController {
     private TextField imageField;
 
     @FXML
-    private TextField openingField;
+    private TextField openingField1;
+
+    @FXML
+    private TextField openingField2;
 
     @FXML
     private TextField addressField;
@@ -33,6 +35,9 @@ public class RegisterShopGController extends BaseGController {
     private TextField phoneField;
 
     @FXML
+    private CheckBox homeAssistanceCheck;
+
+    @FXML
     private Button signInButton;
 
     @FXML
@@ -45,10 +50,10 @@ public class RegisterShopGController extends BaseGController {
         shopBean.setEmail(emailField.getText());
         shopBean.setPhone(phoneField.getText());
         shopBean.setImage(imageField.getText());
-        shopBean.setOpeningHours(openingField.getText());
+        shopBean.setOpeningHours(openingField1.getText()+" : " + openingField2.getText());
         shopBean.setDescription(descriptionField.getText());
         shopBean.setAddress(addressField.getText());
-        shopBean.setHomeAssistance(true);
+        shopBean.setHomeAssistance(homeAssistanceCheck.isSelected());
 
         if(registerController.registerNewShop(shopBean))
             {
