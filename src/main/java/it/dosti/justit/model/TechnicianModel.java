@@ -27,7 +27,8 @@ public class TechnicianModel {
 
         SessionModel.getInstance().setLoggedUser(technicianDAO.findByUsername(username));
         if(SessionModel.getInstance().getLoggedUser() != null) {
-            SessionModel.getInstance().setCurrentShop(shopDAO.retrieveShopById(SessionModel.getInstance().getLoggedUser().getShopId()));
+            TechnicianUser technicianUser = (TechnicianUser) SessionModel.getInstance().getLoggedUser();
+            SessionModel.getInstance().setCurrentShop(shopDAO.retrieveShopById(technicianUser.getShopId()));
             return true;
         }
         return false;
