@@ -1,5 +1,7 @@
 package it.dosti.justit.bean;
 
+import it.dosti.justit.model.Coordinates;
+
 public class ShopBean {
     private String name;
     private String address;
@@ -10,6 +12,7 @@ public class ShopBean {
     private String openingHours;
     private boolean homeAssistance;
     private String homeAssistanceMessage;
+    private Coordinates coordinates;
 
     public String getName() {
         return name;
@@ -81,5 +84,12 @@ public class ShopBean {
 
     public void setHomeAssistanceMessage(String homeAssistanceMessage) {
         this.homeAssistanceMessage = homeAssistanceMessage;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

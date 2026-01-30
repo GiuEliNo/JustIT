@@ -24,6 +24,7 @@ public class PageShopController {
         bean.setImage(shop.getImage());
         bean.setOpeningHours(shop.getOpeningHours());
         bean.setHomeAssistance(shop.isHomeAssistance());
+        bean.setCoordinates(shop.getCoordinates());
 
         if (shop.isHomeAssistance()) {
             bean.setHomeAssistanceMessage("Assistenza a domicilio disponibile");

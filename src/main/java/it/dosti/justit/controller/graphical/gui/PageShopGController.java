@@ -4,8 +4,7 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.PageShopController;
-import it.dosti.justit.ui.navigation.gui.CustomMapLayer;
-import it.dosti.justit.ui.navigation.gui.GUINavigationService;
+import it.dosti.justit.utils.CustomMapLayer;
 import it.dosti.justit.ui.navigation.Screen;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -47,13 +46,8 @@ public class PageShopGController extends BaseGController {
         PageShopController appControllerPageShop = new PageShopController();
 
         MapView mapView = new MapView();
-        mapView.setCenter(new MapPoint(41.880018, 12.542675));
 
-        mapView.addLayer(new CustomMapLayer());
 
-        mapView.setZoom(15);
-
-        mapContainer.getChildren().add(mapView);
 
         ShopBean shopBean = appControllerPageShop.getShopBean();
 
@@ -64,7 +58,24 @@ public class PageShopGController extends BaseGController {
             shopPhone.setText(shopBean.getPhone());
             shopEmail.setText(shopBean.getEmail());
             openingHours.setText(shopBean.getOpeningHours());
-            //shopImage.setImage(new Image(shopBean.getImage()));
+            //shopImage.setImage(new Image(shopBean.getImage())); //todo
+
+            if(shopBean.getCoordinates()!=null) {
+
+                mapView.setCenter(new MapPoint(shopBean.getCoordinates().getLatitude(), shopBean.getCoordinates().getLongitude()));
+
+                mapView.addLayer(new CustomMapLayer());
+
+                mapView.setZoom(15);
+                mapContainer.getChildren().add(mapView);
+
+
+            }
+            else{
+                mapContainer.setVisible(false);
+            }
+
+
 
             homeAssistanceLabel.setText(shopBean.getHomeAssistanceMessage());
             if (shopBean.isHomeAssistance()) {

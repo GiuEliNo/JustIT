@@ -8,6 +8,7 @@ module it.dosti.justit {
     requires com.gluonhq.maps;
     requires java.desktop;
     requires java.net.http;
+    requires com.fasterxml.jackson.databind;
 
     opens it.dosti.justit to javafx.fxml;
     exports it.dosti.justit;
@@ -20,4 +21,5 @@ module it.dosti.justit {
     opens it.dosti.justit.controller.graphical.gui to javafx.fxml;
     exports it.dosti.justit.model.booking;
     exports it.dosti.justit.model.booking.state;
+    exports it.dosti.justit.utils;
 }

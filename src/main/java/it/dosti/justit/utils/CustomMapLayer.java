@@ -1,4 +1,4 @@
-package it.dosti.justit.ui.navigation.gui;
+package it.dosti.justit.utils;
 
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
@@ -14,7 +14,7 @@ public class CustomMapLayer extends MapLayer {
 
     private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
 
-    public CustomMapLayer() {}
+    //TODO
 
     public void addPoint(MapPoint point, Node icon) {
         points.add(new Pair<>(point, icon));

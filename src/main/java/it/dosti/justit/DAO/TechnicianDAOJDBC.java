@@ -22,11 +22,9 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     public boolean registerTechnician(String username, String password, String email,String name, String shopName) {
 
         Connection conn = null;
-        Statement stmt = null;
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            stmt = conn.createStatement();
-            if (ShopQuery.getShop(stmt, shopName) != null) {
+            if (ShopQuery.getShop(conn, shopName) != null) {
                 return RegisterQuery.RegisterTechnician(conn, username, password, email, name, shopName);
             }
         }catch(SQLException e){
@@ -38,11 +36,9 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
     public Integer getShopIDbyName(String shopName){
         Connection conn = null;
-        Statement stmt = null;
         try{
             conn=ConnectionDB.getInstance().connectDB();
-            stmt = conn.createStatement();
-            return ShopQuery.getShopID(stmt, shopName);
+            return ShopQuery.getShopID(conn, shopName);
         }
         catch(SQLException e){
             e.printStackTrace();

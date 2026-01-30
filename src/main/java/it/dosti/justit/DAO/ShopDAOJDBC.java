@@ -3,6 +3,7 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.RegisterQuery;
 import it.dosti.justit.DB.query.ShopQuery;
+import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
 
 import java.sql.*;
@@ -33,9 +34,21 @@ public class ShopDAOJDBC implements ShopDAO{
                 String image = rs.getString("image");
                 String openingHours = rs.getString("openingHours");
                 boolean homeAssistance = rs.getBoolean("homeAssistance");
-                Shop shop = new Shop(id, name, address, phone, email, description, image, openingHours, homeAssistance);
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                Shop shop = new Shop.Builder(name)
+                        .id(id).address(address)
+                        .phone(phone).email(email)
+                        .description(description)
+                        .image(image)
+                        .openingHours(openingHours)
+                        .homeAssistance(homeAssistance)
+                        .coordinates(new Coordinates(latitude, longitude))
+                        .build();
+
                 shops.add(shop);
             }
+            stmt.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -63,28 +76,26 @@ public class ShopDAOJDBC implements ShopDAO{
     }
 
     public Shop retrieveShopById(Integer shopId) {
-        Statement stmt = null;
         Connection conn = null;
         try{
 
             conn = ConnectionDB.getInstance().connectDB();
-            stmt = conn.createStatement();
 
-            ResultSet rs = ShopQuery.retrieveShopById(stmt, shopId);
+            ResultSet rs = ShopQuery.retrieveShopById(conn, shopId);
 
             if (rs.next()) {
-                return new Shop(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("address"),
-                        rs.getString("phone"),
-                        rs.getString("email"),
-                        rs.getString("description"),
-                        rs.getString("image"),
-                        rs.getString("openingHours"),
-                        rs.getBoolean("homeAssistance")
-                );
-
+                return new Shop.Builder(
+                        rs.getString("name"))
+                        .id(rs.getInt("id"))
+                        .address(rs.getString("address"))
+                        .phone(rs.getString("phone"))
+                        .email(rs.getString("email"))
+                        .description(rs.getString("description"))
+                        .image(rs.getString("image"))
+                        .openingHours(rs.getString("openingHours"))
+                        .homeAssistance(rs.getBoolean("homeAssistance"))
+                        .coordinates( new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude")))
+                        .build();
             }
 
         }catch(SQLException e){

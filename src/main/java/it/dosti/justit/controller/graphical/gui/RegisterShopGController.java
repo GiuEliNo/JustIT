@@ -23,9 +23,6 @@ public class RegisterShopGController extends BaseGController {
     private TextField openingField2;
 
     @FXML
-    private TextField addressField;
-
-    @FXML
     private TextField emailField;
 
     @FXML
@@ -41,18 +38,27 @@ public class RegisterShopGController extends BaseGController {
     private Button signInButton;
 
     @FXML
+    private TextField addressCountryField;
+    @FXML
+    private TextField addressCityField;
+
+    @FXML
+    private TextField addressStreetField;
+
+
+    @FXML
     void signInPressed() {
         ShopBean shopBean = new ShopBean();
         RegisterController registerController = new RegisterController();
 
         shopBean.setName(nameField.getText());
-        shopBean.setAddress(addressField.getText());
+        shopBean.setAddress(addressStreetField.getText());
         shopBean.setEmail(emailField.getText());
         shopBean.setPhone(phoneField.getText());
         shopBean.setImage(imageField.getText());
         shopBean.setOpeningHours(openingField1.getText()+" : " + openingField2.getText());
         shopBean.setDescription(descriptionField.getText());
-        shopBean.setAddress(addressField.getText());
+        shopBean.setAddress(addressStreetField.getText() + ","  + addressCityField.getText() + "," + addressCountryField.getText());
         shopBean.setHomeAssistance(homeAssistanceCheck.isSelected());
 
         if(registerController.registerNewShop(shopBean))

@@ -1,8 +1,6 @@
 package it.dosti.justit.DB.query;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ShopQuery {
     private ShopQuery() {}
@@ -13,21 +11,41 @@ public class ShopQuery {
         return stmt.executeQuery(sql);
     }
 
-    public static ResultSet getShop(Statement stmt, String shop) throws SQLException {
+    public static ResultSet getShop(Connection conn, String shop) throws SQLException {
         String sql;
-        sql = String.format("SELECT * FROM Shop WHERE name = '%s'", shop);
-        return stmt.executeQuery(sql);
+        sql = "SELECT * FROM Shop WHERE name = ?";
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, shop);
+            return pstmt.executeQuery();
+        }
+
     }
 
-    public static Integer getShopID(Statement stmt, String shop) throws SQLException {
+    public static Integer getShopID(Connection conn, String shop) throws SQLException {
         String sql;
-        sql = String.format("SELECT ID FROM Shop WHERE name = '%s'", shop);
-        return stmt.executeQuery(sql).getInt(1);
+        sql= "SELECT ID FROM Shop WHERE name = ?";
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, shop);
+            return pstmt.executeQuery().getInt(1);
+        }
     }
 
-    public static ResultSet retrieveShopById(Statement stmt, Integer shopId) throws SQLException {
+    public static ResultSet retrieveShopById(Connection conn, Integer shopId) throws SQLException {
         String sql;
-        sql = String.format("SELECT * FROM Shop WHERE id = '%s'", shopId);
-        return stmt.executeQuery(sql);
+
+        sql = "SELECT * FROM Shop WHERE ID = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, shopId);
+
+            return pstmt.executeQuery();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

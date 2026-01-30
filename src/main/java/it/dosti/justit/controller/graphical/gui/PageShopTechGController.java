@@ -1,11 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
-import com.gluonhq.maps.MapPoint;
-import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.controller.app.PageShopController;
 import it.dosti.justit.controller.app.PageShopTechController;
-import it.dosti.justit.ui.navigation.gui.CustomMapLayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
