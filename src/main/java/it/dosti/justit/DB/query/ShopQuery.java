@@ -32,20 +32,9 @@ public class ShopQuery {
         }
     }
 
-    public static ResultSet retrieveShopById(Connection conn, Integer shopId) throws SQLException {
+    public static ResultSet retrieveShopById(Statement stmt, Integer shopId) throws SQLException {
         String sql;
-
-        sql = "SELECT * FROM Shop WHERE ID = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, shopId);
-
-            return pstmt.executeQuery();
-
-        }catch(SQLException e){
-            e.printStackTrace();
-            return null;
-        }
+        sql = String.format("SELECT * FROM Shop WHERE id = %d", shopId);
+        return stmt.executeQuery(sql);
     }
 }

@@ -77,11 +77,13 @@ public class ShopDAOJDBC implements ShopDAO{
 
     public Shop retrieveShopById(Integer shopId) {
         Connection conn = null;
+        Statement stmt = null;
         try{
 
             conn = ConnectionDB.getInstance().connectDB();
+            stmt = conn.createStatement();
 
-            ResultSet rs = ShopQuery.retrieveShopById(conn, shopId);
+            ResultSet rs = ShopQuery.retrieveShopById(stmt, shopId);
 
             if (rs.next()) {
                 return new Shop.Builder(
