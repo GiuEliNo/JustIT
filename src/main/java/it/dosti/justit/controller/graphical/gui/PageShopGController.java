@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 
 public class PageShopGController extends BaseGController {
     @FXML
@@ -62,9 +64,17 @@ public class PageShopGController extends BaseGController {
 
             if(shopBean.getCoordinates()!=null) {
 
-                mapView.setCenter(new MapPoint(shopBean.getCoordinates().getLatitude(), shopBean.getCoordinates().getLongitude()));
+                MapPoint shopPoint = new MapPoint(shopBean.getCoordinates().getLatitude(), shopBean.getCoordinates().getLongitude());
 
-                mapView.addLayer(new CustomMapLayer());
+                mapView.setCenter(shopPoint);
+
+
+                CustomMapLayer ourMapLayer= new CustomMapLayer(shopPoint);
+
+
+
+
+                mapView.addLayer(ourMapLayer);
 
                 mapView.setZoom(15);
                 mapContainer.getChildren().add(mapView);
