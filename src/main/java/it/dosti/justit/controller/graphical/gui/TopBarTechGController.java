@@ -8,7 +8,7 @@ public class TopBarTechGController extends BaseGController {
 
     @FXML
     public void onProfile(){
-   //     navigation.navigate(Screen.SIDEBAR_LIST_SETTING_USER);
+        navigation.navigate(Screen.ACCOUNT_PAGE);
     }
 
     @FXML

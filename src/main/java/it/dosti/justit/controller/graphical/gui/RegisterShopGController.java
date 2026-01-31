@@ -46,6 +46,8 @@ public class RegisterShopGController extends BaseGController {
     private TextField addressStreetField;
 
 
+
+
     @FXML
     void signInPressed() {
         ShopBean shopBean = new ShopBean();
