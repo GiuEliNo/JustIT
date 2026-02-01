@@ -1,5 +1,6 @@
 package it.dosti.justit;
 
+import com.gluonhq.attach.util.Services;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.gui.GUINavigationService;
@@ -10,11 +11,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class GUIMode extends BaseAppMode implements AppMode{
     @Override
     public void start(String[] args) {
+        System.setProperty("javafx.platform", "desktop");
+
         try {
             initDataDirectory();
             db.setDBPath(dbPath);

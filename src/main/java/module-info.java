@@ -5,12 +5,14 @@ module it.dosti.justit {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires java.sql;
-    requires com.gluonhq.maps;
     requires java.desktop;
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
+    requires com.gluonhq.maps;
+    requires com.gluonhq.attach.util;
 
     opens it.dosti.justit to javafx.fxml;
+
     exports it.dosti.justit;
     exports it.dosti.justit.bean;
     exports it.dosti.justit.ui.navigation.gui;
