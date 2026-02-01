@@ -5,7 +5,7 @@ import java.util.Scanner;
 public abstract class BaseCliView implements CLIView{
     protected final Scanner scanner;
 
-    public BaseCliView(){
+    protected BaseCliView(){
         this.scanner = new Scanner(System.in);
     }
     public void clear() {

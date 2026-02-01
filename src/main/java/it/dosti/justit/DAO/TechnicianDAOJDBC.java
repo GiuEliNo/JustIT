@@ -6,6 +6,7 @@ import it.dosti.justit.DB.query.ShopQuery;
 import it.dosti.justit.DB.query.TechnicianQuery;
 import it.dosti.justit.model.TechnicianUser;
 import it.dosti.justit.model.User;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,9 +23,11 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     public boolean registerTechnician(String username, String password, String email,String name, String shopName) {
 
         Connection conn = null;
+        Statement stmt = null;
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            if (ShopQuery.getShop(conn, shopName) != null) {
+            stmt = conn.createStatement();
+            if (ShopQuery.getShop(stmt, shopName) != null) {
                 return RegisterQuery.RegisterTechnician(conn, username, password, email, name, shopName);
             }
         }catch(SQLException e){
@@ -36,12 +39,14 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
     public Integer getShopIDbyName(String shopName){
         Connection conn = null;
+        Statement stmt = null;
         try{
             conn=ConnectionDB.getInstance().connectDB();
-            return ShopQuery.getShopID(conn, shopName);
+            stmt = conn.createStatement();
+            return ShopQuery.getShopID(stmt, shopName);
         }
         catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(),e);
             return null;
         }
     }
@@ -49,10 +54,12 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     @Override
     public User findByUsername(String username) {
         Connection conn = null;
+        Statement stmt = null;
 
         try {
             conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = TechnicianQuery.findByUsername(conn, username);
+            stmt = conn.createStatement();
+            ResultSet rs = TechnicianQuery.findByUsername(stmt, username);
 
             if (rs.next()) {
                 return new TechnicianUser(

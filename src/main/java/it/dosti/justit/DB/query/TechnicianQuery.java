@@ -1,17 +1,14 @@
 package it.dosti.justit.DB.query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class TechnicianQuery {
 
-    public static ResultSet findByUsername(Connection conn, String username) throws SQLException {
-        String sql = "SELECT id, username, name, email, shop FROM Technician WHERE username = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, username);
+    private TechnicianQuery() {}
 
-        return pstmt.executeQuery();
+    public static ResultSet findByUsername(Statement stmt, String username) throws SQLException {
+        String sql =String.format("SELECT id, username, name, email, shop FROM Technician WHERE username = '%s'", username);
+
+        return stmt.executeQuery(sql);
     }
 }

@@ -11,30 +11,22 @@ public class ShopQuery {
         return stmt.executeQuery(sql);
     }
 
-    public static ResultSet getShop(Connection conn, String shop) throws SQLException {
+    public static ResultSet getShop(Statement stmt, String shop) throws SQLException {
         String sql;
-        sql = "SELECT * FROM Shop WHERE name = ?";
-
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, shop);
-            return pstmt.executeQuery();
-        }
-
+        sql =String.format("SELECT * FROM Shop WHERE name = '%s'", shop);
+        return stmt.executeQuery(sql);
     }
 
-    public static Integer getShopID(Connection conn, String shop) throws SQLException {
+    public static Integer getShopID(Statement stmt, String shop) throws SQLException {
         String sql;
-        sql= "SELECT ID FROM Shop WHERE name = ?";
+        sql= String.format("SELECT ID FROM Shop WHERE name = '%s'",shop);
 
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, shop);
-            return pstmt.executeQuery().getInt(1);
-        }
+        return stmt.executeQuery(sql).getInt(1);
     }
 
     public static ResultSet retrieveShopById(Statement stmt, Integer shopId) throws SQLException {
         String sql;
-        sql = String.format("SELECT * FROM Shop WHERE id = %d", shopId);
+        sql = String.format("SELECT * FROM Shop WHERE id = '%d'", shopId);
         return stmt.executeQuery(sql);
     }
 }
