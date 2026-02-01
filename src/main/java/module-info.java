@@ -10,7 +10,6 @@ module it.dosti.justit {
     requires com.fasterxml.jackson.databind;
     requires com.gluonhq.maps;
     requires com.gluonhq.attach.util;
-
     opens it.dosti.justit to javafx.fxml;
 
     exports it.dosti.justit;

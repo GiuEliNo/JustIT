@@ -21,7 +21,7 @@ public class ReviewDAOJDBC implements ReviewDAO {
 
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
             pstmt.setInt(1, shopId);

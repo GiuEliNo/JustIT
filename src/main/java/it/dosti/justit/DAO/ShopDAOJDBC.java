@@ -20,7 +20,7 @@ public class ShopDAOJDBC implements ShopDAO{
 
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ){
 
 
@@ -85,7 +85,7 @@ public class ShopDAOJDBC implements ShopDAO{
              }
         }
         catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return false;
         }
         return false;

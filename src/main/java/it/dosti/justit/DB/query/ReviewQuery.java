@@ -1,8 +1,5 @@
 package it.dosti.justit.DB.query;
 
-import it.dosti.justit.model.Review;
-
-import java.sql.*;
 
 public class ReviewQuery {
     private ReviewQuery(){}

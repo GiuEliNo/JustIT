@@ -11,7 +11,7 @@ import java.sql.*;
 public class ClientUserDAOJDBC implements ClientUserDAO {
 
     @Override
-    public User findByUsername(String username) throws SQLException {
+    public User findByUsername(String username) {
 
         String sql = ClientQuery.SELECT_USERNAME;
 
