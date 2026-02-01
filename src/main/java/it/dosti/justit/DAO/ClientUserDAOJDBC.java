@@ -4,6 +4,7 @@ import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.*;
 import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.User;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 
@@ -12,12 +13,15 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     @Override
     public User findByUsername(String username) throws SQLException {
 
-        Connection conn = null;
+        String sql = ClientQuery.SELECT_USERNAME;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, username);
 
-            ResultSet rs = ClientQuery.findByUsername(conn, username);
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return new ClientUser(
@@ -29,28 +33,34 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
             }
             return null;
-        } finally {
-
+        }catch(SQLException e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
+        return null;
     }
 
     @Override
     public boolean login(String username, String password)
     {
-        PreparedStatement pstmt = null;
-        Connection conn = null;
-        try {
+        String sql = LoginQuery.LOGIN_USER;
 
-            conn = ConnectionDB.getInstance().connectDB();
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
 
 
-            ResultSet rs = LoginQuery.login(conn, username, password);
+            ResultSet rs = pstmt.executeQuery();
 
             if(rs.next()) {
                 return true;
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -58,40 +68,62 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     @Override
     public boolean registerClient(String username, String password, String name, String email) {
 
-        Connection conn = null;
-        try{
-            conn = ConnectionDB.getInstance().connectDB();
-            return RegisterQuery.RegisterUser(conn, username, password, email, name);
+        String sql = RegisterQuery.REGISTER_USER;
+
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, name);
+            pstmt.setString(4, email);
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
         }
         catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
 
     @Override
-    public boolean updateName(String username, String name) {
-        Connection conn = null;
-
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            return ClientQuery.updateName(conn, username, name) == 1;
+    public boolean updateName(String newName, String username) {
+        String sql = ClientQuery.UPDATE_USERNAME;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ) {
+            pstmt.setString(1, newName);
+            pstmt.setString(2, username);
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
-
         return false;
     }
 
     @Override
     public boolean updateEmail(String username, String email) {
-        Connection conn = null;
+        String sql = ClientQuery.UPDATE_EMAIL;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            return ClientQuery.updateEmail(conn, username, email) == 1;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setString(1, email);
+            pstmt.setString(2, username);
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
         return false;
@@ -99,16 +131,25 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
     @Override
     public boolean updatePassword(String username, String newPassword, String oldPassword) {
-        Connection conn = null;
+        String sql = ClientQuery.UPDATE_PASSWORD;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            int response = ClientQuery.updatePassword(conn, username, newPassword, oldPassword);
-            return (response == 1);
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+            pstmt.setString(3, oldPassword);
+
+
+            if (pstmt.executeUpdate() == 1){
+                return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
-
         return false;
     }
 

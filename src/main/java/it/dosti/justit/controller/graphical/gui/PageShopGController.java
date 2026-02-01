@@ -48,7 +48,7 @@ public class PageShopGController extends BaseGController {
         PageShopController appControllerPageShop = new PageShopController();
 
         MapView mapView = new MapView();
-
+        mapView.setMouseTransparent(true);
 
 
         ShopBean shopBean = appControllerPageShop.getShopBean();
@@ -76,7 +76,7 @@ public class PageShopGController extends BaseGController {
 
                 mapView.addLayer(ourMapLayer);
 
-                mapView.setZoom(15);
+                mapView.setZoom(17);
                 mapContainer.getChildren().add(mapView);
 
 

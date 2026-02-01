@@ -1,40 +1,14 @@
 package it.dosti.justit.DB.query;
 
-import java.sql.*;
-
 public class ClientQuery {
+    private ClientQuery() {}
 
+    public static final String SELECT_USERNAME = "SELECT id,username, name, email FROM User WHERE username = ?";
 
-    public static ResultSet findByUsername(Connection conn, String username) throws SQLException {
-        String sql = "SELECT id,username, name, email FROM User WHERE username = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, username);
+    public static final String UPDATE_EMAIL = "UPDATE User SET email = ? WHERE username = ?";
 
-        return pstmt.executeQuery();
-    }
+    public static final String UPDATE_USERNAME = "UPDATE User SET name = ? WHERE username = ?";
 
-    public static int updateEmail(Connection conn, String username, String newEmail) throws SQLException {
-        String sql = "UPDATE User SET email = ? WHERE username = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, newEmail);
-        pstmt.setString(2, username);
-        return pstmt.executeUpdate();
-    }
+    public static final String UPDATE_PASSWORD = "UPDATE User SET password = ? WHERE username = ? AND password = ?";
 
-    public static int updateName(Connection conn, String username, String newName) throws SQLException {
-        String sql = "UPDATE User SET name = ? WHERE username = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, newName);
-        pstmt.setString(2, username);
-        return pstmt.executeUpdate();
-    }
-
-    public static int updatePassword(Connection conn, String username, String newPassword, String oldPassword) throws SQLException {
-        String sql = "UPDATE User SET password = ? WHERE username = ? AND password = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, newPassword);
-        pstmt.setString(2, username);
-        pstmt.setString(3, oldPassword);
-        return pstmt.executeUpdate();
-    }
 }

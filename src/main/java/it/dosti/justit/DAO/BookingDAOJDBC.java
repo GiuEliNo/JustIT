@@ -5,8 +5,10 @@ import it.dosti.justit.DB.query.BookingQuery;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -27,23 +29,40 @@ public class BookingDAOJDBC implements BookingDao {
 
     @Override
     public boolean addBooking(Booking booking) {
-        Connection conn = null;
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            return BookingQuery.addBooking(conn, booking);
+        String sql = BookingQuery.INSERT_BOOKING;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ) {
+
+            pstmt.setInt(1, booking.getShopId());
+            pstmt.setString(2, booking.getUsername());
+            pstmt.setString(3, booking.getDate().toString());
+            pstmt.setString(4, booking.getTimeSlot().toString());
+            pstmt.setString(5, booking.getDescription());
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return false;
         }
+        return false;
     }
 
     @Override
     public List<Booking> getBookingsByUser(String username) {
-        Connection conn = null;
+        String sql = BookingQuery.SELECT_BOOKING_USER;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = BookingQuery.getBookingByUser(conn, username);
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+
+            pstmt.setString(1,username);
+
+            ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
                 Integer bookingId = rs.getInt(ID);
@@ -52,8 +71,6 @@ public class BookingDAOJDBC implements BookingDao {
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
-
-
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 Booking booking = new Booking(bookingId, shopName, username, date, timeSlot, description, status);
@@ -63,18 +80,23 @@ public class BookingDAOJDBC implements BookingDao {
             }
             return bookings;
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
     @Override
     public List<Booking> getBookingsByShop(Integer shopId) {
-        Connection conn;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = BookingQuery.getBookingByShop(conn, shopId);
+        String sql = BookingQuery.SELECT_BOOKING_SHOP;
+
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setInt(1,shopId);
+            ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
                 Integer bookingId = rs.getInt(ID);
@@ -94,53 +116,62 @@ public class BookingDAOJDBC implements BookingDao {
             }
             return bookings;
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
     @Override
     public void updateStatus(Integer bookingId, BookingStatus status) {
-        Connection conn = null;
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            BookingQuery.updateStatus(conn, bookingId, status);
+        String sql = BookingQuery.UPDATE_STATUS;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ) {
+
+            pstmt.setString(1, status.name());
+            pstmt.setInt(2, bookingId);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
     @Override
     public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {
-        Connection conn;
-        try {
+        String sql = BookingQuery.CHECK_BOOKING;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setString(1, username);
+            pstmt.setInt(2, shopID);
 
-            conn = ConnectionDB.getInstance().connectDB();
-
-
-            ResultSet rs = BookingQuery.checkConfirmedBookingWithShop(conn, username, shopID);
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
 
     @Override
     public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date) {
-        Connection conn;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = BookingQuery.getOccupiedSlotsDateByShop(
-                    conn,
-                    shopId,
-                    date.toString()
-            );
+        String sql = BookingQuery.SELECT_OCCUPIED_SLOTS_DATE;
 
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setInt(1, shopId);
+            pstmt.setString(2, date.toString());
+            ResultSet rs = pstmt.executeQuery();
             List<TimeSlot> occupiedSlots = new ArrayList<>();
 
             while (rs.next()) {
@@ -152,18 +183,23 @@ public class BookingDAOJDBC implements BookingDao {
             return occupiedSlots;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
     @Override
     public Booking getBookingById(Integer bookingId) {
-        Connection conn;
 
-        try {
-            conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = BookingQuery.getBookingById(conn, bookingId);
+        String sql = BookingQuery.SELECT_BOOKING_ID;
+
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
 
             Integer shopId = rs.getInt(IDSHOP);
             String username = rs.getString(USERNAME);
@@ -179,7 +215,7 @@ public class BookingDAOJDBC implements BookingDao {
             return new Booking(bookingId, shopId, username, date, timeSlot, description, status);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }

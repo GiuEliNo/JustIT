@@ -3,8 +3,10 @@ package it.dosti.justit.DAO;
 import it.dosti.justit.DB.ConnectionDB;
 import it.dosti.justit.DB.query.ReviewQuery;
 import it.dosti.justit.model.Review;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,13 +16,16 @@ public class ReviewDAOJDBC implements ReviewDAO {
 
     public List<Review> retrieveReviewsByShop(Integer shopId) {
 
-        Connection conn = null;
+        String sql = ReviewQuery.SELECT_REVIEWS;
         List<Review> reviews = new ArrayList<>();
 
-        try{
-
-            conn = ConnectionDB.getInstance().connectDB();
-            ResultSet rs = ReviewQuery.getReviews(conn, shopId);
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                )
+        {
+            pstmt.setInt(1, shopId);
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 String title = rs.getString("title");
@@ -28,23 +33,32 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 String text = rs.getString("review");
                 String username = rs.getString("username");
 
-                Review review = new Review(title, star, text, null, username);
+                Review review = new Review(title, star, text, shopId, username);
                 reviews.add(review);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return reviews;
     }
 
-    public void addReviewToShop(Review instance) {
-        try {
-            Connection conn = ConnectionDB.getInstance().connectDB();
+    public void addReviewToShop(Review review) {
+        String sql = ReviewQuery.INSERT_REVIEW;
 
-            ReviewQuery.addReview(conn, instance);
+        try(Connection conn = ConnectionDB.getInstance().connectDB();
+            PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
+
+            pstmt.setString(1, review.getTitle());
+            pstmt.setInt(2, review.getStar());
+            pstmt.setString(3, review.getReview());
+            pstmt.setInt(4, review.getShop());
+            pstmt.setString(5, review.getUsername());
+
+            pstmt.executeUpdate();
 
             } catch (SQLException e) {
-            throw new RuntimeException(e);
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 }

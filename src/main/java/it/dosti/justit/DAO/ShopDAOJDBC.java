@@ -5,6 +5,7 @@ import it.dosti.justit.DB.query.RegisterQuery;
 import it.dosti.justit.DB.query.ShopQuery;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,15 +15,16 @@ public class ShopDAOJDBC implements ShopDAO{
 
     public List<Shop> retrieveAllShops()
     {
-        Statement stmt = null;
-        Connection conn = null;
         List<Shop> shops = new ArrayList<>();
-        try{
+        String sql = ShopQuery.SELECT_ALL_SHOPS;
 
-            conn = ConnectionDB.getInstance().connectDB();
-            stmt = conn.createStatement();
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
 
-            ResultSet rs = ShopQuery.getAllShops(stmt);
+
+            ResultSet rs = pstmt.executeQuery();
 
             while(rs.next()){
                 Integer id = rs.getInt("id");
@@ -48,9 +50,8 @@ public class ShopDAOJDBC implements ShopDAO{
 
                 shops.add(shop);
             }
-            stmt.close();
         }catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return shops;
     }
@@ -59,14 +60,29 @@ public class ShopDAOJDBC implements ShopDAO{
 
     public boolean registerShop(Shop shop) {
 
-        Connection conn = null;
+        String sql = RegisterQuery.REGISTER_SHOP;
 
-        try{
-            conn = ConnectionDB.getInstance().connectDB();
-            if(RegisterQuery.RegisterShop(conn, shop)) {
-                return true;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setString(1, shop.getName());
+            pstmt.setString(2, shop.getAddress());
+            pstmt.setString(3, shop.getPhone());
+            pstmt.setString(4, shop.getEmail());
+            pstmt.setString(5, shop.getDescription());
+            pstmt.setString(6, shop.getImage());
+            pstmt.setString(7, shop.getOpeningHours());
+            pstmt.setBoolean(8, shop.isHomeAssistance());
+            if(shop.getCoordinates()!=null) {
+                pstmt.setDouble(9, shop.getCoordinates().getLatitude());
+                pstmt.setDouble(10, shop.getCoordinates().getLongitude());
             }
 
+             if (pstmt.executeUpdate()==1){
+                 return true;
+             }
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -76,14 +92,15 @@ public class ShopDAOJDBC implements ShopDAO{
     }
 
     public Shop retrieveShopById(Integer shopId) {
-        Connection conn = null;
-        Statement stmt = null;
-        try{
+        String sql = ShopQuery.SELECT_SHOP_BY_ID;
 
-            conn = ConnectionDB.getInstance().connectDB();
-            stmt = conn.createStatement();
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ){
 
-            ResultSet rs = ShopQuery.retrieveShopById(stmt, shopId);
+            pstmt.setInt(1, shopId);
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return new Shop.Builder(
@@ -101,7 +118,7 @@ public class ShopDAOJDBC implements ShopDAO{
             }
 
         }catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }

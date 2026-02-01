@@ -10,8 +10,6 @@ import java.sql.SQLException;
 public class ConnectionDB {
 
     private static ConnectionDB instance = null;
-    private Connection con = null;
-
     private Path dbPath;
 
 
@@ -28,13 +26,9 @@ public class ConnectionDB {
     }
 
 
-    public synchronized Connection connectDB() throws SQLException {
-        if (con == null) {
+    public Connection connectDB() throws SQLException {
 
-
-            this.con = DriverManager.getConnection("jdbc:sqlite:" + dbPath.toString());
-        }
-        return this.con;
+        return DriverManager.getConnection("jdbc:sqlite:" + dbPath.toString());
     }
 
 }

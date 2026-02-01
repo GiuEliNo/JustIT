@@ -1,115 +1,16 @@
 package it.dosti.justit.DB.query;
 
-import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.User;
-import it.dosti.justit.model.booking.BookingStatus;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
 public class BookingQuery {
 
-    public static boolean addBooking(Connection conn, Booking booking){
+    private BookingQuery() {}
 
-        String sql="INSERT INTO Booking(idShop, username, date, timeSlot, description)"+
-                " VALUES (?,?,?,?,?)";
+    public static final String INSERT_BOOKING = "INSERT INTO Booking(idShop, username, date, timeSlot, description)"+
+            " VALUES (?,?,?,?,?)";
 
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            pstmt.setInt(1, booking.getShopId());
-            pstmt.setString(2, booking.getUsername());
-            pstmt.setString(3, booking.getDate().toString());
-            pstmt.setString(4, booking.getTimeSlot().toString());
-            pstmt.setString(5, booking.getDescription());
-
-            if(pstmt.executeUpdate()==1){
-                pstmt.close();
-                return true;
-            }
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return false;
-    }
-
-    public static boolean updateStatus(Connection conn, int bookingId, BookingStatus status) {
-
-        String sql = "UPDATE Booking SET state = ? WHERE id = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, status.name());
-            pstmt.setInt(2, bookingId);
-
-            return pstmt.executeUpdate() == 1;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-
-    public static ResultSet getBookingByUser(Connection conn, String username){
-        String sql="SELECT B.id, S.name,B.date,B.timeSlot,B.description, B.state FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
-        try{
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setString(1,username);
-
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ResultSet getBookingByShop(Connection conn, Integer shopId) {
-        String sql="SELECT id, username, date, timeSlot, description, state FROM Booking WHERE idShop=?";
-        try{
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setInt(1,shopId);
-
-            return pstmt.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ResultSet checkConfirmedBookingWithShop(Connection conn, String username, Integer shopID) throws SQLException {
-        String sql;
-        sql = "SELECT 1 FROM Booking WHERE username = ? AND idShop = ? AND state IN ('COMPLETED') LIMIT 1";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, username);
-        pstmt.setInt(2, shopID);
-
-        return pstmt.executeQuery();
-    }
-
-    public static ResultSet getOccupiedSlotsDateByShop(Connection conn, Integer shopId, String date) throws SQLException {
-        String sql;
-        sql = "SELECT timeSlot FROM Booking WHERE idShop = ? AND date = ? AND state IN ('PENDING', 'CONFIRMED')";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, shopId);
-        pstmt.setString(2, date);
-
-        return pstmt.executeQuery();
-    }
-
-    public static ResultSet getBookingById(Connection conn, Integer bookingId) throws SQLException {
-        String sql;
-        sql = "SELECT idShop, username, date, timeSlot, description, state FROM Booking WHERE id = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, bookingId);
-
-        return pstmt.executeQuery();
-
-    }
+    public static final String UPDATE_STATUS = "UPDATE Booking SET state = ? WHERE id = ?";
+    public static final String SELECT_BOOKING_USER = "SELECT B.id, S.name,B.date,B.timeSlot,B.description, B.state FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
+    public static final String SELECT_BOOKING_SHOP = "SELECT id, username, date, timeSlot, description, state FROM Booking WHERE idShop=?";
+    public static final String CHECK_BOOKING = "SELECT 1 FROM Booking WHERE username = ? AND idShop = ? AND state IN ('COMPLETED') LIMIT 1";
+    public static final String SELECT_OCCUPIED_SLOTS_DATE = "SELECT timeSlot FROM Booking WHERE idShop = ? AND date = ? AND state IN ('PENDING', 'CONFIRMED')";
+    public static final String SELECT_BOOKING_ID = "SELECT idShop, username, date, timeSlot, description, state FROM Booking WHERE id = ?";
 }
