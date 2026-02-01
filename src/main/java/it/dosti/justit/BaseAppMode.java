@@ -1,6 +1,7 @@
 package it.dosti.justit;
 
 import it.dosti.justit.DB.ConnectionDB;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,7 +20,7 @@ public abstract class BaseAppMode implements AppMode {
 
     protected void connectToDB() throws SQLException {
         db.connectDB();
-        System.out.println("[DB] Connected.");
+        JustItLogger.getInstance().info("[DB] Connected.");
     }
 
     protected void initDataDirectory() {

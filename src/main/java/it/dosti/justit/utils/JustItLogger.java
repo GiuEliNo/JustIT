@@ -1,24 +1,46 @@
 package it.dosti.justit.utils;
 
-import it.dosti.justit.model.SessionModel;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class JustItLogger {
 
-    private static JustItLogger instance;
+    private static final JustItLogger instance = new JustItLogger();
 
-    private JustItLogger(){}
+    private final Logger logger;
 
-        public static JustItLogger getInstance() {
-            if (instance == null) {
-                instance = new JustItLogger();
-            }
+    private JustItLogger(){
+        logger = Logger.getLogger(JustItLogger.class.getName());
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new SimpleFormatter());
+        consoleHandler.setLevel(Level.ALL);
+        logger.addHandler(consoleHandler);
+        logger.setLevel(Level.ALL);
+        logger.setUseParentHandlers(false);
+    }
+
+    public static JustItLogger getInstance() {
             return instance;
-        }
+    }
 
-        public void log(String message)
-        {
-            System.out.println(message);
-        }
+
+    public void info(String message) {
+            logger.info(message);
+    }
+
+    public void warn(String message) {
+        logger.warning(message);
+    }
+
+    public void error(String message) {
+        logger.log(Level.SEVERE, message);
+    }
+
+    public void error(String message, Throwable error) {
+        logger.log(Level.SEVERE, message, error);
+    }
+
 }

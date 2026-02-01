@@ -16,17 +16,6 @@ public class Shop {
         this.name = name;
     }
 
-   // public Shop(Integer id, String name, String address, String phone, String email, String description, String image, String openingHours, boolean homeAssistance) {
-   //     this.id = id;
-   //     this.name = name;
-   //     this.address = address;
-   //     this.phone = phone;
-   //     this.email = email;
-   //     this.description = description;
-   //     this.image = image;
-   //     this.openingHours = openingHours;
-   //     this.homeAssistance = homeAssistance;
-   // }
 
 
     private Shop(Builder builder) {
@@ -113,19 +102,6 @@ public class Shop {
         }
 
 
-    }
-
-
-
-    public Shop( String name, String address, String phone, String email, String description, String image, String openingHours, boolean homeAssistance) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.description = description;
-        this.image = image;
-        this.openingHours = openingHours;
-        this.homeAssistance = homeAssistance;
     }
 
     public Integer getId() {

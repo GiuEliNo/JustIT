@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.dosti.justit.api.NominatimService;
 import it.dosti.justit.model.Coordinates;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -12,7 +13,7 @@ public class CoordinatesDAOAPI implements CoordinatesDAO {
     public CompletableFuture<Coordinates> getCoordinates(String address) {
         NominatimService nominatimService = new NominatimService();
         return nominatimService.searchAddress(address).thenApply(jsonResponse -> {
-            System.out.println("JSON Ricevuto: " + jsonResponse);
+            JustItLogger.getInstance().info("JSON Ricevuto: " + jsonResponse);
 
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -23,16 +24,16 @@ public class CoordinatesDAOAPI implements CoordinatesDAO {
                     double latitude = firstResult.get("lat").asDouble();
                     double longitude = firstResult.get("lon").asDouble();
 
-                    System.out.println("Latitude : " + latitude);
-                    System.out.println("Longitude : " + longitude);
+                    JustItLogger.getInstance().info("Latitude : " + latitude);
+                    JustItLogger.getInstance().info("Longitude : " + longitude);
                     return new Coordinates(latitude, longitude);
                 }
             }catch(Exception e) {
 
-                e.printStackTrace();
+                JustItLogger.getInstance().error("Errore nel ricevere il json delle coordinate", e);
 
             }
-            System.out.println("JSON ricevuto vuoto, Indirizzo sbagliato?");
+            JustItLogger.getInstance().error("JSON ricevuto vuoto, Indirizzo sbagliato?");
             return null;
         });
     }

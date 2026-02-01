@@ -102,7 +102,6 @@ public class PageShopGController extends BaseGController {
 
     @FXML
     public void onBookingClicked() {
-        System.out.println("Prenotato");
         navigation.navigate(Screen.BOOKING_PAGE);
     }
 }

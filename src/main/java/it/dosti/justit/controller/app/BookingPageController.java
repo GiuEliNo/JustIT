@@ -3,6 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,11 +25,11 @@ public class BookingPageController {
         Booking newBooking = new Booking(bookingBean.getShop().getId(), bookingBean.getUsername() ,bookingBean.getDate(), bookingBean.getTimeSlot(), bookingBean.getDescription());
 
         if(bookingModel.addBooking(newBooking)){
-            System.out.println("Booking added successfully");
+            JustItLogger.getInstance().info("Booking added successfully");
             return true;
         }
         else{
-            System.out.println("Booking not added successfully");
+            JustItLogger.getInstance().error("Error adding booking");
             return false;
         }
     }

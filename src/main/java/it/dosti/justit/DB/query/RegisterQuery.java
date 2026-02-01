@@ -1,6 +1,7 @@
 package it.dosti.justit.DB.query;
 
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 
@@ -25,11 +26,11 @@ public class RegisterQuery {
                 return true;
             }
             else{
-                System.out.println("Qualcosa è andato storto");
+                JustItLogger.getInstance().error("Register User failure");
                 return false;
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error("Register User failure", e);
             return false;
         }
     }
@@ -92,7 +93,7 @@ public class RegisterQuery {
             }
         }
         catch(SQLException e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error("Register Shop failure", e);
             return false;
         }
     }

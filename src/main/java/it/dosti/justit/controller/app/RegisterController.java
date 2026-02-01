@@ -6,6 +6,7 @@ import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.model.*;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.SQLException;
 
@@ -18,11 +19,11 @@ public class RegisterController {
         ClientUserModel clientUserModel = new ClientUserModel();
 
         if(clientUserModel.registerClient(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail())){
-            System.out.println("Register successful");
+            JustItLogger.getInstance().info("Register successful");
             return true;
         }
         else {
-            System.out.println("Register failed");
+            JustItLogger.getInstance().error("Register failed");
             return false;
         }
     }
@@ -31,13 +32,13 @@ public class RegisterController {
         TechnicianModel technicianModel = new TechnicianModel();
         Integer shopId = technicianModel.getShopIDbyName(registerBean.getShopName());
         if ( shopId == 0){
-            System.out.println("Shop name not found");
-            System.out.println("Register failed");
+            JustItLogger.getInstance().warn("Shop name not found");
+            JustItLogger.getInstance().error("Register Failed");
             return false;
         }
         else {
 
-            System.out.println("Register successful");
+            JustItLogger.getInstance().info("Register successful");
             return technicianModel.registerTechnician(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail(), registerBean.getShopName());
         }
 
@@ -54,12 +55,11 @@ public class RegisterController {
         Coordinates coord = coordDap.getCoordinates(registerBean.getAddress()).join();
 
         if(coord != null) {
-            System.out.println("Coordinates found");
+            JustItLogger.getInstance().info("Coordinates found");
             registerBean.setCoordinates(coord);
         }
         else {
-            System.out.println("Coordinates not found, proceding with empty bean");
-
+            JustItLogger.getInstance().warn("Coordinates not found, proceeding with empty bean");
         }
 
         Shop shop = new Shop.Builder(registerBean.getName())

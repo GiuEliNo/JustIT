@@ -4,6 +4,7 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingPageController;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -80,7 +81,7 @@ public class BookingPageGController extends BaseGController {
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());
 
-        System.out.println("bookingBean = " + bookingBean);
+        JustItLogger.getInstance().info("bookingBean = " + bookingBean);
 
 
         if(appController.addBooking(bookingBean)){

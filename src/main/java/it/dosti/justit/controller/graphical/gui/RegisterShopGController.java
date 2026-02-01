@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -65,12 +66,12 @@ public class RegisterShopGController extends BaseGController {
 
         if(registerController.registerNewShop(shopBean))
             {
-            System.out.println("Register shop successful");
+            JustItLogger.getInstance().info("Register shop successful");
             new MainGController(navigation);
             navigation.navigate(Screen.REGISTERTEC_VIEW);
             }
         else{
-            System.out.println("Register shop failed");
+            JustItLogger.getInstance().info("Register shop failed");
         }
 
     }
