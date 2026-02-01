@@ -15,14 +15,11 @@ public class LauncherGCliController extends BaseCliController {
         switch (choice){
             case "1":
                 // navigation.navigate(Screen.USERPROFILE); per ora riporta alla stessa view
-                navigation.navigate(Screen.MAIN_USER);
+                navigation.navigate(Screen.LOGIN);
                 break;
             case "2":
-                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+                //navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
                 break;
-            case "3":
-                //navigation.navigate(Screen.LISTBOOKING); per ora riporta alla stessa view
-                navigation.navigate(Screen.MAIN_USER);
             default:
                 navigation.navigate(Screen.MAIN_USER);
         }

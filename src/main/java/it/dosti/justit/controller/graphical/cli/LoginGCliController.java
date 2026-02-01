@@ -20,8 +20,7 @@ public class LoginGCliController extends BaseCliController {
         LoginBean loginBean = new LoginBean(username, password, role);
 
         if (appController.checkLogin(loginBean)) {
-            //navigation.navigate(Screen.MAIN_USER);
-            System.out.println("Corretto");
+            navigation.navigate(Screen.MAIN_USER);
         } else {
             System.out.println("Errore");
             navigation.navigate(Screen.LOGIN);
