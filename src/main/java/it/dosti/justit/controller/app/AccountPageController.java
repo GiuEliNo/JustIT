@@ -20,15 +20,15 @@ public class AccountPageController {
         return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
-    public Boolean editName(UserBean userBean) throws SQLException {
+    public boolean editName(UserBean userBean) throws SQLException {
         return clientUserModel.updateNameClient(userBean.getName());
     }
 
-    public Boolean editEmail(UserBean userBean) throws SQLException {
+    public boolean editEmail(UserBean userBean) throws SQLException {
         return clientUserModel.updateEmailClient(userBean.getEmail());
     }
 
-    public Boolean changePassword(PasswordBean passwordBean) {
+    public boolean changePassword(PasswordBean passwordBean) {
         return clientUserModel.updatePasswordClient(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 }

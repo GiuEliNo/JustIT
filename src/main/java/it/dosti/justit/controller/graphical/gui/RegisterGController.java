@@ -3,7 +3,6 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -11,9 +10,6 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
 public class RegisterGController  extends BaseGController{
-    private RegisterBean bean;
-    private RegisterController controller;
-
 
     @FXML
     private TextField emailField;
@@ -49,16 +45,15 @@ public class RegisterGController  extends BaseGController{
 
     @FXML
     public void signInPressed() throws SQLException {
-
-        bean = new RegisterBean();
-        controller = new RegisterController();
+        RegisterBean bean = new RegisterBean();
+        RegisterController appController = new RegisterController();
 
         bean.setName(nameField.getText());
         bean.setPassword(passwordField.getText());
         bean.setEmail(emailField.getText());
         bean.setUsername(usernameField.getText());
 
-        if(controller.registerNewUser(bean)) {
+        if(appController.registerNewUser(bean)) {
             new MainGController(navigation);
             navigation.navigate(Screen.LAUNCHER);
         }

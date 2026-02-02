@@ -30,7 +30,10 @@ public class BrowseShopGCliController extends BaseCliController{
                 break;
             case "3":
                 this.randomShop();
-                //navigation.navigate(Screen.PAGE_SHOP);
+                // TODO navigation.navigate(Screen.PAGE_SHOP);
+                break;
+            default:
+                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
                 break;
         }
 

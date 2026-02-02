@@ -31,11 +31,7 @@ public class GUINavigationService implements NavigationService {
     public void navigate(Screen screen) {
         Parent view = loadView(screen);
         switch (screen) {
-            case LAUNCHER:
-            case REGISTER_VIEW:
-            case REGISTERTEC_VIEW:
-            case BOOKINGS:
-            case BOOKING_PAGE:
+            case LAUNCHER, REGISTER_VIEW, REGISTERTEC_VIEW, BOOKINGS, BOOKING_PAGE:
                 root.setTop(null);
                 root.setLeft(null);
                 root.setCenter(view);
@@ -43,15 +39,12 @@ public class GUINavigationService implements NavigationService {
                 root.setBottom(null);
                 break;
 
-            case SIDEBAR_TECH_LIST:
-            case SIDEBAR_SEARCH_LIST:
-            case SIDEBAR_LIST_SETTING_USER:
+            case SIDEBAR_TECH_LIST, SIDEBAR_SEARCH_LIST, SIDEBAR_LIST_SETTING_USER:
                 root.setLeft(view);
                 root.setCenter(null);
                 break;
 
-            case TOPBARTEC:
-            case TOPBARUSER:
+            case TOPBARTEC, TOPBARUSER:
                 root.setTop(view);
                 break;
             default:

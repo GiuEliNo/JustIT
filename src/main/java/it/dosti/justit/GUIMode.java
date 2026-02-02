@@ -1,6 +1,5 @@
 package it.dosti.justit;
 
-import com.gluonhq.attach.util.Services;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.gui.GUINavigationService;
@@ -8,10 +7,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class GUIMode extends BaseAppMode implements AppMode{

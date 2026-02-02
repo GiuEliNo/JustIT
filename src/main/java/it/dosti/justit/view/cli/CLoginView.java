@@ -1,10 +1,6 @@
 package it.dosti.justit.view.cli;
 
-import java.util.Scanner;
-
 public class CLoginView extends BaseCliView {
-
-    private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void render() {

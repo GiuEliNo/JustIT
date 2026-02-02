@@ -2,8 +2,6 @@ package it.dosti.justit.bean;
 
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
-import it.dosti.justit.model.User;
-import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDate;

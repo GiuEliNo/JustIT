@@ -26,6 +26,8 @@ public class AccountPageGController extends BaseGController {
 
     private AccountPageController appController;
 
+    public static final String EDIT_EMAIL = "Edit Mail";
+
 
     public void initialize(){
         appController = new AccountPageController();
@@ -69,7 +71,7 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onEditName() {
-        DialogEditUser dialog = new DialogEditUser("Edit Name", SessionModel.getInstance().getLoggedUser().getName());
+        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionModel.getInstance().getLoggedUser().getName());
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
@@ -79,12 +81,12 @@ public class AccountPageGController extends BaseGController {
                 try {
                     if(!appController.editName(userBean)){
                         Notifications.create()
-                                .title("Edit Name")
+                                .title(EDIT_EMAIL)
                                 .text("Error name not changed!")
                                 .showError();
                     } else {
                         Notifications.create()
-                                .title("Edit Name")
+                                .title(EDIT_EMAIL)
                                 .text("Success!")
                                 .showConfirm();
                     }
@@ -98,7 +100,7 @@ public class AccountPageGController extends BaseGController {
     }
 
     public void onEditEmail() {
-        DialogEditUser dialog = new DialogEditUser("Edit Email", SessionModel.getInstance().getLoggedUser().getEmail());
+        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionModel.getInstance().getLoggedUser().getEmail());
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {

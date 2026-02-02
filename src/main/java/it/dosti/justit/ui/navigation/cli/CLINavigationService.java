@@ -35,8 +35,9 @@ public class CLINavigationService implements NavigationService {
                 return new CPageShopCliView();
             case REVIEWS_BOX:
                 return new CReviewListView();
+            default:
+                return null;
         }
-        return null;
     }
 
     public BaseCliController createController(Screen screen) {

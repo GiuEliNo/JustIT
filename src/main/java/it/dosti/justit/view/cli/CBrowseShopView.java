@@ -6,6 +6,8 @@ import java.util.List;
 
 public class CBrowseShopView extends BaseCliView{
 
+    private static final String TABLE_HEADER_FORMAT = "| %-4s | %-40s | %-30s | %-50s |%n";
+
     @Override
     public void render() {
         System.out.println("===== BROWSE SHOP =====");
@@ -24,20 +26,19 @@ public class CBrowseShopView extends BaseCliView{
             System.out.println("Shop not found");
             return;
         }
-        String separatorLine = "+";
-        for (int i = 0; i < 133; i++) {
-            separatorLine += "-";
-        }
-        separatorLine += "+";
+        String separatorLine = "+" + "-".repeat(133) + "+";
 
         System.out.println(separatorLine);
-        System.out.printf("| %-4s | %-40s | %-30s | %-50s |\n", "N.", "Name", "Address", "Description");
+        System.out.printf(
+                TABLE_HEADER_FORMAT,
+                "N.", "Name", "Address", "Description"
+        );
         System.out.println(separatorLine);
 
         for (int i = 0; i < allShops.size(); i++) {
             Shop shop = allShops.get(i);
             System.out.printf(
-                    "| %-4d | %-40s | %-30s | %-50s |\n",
+                    TABLE_HEADER_FORMAT,
                     (i + 1),
                     shop.getName(),
                     shop.getAddress(),
