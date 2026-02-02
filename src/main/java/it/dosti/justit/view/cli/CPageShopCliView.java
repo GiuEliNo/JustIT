@@ -2,6 +2,7 @@ package it.dosti.justit.view.cli;
 
 import it.dosti.justit.bean.ShopBean;
 
+@SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
 public class CPageShopCliView extends BaseCliView{
     @Override
     public void render() {

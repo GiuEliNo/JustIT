@@ -4,6 +4,7 @@ import it.dosti.justit.model.Shop;
 
 import java.util.List;
 
+@SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
 public class CBrowseShopView extends BaseCliView{
 
     private static final String TABLE_HEADER_FORMAT = "| %-4s | %-40s | %-30s | %-50s |%n";

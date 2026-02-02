@@ -1,5 +1,6 @@
 package it.dosti.justit.view.cli;
 
+@SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
 public class CMainUserView extends BaseCliView{
     @Override
     public void render() {
