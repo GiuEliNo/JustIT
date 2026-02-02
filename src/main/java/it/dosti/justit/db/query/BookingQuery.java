@@ -1,4 +1,4 @@
-package it.dosti.justit.DB.query;
+package it.dosti.justit.db.query;
 
 public class BookingQuery {
 

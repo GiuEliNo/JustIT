@@ -1,4 +1,4 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
 import it.dosti.justit.model.User;
 

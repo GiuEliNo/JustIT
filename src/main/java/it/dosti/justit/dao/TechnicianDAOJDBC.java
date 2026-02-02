@@ -1,10 +1,10 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
-import it.dosti.justit.DB.ConnectionDB;
-import it.dosti.justit.DB.query.LoginQuery;
-import it.dosti.justit.DB.query.RegisterQuery;
-import it.dosti.justit.DB.query.ShopQuery;
-import it.dosti.justit.DB.query.TechnicianQuery;
+import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.db.query.LoginQuery;
+import it.dosti.justit.db.query.RegisterQuery;
+import it.dosti.justit.db.query.ShopQuery;
+import it.dosti.justit.db.query.TechnicianQuery;
 import it.dosti.justit.model.TechnicianUser;
 import it.dosti.justit.model.User;
 import it.dosti.justit.utils.JustItLogger;

@@ -1,7 +1,7 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
-import it.dosti.justit.DB.ConnectionDB;
-import it.dosti.justit.DB.query.*;
+import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.db.query.*;
 import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.User;
 import it.dosti.justit.utils.JustItLogger;

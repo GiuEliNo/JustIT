@@ -1,7 +1,7 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.DAO.ReviewDAO;
-import it.dosti.justit.DAO.ReviewDAOJDBC;
+import it.dosti.justit.dao.ReviewDAO;
+import it.dosti.justit.dao.ReviewDAOJDBC;
 import it.dosti.justit.bean.ReviewBean;
 
 import java.util.List;

@@ -16,7 +16,7 @@ module it.dosti.justit {
     exports it.dosti.justit.bean;
     exports it.dosti.justit.ui.navigation.gui;
     exports it.dosti.justit.ui.navigation;
-    exports it.dosti.justit.DB;
+    exports it.dosti.justit.db;
     exports it.dosti.justit.model;
     exports it.dosti.justit.controller.graphical.gui;
     opens it.dosti.justit.controller.graphical.gui to javafx.fxml;

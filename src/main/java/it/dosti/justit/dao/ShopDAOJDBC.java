@@ -1,8 +1,8 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
-import it.dosti.justit.DB.ConnectionDB;
-import it.dosti.justit.DB.query.RegisterQuery;
-import it.dosti.justit.DB.query.ShopQuery;
+import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.db.query.RegisterQuery;
+import it.dosti.justit.db.query.ShopQuery;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JustItLogger;

@@ -1,12 +1,13 @@
 package it.dosti.justit;
 
-import it.dosti.justit.DB.ConnectionDB;
+import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class BaseAppMode implements AppMode {
@@ -19,8 +20,16 @@ public abstract class BaseAppMode implements AppMode {
     }
 
     protected void connectToDB() throws SQLException {
-        db.connectDB();
-        JustItLogger.getInstance().info("[DB] Connected.");
+        try(
+                Connection conn = db.connectDB()
+                )
+        {
+            JustItLogger.getInstance().info("[DB] Connected.");
+
+        }catch(SQLException e){
+            JustItLogger.getInstance().error("[DB] not connected",e);
+        }
+
     }
 
     protected void initDataDirectory() {

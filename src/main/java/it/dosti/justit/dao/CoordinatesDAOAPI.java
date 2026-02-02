@@ -1,4 +1,4 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

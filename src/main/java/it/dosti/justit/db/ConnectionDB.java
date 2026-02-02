@@ -1,4 +1,4 @@
-package it.dosti.justit.DB;
+package it.dosti.justit.db;
 
 
 import java.nio.file.Path;

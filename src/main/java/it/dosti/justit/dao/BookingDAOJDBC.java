@@ -1,7 +1,7 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
-import it.dosti.justit.DB.ConnectionDB;
-import it.dosti.justit.DB.query.BookingQuery;
+import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.db.query.BookingQuery;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BookingDAOJDBC implements BookingDao {
+public class BookingDAOJDBC implements BookingDAO {
 
     private static final String TIMESLOT = "timeSlot";
     private static final String ID = "id";

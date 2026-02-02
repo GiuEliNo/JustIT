@@ -1,9 +1,9 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.DAO.ShopDAO;
-import it.dosti.justit.DAO.ShopDAOJDBC;
-import it.dosti.justit.DAO.TechnicianDAO;
-import it.dosti.justit.DAO.TechnicianDAOJDBC;
+import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.ShopDAOJDBC;
+import it.dosti.justit.dao.TechnicianDAO;
+import it.dosti.justit.dao.TechnicianDAOJDBC;
 
 public class TechnicianModel {
     private final TechnicianDAO technicianDAO;

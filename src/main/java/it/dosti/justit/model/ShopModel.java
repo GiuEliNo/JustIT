@@ -1,7 +1,7 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.DAO.ShopDAO;
-import it.dosti.justit.DAO.ShopDAOJDBC;
+import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.ShopDAOJDBC;
 import java.util.List;
 
 public class ShopModel {

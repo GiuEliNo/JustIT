@@ -1,15 +1,14 @@
-package it.dosti.justit.DAO;
+package it.dosti.justit.dao;
 
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.User;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
-public interface BookingDao {
+public interface BookingDAO {
     boolean addBooking(Booking booking);
 
     List<Booking> getBookingsByUser(String username);

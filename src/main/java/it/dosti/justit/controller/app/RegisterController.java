@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.DAO.CoordinatesDAO;
-import it.dosti.justit.DAO.CoordinatesDAOAPI;
+import it.dosti.justit.dao.CoordinatesDAO;
+import it.dosti.justit.dao.CoordinatesDAOAPI;
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;

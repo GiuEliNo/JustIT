@@ -1,7 +1,7 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.DAO.BookingDao;
-import it.dosti.justit.DAO.BookingDAOJDBC;
+import it.dosti.justit.dao.BookingDAO;
+import it.dosti.justit.dao.BookingDAOJDBC;
 import it.dosti.justit.model.booking.*;
 import it.dosti.justit.model.booking.state.*;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingModel {
-    private final BookingDao bookingDao;
+    private final BookingDAO bookingDao;
 
     public BookingModel() {
         bookingDao = new BookingDAOJDBC();

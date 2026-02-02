@@ -1,7 +1,7 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.DAO.ClientUserDAO;
-import it.dosti.justit.DAO.ClientUserDAOJDBC;
+import it.dosti.justit.dao.ClientUserDAO;
+import it.dosti.justit.dao.ClientUserDAOJDBC;
 
 import java.sql.SQLException;
 
