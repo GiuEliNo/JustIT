@@ -77,10 +77,10 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 )
         {
 
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, name);
-            pstmt.setString(4, email);
+            pstmt.setString(2, username);
+            pstmt.setString(4, password);
+            pstmt.setString(1, name);
+            pstmt.setString(3, email);
             if(pstmt.executeUpdate() == 1) {
                 return true;
             }

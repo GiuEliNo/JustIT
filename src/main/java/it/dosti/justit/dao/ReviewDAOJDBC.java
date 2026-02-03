@@ -26,7 +26,6 @@ public class ReviewDAOJDBC implements ReviewDAO {
         {
             pstmt.setInt(1, shopId);
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
                 String title = rs.getString("title");
                 Integer star = rs.getInt("stars");

@@ -1,8 +1,10 @@
 package it.dosti.justit;
 
 import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.exceptions.DatabaseInitializationException;
 import it.dosti.justit.utils.JustItLogger;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,15 +49,15 @@ public abstract class BaseAppMode implements AppMode {
                 try (InputStream input = getClass().getResourceAsStream("/DB/justit.db")) {
 
                     if (input == null) {
-                        throw new RuntimeException("DB resource not found");
+                        throw new DatabaseInitializationException("Database not found");
                     }
 
                     Files.copy(input, dbPath);
                 }
             }
 
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize data directory", e);
+        } catch (DatabaseInitializationException | IOException e ) {
+            JustItLogger.getInstance().error(e.getMessage(),e);
         }
     }
 }
