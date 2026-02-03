@@ -11,6 +11,7 @@
     </padding>
 
     <Button onAction="#onAccount" prefWidth="200" text="Account" />
+    <Button onAction="#onMessages" prefWidth="200" text="Messages" />
     <Button onAction="#onPayments" prefWidth="200" text="Payment Methods" />
     
 </VBox>

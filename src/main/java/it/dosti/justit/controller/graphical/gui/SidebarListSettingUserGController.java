@@ -11,6 +11,11 @@ public class SidebarListSettingUserGController extends BaseGController {
     }
 
     @FXML
+    public void onMessages() {
+        navigation.navigate(Screen.MESSAGES);
+    }
+
+    @FXML
     public void onPayments() {
         navigation.navigate(Screen.PAYMENTS);
     }

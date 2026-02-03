@@ -3,6 +3,8 @@ package it.dosti.justit.model;
 import it.dosti.justit.dao.BookingDAO;
 import it.dosti.justit.dao.BookingDAOJDBC;
 import it.dosti.justit.model.booking.*;
+import it.dosti.justit.model.booking.observer.BookingStatusChange;
+import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.booking.state.*;
 
 import java.time.LocalDate;
@@ -52,18 +54,24 @@ public class BookingModel {
     }
 
     public void confirmBooking(Booking booking) {
+        BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.CONFIRM);
         bookingDao.updateStatus(booking.getBookingId(),booking.getStatus());
+        notifyStatusChange(booking, oldStatus);
     }
 
     public void rejectBooking(Booking booking) {
+        BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.REJECT);
         bookingDao.updateStatus(booking.getBookingId(), booking.getStatus());
+        notifyStatusChange(booking, oldStatus);
     }
 
     public void completeBooking(Booking booking) {
+        BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.COMPLETE);
         bookingDao.updateStatus(booking.getBookingId(), booking.getStatus());
+        notifyStatusChange(booking, oldStatus);
     }
 
     public List<TimeSlot> getAvailableSlots(Integer shopId, LocalDate date) {
@@ -82,5 +90,12 @@ public class BookingModel {
 
     public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
         return !getAvailableSlots(shopId, date).isEmpty();
+    }
+
+    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+        if (oldStatus != booking.getStatus()) {
+            BookingStatusPublisher.getInstance()
+                    .notifyChange(new BookingStatusChange(booking, oldStatus, booking.getStatus()));
+        }
     }
 }

@@ -15,6 +15,7 @@ public enum GUIScreen {
     TOPBARTEC("/topBarTech.fxml"),
     REGISTER_SHOP("/registerShop.fxml"),
     ACCOUNT_PAGE("/accountPage.fxml"),
+    MESSAGES("/messages.fxml"),
     SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml"),
     PAGE_SHOP_TECH("/pageShopTech.fxml"),
     BOOKINGS("/bookings.fxml"),

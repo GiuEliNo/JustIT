@@ -100,6 +100,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.SIDEBAR_LIST_SETTING_USER;
             case ACCOUNT_PAGE:
                 return GUIScreen.ACCOUNT_PAGE;
+            case MESSAGES:
+                return GUIScreen.MESSAGES;
             case  BOOKINGS:
                 return GUIScreen.BOOKINGS;
             case PAGE_SHOP_TECH:

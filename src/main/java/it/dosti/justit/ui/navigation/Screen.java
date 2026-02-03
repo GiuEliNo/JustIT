@@ -9,6 +9,7 @@ public enum Screen {
     BOOKING_PAGE,
     SIDEBAR_LIST_SETTING_USER,
     ACCOUNT_PAGE,
+    MESSAGES,
     REVIEWS_BOX,
     ACCOUNT,
     PAYMENTS,

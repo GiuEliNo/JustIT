@@ -3,6 +3,9 @@ package it.dosti.justit;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.gui.GUINavigationService;
+import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
+import it.dosti.justit.model.booking.observer.BookingStatusGuiObserver;
+import it.dosti.justit.model.notification.NotificationDbObserver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -39,6 +42,9 @@ public class GUIMode extends BaseAppMode implements AppMode{
             stage.setResizable(false);
             stage.show();
             Platform.runLater(stage::centerOnScreen);
+
+            BookingStatusPublisher.getInstance().registerObserver(new NotificationDbObserver());
+            BookingStatusPublisher.getInstance().registerObserver(new BookingStatusGuiObserver());
 
             navigation.navigate(Screen.LAUNCHER);
 
