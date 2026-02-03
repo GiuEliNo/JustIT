@@ -27,7 +27,7 @@ public class ReviewsGController extends BaseGController{
         ReviewBean reviewBean = new ReviewBean();
         DialogAddReview dialog = new DialogAddReview();
 
-        if(!appControllerReviewPageShop.canReview()){
+        if(Boolean.FALSE.equals(appControllerReviewPageShop.canReview())){
             Notifications.create()
                 .title("Add Review")
                 .text("You can't review a shop without ever booking.")
@@ -48,7 +48,8 @@ public class ReviewsGController extends BaseGController{
     }
 
     public void updateReviewList() {
-        listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
+            listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
+
     }
 
 }
