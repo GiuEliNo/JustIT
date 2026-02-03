@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.RegisterController;
+import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -64,14 +65,17 @@ public class RegisterShopGController extends BaseGController {
         shopBean.setAddress(addressStreetField.getText() + ","  + addressCityField.getText() + "," + addressCountryField.getText());
         shopBean.setHomeAssistance(homeAssistanceCheck.isSelected());
 
-        if(registerController.registerNewShop(shopBean))
-            {
-            JustItLogger.getInstance().info("Register shop successful");
-            new MainGController(navigation);
-            navigation.navigate(Screen.REGISTERTEC_VIEW);
+        try {
+            if (registerController.registerNewShop(shopBean)) {
+                JustItLogger.getInstance().info("Register shop successful");
+                new MainGController(navigation);
+                navigation.navigate(Screen.REGISTERTEC_VIEW);
+            } else {
+                throw new RegisterOnDbException("Register shop failed");
             }
-        else{
-            JustItLogger.getInstance().info("Register shop failed");
+
+        }catch(RegisterOnDbException e){
+            JustItLogger.getInstance().error(e.getMessage());
         }
 
     }

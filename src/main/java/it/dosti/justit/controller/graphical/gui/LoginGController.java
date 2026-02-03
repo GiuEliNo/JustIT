@@ -2,15 +2,16 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
+import it.dosti.justit.exceptions.LoginFromDBException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-
-import java.sql.SQLException;
 
 public class LoginGController extends BaseGController {
     @FXML
@@ -32,16 +33,21 @@ public class LoginGController extends BaseGController {
         appController = new LoginController();
     }
     @FXML
-    private void onLogin() throws SQLException {
+    private void onLogin() {
 
         RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
         LoginBean loginBean = new LoginBean(user.getText(), password.getText(), roleType);
 
-        if(appController.checkLogin(loginBean)) {
-            new MainGController(navigation);
+        try {
+            if (appController.checkLogin(loginBean)) {
+                new MainGController(navigation);
+            }
+            else {
+                outputLabel.setText("Incorrect username or password");
+            }
         }
-        else {
-            outputLabel.setText("User or Password incorrect");
+            catch(LoginFromDBException | ShopNotFoundException e){
+                JustItLogger.getInstance().error(e.getMessage());
         }
     }
 

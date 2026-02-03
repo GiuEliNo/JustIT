@@ -2,6 +2,8 @@ package it.dosti.justit.model;
 
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+
 import java.util.List;
 
 public class ShopModel {
@@ -15,7 +17,7 @@ public class ShopModel {
         return shopDAO.retrieveAllShops();
     }
 
-    public boolean registerShop(Shop shop) {
+    public boolean registerShop(Shop shop) throws RegisterOnDbException {
 
         return shopDAO.registerShop(shop);
 

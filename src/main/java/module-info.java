@@ -23,4 +23,5 @@ module it.dosti.justit {
     exports it.dosti.justit.model.booking;
     exports it.dosti.justit.model.booking.state;
     exports it.dosti.justit.utils;
+    exports it.dosti.justit.exceptions;
 }

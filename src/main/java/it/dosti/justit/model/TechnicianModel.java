@@ -4,6 +4,10 @@ import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.dao.TechnicianDAO;
 import it.dosti.justit.dao.TechnicianDAOJDBC;
+import it.dosti.justit.exceptions.LoginFromDBException;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 
 public class TechnicianModel {
     private final TechnicianDAO technicianDAO;
@@ -14,7 +18,7 @@ public class TechnicianModel {
         this.shopDAO = new ShopDAOJDBC();
     }
 
-    public boolean loginTechnician(String username, String password){
+    public boolean loginTechnician(String username, String password) throws LoginFromDBException, ShopNotFoundException {
         if(technicianDAO.loginTechnician(username, password)){
             return this.updateSessionUser(username);
         }
@@ -23,7 +27,7 @@ public class TechnicianModel {
         }
     }
 
-    private boolean updateSessionUser(String username) {
+    private boolean updateSessionUser(String username) throws UserNotFoundException, ShopNotFoundException {
 
         SessionModel.getInstance().setLoggedUser(technicianDAO.findByUsername(username));
         if(SessionModel.getInstance().getLoggedUser() != null) {
@@ -35,7 +39,7 @@ public class TechnicianModel {
     }
 
 
-    public boolean registerTechnician(String username, String password, String name, String email, String shop){
+    public boolean registerTechnician(String username, String password, String name, String email, String shop) throws RegisterOnDbException, UserNotFoundException, ShopNotFoundException {
         if(technicianDAO.registerTechnician(username, password, name, email, shop)){
             this.updateSessionUser(username);
             return true;
@@ -43,7 +47,7 @@ public class TechnicianModel {
         else return false;
     }
 
-    public Integer getShopIDbyName(String shopName){
+    public Integer getShopIDbyName(String shopName) throws ShopNotFoundException {
         return technicianDAO.getShopIDbyName(shopName);
     }
 }

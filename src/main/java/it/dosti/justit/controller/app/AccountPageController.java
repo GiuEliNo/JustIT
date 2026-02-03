@@ -2,11 +2,11 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
+import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.ClientUserModel;
 import it.dosti.justit.model.User;
-
-import java.sql.SQLException;
 
 public class AccountPageController {
     private final ClientUserModel clientUserModel;
@@ -20,15 +20,15 @@ public class AccountPageController {
         return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
-    public boolean editName(UserBean userBean) throws SQLException {
+    public boolean editName(UserBean userBean) throws UserNotFoundException, UpdateOnDBException {
         return clientUserModel.updateNameClient(userBean.getName());
     }
 
-    public boolean editEmail(UserBean userBean) throws SQLException {
+    public boolean editEmail(UserBean userBean) throws UserNotFoundException, UpdateOnDBException {
         return clientUserModel.updateEmailClient(userBean.getEmail());
     }
 
-    public boolean changePassword(PasswordBean passwordBean) {
+    public boolean changePassword(PasswordBean passwordBean) throws UserNotFoundException, UpdateOnDBException {
         return clientUserModel.updatePasswordClient(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 }

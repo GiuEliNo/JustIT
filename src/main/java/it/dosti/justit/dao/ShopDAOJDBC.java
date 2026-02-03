@@ -3,6 +3,8 @@ package it.dosti.justit.dao;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.RegisterQuery;
 import it.dosti.justit.db.query.ShopQuery;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JustItLogger;
@@ -58,7 +60,7 @@ public class ShopDAOJDBC implements ShopDAO{
 
 
 
-    public boolean registerShop(Shop shop) {
+    public boolean registerShop(Shop shop) throws RegisterOnDbException{
 
         String sql = RegisterQuery.REGISTER_SHOP;
 
@@ -85,13 +87,12 @@ public class ShopDAOJDBC implements ShopDAO{
              }
         }
         catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-            return false;
+            throw new RegisterOnDbException("Error on Shop registering", e);
         }
         return false;
     }
 
-    public Shop retrieveShopById(Integer shopId) {
+    public Shop retrieveShopById(Integer shopId) throws ShopNotFoundException {
         String sql = ShopQuery.SELECT_SHOP_BY_ID;
 
         try(
@@ -118,7 +119,7 @@ public class ShopDAOJDBC implements ShopDAO{
             }
 
         }catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new ShopNotFoundException("Shop not found");
         }
         return null;
     }

@@ -5,16 +5,19 @@ import it.dosti.justit.db.query.LoginQuery;
 import it.dosti.justit.db.query.RegisterQuery;
 import it.dosti.justit.db.query.ShopQuery;
 import it.dosti.justit.db.query.TechnicianQuery;
+import it.dosti.justit.exceptions.LoginFromDBException;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.TechnicianUser;
 import it.dosti.justit.model.User;
-import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 
 public class TechnicianDAOJDBC implements TechnicianDAO {
 
 
-    public boolean loginTechnician(String username, String password){
+    public boolean loginTechnician(String username, String password) throws LoginFromDBException {
 
         String sql = LoginQuery.LOGIN_TECHNICIAN;
 
@@ -31,12 +34,12 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             }
         }
         catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new LoginFromDBException("Error checking login", e);
         }
         return false;
     }
 
-    public boolean registerTechnician(String username, String password, String email,String name, String shopName) {
+    public boolean registerTechnician(String username, String password, String email,String name, String shopName) throws RegisterOnDbException {
 
         String sql1 = RegisterQuery.REGISTER_TECHNICIAN;
         String sql2 = ShopQuery.SELECT_SHOP_BY_NAME;
@@ -70,13 +73,12 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 }
             }
         }catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-            return false;
+            throw new RegisterOnDbException("Error registering the new technician", e);
         }
         return false;
     }
 
-    public Integer getShopIDbyName(String shopName){
+    public Integer getShopIDbyName(String shopName) throws ShopNotFoundException {
         String sql1 = ShopQuery.SELECT_ID_SHOP;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -90,14 +92,13 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             }
         }
         catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(),e);
-            return null;
+            throw new ShopNotFoundException("Shop not found");
         }
         return null;
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsername(String username) throws UserNotFoundException {
 
 
         String sql = TechnicianQuery.SELECT_BY_USERNAME;
@@ -123,7 +124,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
         } catch (SQLException e) {
 
-            JustItLogger.getInstance().error(e.getMessage(),e);
+            throw new UserNotFoundException("User not found");
         }
 
         return null;

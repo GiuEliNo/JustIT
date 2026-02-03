@@ -10,8 +10,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class NominatimService {
 
-    String esempio  = "https://nominatim.openstreetmap.org/search?q=Piazza+Duomo+Milano&format=json&addressdetails=1&limit=1";
-
     private static final String NOMINATIM = "https://nominatim.openstreetmap.org/search";
     private final HttpClient client = HttpClient.newHttpClient();
 

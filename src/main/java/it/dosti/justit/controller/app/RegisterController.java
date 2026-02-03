@@ -5,16 +5,17 @@ import it.dosti.justit.dao.CoordinatesDAOAPI;
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.utils.JustItLogger;
-
-import java.sql.SQLException;
 
 public class RegisterController {
 
 
 
-    public boolean registerNewUser(RegisterBean registerBean) throws SQLException {
+    public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException {
 
         ClientUserModel clientUserModel = new ClientUserModel();
 
@@ -28,12 +29,11 @@ public class RegisterController {
         }
     }
 
-    public boolean registerNewTechnician(TechnicRegisterBean registerBean) {
+    public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException, ShopNotFoundException {
         TechnicianModel technicianModel = new TechnicianModel();
         Integer shopId = technicianModel.getShopIDbyName(registerBean.getShopName());
         if ( shopId == 0){
             JustItLogger.getInstance().warn("Shop name not found");
-            JustItLogger.getInstance().error("Register Failed");
             return false;
         }
         else {
@@ -44,7 +44,7 @@ public class RegisterController {
 
     }
 
-    public boolean registerNewShop(ShopBean registerBean) {
+    public boolean registerNewShop(ShopBean registerBean) throws RegisterOnDbException {
 
         ShopModel shopModel = new ShopModel();
 

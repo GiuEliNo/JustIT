@@ -24,11 +24,11 @@ public class SidebarListPageGController extends BaseGController{
     public void initialize() {
         appController = new BrowseShopController();
 
+
         listView.getItems().setAll(appController.getAllShops());
 
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateListView(newValue);
-        });
+        searchField.textProperty().addListener((observable, oldValue, newValue) ->
+            updateListView(newValue));
     }
 
     private void updateListView(String searchText) {

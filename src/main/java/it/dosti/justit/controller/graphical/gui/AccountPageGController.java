@@ -3,15 +3,16 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountPageController;
+import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogChangePassword;
 import it.dosti.justit.view.gui.DialogEditUser;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import org.controlsfx.control.Notifications;
-
-import java.sql.SQLException;
 
 public class AccountPageGController extends BaseGController {
 
@@ -54,16 +55,22 @@ public class AccountPageGController extends BaseGController {
 
                 passwordBean.setNewPassword(dialog.getNewPassword());
                 passwordBean.setOldPassword(dialog.getOldPassword());
-                if(!appController.changePassword(passwordBean)){
-                    Notifications.create()
-                            .title("Password change")
-                            .text("Old password not correct!")
-                            .showError();
-                } else {
-                    Notifications.create()
-                            .title("Password change")
-                            .text("Success")
-                            .showConfirm();
+                try {
+                    if(!appController.changePassword(passwordBean)){
+                        Notifications.create()
+                                .title("Password change")
+                                .text("Old password not correct!")
+                                .showError();
+                    } else {
+                        Notifications.create()
+                                .title("Password change")
+                                .text("Success")
+                                .showConfirm();
+                    }
+                }
+                catch ( UserNotFoundException | UpdateOnDBException e)
+                {
+                    JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
         });
@@ -90,8 +97,8 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch ( UserNotFoundException | UpdateOnDBException e) {
+                    JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
         });
@@ -119,8 +126,9 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch ( UserNotFoundException | UpdateOnDBException e)
+                {
+                    JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
         });

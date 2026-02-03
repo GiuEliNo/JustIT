@@ -2,12 +2,13 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import java.sql.SQLException;
 
 public class RegisterGController  extends BaseGController{
 
@@ -32,6 +33,7 @@ public class RegisterGController  extends BaseGController{
 
     @FXML
     private void initialize() {
+        //TODO
 
 
     }
@@ -44,7 +46,7 @@ public class RegisterGController  extends BaseGController{
 
 
     @FXML
-    public void signInPressed() throws SQLException {
+    public void signInPressed() {
         RegisterBean bean = new RegisterBean();
         RegisterController appController = new RegisterController();
 
@@ -53,10 +55,15 @@ public class RegisterGController  extends BaseGController{
         bean.setEmail(emailField.getText());
         bean.setUsername(usernameField.getText());
 
-        if(appController.registerNewUser(bean)) {
-            new MainGController(navigation);
-            navigation.navigate(Screen.LAUNCHER);
-        }
 
+        try {
+
+            if (appController.registerNewUser(bean)) {
+                new MainGController(navigation);
+                navigation.navigate(Screen.LAUNCHER);
+            }
+        }catch(RegisterOnDbException | UserNotFoundException e){
+            JustItLogger.getInstance().error(e.getMessage());
+        }
     }
 }

@@ -2,16 +2,19 @@ package it.dosti.justit.dao;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
+import it.dosti.justit.exceptions.LoginFromDBException;
+import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.User;
-import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 
 public class ClientUserDAOJDBC implements ClientUserDAO {
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsername(String username) throws UserNotFoundException{
 
         String sql = ClientQuery.SELECT_USERNAME;
 
@@ -34,14 +37,12 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
             }
             return null;
         }catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new UserNotFoundException(String.format("Can't find the user %s in the db", username), e);
         }
-        return null;
     }
 
     @Override
-    public boolean login(String username, String password)
-    {
+    public boolean login(String username, String password) throws LoginFromDBException {
         String sql = LoginQuery.LOGIN_USER;
 
         try(
@@ -60,13 +61,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         }catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new LoginFromDBException("Error checking login", e);
         }
         return false;
     }
 
     @Override
-    public boolean registerClient(String username, String password, String name, String email) {
+    public boolean registerClient(String username, String password, String name, String email) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 
@@ -85,13 +86,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
             }
         }
         catch(SQLException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new RegisterOnDbException("Error registering the new Client", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateName(String newName, String username) {
+    public boolean updateName(String newName, String username) throws UpdateOnDBException {
         String sql = ClientQuery.UPDATE_USERNAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -103,13 +104,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new UpdateOnDBException("Error updating the username", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateEmail(String username, String email) {
+    public boolean updateEmail(String username, String email) throws UpdateOnDBException {
         String sql = ClientQuery.UPDATE_EMAIL;
 
         try(
@@ -123,14 +124,14 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new UpdateOnDBException("Error updating the email", e);
         }
 
         return false;
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword, String oldPassword) {
+    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException {
         String sql = ClientQuery.UPDATE_PASSWORD;
 
         try(
@@ -148,7 +149,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw new UpdateOnDBException("Error updating the password", e);
         }
         return false;
     }
