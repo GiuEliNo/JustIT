@@ -5,6 +5,7 @@ target/
 .kotlin
 
 /data/
+out/
 
 ### IntelliJ IDEA ###
 .idea/
