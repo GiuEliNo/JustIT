@@ -1,0 +1,19 @@
+.shop-list-cell{
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+
+.shop-card{
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.cell:selected .shop-card{
+    -fx-background-color: #f0f8ff;
+    -fx-background-radius: 10;
+    -fx-border-color: #2196F3;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.3), 10, 0, 0, 5);
+}

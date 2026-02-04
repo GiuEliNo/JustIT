@@ -4,9 +4,11 @@ import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.view.gui.ShopListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.SVGPath;
 
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class SidebarListPageGController extends BaseGController{
 
     @FXML
     private TextField searchField;
+
+    @FXML
+    private SVGPath searchIcon;
 
     @FXML
     private ListView<Shop> listView;
@@ -24,7 +29,7 @@ public class SidebarListPageGController extends BaseGController{
     public void initialize() {
         appController = new BrowseShopController();
 
-
+        listView.setCellFactory(ls -> new ShopListCell(){});
         listView.getItems().setAll(appController.getAllShops());
 
         searchField.textProperty().addListener((observable, oldValue, newValue) ->
@@ -40,6 +45,7 @@ public class SidebarListPageGController extends BaseGController{
     }
 
     public void onSelectPage() {
+
         Shop selected = listView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             appController.pageSelected(selected);
