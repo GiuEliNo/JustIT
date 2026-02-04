@@ -35,6 +35,8 @@ public class CLINavigationService implements NavigationService {
                 return new CPageShopCliView();
             case REVIEWS_BOX:
                 return new CReviewListView();
+            case BOOKINGS:
+                return new CBookingListView();
             default:
                 return null;
         }
@@ -54,7 +56,10 @@ public class CLINavigationService implements NavigationService {
                 return new PageShopGCliController();
             case REVIEWS_BOX:
                 return new ReviewListGCliController();
+            case BOOKINGS:
+                return new BookingListGCliController();
+            default:
+                return null;
         }
-        return null;
     }
 }

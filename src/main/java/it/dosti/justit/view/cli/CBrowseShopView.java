@@ -21,7 +21,6 @@ public class CBrowseShopView extends BaseCliView{
         return scanner.nextLine();
     }
 
-    //TODO forse si deve passare un bean, da vedere
     public void renderShops(List<Shop> allShops) {
         if (allShops == null || allShops.isEmpty()) {
             System.out.println("Shop not found");

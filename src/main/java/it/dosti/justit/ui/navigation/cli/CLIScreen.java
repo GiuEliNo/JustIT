@@ -9,5 +9,6 @@ public enum CLIScreen {
     BOOKING_PAGE,
     REVIEWS_BOX,
     REGISTER_VIEW,
+    BOOKINGS,
     REGISTERTEC_VIEW;
 }

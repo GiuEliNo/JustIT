@@ -14,6 +14,7 @@ public class BookingBean {
     private TimeSlot timeSlot;
     private String description;
     private BookingStatus status;
+    private String shopName;
 
 
 
@@ -58,6 +59,12 @@ public class BookingBean {
     }
     public void setStatus(BookingStatus status) {
         this.status = status;
+    }
+    public String getShopName() {
+        return this.shopName;
+    }
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }
 
