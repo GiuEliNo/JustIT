@@ -28,6 +28,8 @@ public class GUIMode extends BaseAppMode implements AppMode{
 
             Scene scene = new Scene(root, 900, 600);
 
+            scene.getStylesheets().add(GUIMode.class.getResource("/style.css").toExternalForm());
+
             stage.setScene(scene);
             stage.setTitle("JustIT");
             stage.setResizable(false);

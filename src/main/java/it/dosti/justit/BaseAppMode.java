@@ -64,5 +64,4 @@ public abstract class BaseAppMode implements AppMode {
             JustItLogger.getInstance().error("[DB TEST] not connected",e);
         }
     }
-
 }
