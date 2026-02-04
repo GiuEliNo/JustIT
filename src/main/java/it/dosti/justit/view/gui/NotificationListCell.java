@@ -1,6 +1,6 @@
 package it.dosti.justit.view.gui;
 
-import it.dosti.justit.model.notification.Notification;
+import it.dosti.justit.bean.NotificationBean;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -9,11 +9,11 @@ import javafx.scene.layout.VBox;
 
 import java.time.format.DateTimeFormatter;
 
-public class NotificationListCell extends ListCell<Notification> {
+public class NotificationListCell extends ListCell<NotificationBean> {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
-    protected void updateItem(Notification item, boolean empty) {
+    protected void updateItem(NotificationBean item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {
@@ -22,7 +22,7 @@ public class NotificationListCell extends ListCell<Notification> {
             return;
         }
 
-        Label messageLabel = new Label(item.getMessage());
+        Label messageLabel = new Label(this.getMessageLabel(item));
         Label timeLabel = new Label(item.getCreatedAt().format(DATE_FORMAT));
         Label statusLabel = new Label(item.isRead() ? "Read" : "Unread");
 
@@ -31,5 +31,9 @@ public class NotificationListCell extends ListCell<Notification> {
         HBox.setHgrow(textBox, Priority.ALWAYS);
 
         setGraphic(row);
+    }
+
+    private String getMessageLabel(NotificationBean item) {
+        return "Booking #" + item.getBookingId() + ": status changed from " + item.getOldStatus() + " to " + item.getNewStatus();
     }
 }
