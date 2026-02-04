@@ -10,7 +10,7 @@ import java.util.List;
 public class ReviewListGCliController extends BaseCliController {
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize() {
         ReviewPageShopController appController = new ReviewPageShopController();
         CReviewListView reviewView = (CReviewListView) view;
 

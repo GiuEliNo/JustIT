@@ -8,7 +8,7 @@ import it.dosti.justit.controller.graphical.cli.*;
 public class CLINavigationService implements NavigationService {
 
     @Override
-    public void navigate(Screen screen) throws Exception {
+    public void navigate(Screen screen) {
         BaseCliView view = loadView(screen);
         BaseCliController controller = createController(screen);
         

@@ -2,6 +2,8 @@ package it.dosti.justit;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.DatabaseInitializationException;
+import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
+import it.dosti.justit.model.notification.NotificationDbObserver;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.io.IOException;
@@ -19,22 +21,13 @@ public abstract class BaseAppMode implements AppMode {
 
     protected BaseAppMode() {
         this.db = ConnectionDB.getInstance();
-    }
-
-    protected void connectToDB() throws SQLException {
-        try(
-                Connection conn = db.connectDB()
-                )
-        {
-            JustItLogger.getInstance().info("[DB] Connected.");
-
-        }catch(SQLException e){
-            JustItLogger.getInstance().error("[DB] not connected",e);
-        }
+        this.initDataDirectory();
+        this.testingConnectToDb();
+        BookingStatusPublisher.getInstance().registerObserver(new NotificationDbObserver());
 
     }
 
-    protected void initDataDirectory() {
+    private void initDataDirectory() {
         try {
             Path baseDir = Paths.get(System.getProperty("user.dir"));
 
@@ -56,8 +49,20 @@ public abstract class BaseAppMode implements AppMode {
                 }
             }
 
+            db.setDBPath(dbPath);
+
+
         } catch (DatabaseInitializationException | IOException e ) {
             JustItLogger.getInstance().error(e.getMessage(),e);
         }
     }
+
+    private void testingConnectToDb() {
+        try(Connection conn =  db.connectDB()) {
+            JustItLogger.getInstance().info("[DB TEST] Connected.");
+        }catch(SQLException e){
+            JustItLogger.getInstance().error("[DB TEST] not connected",e);
+        }
+    }
+
 }

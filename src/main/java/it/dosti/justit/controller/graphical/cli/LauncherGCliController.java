@@ -6,7 +6,7 @@ import it.dosti.justit.view.cli.CLauncherView;
 public class LauncherGCliController extends BaseCliController {
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize() {
         CLauncherView launcherView = (CLauncherView) view;
 
         String choice = launcherView.askChoice();

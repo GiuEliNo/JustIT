@@ -13,7 +13,7 @@ public class BrowseShopGCliController extends BaseCliController{
     private CBrowseShopView browseShopView;
 
     @Override
-    public void initialize() throws Exception {
+    public void initialize() {
         this.appController = new BrowseShopController();
         this.browseShopView = (CBrowseShopView) view;
 

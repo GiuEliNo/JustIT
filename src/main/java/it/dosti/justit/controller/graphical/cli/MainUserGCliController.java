@@ -5,7 +5,7 @@ import it.dosti.justit.view.cli.CMainUserView;
 
 public class MainUserGCliController extends BaseCliController{
     @Override
-    public void initialize() throws Exception {
+    public void initialize() {
         CMainUserView launcherView = (CMainUserView) view;
 
         String choice = launcherView.askChoice();

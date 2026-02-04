@@ -18,6 +18,6 @@ public abstract class BaseCliController implements BaseCliControllerInterface{
 }
 
 interface BaseCliControllerInterface{
-    public void initialize() throws Exception;
+    public void initialize();
 }
 

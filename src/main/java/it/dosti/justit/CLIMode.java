@@ -3,30 +3,19 @@ package it.dosti.justit;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.ui.navigation.cli.CLINavigationService;
-import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
-import it.dosti.justit.model.notification.NotificationDbObserver;
-
-import java.sql.SQLException;
+import it.dosti.justit.utils.JustItLogger;
 
 public class CLIMode extends BaseAppMode {
     @Override
     public void start(String[] args) {
-        try {
-            initDataDirectory();
-            db.setDBPath(dbPath);
-            connectToDB();
 
-            System.out.println("CLI Mode");
 
-            NavigationService navigation = new CLINavigationService();
+        JustItLogger.getInstance().info("CLI Mode started.");
 
-            //BookingStatusPublisher.getInstance().registerObserver(new NotificationDbObserver());
+        NavigationService navigation = new CLINavigationService();
 
-            navigation.navigate(Screen.LAUNCHER);
+        navigation.navigate(Screen.LAUNCHER);
 
-        } catch (SQLException ignored) {
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 }

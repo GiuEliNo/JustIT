@@ -18,10 +18,6 @@ public class BookingModel {
         bookingDao = new BookingDAOJDBC();
     }
 
-    public boolean addBooking(Booking booking) {
-        return bookingDao.addBooking(booking);
-    }
-
     public List<Booking> getBookingsByUser(String username) {
         List<Booking> bookings = bookingDao.getBookingsByUser(username);
         for (Booking b : bookings) {
@@ -51,6 +47,15 @@ public class BookingModel {
 
     public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {
         return bookingDao.checkConfirmedBookingWithShop(username, shopID);
+    }
+
+    public boolean addBooking(Booking booking) {
+        if (!bookingDao.addBooking(booking)) {
+            return false;
+        } else {
+            notifyStatusChange(booking, null);
+            return true;
+        }
     }
 
     public void confirmBooking(Booking booking) {

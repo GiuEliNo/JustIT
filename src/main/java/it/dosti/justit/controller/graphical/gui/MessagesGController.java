@@ -5,12 +5,8 @@ import it.dosti.justit.dao.NotificationDAOJDBC;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.notification.Notification;
 import it.dosti.justit.view.gui.NotificationListCell;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.util.Duration;
 
 import java.util.List;
 
@@ -20,7 +16,6 @@ public class MessagesGController extends BaseGController {
     private ListView<Notification> messageListView;
 
     private final NotificationDAO notificationDAO = new NotificationDAOJDBC();
-    private Timeline poller;
 
     @FXML
     public void initialize() {
@@ -32,7 +27,6 @@ public class MessagesGController extends BaseGController {
                 messageListView.refresh();
             }
         });
-        startPolling();
     }
 
     @FXML
@@ -40,17 +34,5 @@ public class MessagesGController extends BaseGController {
         String username = SessionModel.getInstance().getLoggedUser().getUsername();
         List<Notification> notifications = notificationDAO.getNotificationsByUser(username);
         messageListView.getItems().setAll(notifications);
-    }
-
-    private void startPolling() {
-        poller = new Timeline(new KeyFrame(Duration.seconds(30), e -> updateMessages()));
-        poller.setCycleCount(Animation.INDEFINITE);
-        poller.play();
-        updateMessages();
-        messageListView.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene == null && poller != null) {
-                poller.stop();
-            }
-        });
     }
 }

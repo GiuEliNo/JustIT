@@ -8,7 +8,7 @@ import it.dosti.justit.view.cli.CPageShopCliView;
 
 public class PageShopGCliController extends BaseCliController{
     @Override
-    public void initialize() throws Exception {
+    public void initialize() {
         PageShopController appController = new PageShopController();
         CPageShopCliView pageShopCliView = (CPageShopCliView) view;
 
