@@ -11,6 +11,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class ShopListCell extends ListCell<Shop> {
+    public ShopListCell() {
+        getStyleClass().add("shop-list-cell");
+    }
     @Override
     protected void updateItem(Shop item, boolean empty) {
         super.updateItem(item, empty);
