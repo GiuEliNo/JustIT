@@ -13,8 +13,8 @@ public class NotificationDbObserver implements BookingStatusObserver {
         notificationDAO.insertNotification(
                 change.getUsername(),
                 change.getBookingId(),
-                change.getOldStatus().name(),
-                change.getNewStatus().name(),
+                change.getOldStatus(),
+                change.getNewStatus(),
                 change.getOccurredAt()
         );
     }

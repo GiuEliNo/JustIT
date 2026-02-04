@@ -7,10 +7,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.utils.JustItLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +25,11 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String IDSHOP = "idShop";
 
     @Override
-    public boolean addBooking(Booking booking) {
+    public int addBooking(Booking booking) {
         String sql = BookingQuery.INSERT_BOOKING;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
+                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
                 ) {
 
             pstmt.setInt(1, booking.getShopId());
@@ -40,14 +37,22 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setString(3, booking.getDate().toString());
             pstmt.setString(4, booking.getTimeSlot().toString());
             pstmt.setString(5, booking.getDescription());
-            if(pstmt.executeUpdate() == 1) {
-                return true;
+
+            pstmt.executeUpdate();
+
+            try(ResultSet rs = pstmt.getGeneratedKeys()){
+                if(rs.next()) {
+                    return rs.getInt(1);
+                }
+                else {
+                    throw new SQLException();
+                }
             }
+
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
-            return false;
+            return -1;
         }
-        return false;
     }
 
     @Override

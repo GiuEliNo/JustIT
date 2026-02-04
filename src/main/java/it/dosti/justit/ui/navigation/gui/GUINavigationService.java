@@ -110,6 +110,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.SIDEBAR_TECH_LIST;
             case BOOKING_PAGE_TECH:
                 return GUIScreen.BOOKING_PAGE_TECH;
+            case MESSAGES_TECH:
+                return GUIScreen.MESSAGES_TECH;
 
         }
         return null;

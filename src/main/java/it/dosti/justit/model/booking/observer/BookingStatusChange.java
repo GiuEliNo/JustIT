@@ -34,12 +34,12 @@ public class BookingStatusChange {
         return shopId;
     }
 
-    public BookingStatus getOldStatus() {
-        return oldStatus;
+    public String getOldStatus() {
+        return oldStatus == null ? "CREATED" : oldStatus.name();
     }
 
-    public BookingStatus getNewStatus() {
-        return newStatus;
+    public String getNewStatus() {
+        return newStatus.name();
     }
 
     public LocalDateTime getOccurredAt() {

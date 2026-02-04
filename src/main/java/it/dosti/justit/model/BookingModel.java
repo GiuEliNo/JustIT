@@ -49,14 +49,11 @@ public class BookingModel {
         return bookingDao.checkConfirmedBookingWithShop(username, shopID);
     }
 
-    public boolean addBooking(Booking booking) {
-        if (!bookingDao.addBooking(booking)) {
-            return false;
-        } else {
-            notifyStatusChange(booking, null);
-            return true;
-        }
+    public void addBooking(Booking booking) {
+        booking.setBookingId(bookingDao.addBooking(booking));
+        notifyStatusChange(booking, null);
     }
+
 
     public void confirmBooking(Booking booking) {
         BookingStatus oldStatus = booking.getStatus();

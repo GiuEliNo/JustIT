@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface BookingDAO {
-    boolean addBooking(Booking booking);
+    int addBooking(Booking booking);
 
     List<Booking> getBookingsByUser(String username);
 

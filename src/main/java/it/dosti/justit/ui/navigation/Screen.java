@@ -22,5 +22,6 @@ public enum Screen {
     PAGE_SHOP_TECH,
     BOOKINGS,
     SIDEBAR_TECH_LIST,
-    BOOKING_PAGE_TECH
+    BOOKING_PAGE_TECH,
+    MESSAGES_TECH
 }

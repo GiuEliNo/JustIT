@@ -47,6 +47,8 @@ public class Booking {
         this.date = date;
         this.timeSlot = timeSlot;
         this.description = description;
+        this.status = BookingStatus.PENDING;
+        this.currentState = BookingStateFactory.fromStatus(this.status);
         
     }
 
@@ -83,6 +85,9 @@ public class Booking {
     }
     public String getShopName() {
         return shopName;
+    }
+    public void setBookingId(Integer bookingId) {
+        this.bookingId = bookingId;
     }
 
     public void initStateMachine(BookingState initialState, BookingStatus status) {

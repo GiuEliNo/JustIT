@@ -20,7 +20,8 @@ public enum GUIScreen {
     PAGE_SHOP_TECH("/pageShopTech.fxml"),
     BOOKINGS("/bookings.fxml"),
     BOOKING_PAGE_TECH("/bookingPageTech.fxml"),
-    SIDEBAR_TECH_LIST("/sidebarListTechPage.fxml");
+    SIDEBAR_TECH_LIST("/sidebarListTechPage.fxml"),
+    MESSAGES_TECH("/messagesTech.fxml");
 
     private final String fxmlPath;
 

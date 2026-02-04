@@ -20,15 +20,16 @@ public class BookingPageController {
         return bookingModel.hasAvailableSlots(shopId, date);
     }
 
-    public boolean addBooking(BookingBean bookingBean){
+    public boolean addBooking(BookingBean bookingBean) {
 
-        Booking newBooking = new Booking(bookingBean.getShop().getId(), bookingBean.getUsername() ,bookingBean.getDate(), bookingBean.getTimeSlot(), bookingBean.getDescription());
+        Booking newBooking = new Booking(bookingBean.getShop().getId(), bookingBean.getUsername(), bookingBean.getDate(), bookingBean.getTimeSlot(), bookingBean.getDescription());
 
-        if(bookingModel.addBooking(newBooking)){
+        try {
+            bookingModel.addBooking(newBooking);
             JustItLogger.getInstance().info("Booking added successfully");
             return true;
-        }
-        else{
+
+        } catch (Exception ex) {
             JustItLogger.getInstance().error("Error adding booking");
             return false;
         }

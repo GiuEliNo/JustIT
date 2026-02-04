@@ -12,5 +12,6 @@
 
     <Button onAction="#onTechPage" prefWidth="200" text="Tech Page Shop" />
     <Button onAction="#onBookingPage" prefWidth="200" text="Bookings List" />
+    <Button onAction="#onNotificationPage" prefWidth="200" text="Notification" />
 
 </VBox>

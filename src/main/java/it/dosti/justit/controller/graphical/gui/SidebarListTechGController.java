@@ -13,4 +13,9 @@ public class SidebarListTechGController extends BaseGController{
     public void onBookingPage() {
         navigation.navigate(Screen.BOOKING_PAGE_TECH);
     }
+
+    @FXML
+    public void onNotificationPage() {
+        navigation.navigate(Screen.MESSAGES_TECH);
+    }
 }
