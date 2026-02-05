@@ -23,6 +23,9 @@ public class MainUserGCliController extends BaseCliController{
             case "4":
                 navigation.navigate(Screen.ADD_REVIEW);
                 break;
+            case "5":
+                navigation.navigate(Screen.MESSAGES);
+                break;
             default:
                 navigation.navigate(Screen.MAIN_USER);
                 break;

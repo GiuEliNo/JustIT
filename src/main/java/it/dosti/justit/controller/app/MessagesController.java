@@ -25,6 +25,28 @@ public class MessagesController {
         for (Notification notification : notifications) {
             NotificationBean notificationBean = new NotificationBean(
                     notification.getId(),
+                    notification.getShopName(),
+                    notification.getUsername(),
+                    notification.getBookingId(),
+                    notification.getOldStatus(),
+                    notification.getNewStatus(),
+                    notification.getCreatedAt(),
+                    notification.isRead()
+            );
+            notificationBeans.add(notificationBean);
+        }
+
+        return notificationBeans;
+    }
+
+    public List<NotificationBean> getUnreadNotifications() {
+        List<Notification> notifications = notificationModel.getUnreadNotifications(username);
+        List<NotificationBean> notificationBeans = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+            NotificationBean notificationBean = new NotificationBean(
+                    notification.getId(),
+                    notification.getShopName(),
                     notification.getUsername(),
                     notification.getBookingId(),
                     notification.getOldStatus(),

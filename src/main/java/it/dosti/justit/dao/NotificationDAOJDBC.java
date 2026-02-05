@@ -23,6 +23,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
     private static final String NEW_STATUS = "new_status";
     private static final String CREATED_TIME = "created_time";
     private static final String READ = "read";
+    private static final String SHOPNAME = "shop_name";
 
     @Override
     public void insertNotification(String username, Integer bookingId, String oldStatus, String newStatus, LocalDateTime createdTime) {
@@ -62,6 +63,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
 
             while (rs.next()) {
                 Integer id = rs.getInt(ID);
+                String shopName = rs.getString(SHOPNAME);
                 Integer bookingId = rs.getInt(BOOKING_ID);
                 String oldStatus = rs.getString(OLD_STATUS);
                 String newStatus = rs.getString(NEW_STATUS);
@@ -70,6 +72,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
 
                 Notification notification = new Notification(
                         id,
+                        shopName,
                         rs.getString(USERNAME),
                         bookingId,
                         oldStatus,

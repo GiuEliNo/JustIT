@@ -42,4 +42,8 @@ public class CAddReviewView extends BaseCliView{
         return Integer.parseInt(scanner.nextLine());
     }
 
+    public void noCompletedBookings() {
+        System.out.println("No booking completed to review");
+    }
+
 }

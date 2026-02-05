@@ -16,6 +16,10 @@ public class NotificationModel {
         return this.notificationDao.getNotificationsByUser(username);
     }
 
+    public List<Notification> getUnreadNotifications(String username){
+        return this.notificationDao.getUnreadNotificationsByUser(username);
+    }
+
     public void markNotificationRead(Integer notificationId){
         this.notificationDao.markRead(notificationId);
     }

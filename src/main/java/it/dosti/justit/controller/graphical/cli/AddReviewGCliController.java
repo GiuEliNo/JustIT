@@ -12,15 +12,29 @@ import java.util.List;
 
 public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
+    private ReviewPageShopController reviewPageShopController;
+    private BookingsController bookAppController;
     private List<Integer> shopIdCompleted = new ArrayList<>();
+    private List<BookingBean> bookingCompleted = new ArrayList<>();
 
     @Override
-    public void initialize(){
-        BookingsController bookAppController = new BookingsController();
-
+    public void initialize() {
+        bookAppController = new BookingsController();
+        reviewPageShopController = new ReviewPageShopController();
         addReviewView = (CAddReviewView) view;
+        bookingCompleted = bookAppController.getBookings();
 
-        for(BookingBean b : bookAppController.getBookings()){
+        showCompletedBookingToReview();
+
+    }
+
+    private void showCompletedBookingToReview() {
+        if (bookingCompleted.isEmpty()) {
+            addReviewView.noCompletedBookings();
+            navigation.navigate(Screen.MAIN_USER);
+        }
+
+        for(BookingBean b : bookingCompleted){
             if(b.getStatus().name().equals("COMPLETED")){
                 shopIdCompleted.add(b.getShopId());
                 addReviewView.renderBookingsCompleted(b);
@@ -31,7 +45,7 @@ public class AddReviewGCliController extends BaseCliController {
 
         switch(choice) {
             case "0":
-                navigation.navigate(Screen.SIDEBAR_LIST_SETTING_USER);
+                navigation.navigate(Screen.MAIN_USER);
                 break;
             case "1":
                 this.addReview();
@@ -41,11 +55,12 @@ public class AddReviewGCliController extends BaseCliController {
                 navigation.navigate(Screen.ADD_REVIEW);
                 break;
         }
+
+
     }
 
     private void addReview(){
 
-        ReviewPageShopController appController = new ReviewPageShopController();
         ReviewBean reviewBean = new ReviewBean();
 
         Integer shopId;
@@ -65,6 +80,6 @@ public class AddReviewGCliController extends BaseCliController {
 
         reviewBean.setStars(rating);
 
-        appController.addReview(reviewBean);
+        reviewPageShopController.addReview(reviewBean);
     }
 }

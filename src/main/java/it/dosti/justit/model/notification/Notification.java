@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Notification {
     private final Integer id;
+    private final String shopName;
     private final String username;
     private final Integer bookingId;
     private final String oldStatus;
@@ -11,8 +12,9 @@ public class Notification {
     private final LocalDateTime createdAt;
     private boolean read;
 
-    public Notification(Integer id, String username, Integer bookingId, String oldStatus, String newStatus, LocalDateTime createdAt, boolean read) {
+    public Notification(Integer id, String shopName, String username, Integer bookingId, String oldStatus, String newStatus, LocalDateTime createdAt, boolean read) {
         this.id = id;
+        this.shopName = shopName;
         this.username = username;
         this.bookingId = bookingId;
         this.oldStatus = oldStatus;
@@ -53,6 +55,11 @@ public class Notification {
     public void markRead() {
         this.read = true;
     }
+
+    public String getShopName() {
+        return shopName;
+    }
+
 
     public String getMessage() {
         return "Booking #" + bookingId + ": status changed from " + oldStatus + " to " + newStatus;
