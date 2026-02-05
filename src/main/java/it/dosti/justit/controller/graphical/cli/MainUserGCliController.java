@@ -17,8 +17,15 @@ public class MainUserGCliController extends BaseCliController{
             case "2":
                 navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
                 break;
-            default:
+            case "3":
                 navigation.navigate(Screen.BOOKINGS);
+                break;
+            case "4":
+                navigation.navigate(Screen.ADD_REVIEW);
+                break;
+            default:
+                navigation.navigate(Screen.MAIN_USER);
+                break;
         }
 
     }

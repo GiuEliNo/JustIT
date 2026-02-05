@@ -70,6 +70,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
+                Integer shopId = rs.getInt(IDSHOP);
                 Integer bookingId = rs.getInt(ID);
                 String shopName = rs.getString(NAME);
                 String dateString = rs.getString(DATE);
@@ -78,7 +79,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                Booking booking = new Booking(bookingId, shopName, username, date, timeSlot, description, status);
+                Booking booking = new Booking(bookingId, shopName, username, date, timeSlot, description, status, shopId);
 
 
                 bookings.add(booking);

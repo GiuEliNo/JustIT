@@ -19,7 +19,8 @@ public class BookingsController {
         for(Booking b: bookingModel.getBookingsByUser(SessionModel.getInstance().getLoggedUser().getUsername())){
 
             BookingBean bookingBean = new BookingBean();
-            bookingBean.setBookingID(bookingBean.getBookingID());
+            bookingBean.setShopId(b.getShopId());
+            bookingBean.setBookingID(b.getBookingId());
             bookingBean.setUsername(b.getUsername());
             bookingBean.setDate(b.getDate());
             bookingBean.setTimeSlot(b.getTimeSlot());

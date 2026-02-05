@@ -30,7 +30,7 @@ public class Booking {
         this.currentState = BookingStateFactory.fromStatus(status);
     }
 
-    public Booking(Integer bookingId, String shopName, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
+    public Booking(Integer bookingId, String shopName, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status, Integer shopId) {
         this.bookingId = bookingId;
         this.username = username;
         this.shopName = shopName;
@@ -39,6 +39,7 @@ public class Booking {
         this.description = description;
         this.status = status;
         this.currentState = BookingStateFactory.fromStatus(status);
+        this.shopId = shopId;
     }
     
     public Booking(Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description) {

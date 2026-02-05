@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class BookingBean {
     private Integer bookingID;
     private Shop shop;
+    private Integer shopId;
     private String username;
     private LocalDate date;
     private TimeSlot timeSlot;
@@ -65,6 +66,12 @@ public class BookingBean {
     }
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+    public Integer getShopId() {
+        return this.shopId;
+    }
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }
 

@@ -37,6 +37,8 @@ public class CLINavigationService implements NavigationService {
                 return new CReviewListView();
             case BOOKINGS:
                 return new CBookingListView();
+            case ADD_REVIEW:
+                return new CAddReviewView();
             default:
                 return null;
         }
@@ -58,6 +60,8 @@ public class CLINavigationService implements NavigationService {
                 return new ReviewListGCliController();
             case BOOKINGS:
                 return new BookingListGCliController();
+            case ADD_REVIEW:
+                return new AddReviewGCliController();
             default:
                 return null;
         }

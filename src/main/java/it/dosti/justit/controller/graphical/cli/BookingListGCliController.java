@@ -18,7 +18,7 @@ public class BookingListGCliController extends BaseCliController{
         String choice = bookingListView.askChoice();
 
         if(choice.contentEquals("0")) {
-            navigation.navigate(Screen.SIDEBAR_LIST_SETTING_USER);
+            navigation.navigate(Screen.MAIN_USER);
         }
         else{
             navigation.navigate(Screen.BOOKINGS);

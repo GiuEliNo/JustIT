@@ -12,16 +12,14 @@ public class ReviewPageShopController {
     private final BookingModel bookingModel = new BookingModel();
 
     private final String username;
-    private final Integer selectedShopID;
 
     public ReviewPageShopController() {
         this.username = SessionModel.getInstance().getLoggedUser().getUsername();
-        this.selectedShopID = SessionModel.getInstance().getCurrentShop().getId();
     }
 
     public Boolean addReview(ReviewBean reviewBean) {
 
-        reviewBean.setShopID(selectedShopID);
+        if (reviewBean.getShopID() == null) reviewBean.setShopID(SessionModel.getInstance().getCurrentShop().getId());
         reviewBean.setUsername(username);
         reviewModel.addReviewToShop(reviewBean);
 
@@ -29,7 +27,7 @@ public class ReviewPageShopController {
     }
 
     public List<ReviewBean> getReviews() {
-        List<Review> reviews = reviewModel.retrieveReviewsByShop(selectedShopID);
+        List<Review> reviews = reviewModel.retrieveReviewsByShop(SessionModel.getInstance().getCurrentShop().getId());
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
         for (Review review : reviews) {
@@ -45,6 +43,6 @@ public class ReviewPageShopController {
     }
 
     public Boolean canReview() {
-        return bookingModel.checkConfirmedBookingWithShop(username, selectedShopID);
+        return bookingModel.checkConfirmedBookingWithShop(username, SessionModel.getInstance().getCurrentShop().getId());
     }
 }

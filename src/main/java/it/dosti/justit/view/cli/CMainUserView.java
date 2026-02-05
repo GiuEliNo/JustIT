@@ -8,6 +8,7 @@ public class CMainUserView extends BaseCliView{
         System.out.println("1. User Profile");
         System.out.println("2. Browsing Shop");
         System.out.println("3. List Booking");
+        System.out.println("4. Add Review (only shop with completed bookings)");
     }
 
     public String askChoice() {

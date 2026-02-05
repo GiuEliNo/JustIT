@@ -23,5 +23,6 @@ public enum Screen {
     BOOKINGS,
     SIDEBAR_TECH_LIST,
     BOOKING_PAGE_TECH,
-    MESSAGES_TECH
+    MESSAGES_TECH,
+    ADD_REVIEW,
 }
