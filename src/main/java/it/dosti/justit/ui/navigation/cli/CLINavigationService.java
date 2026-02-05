@@ -41,6 +41,8 @@ public class CLINavigationService implements NavigationService {
                 return new CAddReviewView();
             case MESSAGES:
                 return new CNotificationView();
+            case ACCOUNT_PAGE:
+                return new CAccountPageView();
             default:
                 return null;
         }
@@ -66,6 +68,8 @@ public class CLINavigationService implements NavigationService {
                 return new AddReviewGCliController();
             case MESSAGES:
                 return new NotificationGCliController();
+            case ACCOUNT_PAGE:
+                return new AccountPageGCliController();
             default:
                 return null;
         }

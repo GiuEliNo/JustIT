@@ -12,5 +12,6 @@ public enum CLIScreen {
     BOOKINGS,
     ADD_REVIEW,
     MESSAGES,
-    REGISTERTEC_VIEW;
+    REGISTERTEC_VIEW,
+    ACCOUNT_PAGE
 }
