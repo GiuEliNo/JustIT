@@ -13,13 +13,12 @@ import java.util.List;
 public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
     private ReviewPageShopController reviewPageShopController;
-    private BookingsController bookAppController;
     private List<Integer> shopIdCompleted = new ArrayList<>();
     private List<BookingBean> bookingCompleted = new ArrayList<>();
 
     @Override
     public void initialize() {
-        bookAppController = new BookingsController();
+        BookingsController bookAppController = new BookingsController();
         reviewPageShopController = new ReviewPageShopController();
         addReviewView = (CAddReviewView) view;
         bookingCompleted = bookAppController.getBookings();
