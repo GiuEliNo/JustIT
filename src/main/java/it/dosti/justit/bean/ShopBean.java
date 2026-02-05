@@ -8,7 +8,7 @@ public class ShopBean {
     private String phone;
     private String email;
     private String description;
-    private String image;
+    private byte[] image;
     private String openingHours;
     private boolean homeAssistance;
     private String homeAssistanceMessage;
@@ -54,11 +54,11 @@ public class ShopBean {
         this.description = description;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

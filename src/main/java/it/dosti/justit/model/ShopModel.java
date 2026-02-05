@@ -3,6 +3,8 @@ package it.dosti.justit.model;
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import javafx.scene.image.Image;
 
 import java.util.List;
 
@@ -21,5 +23,9 @@ public class ShopModel {
 
         return shopDAO.registerShop(shop);
 
+    }
+
+    public Image getShopImage(Integer shopId) throws ShopNotFoundException {
+        return shopDAO.retrieveShopImageById(shopId);
     }
 }

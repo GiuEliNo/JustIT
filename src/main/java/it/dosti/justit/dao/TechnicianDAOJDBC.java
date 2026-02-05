@@ -94,7 +94,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         catch(SQLException e){
             throw new ShopNotFoundException("Shop not found");
         }
-        return null;
+        return 0;
     }
 
     @Override

@@ -46,7 +46,7 @@ public class BookingListTechGController extends BaseGController{
     @FXML
     public void initialize() {
 
-        userCol.setCellValueFactory(new PropertyValueFactory<>("UserId"));
+        userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         dateCol.setCellValueFactory(new PropertyValueFactory<>("Date"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("TimeSlot"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));

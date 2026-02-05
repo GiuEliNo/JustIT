@@ -19,7 +19,17 @@ public class RegisterController {
 
         ClientUserModel clientUserModel = new ClientUserModel();
 
-        if(clientUserModel.registerClient(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail())){
+        CoordinatesDAO coordDAO= new CoordinatesDAOAPI();
+        Coordinates coord = coordDAO.getCoordinates(registerBean.getAddress()).join();
+        if(coord!=null) {
+            JustItLogger.getInstance().warn("Coordinates found");
+            registerBean.setCoordinates(coord);
+        }
+        else{
+            JustItLogger.getInstance().warn("Coordinates not found, proceding with empy beans");
+        }
+
+        if(clientUserModel.registerClient(registerBean)){
             JustItLogger.getInstance().info("Register successful");
             return true;
         }
@@ -50,9 +60,9 @@ public class RegisterController {
 
 
 
-        CoordinatesDAO coordDap = new CoordinatesDAOAPI();
+        CoordinatesDAO coordDao = new CoordinatesDAOAPI();
 
-        Coordinates coord = coordDap.getCoordinates(registerBean.getAddress()).join();
+        Coordinates coord = coordDao.getCoordinates(registerBean.getAddress()).join();
 
         if(coord != null) {
             JustItLogger.getInstance().info("Coordinates found");

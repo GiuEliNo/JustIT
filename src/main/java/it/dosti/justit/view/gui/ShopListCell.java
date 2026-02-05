@@ -18,8 +18,6 @@ public class ShopListCell extends ListCell<Shop> {
     protected void updateItem(Shop item, boolean empty) {
         super.updateItem(item, empty);
 
-        setStyle("-fx-background-color: transparent; -fx-padding: 5px;");
-
         if(empty || item == null) {
             setText(null);
             setGraphic(null);
@@ -30,7 +28,7 @@ public class ShopListCell extends ListCell<Shop> {
             cardContainer.setPadding(new Insets(10));
 
 
-            cardContainer.getStyleClass().add("shop-card");
+            cardContainer.getStyleClass().add("card");
             HBox hbox = new HBox(10);
 
             Label nameLabel = new Label(item.getName());

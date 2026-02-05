@@ -1,18 +1,39 @@
+.root {
+    -fx-font-size: 14px;
+
+    /* Colori Base */
+    -color-bg-app: #F8F9FA;
+    -color-bg-card: #FFFFFF;
+
+    /* Colori Brand */
+    -color-primary: #1976D2;
+    -color-accent: #42A5F5;
+
+    -color-selected-bg: #E3F2FD;
+    -color-selected-border: #2196F3;
+
+    -color-text-main: #333333;
+    -color-text-sub: #757575;
+
+    -fx-background-color: -color-bg-app;
+}
+
+
 .shop-list-cell{
     -fx-background-color: transparent;
     -fx-padding: 5px;
 }
 
-.shop-card{
-    -fx-background-color: white;
+.card{
+    -fx-background-color: -color-bg-card;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
 
-.cell:selected .shop-card{
-    -fx-background-color: #f0f8ff;
+.cell:selected .card{
+    -fx-background-color: -color-selected-bg;
     -fx-background-radius: 10;
-    -fx-border-color: #2196F3;
+    -fx-border-color: -color-selected-border;
     -fx-border-radius: 10;
     -fx-border-width: 2;
     -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.3), 10, 0, 0, 5);

@@ -4,10 +4,13 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.PageShopController;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.utils.CustomMapLayer;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
@@ -58,7 +61,15 @@ public class PageShopGController extends BaseGController {
             shopPhone.setText(shopBean.getPhone());
             shopEmail.setText(shopBean.getEmail());
             openingHours.setText(shopBean.getOpeningHours());
-            //shopImage.setImage(new Image(shopBean.getImage())); //todo
+            try{
+
+                Image image = appControllerPageShop.getShopImage();
+                shopImage.setImage(image);
+
+            }
+            catch(ShopNotFoundException e){
+                JustItLogger.getInstance().error(e.getMessage());
+            }
 
             if(shopBean.getCoordinates()!=null) {
 

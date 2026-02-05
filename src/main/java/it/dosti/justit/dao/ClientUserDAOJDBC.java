@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.LoginFromDBException;
@@ -7,6 +8,7 @@ import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.ClientUser;
+import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.User;
 
 import java.sql.*;
@@ -31,7 +33,9 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("username"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude"))
                 );
 
             }
@@ -67,7 +71,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean registerClient(String username, String password, String name, String email) throws RegisterOnDbException {
+    public boolean registerClient(RegisterBean registerBean) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 
@@ -77,10 +81,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 )
         {
 
-            pstmt.setString(2, username);
-            pstmt.setString(4, password);
-            pstmt.setString(1, name);
-            pstmt.setString(3, email);
+            pstmt.setString(2, registerBean.getUsername());
+            pstmt.setString(4, registerBean.getPassword());
+            pstmt.setString(1, registerBean.getName());
+            pstmt.setString(3, registerBean.getEmail());
+            pstmt.setString(5, registerBean.getAddress());
+            pstmt.setDouble(6, registerBean.getCoordinates().getLatitude());
+            pstmt.setDouble(7, registerBean.getCoordinates().getLongitude());
             if(pstmt.executeUpdate() == 1) {
                 return true;
             }

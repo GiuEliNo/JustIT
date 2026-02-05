@@ -8,10 +8,13 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JustItLogger;
+import javafx.scene.image.Image;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShopDAOJDBC implements ShopDAO{
 
@@ -35,7 +38,6 @@ public class ShopDAOJDBC implements ShopDAO{
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
                 String description = rs.getString("description");
-                String image = rs.getString("image");
                 String openingHours = rs.getString("openingHours");
                 boolean homeAssistance = rs.getBoolean("homeAssistance");
                 double latitude = rs.getDouble("latitude");
@@ -44,7 +46,6 @@ public class ShopDAOJDBC implements ShopDAO{
                         .id(id).address(address)
                         .phone(phone).email(email)
                         .description(description)
-                        .image(image)
                         .openingHours(openingHours)
                         .homeAssistance(homeAssistance)
                         .coordinates(new Coordinates(latitude, longitude))
@@ -74,7 +75,7 @@ public class ShopDAOJDBC implements ShopDAO{
             pstmt.setString(3, shop.getPhone());
             pstmt.setString(4, shop.getEmail());
             pstmt.setString(5, shop.getDescription());
-            pstmt.setString(6, shop.getImage());
+            pstmt.setBytes(6, shop.getImage());
             pstmt.setString(7, shop.getOpeningHours());
             pstmt.setBoolean(8, shop.isHomeAssistance());
             if(shop.getCoordinates()!=null) {
@@ -111,7 +112,7 @@ public class ShopDAOJDBC implements ShopDAO{
                         .phone(rs.getString("phone"))
                         .email(rs.getString("email"))
                         .description(rs.getString("description"))
-                        .image(rs.getString("image"))
+                        .image(rs.getBytes("image"))
                         .openingHours(rs.getString("openingHours"))
                         .homeAssistance(rs.getBoolean("homeAssistance"))
                         .coordinates( new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude")))
@@ -122,5 +123,31 @@ public class ShopDAOJDBC implements ShopDAO{
             throw new ShopNotFoundException("Shop not found");
         }
         return null;
+    }
+
+
+    public Image retrieveShopImageById(Integer shopId) throws ShopNotFoundException {
+        String sql = ShopQuery.SELECT_SHOP_IMAGE_BY_ID;
+        Image defaultImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/ShopDefault.png")));
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setInt(1,shopId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                JustItLogger.getInstance().info(String.format("Shop image by id %d", shopId));
+                InputStream is = rs.getBinaryStream("image");
+                Image checkImage = new Image(is);
+                if(!checkImage.isError()){
+                    return checkImage;
+                }
+            }
+        } catch (SQLException e) {
+            throw new ShopNotFoundException("Shop not found");
+        }
+        return defaultImage;
     }
 }
