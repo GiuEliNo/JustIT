@@ -3,7 +3,7 @@ package it.dosti.justit.view.cli;
 import it.dosti.justit.bean.NotificationBean;
 
 @SuppressWarnings("java:S106")
-public class CNotificationView extends BaseCliView {
+public class CMessageTechView extends BaseCliView{
     @Override
     public void render() {
         System.out.println("===== NOTIFICATION UNREAD =====");

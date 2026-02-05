@@ -3,10 +3,10 @@ package it.dosti.justit.view.cli;
 import it.dosti.justit.bean.UserBean;
 
 @SuppressWarnings("java:S106")
-public class CAccountPageView extends BaseCliView {
+public class CAccountTechPageView extends BaseCliView {
     @Override
     public void render() {
-        System.out.println("===== ACCOUNT PAGE =====");
+        System.out.println("===== ACCOUNT TECH PAGE =====");
     }
 
     public void renderAccount(UserBean userBean) {
@@ -20,5 +20,4 @@ public class CAccountPageView extends BaseCliView {
         System.out.println(OPTION_BACK);
         return scanner.nextLine();
     }
-
 }

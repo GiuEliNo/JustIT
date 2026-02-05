@@ -20,7 +20,7 @@ public class CBookingListView extends BaseCliView {
     }
 
     public String askChoice() {
-        System.out.println("0. Back");
+        System.out.println(OPTION_BACK);
         return scanner.nextLine();
     }
 

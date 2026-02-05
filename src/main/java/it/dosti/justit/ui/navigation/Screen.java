@@ -25,4 +25,6 @@ public enum Screen {
     BOOKING_PAGE_TECH,
     MESSAGES_TECH,
     ADD_REVIEW,
+    ACCOUNT_TECH,
+    REVIEW_TECH,
 }

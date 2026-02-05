@@ -5,6 +5,7 @@ import java.util.Scanner;
 @SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
 public abstract class BaseCliView implements CLIView{
     protected final Scanner scanner;
+    protected static final String OPTION_BACK = "0. Back";
 
     protected BaseCliView(){
         this.scanner = new Scanner(System.in);

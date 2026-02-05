@@ -18,15 +18,18 @@ public class LoginGCliController extends BaseCliController {
 
         String username = loginView.askUsername();
         String password = loginView.askPassword();
-        RoleType role = RoleType.valueOf(loginView.askRole());
+        String role = loginView.askRole();
 
         LoginBean loginBean = new LoginBean(username, password, role);
 
         try {
             if (appController.checkLogin(loginBean)) {
-                navigation.navigate(Screen.MAIN_USER);
+                if (loginBean.getRoleType() == RoleType.CLIENT) {
+                    navigation.navigate(Screen.MAIN_USER);
+                } else if(loginBean.getRoleType() == RoleType.TECHNICIAN){
+                    navigation.navigate(Screen.MAIN_TECH);
+                }
             } else {
-                System.out.println("Errore");
                 navigation.navigate(Screen.LOGIN);
             }
         } catch (LoginFromDBException | ShopNotFoundException e) {

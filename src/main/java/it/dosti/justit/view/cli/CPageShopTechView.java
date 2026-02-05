@@ -2,11 +2,11 @@ package it.dosti.justit.view.cli;
 
 import it.dosti.justit.bean.ShopBean;
 
-@SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
-public class CPageShopCliView extends BaseCliView{
+@SuppressWarnings("java:S106")
+public class CPageShopTechView extends BaseCliView{
     @Override
     public void render() {
-        System.out.println("===== SHOP DETAILS =====");
+        System.out.println("===== SHOP TECH DETAILS =====");
     }
 
     public void renderShop(ShopBean shopBean) {
@@ -21,8 +21,6 @@ public class CPageShopCliView extends BaseCliView{
     }
 
     public String askChoice() {
-        System.out.println("1. Booking");
-        System.out.println("2. Read Reviews");
         System.out.println(OPTION_BACK);
         return scanner.nextLine();
     }

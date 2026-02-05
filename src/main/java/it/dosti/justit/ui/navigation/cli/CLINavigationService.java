@@ -33,16 +33,24 @@ public class CLINavigationService implements NavigationService {
                 return new CBrowseShopView();
             case PAGE_SHOP:
                 return new CPageShopCliView();
-            case REVIEWS_BOX:
+            case REVIEWS_BOX, REVIEW_TECH:
                 return new CReviewListView();
             case BOOKINGS:
                 return new CBookingListView();
             case ADD_REVIEW:
                 return new CAddReviewView();
-            case MESSAGES:
+            case MESSAGES, MESSAGES_TECH:
                 return new CNotificationView();
             case ACCOUNT_PAGE:
                 return new CAccountPageView();
+            case MAIN_TECH:
+                return new CMainTechView();
+            case ACCOUNT_TECH:
+                return new CAccountTechPageView();
+            case PAGE_SHOP_TECH:
+                return new CPageShopTechView();
+            case BOOKING_PAGE_TECH:
+                return new CBookingListTechView();
             default:
                 return null;
         }
@@ -70,6 +78,18 @@ public class CLINavigationService implements NavigationService {
                 return new NotificationGCliController();
             case ACCOUNT_PAGE:
                 return new AccountPageGCliController();
+            case MAIN_TECH:
+                return new MainTechGCliController();
+            case ACCOUNT_TECH:
+                return new AccountTechGCliController();
+            case PAGE_SHOP_TECH:
+                return new PageShopTechGCliController();
+            case BOOKING_PAGE_TECH:
+                return new BookingPageTechGCliController();
+            case MESSAGES_TECH:
+                return new NotificationTechGCliController();
+            case REVIEW_TECH:
+                return new ReviewListTechGCliController();
             default:
                 return null;
         }

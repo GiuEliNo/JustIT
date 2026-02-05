@@ -17,7 +17,7 @@ public class CAddReviewView extends BaseCliView{
         }
 
     public String askChoice() {
-        System.out.println("0. Back");
+        System.out.println(OPTION_BACK);
         System.out.println("1. Add Review");
         return scanner.nextLine();
         }

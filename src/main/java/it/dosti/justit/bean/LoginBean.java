@@ -13,6 +13,16 @@ public class LoginBean {
         this.setRoleType(roleTypeField);
     }
 
+    public LoginBean(String usernameField, String passwordField, String roleTypeField) {
+        this.setUsername(usernameField);
+        this.setPassword(passwordField);
+        this.setRoleTypeStringed(roleTypeField);
+    }
+
+    private void setRoleTypeStringed(String roleTypeField) {
+        this.setRoleType(roleTypeField.toUpperCase().startsWith("T") ? RoleType.TECHNICIAN : RoleType.CLIENT);
+    }
+
     public String getUsername(){
         return this.username;
     }

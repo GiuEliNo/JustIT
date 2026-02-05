@@ -19,7 +19,7 @@ public class CLoginView extends BaseCliView {
     }
 
     public String askRole() {
-        System.out.print("Role (CLIENT/TECHNICIAN): ");
+        System.out.print("Role [C]LIENT/[T]ECHNICIAN (default CLIENT): ");
         return scanner.nextLine();
     }
 }

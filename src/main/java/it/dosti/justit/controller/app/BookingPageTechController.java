@@ -46,4 +46,13 @@ public class BookingPageTechController {
         Booking booking = bookingModel.getBookingById(bookingBean.getBookingID());
         bookingModel.completeBooking(booking);
     }
+
+    public BookingBean getBookingById(List<BookingBean> bookingBeans, Integer bookingId) {
+        for (BookingBean b : bookingBeans) {
+            if (b.getBookingID().equals(bookingId)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }
