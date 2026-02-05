@@ -12,6 +12,6 @@ public class CalculateCoordinateRangeDistance {
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                         Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return (float) (earthRadius * c);
+        return (float) (earthRadius * c) / 1000;
     }
 }

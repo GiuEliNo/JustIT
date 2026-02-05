@@ -49,6 +49,9 @@ public class RegisterShopGController extends BaseGController {
     private Button signInButton;
 
     @FXML
+    private Button backButton;
+
+    @FXML
     private TextField addressCountryField;
     @FXML
     private TextField addressCityField;
@@ -112,7 +115,7 @@ public class RegisterShopGController extends BaseGController {
     }
 
     @FXML
-    void backButtonPressed(ActionEvent event) {
+    void backButtonPressed() {
         new MainGController(navigation);
         navigation.navigate(Screen.REGISTERTEC_VIEW);
     }

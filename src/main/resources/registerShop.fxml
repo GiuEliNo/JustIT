@@ -20,157 +20,129 @@
 
     <top>
         <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label text="JustIT">
-                    <font>
-                        <Font size="30.0" />
-                    </font>
-                </Label>
-                <Label text="Shop Sign In">
-                    <font>
-                        <Font size="22.0" />
-                    </font>
-                </Label>
-            </children>
             <padding>
-                <Insets bottom="20.0" top="20.0" />
+                <Insets bottom="20.0" top="20.0"/>
             </padding>
+            <Label text="JustIT">
+                <font>
+                    <Font size="30.0"/>
+                </font>
+            </Label>
+            <Label text="Shop Sign In">
+                <font>
+                    <Font size="22.0"/>
+                </font>
+            </Label>
         </VBox>
     </top>
 
     <center>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-            <children>
-                <GridPane hgap="20.0" maxWidth="800.0" vgap="15.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-
-                        <VBox spacing="5.0">
-                            <children>
-                                <Label text="Shop Name" />
-                                <TextField fx:id="nameField" />
-                            </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1">
-                            <children>
-                                <Label text="Street" />
-                                <TextField fx:id="addressStreetField" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="5.0" GridPane.rowIndex="1">
-                            <children>
-                                <Label text="City" />
-                                <TextField fx:id="addressCityField" />
-                            </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <children>
-                                <Label text="Country" />
-                                <TextField fx:id="addressCountryField" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="5.0" GridPane.rowIndex="2">
-                            <children>
-                                <Label text="Phone" />
-                                <TextField fx:id="phoneField" />
-                            </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <children>
-                                <Label text="Email" />
-                                <TextField fx:id="emailField" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="5.0" GridPane.rowIndex="3">
-                            <children>
-                                <Label text="Description" />
-                                <TextField fx:id="descriptionField" />
-                            </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <children>
-                                <Label text="Pick a photo" />
-                                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                    <children>
-                                        <Button fx:id="imagePickerButton" mnemonicParsing="false" onAction="#onPickerClick" text="Choose">
-                                            <graphic>
-                                                <SVGPath content="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10" />
-                                            </graphic>
-                                        </Button>
-                                        <ImageView fx:id="previewImage" fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="5.0" GridPane.rowIndex="4">
-                            <children>
-                                <Label text="Opening Hours" />
-                                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                    <children>
-                                        <TextField fx:id="openingField1" prefWidth="60.0" />
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
-                                        <TextField fx:id="openingField2" prefWidth="60.0" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                            <children>
-                                <Label text=" " />
-                                <CheckBox fx:id="homeAssistanceCheck" mnemonicParsing="false" text="Home Assistance" />
-                            </children>
-                        </VBox>
-
-                    </children>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
-                </GridPane>
-            </children>
             <padding>
-                <Insets bottom="10.0" top="10.0" />
+                <Insets bottom="10.0" top="10.0"/>
             </padding>
+            <GridPane hgap="20.0" maxWidth="800.0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <padding>
+                    <Insets left="20.0" right="20.0"/>
+                </padding>
+
+                <VBox spacing="5.0">
+                    <Label text="Shop Name"/>
+                    <TextField fx:id="nameField"/>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1">
+                    <Label text="Street"/>
+                    <TextField fx:id="addressStreetField"/>
+                </VBox>
+
+                <VBox spacing="5.0" GridPane.rowIndex="1">
+                    <Label text="City"/>
+                    <TextField fx:id="addressCityField"/>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Country"/>
+                    <TextField fx:id="addressCountryField"/>
+                </VBox>
+
+                <VBox spacing="5.0" GridPane.rowIndex="2">
+                    <Label text="Phone"/>
+                    <TextField fx:id="phoneField"/>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Email"/>
+                    <TextField fx:id="emailField"/>
+                </VBox>
+
+                <VBox spacing="5.0" GridPane.rowIndex="3">
+                    <Label text="Description"/>
+                    <TextField fx:id="descriptionField"/>
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label text="Pick a photo"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Button fx:id="imagePickerButton" mnemonicParsing="false" onAction="#onPickerClick"
+                                text="Choose">
+                            <graphic>
+                                <SVGPath
+                                        content="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10"/>
+                            </graphic>
+                        </Button>
+                        <ImageView fx:id="previewImage" fitHeight="30.0" fitWidth="50.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="5.0" GridPane.rowIndex="4">
+                    <Label text="Opening Hours"/>
+                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                        <TextField fx:id="openingField1" prefWidth="60.0"/>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=":"/>
+                        <TextField fx:id="openingField2" prefWidth="60.0"/>
+                    </HBox>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Label text=" "/>
+                    <CheckBox fx:id="homeAssistanceCheck" mnemonicParsing="false" text="Home Assistance"/>
+                </VBox>
+
+            </GridPane>
         </VBox>
     </center>
 
     <bottom>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0"
+                                   prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <children>
-                <HBox alignment="CENTER_LEFT">
-                    <children>
-                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonPressed" prefWidth="80.0" text="Back" />
-                    </children>
-                    <padding>
-                        <Insets left="30.0" />
-                    </padding>
-                </HBox>
-                <Button fx:id="signInButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#signInPressed" prefHeight="45.0" text="Register" GridPane.columnIndex="1" />
-            </children>
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
             </padding>
+            <HBox alignment="CENTER_LEFT">
+                <padding>
+                    <Insets left="30.0"/>
+                </padding>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonPressed" prefWidth="80.0"
+                        text="Back"/>
+            </HBox>
+            <Button fx:id="signInButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                    onAction="#signInPressed" prefHeight="45.0" text="Register" GridPane.columnIndex="1"/>
         </GridPane>
     </bottom>
 
