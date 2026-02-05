@@ -30,6 +30,12 @@ public class RegisterGController  extends BaseGController{
     @FXML
     private Button backButton;
 
+    @FXML
+    private TextField cityField;
+    @FXML
+    private TextField streetField;
+    @FXML
+    private TextField countryField;
 
     @FXML
     private void initialize() {
@@ -39,7 +45,7 @@ public class RegisterGController  extends BaseGController{
     }
 
     @FXML
-    private void onBackButtonPressed() {
+    private void backButtonPressed() {
         new MainGController(navigation);
         navigation.navigate(Screen.LAUNCHER);
     }
@@ -54,6 +60,7 @@ public class RegisterGController  extends BaseGController{
         bean.setPassword(passwordField.getText());
         bean.setEmail(emailField.getText());
         bean.setUsername(usernameField.getText());
+        bean.setAddress(streetField.getText() + ","  + cityField.getText() + "," + countryField.getText());
 
 
         try {

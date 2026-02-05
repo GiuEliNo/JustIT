@@ -8,9 +8,13 @@ import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class RegisterTecGController extends BaseGController{
+    @FXML
+    private Label warningLabel;
+
     @FXML
     private TextField emailField;
 
@@ -55,10 +59,8 @@ public class RegisterTecGController extends BaseGController{
         try {
             if (!registerController.registerNewTechnician(technicRegisterBean)) {
 
+                warningLabel.setText("Shop not found, register it first");
                 signInButton.setDisable(true);
-                signInButton.setVisible(false);
-                signShopButton.setDisable(false);
-                signShopButton.setVisible(true);
 
 
             } else {
@@ -67,20 +69,10 @@ public class RegisterTecGController extends BaseGController{
             }
         }catch(RegisterOnDbException | UserNotFoundException | ShopNotFoundException e){
             JustItLogger.getInstance().error(e.getMessage(), e);
-            signInButton.setDisable(true);
-            signInButton.setVisible(false);
         }
 
     }
 
-
-    @FXML
-    void initialize() {
-
-        signShopButton.setVisible(false);
-        signShopButton.setDisable(true);
-
-    }
 
     @FXML
     void onSignShopButtonClicked(){

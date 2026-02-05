@@ -1,9 +1,12 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.ShopModel;
 import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.CalculateCoordinateRangeDistance;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +41,17 @@ public class BrowseShopController {
                     .collect(Collectors.toList());
         }
 
+        return filteredShops;
+    }
+
+    public List<Shop> filterByRadius(Float radius) {
+        List<Shop> filteredShops = new ArrayList<>();
+        ClientUser clientUser = (ClientUser) SessionModel.getInstance().getLoggedUser();
+        for (Shop shop : shops) {
+            if (CalculateCoordinateRangeDistance.distFrom((float) shop.getCoordinates().getLatitude(), (float) shop.getCoordinates().getLongitude(), (float) clientUser.getCoordinates().getLatitude(), (float) clientUser.getCoordinates().getLongitude()) < radius ){
+                filteredShops.add(shop);
+            }
+        }
         return filteredShops;
     }
 }

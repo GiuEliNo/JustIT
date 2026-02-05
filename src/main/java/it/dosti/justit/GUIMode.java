@@ -26,13 +26,13 @@ public class GUIMode extends BaseAppMode implements AppMode{
 
             NavigationService navigation = new GUINavigationService(root);
 
-            Scene scene = new Scene(root, 900, 600);
+            Scene scene = new Scene(root, 1280, 720);
 
             scene.getStylesheets().add(GUIMode.class.getResource("/style.css").toExternalForm());
 
             stage.setScene(scene);
             stage.setTitle("JustIT");
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.show();
             Platform.runLater(stage::centerOnScreen);
 

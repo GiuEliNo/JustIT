@@ -1,5 +1,6 @@
 package it.dosti.justit.model;
 
+
 public class Shop {
     private Integer id;
     private String name;
@@ -7,8 +8,8 @@ public class Shop {
     private String phone;
     private String email;
     private String description;
-    private String image; // per ora lo tratto come se fosse un path, non se poi un blob nel db da vedere
-    private String openingHours;  // forse in futuro un tipo date
+    private byte[] image;
+    private String openingHours;
     private boolean homeAssistance;
     private Coordinates coordinates;
 
@@ -41,7 +42,7 @@ public class Shop {
         private String phone;
         private String email;
         private String description;
-        private String image;
+        private byte[] image;
         private String openingHours;
         private boolean homeAssistance;
         private Coordinates coordinates;
@@ -79,7 +80,7 @@ public class Shop {
             return this;
         }
 
-        public Builder image(String image) {
+        public Builder image(byte[] image) {
             this.image = image;
             return this;
         }
@@ -128,7 +129,7 @@ public class Shop {
         return description;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 

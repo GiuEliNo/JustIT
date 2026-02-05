@@ -3,14 +3,14 @@ package it.dosti.justit.model;
 public class Review {
     private String title;
     private Integer star;
-    private String review;
+    private String reviewText;
     private Integer shop;
     private String username;
 
     public Review(String title, Integer star, String review, Integer shop, String username) {
         this.title = title;
         this.star = star;
-        this.review = review;
+        this.reviewText = review;
         this.shop = shop;
         this.username = username;
     }
@@ -34,10 +34,10 @@ public class Review {
         this.star = star;
     }
     public String getReview() {
-        return review;
+        return reviewText;
     }
     public void setReview(String review) {
-        this.review = review;
+        this.reviewText = review;
     }
 
     public String getUsername() {

@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.controller.app.ReviewPageShopController;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CReviewListView;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ReviewListGCliController extends BaseCliController {
         List<ReviewBean> reviewBeanList = appController.getReviews();
 
         if (reviewBeanList.isEmpty()) {
-            System.out.println("No reviews available.");
+            JustItLogger.getInstance().warn("No reviews found");
         } else {
             for (ReviewBean reviewBean : reviewBeanList) {
                 reviewView.renderReview(reviewBean);

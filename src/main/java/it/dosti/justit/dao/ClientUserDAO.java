@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
@@ -10,7 +11,7 @@ public interface ClientUserDAO {
 
     boolean login(String username, String password) throws LoginFromDBException;
 
-    boolean registerClient(String username, String password, String name, String email) throws RegisterOnDbException;
+    boolean registerClient(RegisterBean registerBean) throws RegisterOnDbException;
 
     User findByUsername(String username) throws UserNotFoundException;
 

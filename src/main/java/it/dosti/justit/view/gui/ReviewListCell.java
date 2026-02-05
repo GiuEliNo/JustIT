@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import org.controlsfx.control.Rating;
 
 public class ReviewListCell extends ListCell<ReviewBean> {
+
     @Override
     protected void updateItem(ReviewBean reviewBean, boolean empty) {
         super.updateItem(reviewBean, empty);

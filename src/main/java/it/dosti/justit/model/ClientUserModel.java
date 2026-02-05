@@ -1,5 +1,6 @@
 package it.dosti.justit.model;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.dao.ClientUserDAO;
 import it.dosti.justit.dao.ClientUserDAOJDBC;
 import it.dosti.justit.exceptions.LoginFromDBException;
@@ -28,9 +29,9 @@ public class ClientUserModel {
         SessionModel.getInstance().setLoggedUser(clientUserDAO.findByUsername(username));
     }
 
-    public boolean registerClient(String username, String password, String name, String email) throws UserNotFoundException, RegisterOnDbException {
-        if(clientUserDAO.registerClient(username, password, name, email)){
-            this.updateSessionUser(username);
+    public boolean registerClient(RegisterBean registerBean) throws UserNotFoundException, RegisterOnDbException {
+        if(clientUserDAO.registerClient(registerBean)){
+            this.updateSessionUser(registerBean.getUsername());
             return true;
         }
         else return false;
