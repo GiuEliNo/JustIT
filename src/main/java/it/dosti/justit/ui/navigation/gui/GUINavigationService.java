@@ -1,13 +1,13 @@
 package it.dosti.justit.ui.navigation.gui;
 
 import it.dosti.justit.controller.graphical.gui.BaseGController;
-import it.dosti.justit.controller.graphical.gui.ProfileUserGController;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.gui.MainViewFactory;
 import it.dosti.justit.view.gui.MainViewTech;
 import it.dosti.justit.view.gui.MainViewUser;
+import it.dosti.justit.view.gui.ProfileUserView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
@@ -22,21 +22,15 @@ public class GUINavigationService implements NavigationService {
     private final BorderPane root;
     private final SessionManager sessionManager;
     private final MainViewFactory mainViewFactory;
-    private final MainViewUser userMainView;
-    private final MainViewTech techMainView;
-    private ProfileUserGController settingsController;
-    private Parent settingsView;
+    private MainViewUser userMainView;
+    private MainViewTech techMainView;
     private boolean ignoreUserTabSelection;
     private boolean ignoreTechTabSelection;
 
     public GUINavigationService(BorderPane root) {
         this.root = root;
         this.sessionManager = SessionManager.getInstance();
-        this.userMainView = new MainViewUser();
-        this.techMainView = new MainViewTech();
-        this.mainViewFactory = new MainViewFactory(userMainView, techMainView);
-        configureUserTabSelection();
-        configureTechTabSelection();
+        this.mainViewFactory = new MainViewFactory();
     }
 
     @Override
@@ -46,6 +40,7 @@ public class GUINavigationService implements NavigationService {
                 showStandaloneView(loadView(screen));
                 return;
             case MAIN:
+                buildMainViews();
                 showMainLayout();
                 if (isTechnician()) {
                     setContent(techMainView.getTopPane(), loadView(Screen.TOPBARTEC));
@@ -57,76 +52,58 @@ public class GUINavigationService implements NavigationService {
                     setContent(userMainView.getSearchLeftPane(), loadView(Screen.SIDEBAR_SEARCH_LIST));
                 }
                 return;
+            default:
+                break;
+        }
+        switch (screen) {
             case TOPBARTEC, TOPBARUSER:
-                showMainLayout();
                 setContent(getActiveTopPane(), loadView(screen));
                 return;
             case SIDEBAR_LIST_SETTING_USER:
-                showMainLayout();
-                ensureSettingsView();
                 selectUserTab(userMainView.getProfileTab());
-                settingsController.selectAccountTab();
-                settingsController.setAccountContent(loadView(Screen.ACCOUNT_PAGE));
-                setContent(userMainView.getProfilePane(), settingsView);
+                showProfileUserView(Screen.ACCOUNT_PAGE);
                 return;
             case ACCOUNT_PAGE:
-                showMainLayout();
-                ensureSettingsView();
                 selectUserTab(userMainView.getProfileTab());
-                settingsController.selectAccountTab();
-                settingsController.setAccountContent(loadView(Screen.ACCOUNT_PAGE));
-                setContent(userMainView.getProfilePane(), settingsView);
+                showProfileUserView(Screen.ACCOUNT_PAGE);
                 return;
             case PAYMENTS:
-                showMainLayout();
-                ensureSettingsView();
                 selectUserTab(userMainView.getProfileTab());
-                settingsController.selectPaymentTab();
-                settingsController.setPaymentContent(loadView(Screen.PAYMENTS));
-                setContent(userMainView.getProfilePane(), settingsView);
+                showProfileUserView(Screen.PAYMENTS);
                 return;
             case SIDEBAR_SEARCH_LIST:
-                showMainLayout();
                 selectUserTab(userMainView.getSearchTab());
                 setContent(userMainView.getSearchLeftPane(), loadView(screen));
                 return;
             case PAGE_SHOP, BOOKING_PAGE, REVIEWS_BOX:
-                showMainLayout();
                 selectUserTab(userMainView.getSearchTab());
                 setContent(userMainView.getSearchRightPane(), loadView(screen));
                 return;
             case PAGE_SHOP_TECH:
-                showMainLayout();
                 selectTechTab(techMainView.getShopTab());
                 setContent(techMainView.getShopPane(), loadView(screen));
                 return;
             case SIDEBAR_TECH_LIST:
-                showMainLayout();
                 selectTechTab(techMainView.getShopTab());
                 setContent(techMainView.getShopPane(), loadView(screen));
                 return;
             case MESSAGES:
-                showMainLayout();
                 selectUserTab(userMainView.getNotificationsTab());
                 setContent(userMainView.getNotificationsPane(), loadView(screen));
                 return;
             case MESSAGES_TECH:
-                showMainLayout();
                 selectTechTab(techMainView.getNotificationsTab());
                 setContent(techMainView.getNotificationsPane(), loadView(screen));
                 return;
             case BOOKINGS:
-                showMainLayout();
                 selectUserTab(userMainView.getBookingsTab());
                 setContent(userMainView.getBookingsPane(), loadView(screen));
                 return;
             case BOOKING_PAGE_TECH:
-                showMainLayout();
                 selectTechTab(techMainView.getBookingsTab());
                 setContent(techMainView.getBookingsPane(), loadView(screen));
                 return;
             default:
-                showMainLayout();
                 if (isTechnician()) {
                     setContent(techMainView.getShopPane(), loadView(screen));
                 } else {
@@ -147,10 +124,6 @@ public class GUINavigationService implements NavigationService {
 
             if (controller != null) {
                 controller.setNavigation(this);
-                if (controller instanceof ProfileUserGController) {
-                    settingsController = (ProfileUserGController) controller;
-                    settingsView = root;
-                }
             }
 
             return root;
@@ -180,8 +153,6 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.TOPBARTEC;
             case REGISTER_SHOP:
                 return GUIScreen.REGISTER_SHOP;
-            case SIDEBAR_LIST_SETTING_USER:
-                return GUIScreen.SIDEBAR_LIST_SETTING_USER;
             case PAYMENTS:
                 return GUIScreen.PAYMENTS;
             case ACCOUNT_PAGE:
@@ -247,13 +218,26 @@ public class GUINavigationService implements NavigationService {
         }
     }
 
-    private void ensureSettingsView() {
-        if (settingsView == null || settingsController == null) {
-            settingsView = loadView(Screen.SIDEBAR_LIST_SETTING_USER);
+    private void showProfileUserView(Screen initialScreen) {
+        ProfileUserView profileView = new ProfileUserView();
+        profileView.setOnTabChange(
+                () -> navigate(Screen.ACCOUNT_PAGE),
+                () -> navigate(Screen.PAYMENTS)
+        );
+        if (initialScreen == Screen.PAYMENTS) {
+            profileView.selectPaymentTab();
+            profileView.setPaymentContent(loadView(Screen.PAYMENTS));
+        } else {
+            profileView.selectAccountTab();
+            profileView.setAccountContent(loadView(Screen.ACCOUNT_PAGE));
         }
+        setContent(userMainView.getProfilePane(), profileView.getRoot());
     }
 
     private void configureUserTabSelection() {
+        if (userMainView == null) {
+            return;
+        }
         userMainView.getMainTabPane().getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             if (ignoreUserTabSelection || newTab == null) {
                 return;
@@ -271,6 +255,9 @@ public class GUINavigationService implements NavigationService {
     }
 
     private void configureTechTabSelection() {
+        if (techMainView == null) {
+            return;
+        }
         techMainView.getMainTabPane().getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             if (ignoreTechTabSelection || newTab == null) {
                 return;
@@ -290,10 +277,20 @@ public class GUINavigationService implements NavigationService {
     }
 
     private TabPane getActiveMainTabPane() {
-        return mainViewFactory.getMainView(sessionManager).getMainTabPane();
+        return isTechnician() ? techMainView.getMainTabPane() : userMainView.getMainTabPane();
     }
 
     private StackPane getActiveTopPane() {
-        return mainViewFactory.getMainView(sessionManager).getTopPane();
+        return isTechnician() ? techMainView.getTopPane() : userMainView.getTopPane();
+    }
+
+    private void buildMainViews() {
+        if (isTechnician()) {
+            techMainView = (MainViewTech) mainViewFactory.getMainView(sessionManager);
+            configureTechTabSelection();
+        } else {
+            userMainView = (MainViewUser) mainViewFactory.getMainView(sessionManager);
+            configureUserTabSelection();
+        }
     }
 }

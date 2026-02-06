@@ -16,7 +16,6 @@ public enum GUIScreen {
     REGISTER_SHOP("/registerShop.fxml"),
     ACCOUNT_PAGE("/accountPage.fxml"),
     MESSAGES("/messages.fxml"),
-    SIDEBAR_LIST_SETTING_USER("/sidebarListSettingUser.fxml"),
     PAYMENTS("/payments.fxml"),
     PAGE_SHOP_TECH("/pageShopTech.fxml"),
     BOOKINGS("/bookings.fxml"),
