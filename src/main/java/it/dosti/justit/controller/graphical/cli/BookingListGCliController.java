@@ -21,7 +21,7 @@ public class BookingListGCliController extends BaseCliController{
             navigation.navigate(Screen.MAIN_USER);
         }
         else{
-            navigation.navigate(Screen.BOOKINGS);
+            navigation.navigate(Screen.BOOKINGS_LIST_USER);
         }
     }
 }

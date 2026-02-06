@@ -84,7 +84,7 @@ public class RegisterShopGController extends BaseGController {
             if (registerController.registerNewShop(shopBean)) {
                 JustItLogger.getInstance().info("Register shop successful");
                 navigation.navigate(Screen.MAIN);
-                navigation.navigate(Screen.REGISTERTEC_VIEW);
+                navigation.navigate(Screen.REGISTER_TECH);
             } else {
                 throw new RegisterOnDbException("Register shop failed");
             }
@@ -117,7 +117,7 @@ public class RegisterShopGController extends BaseGController {
     @FXML
     void backButtonPressed() {
         navigation.navigate(Screen.MAIN);
-        navigation.navigate(Screen.REGISTERTEC_VIEW);
+        navigation.navigate(Screen.REGISTER_TECH);
     }
 
 }

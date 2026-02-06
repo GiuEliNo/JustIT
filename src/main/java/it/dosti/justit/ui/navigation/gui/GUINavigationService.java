@@ -36,7 +36,7 @@ public class GUINavigationService implements NavigationService {
     @Override
     public void navigate(Screen screen) {
         switch (screen) {
-            case LAUNCHER, REGISTER_VIEW, REGISTERTEC_VIEW, REGISTER_SHOP:
+            case LAUNCHER, REGISTER_USER, REGISTER_TECH, REGISTER_SHOP:
                 showStandaloneView(loadView(screen));
                 return;
             case MAIN:
@@ -49,7 +49,7 @@ public class GUINavigationService implements NavigationService {
                 } else {
                     setContent(userMainView.getTopPane(), loadView(Screen.TOPBAR));
                     selectUserTab(userMainView.getSearchTab());
-                    setContent(userMainView.getSearchLeftPane(), loadView(Screen.SIDEBAR_SEARCH_LIST));
+                    setContent(userMainView.getSearchLeftPane(), loadView(Screen.SEARCH_LIST_SHOP));
                 }
                 return;
             default:
@@ -59,23 +59,23 @@ public class GUINavigationService implements NavigationService {
             case TOPBAR:
                 setContent(getActiveTopPane(), loadView(screen));
                 return;
-            case SIDEBAR_LIST_SETTING_USER:
+            case TAB_PANE_USER_PROFILE:
                 selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.ACCOUNT_PAGE);
+                showProfileUserView(Screen.ACCOUNT_PAGE_USER);
                 return;
-            case ACCOUNT_PAGE:
+            case ACCOUNT_PAGE_USER:
                 selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.ACCOUNT_PAGE);
+                showProfileUserView(Screen.ACCOUNT_PAGE_USER);
                 return;
             case PAYMENTS:
                 selectUserTab(userMainView.getProfileTab());
                 showProfileUserView(Screen.PAYMENTS);
                 return;
-            case SIDEBAR_SEARCH_LIST:
+            case SEARCH_LIST_SHOP:
                 selectUserTab(userMainView.getSearchTab());
                 setContent(userMainView.getSearchLeftPane(), loadView(screen));
                 return;
-            case PAGE_SHOP, BOOKING_PAGE, REVIEWS_BOX:
+            case PAGE_SHOP_USER, BOOKING_PAGE_USER, REVIEWS_BOX:
                 selectUserTab(userMainView.getSearchTab());
                 setContent(userMainView.getSearchRightPane(), loadView(screen));
                 return;
@@ -83,23 +83,19 @@ public class GUINavigationService implements NavigationService {
                 selectTechTab(techMainView.getShopTab());
                 setContent(techMainView.getShopPane(), loadView(screen));
                 return;
-            case SIDEBAR_TECH_LIST:
-                selectTechTab(techMainView.getShopTab());
-                setContent(techMainView.getShopPane(), loadView(screen));
-                return;
-            case MESSAGES:
+            case NOTIFICATION_CENTER_USER:
                 selectUserTab(userMainView.getNotificationsTab());
                 setContent(userMainView.getNotificationsPane(), loadView(screen));
                 return;
-            case MESSAGES_TECH:
+            case NOTIFICATION_CENTER_TECH:
                 selectTechTab(techMainView.getNotificationsTab());
                 setContent(techMainView.getNotificationsPane(), loadView(screen));
                 return;
-            case BOOKINGS:
+            case BOOKINGS_LIST_USER:
                 selectUserTab(userMainView.getBookingsTab());
                 setContent(userMainView.getBookingsPane(), loadView(screen));
                 return;
-            case BOOKING_PAGE_TECH:
+            case BOOKINGS_LIST_TECH:
                 selectTechTab(techMainView.getBookingsTab());
                 setContent(techMainView.getBookingsPane(), loadView(screen));
                 return;
@@ -136,37 +132,35 @@ public class GUINavigationService implements NavigationService {
     private GUIScreen mapToGuiScreen(Screen screen) {
         switch (screen) {
             case LAUNCHER:
-                return GUIScreen.LAUNCHER;
-            case REGISTERTEC_VIEW:
-                return GUIScreen.REGISTERTEC_VIEW;
-            case REGISTER_VIEW:
-                return GUIScreen.REGISTER_VIEW;
-            case SIDEBAR_SEARCH_LIST:
-                return GUIScreen.SIDEBAR_SEARCH_LIST;
-            case PAGE_SHOP:
-                return GUIScreen.PAGE_SHOP;
-            case BOOKING_PAGE:
-                return GUIScreen.BOOKING_PAGE;
+                return GUIScreen.LOGIN;
+            case REGISTER_TECH:
+                return GUIScreen.REGISTER_TECH;
+            case REGISTER_USER:
+                return GUIScreen.REGISTER_USER;
+            case SEARCH_LIST_SHOP:
+                return GUIScreen.SEARCH_LIST_SHOP;
+            case PAGE_SHOP_USER:
+                return GUIScreen.PAGE_SHOP_USER;
+            case BOOKING_PAGE_USER:
+                return GUIScreen.BOOKING_PAGE_USER;
             case TOPBAR:
                 return GUIScreen.TOPBAR;
             case REGISTER_SHOP:
                 return GUIScreen.REGISTER_SHOP;
             case PAYMENTS:
                 return GUIScreen.PAYMENTS;
-            case ACCOUNT_PAGE:
-                return GUIScreen.ACCOUNT_PAGE;
-            case MESSAGES:
-                return GUIScreen.MESSAGES;
-            case BOOKINGS:
-                return GUIScreen.BOOKINGS;
+            case ACCOUNT_PAGE_USER:
+                return GUIScreen.ACCOUNT_PAGE_USER;
+            case NOTIFICATION_CENTER_USER:
+                return GUIScreen.NOTIFICATION_CENTER_USER;
+            case BOOKINGS_LIST_USER:
+                return GUIScreen.BOOKINGS_LIST_USER;
             case PAGE_SHOP_TECH:
                 return GUIScreen.PAGE_SHOP_TECH;
-            case SIDEBAR_TECH_LIST:
-                return GUIScreen.SIDEBAR_TECH_LIST;
-            case BOOKING_PAGE_TECH:
-                return GUIScreen.BOOKING_PAGE_TECH;
-            case MESSAGES_TECH:
-                return GUIScreen.MESSAGES_TECH;
+            case BOOKINGS_LIST_TECH:
+                return GUIScreen.BOOKINGS_LIST_TECH;
+            case NOTIFICATION_CENTER_TECH:
+                return GUIScreen.NOTIFICATION_CENTER_TECH;
             default:
                 throw new IllegalArgumentException("Screen non mappato: " + screen);
         }
@@ -219,7 +213,7 @@ public class GUINavigationService implements NavigationService {
     private void showProfileUserView(Screen initialScreen) {
         ProfileUserView profileView = new ProfileUserView();
         profileView.setOnTabChange(
-                () -> navigate(Screen.ACCOUNT_PAGE),
+                () -> navigate(Screen.ACCOUNT_PAGE_USER),
                 () -> navigate(Screen.PAYMENTS)
         );
         if (initialScreen == Screen.PAYMENTS) {
@@ -227,7 +221,7 @@ public class GUINavigationService implements NavigationService {
             profileView.setPaymentContent(loadView(Screen.PAYMENTS));
         } else {
             profileView.selectAccountTab();
-            profileView.setAccountContent(loadView(Screen.ACCOUNT_PAGE));
+            profileView.setAccountContent(loadView(Screen.ACCOUNT_PAGE_USER));
         }
         setContent(userMainView.getProfilePane(), profileView.getRoot());
     }
@@ -241,13 +235,13 @@ public class GUINavigationService implements NavigationService {
                 return;
             }
             if (newTab == userMainView.getProfileTab() && userMainView.getProfilePane().getChildren().isEmpty()) {
-                navigate(Screen.SIDEBAR_LIST_SETTING_USER);
+                navigate(Screen.TAB_PANE_USER_PROFILE);
             } else if (newTab == userMainView.getNotificationsTab() && userMainView.getNotificationsPane().getChildren().isEmpty()) {
-                navigate(Screen.MESSAGES);
+                navigate(Screen.NOTIFICATION_CENTER_USER);
             } else if (newTab == userMainView.getBookingsTab() && userMainView.getBookingsPane().getChildren().isEmpty()) {
-                navigate(Screen.BOOKINGS);
+                navigate(Screen.BOOKINGS_LIST_USER);
             } else if (newTab == userMainView.getSearchTab() && userMainView.getSearchLeftPane().getChildren().isEmpty()) {
-                navigate(Screen.SIDEBAR_SEARCH_LIST);
+                navigate(Screen.SEARCH_LIST_SHOP);
             }
         });
     }
@@ -263,9 +257,9 @@ public class GUINavigationService implements NavigationService {
             if (newTab == techMainView.getShopTab() && techMainView.getShopPane().getChildren().isEmpty()) {
                 navigate(Screen.PAGE_SHOP_TECH);
             } else if (newTab == techMainView.getBookingsTab() && techMainView.getBookingsPane().getChildren().isEmpty()) {
-                navigate(Screen.BOOKING_PAGE_TECH);
+                navigate(Screen.BOOKINGS_LIST_TECH);
             } else if (newTab == techMainView.getNotificationsTab() && techMainView.getNotificationsPane().getChildren().isEmpty()) {
-                navigate(Screen.MESSAGES_TECH);
+                navigate(Screen.NOTIFICATION_CENTER_TECH);
             }
         });
     }

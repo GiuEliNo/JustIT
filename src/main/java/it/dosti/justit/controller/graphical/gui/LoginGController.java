@@ -54,8 +54,8 @@ public class LoginGController extends BaseGController {
     @FXML
     public void onSignIn() {
 
-        if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_VIEW);
+        if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_USER);
 
-        else navigation.navigate(Screen.REGISTERTEC_VIEW);
+        else navigation.navigate(Screen.REGISTER_TECH);
     }
 }

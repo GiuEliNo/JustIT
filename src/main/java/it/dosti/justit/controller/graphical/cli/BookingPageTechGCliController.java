@@ -62,11 +62,11 @@ public class BookingPageTechGCliController extends BaseCliController{
         switch(appController.getBookingById(bookId).getStatus()){
             case PENDING:
                 this.confirmationManager(bookId);
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
             case CONFIRMED:
                 this.completedManager(bookId);
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
             default:
                 break;
@@ -82,10 +82,10 @@ public class BookingPageTechGCliController extends BaseCliController{
                 appController.approveBooking(appController.getBookingById(bookId));
                 break;
             case 0:
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
             default:
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
         }
     }
@@ -96,10 +96,10 @@ public class BookingPageTechGCliController extends BaseCliController{
                 appController.rejectBooking(appController.getBookingById(bookId));
                 break;
             case 0:
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
             default:
-                navigation.navigate(Screen.BOOKING_PAGE_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
         }
     }

@@ -42,10 +42,10 @@ public class NotificationTechGCliController extends BaseCliController{
                 break;
             case "1":
                 this.markAsRead();
-                navigation.navigate(Screen.MESSAGES_TECH);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_TECH);
                 break;
             default:
-                navigation.navigate(Screen.MESSAGES_TECH);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_TECH);
                 break;
 
         }

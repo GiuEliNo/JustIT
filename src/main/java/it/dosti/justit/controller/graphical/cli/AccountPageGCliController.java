@@ -19,7 +19,7 @@ public class AccountPageGCliController extends BaseCliController {
         if(choice.equals("0")){
             navigation.navigate(Screen.MAIN_USER);
         } else {
-            navigation.navigate(Screen.ACCOUNT_PAGE);
+            navigation.navigate(Screen.ACCOUNT_PAGE_USER);
         }
     }
 }

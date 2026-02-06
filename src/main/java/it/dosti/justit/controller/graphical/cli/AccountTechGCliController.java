@@ -17,7 +17,7 @@ public class AccountTechGCliController extends BaseCliController {
         if(choice.equals("0")){
             navigation.navigate(Screen.MAIN_TECH);
         } else {
-            navigation.navigate(Screen.ACCOUNT_TECH);
+            navigation.navigate(Screen.ACCOUNT_PAGE_TECH);
         }
     }
 }

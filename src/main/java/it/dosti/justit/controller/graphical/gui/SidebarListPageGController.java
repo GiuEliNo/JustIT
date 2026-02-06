@@ -63,7 +63,7 @@ public class SidebarListPageGController extends BaseGController{
         Shop selected = listView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             appController.pageSelected(selected);
-            navigation.navigate(Screen.PAGE_SHOP);
+            navigation.navigate(Screen.PAGE_SHOP_USER);
         }
     }
 

@@ -42,10 +42,10 @@ public class NotificationGCliController extends BaseCliController{
                 break;
             case "1":
                 this.markAsRead();
-                navigation.navigate(Screen.MESSAGES);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
                 break;
             default:
-                navigation.navigate(Screen.MESSAGES);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
                 break;
 
         }

@@ -2,23 +2,23 @@ package it.dosti.justit.ui.navigation.gui;
 
 public enum GUIScreen {
 
-    LAUNCHER("/login.fxml"),
-    SIDEBAR_SEARCH_LIST("/searchListShop.fxml"),
-    PAGE_SHOP("/pageShopUser.fxml"),
-    BOOKING_PAGE("/bookingPageUser.fxml"),
-    REVIEWS_BOX("/reviewsBox.fxml"),
-    REGISTER_VIEW("/registerUser.fxml"),
-    REGISTERTEC_VIEW("/registerTech.fxml"),
-    TOPBAR("/topBar.fxml"),
-    REGISTER_SHOP("/registerShop.fxml"),
-    ACCOUNT_PAGE("/accountPage.fxml"),
-    MESSAGES("/notificationCenterUser.fxml"),
-    PAYMENTS("/payments.fxml"),
+    ACCOUNT_PAGE_USER("/accountPage.fxml"),
+    BOOKING_PAGE_USER("/bookingPageUser.fxml"),
+    BOOKINGS_LIST_TECH("/bookingsListTech.fxml"),
+    BOOKINGS_LIST_USER("/bookingsListUser.fxml"),
+    LOGIN("/login.fxml"),
+    NOTIFICATION_CENTER_TECH("/notificationCenterTech.fxml"),
+    NOTIFICATION_CENTER_USER("/notificationCenterUser.fxml"),
     PAGE_SHOP_TECH("/pageShopTech.fxml"),
-    BOOKINGS("/bookingsListUser.fxml"),
-    BOOKING_PAGE_TECH("/bookingsListTech.fxml"),
-    SIDEBAR_TECH_LIST("/sidebarListTechPage.fxml"),
-    MESSAGES_TECH("/notificationCenterTech.fxml");
+    PAGE_SHOP_USER("/pageShopUser.fxml"),
+    PAYMENTS("/payments.fxml"),
+    REGISTER_SHOP("/registerShop.fxml"),
+    REGISTER_TECH("/registerTech.fxml"),
+    REGISTER_USER("/registerUser.fxml"),
+    REVIEWS_BOX("/reviewsBox.fxml"),
+    SEARCH_LIST_SHOP("/searchListShop.fxml"),
+    TOPBAR("/topBar.fxml");
+
 
     private final String fxmlPath;
 

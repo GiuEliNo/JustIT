@@ -29,7 +29,7 @@ public class ReviewListGCliController extends BaseCliController {
 
         switch (choice){
             case "0":
-                navigation.navigate(Screen.PAGE_SHOP);
+                navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
             default:
                 navigation.navigate(Screen.REVIEWS_BOX);

@@ -12,19 +12,19 @@ public class MainUserGCliController extends BaseCliController{
 
         switch (choice){
             case "1":
-                navigation.navigate(Screen.ACCOUNT_PAGE);
+                navigation.navigate(Screen.ACCOUNT_PAGE_USER);
                 break;
             case "2":
-                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+                navigation.navigate(Screen.SEARCH_LIST_SHOP);
                 break;
             case "3":
-                navigation.navigate(Screen.BOOKINGS);
+                navigation.navigate(Screen.BOOKINGS_LIST_USER);
                 break;
             case "4":
                 navigation.navigate(Screen.ADD_REVIEW);
                 break;
             case "5":
-                navigation.navigate(Screen.MESSAGES);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
                 break;
             default:
                 navigation.navigate(Screen.MAIN_USER);

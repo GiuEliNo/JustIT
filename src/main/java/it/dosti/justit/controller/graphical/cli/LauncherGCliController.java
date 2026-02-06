@@ -18,7 +18,7 @@ public class LauncherGCliController extends BaseCliController {
                 navigation.navigate(Screen.LOGIN);
                 break;
             case "2":
-                //navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+                //navigation.navigate(Screen.SEARCH_LIST_SHOP);
                 break;
             default:
                 navigation.navigate(Screen.MAIN_USER);

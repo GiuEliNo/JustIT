@@ -111,6 +111,6 @@ public class PageShopGController extends BaseGController {
 
     @FXML
     public void onBookingClicked() {
-        navigation.navigate(Screen.BOOKING_PAGE);
+        navigation.navigate(Screen.BOOKING_PAGE_USER);
     }
 }

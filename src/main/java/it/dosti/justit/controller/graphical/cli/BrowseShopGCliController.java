@@ -22,18 +22,18 @@ public class BrowseShopGCliController extends BaseCliController{
         switch (choice) {
             case "1":
                 this.askShop(this.allShop());
-                navigation.navigate(Screen.PAGE_SHOP);
+                navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
             case "2":
                 this.askShop(this.searchShop());
-                navigation.navigate(Screen.PAGE_SHOP);
+                navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
             case "3":
                 this.randomShop();
-                // TODO navigation.navigate(Screen.PAGE_SHOP);
+                // TODO navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
             default:
-                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+                navigation.navigate(Screen.SEARCH_LIST_SHOP);
                 break;
         }
 

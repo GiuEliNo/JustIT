@@ -19,16 +19,16 @@ public class PageShopGCliController extends BaseCliController{
 
         switch (choice){
             case "1":
-                navigation.navigate(Screen.BOOKING_PAGE);
+                navigation.navigate(Screen.BOOKING_PAGE_USER);
                 break;
             case "2":
                 navigation.navigate(Screen.REVIEWS_BOX);
                 break;
             case "0":
-                navigation.navigate(Screen.SIDEBAR_SEARCH_LIST);
+                navigation.navigate(Screen.SEARCH_LIST_SHOP);
                 break;
             default:
-                navigation.navigate(Screen.PAGE_SHOP);
+                navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
         }
     }

@@ -32,27 +32,27 @@ public class CLINavigationService implements NavigationService {
                 return SessionManager.getInstance().isTechnician() ? new CMainTechView() : new CMainUserView();
             case MAIN_USER:
                 return new CMainUserView();
-            case SIDEBAR_SEARCH_LIST:
+            case SEARCH_LIST_SHOP:
                 return new CBrowseShopView();
-            case PAGE_SHOP:
+            case PAGE_SHOP_USER:
                 return new CPageShopCliView();
-            case REVIEWS_BOX, REVIEW_TECH:
+            case REVIEWS_BOX, REVIEWS_LIST_TECH:
                 return new CReviewListView();
-            case BOOKINGS:
+            case BOOKINGS_LIST_USER:
                 return new CBookingListView();
             case ADD_REVIEW:
                 return new CAddReviewView();
-            case MESSAGES, MESSAGES_TECH:
+            case NOTIFICATION_CENTER_USER, NOTIFICATION_CENTER_TECH:
                 return new CNotificationView();
-            case ACCOUNT_PAGE:
+            case ACCOUNT_PAGE_USER:
                 return new CAccountPageView();
             case MAIN_TECH:
                 return new CMainTechView();
-            case ACCOUNT_TECH:
+            case ACCOUNT_PAGE_TECH:
                 return new CAccountTechPageView();
             case PAGE_SHOP_TECH:
                 return new CPageShopTechView();
-            case BOOKING_PAGE_TECH:
+            case BOOKINGS_LIST_TECH:
                 return new CBookingListTechView();
             default:
                 return null;
@@ -69,31 +69,31 @@ public class CLINavigationService implements NavigationService {
                 return SessionManager.getInstance().isTechnician() ? new MainTechGCliController() : new MainUserGCliController();
             case MAIN_USER:
                 return new MainUserGCliController();
-            case SIDEBAR_SEARCH_LIST:
+            case SEARCH_LIST_SHOP:
                 return new BrowseShopGCliController();
-            case PAGE_SHOP:
+            case PAGE_SHOP_USER:
                 return new PageShopGCliController();
             case REVIEWS_BOX:
                 return new ReviewListGCliController();
-            case BOOKINGS:
+            case BOOKINGS_LIST_USER:
                 return new BookingListGCliController();
             case ADD_REVIEW:
                 return new AddReviewGCliController();
-            case MESSAGES:
+            case NOTIFICATION_CENTER_USER:
                 return new NotificationGCliController();
-            case ACCOUNT_PAGE:
+            case ACCOUNT_PAGE_USER:
                 return new AccountPageGCliController();
             case MAIN_TECH:
                 return new MainTechGCliController();
-            case ACCOUNT_TECH:
+            case ACCOUNT_PAGE_TECH:
                 return new AccountTechGCliController();
             case PAGE_SHOP_TECH:
                 return new PageShopTechGCliController();
-            case BOOKING_PAGE_TECH:
+            case BOOKINGS_LIST_TECH:
                 return new BookingPageTechGCliController();
-            case MESSAGES_TECH:
+            case NOTIFICATION_CENTER_TECH:
                 return new NotificationTechGCliController();
-            case REVIEW_TECH:
+            case REVIEWS_LIST_TECH:
                 return new ReviewListTechGCliController();
             default:
                 return null;
