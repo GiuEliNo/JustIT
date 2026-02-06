@@ -45,7 +45,9 @@ public class UpdateController {
                 updateSessionUser(username);
             }
             else{
-                updateSessionTechnician(username);
+                if(updateSessionTechnician(username)){
+                    return true;
+                }
             }
             return true;
         }

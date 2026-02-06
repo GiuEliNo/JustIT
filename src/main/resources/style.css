@@ -38,4 +38,27 @@
     -fx-border-width: 2;
     -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.3), 10, 0, 0, 5);
 }
+.label {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-background-color: #2196F3; /* Blu Material Design */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 5 15 5 15;
+}
+
+.button:hover {
+    -fx-background-color: #1976D2; /* Blu più scuro al passaggio del mouse */
+    -fx-cursor: hand;
+}
+
+.text-area {
+    -fx-background-radius: 5;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+}
 

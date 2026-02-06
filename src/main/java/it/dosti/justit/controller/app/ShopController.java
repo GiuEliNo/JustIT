@@ -4,6 +4,7 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;
 import javafx.scene.image.Image;
@@ -48,4 +49,41 @@ public class ShopController {
         ShopDAO dao = new ShopDAOJDBC();
         return dao.retrieveShopImageById(shop.getId());
     }
+
+    public boolean editShopName(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateNameShop(bean.getName());
+    }
+
+    public boolean editShopAddress(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateAddressShop(bean.getAddress());
+    }
+
+    public boolean editShopDescription(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateDescriptionShop(bean.getDescription());
+    }
+
+    public boolean editShopOpeningHours(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateOpeningHourShop(bean.getOpeningHours());
+    }
+    public boolean editShopEmail(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateEmailShop(bean.getEmail());
+    }
+
+    public boolean editShopPhone(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updatePhoneNumberShop(bean.getPhone());
+    }
+
+    public boolean editShopImage(ShopBean bean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateImageShop(bean.getImage());
+    }
+
+
+
 }

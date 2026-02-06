@@ -116,7 +116,6 @@ public class RegisterShopGController extends BaseGController {
 
     @FXML
     void backButtonPressed() {
-        navigation.navigate(Screen.MAIN);
         navigation.navigate(Screen.REGISTER_TECH);
     }
 
