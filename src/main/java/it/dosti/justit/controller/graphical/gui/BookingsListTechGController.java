@@ -101,5 +101,9 @@ public class BookingsListTechGController extends BaseGController{
         bookingTable.refresh();
         showDetail(selected);
     }
+
+    @FXML
+    public void onExport() {
+    }
 }
 

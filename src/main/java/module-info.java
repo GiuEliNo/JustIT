@@ -11,6 +11,7 @@ module it.dosti.justit {
     requires com.gluonhq.maps;
     requires com.gluonhq.attach.util;
     requires javafx.swing;
+    requires com.opencsv;
     opens it.dosti.justit to javafx.fxml;
 
     exports it.dosti.justit;

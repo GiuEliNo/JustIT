@@ -11,31 +11,41 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<MasterDetailPane fx:id="masterDetailPane" detailSide="BOTTOM" dividerPosition="0.65" showDetailNode="false" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingsListTechGController">
+<MasterDetailPane fx:id="masterDetailPane"
+                  detailSide="BOTTOM"
+                  dividerPosition="0.65"
+                  showDetailNode="false"
+                  xmlns="http://javafx.com/javafx/"
+                  xmlns:fx="http://javafx.com/fxml/1"
+                  fx:controller="it.dosti.justit.controller.graphical.gui.BookingsListTechGController">
 
     <masterNode>
-        <TableView fx:id="bookingTable">
+        <VBox spacing="10">
 
-            <columns>
-                <TableColumn fx:id="userCol" text="User" />
-                <TableColumn fx:id="dateCol" text="Date" />
-                <TableColumn fx:id="timeCol" text="Time Slot" />
-                <TableColumn fx:id="statusCol" text="Status"/>
-            </columns>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Export file"
+                        fx:id="exportButton"
+                        onAction="#onExport"/>
+            </HBox>
 
-        </TableView>
+            <TableView fx:id="bookingTable">
+                <columns>
+                    <TableColumn fx:id="userCol" text="User"/>
+                    <TableColumn fx:id="dateCol" text="Date"/>
+                    <TableColumn fx:id="timeCol" text="Time Slot"/>
+                    <TableColumn fx:id="statusCol" text="Status"/>
+                </columns>
+            </TableView>
+
+        </VBox>
     </masterNode>
 
     <detailNode>
         <VBox spacing="10">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
 
             <Label fx:id="lblUser"/>
             <Label fx:id="lblDate"/>
             <Label fx:id="lblTime"/>
-
             <Label fx:id="lblStatus"/>
 
             <Separator/>
@@ -52,6 +62,7 @@
                 <Button fx:id="rejectButton"
                         text="Reject"
                         onAction="#onReject"/>
+
                 <Button fx:id="completedButton"
                         text="Completed"
                         onAction="#onCompleted"/>
@@ -59,6 +70,5 @@
 
         </VBox>
     </detailNode>
-
 
 </MasterDetailPane>
