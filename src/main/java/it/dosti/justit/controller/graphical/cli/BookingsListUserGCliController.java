@@ -5,7 +5,7 @@ import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListView;
 
-public class BookingListGCliController extends BaseCliController{
+public class BookingsListUserGCliController extends BaseCliController{
     @Override
     public void initialize(){
         BookingController appController = new BookingController();

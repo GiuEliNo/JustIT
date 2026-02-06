@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.NotificationBean;
-import it.dosti.justit.controller.app.MessagesController;
+import it.dosti.justit.controller.app.NotificationController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CNotificationView;
 
@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationTechGCliController extends BaseCliController{
-    private MessagesController appController;
+    private NotificationController appController;
     private CNotificationView notificationView;
     private final List<Integer> notificationId = new ArrayList<>();
     private List<NotificationBean> notificationBeanList = new ArrayList<>();
 
     @Override
     public void initialize() {
-        appController = new MessagesController();
+        appController = new NotificationController();
         notificationView = (CNotificationView) view;
         notificationBeanList = appController.getUnreadNotifications();
 

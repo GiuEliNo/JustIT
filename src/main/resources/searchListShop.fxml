@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="486.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.SidebarListPageGController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="486.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.SearchListShopGController">
    <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="248.0" spacing="10.0">
       <children>
          <Button fx:id="filterRadiusButton" mnemonicParsing="false" onAction="#filterRadiusButtonClicked" text="Filter" />

@@ -1,23 +1,23 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.NotificationBean;
-import it.dosti.justit.controller.app.MessagesController;
+import it.dosti.justit.controller.app.NotificationController;
 import it.dosti.justit.view.gui.NotificationListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 
-public class MessagesTechGController extends BaseGController {
+public class NotificationUserGController extends BaseGController {
 
     @FXML
     private ListView<NotificationBean> messageListView;
 
-    private MessagesController appController;
+    private NotificationController appController;
 
     @FXML
     public void initialize() {
 
-        appController = new MessagesController();
+        appController = new NotificationController();
 
         messageListView.setCellFactory(lv -> new NotificationListCell());
         messageListView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {

@@ -10,12 +10,12 @@ import it.dosti.justit.model.notification.Notification;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesController {
+public class NotificationController {
 
     private final NotificationDAO dao = new NotificationDAOJDBC();
     private final String username;
 
-    public MessagesController() {
+    public NotificationController() {
         this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 

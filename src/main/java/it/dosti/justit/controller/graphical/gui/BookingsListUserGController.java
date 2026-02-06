@@ -6,7 +6,7 @@ import it.dosti.justit.view.gui.BookingListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-public class BookingsGController extends BaseGController {
+public class BookingsListUserGController extends BaseGController {
 
 
 

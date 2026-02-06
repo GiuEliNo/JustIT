@@ -6,7 +6,7 @@ import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CPageShopCliView;
 
 
-public class PageShopGCliController extends BaseCliController{
+public class PageShopUserGCliController extends BaseCliController{
     @Override
     public void initialize() {
         ShopController appController = new ShopController();

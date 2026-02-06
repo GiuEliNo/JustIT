@@ -8,7 +8,7 @@ import it.dosti.justit.view.cli.CReviewListView;
 
 import java.util.List;
 
-public class ReviewListGCliController extends BaseCliController {
+public class ReviewListShopUserGCliController extends BaseCliController {
 
     @Override
     public void initialize() {

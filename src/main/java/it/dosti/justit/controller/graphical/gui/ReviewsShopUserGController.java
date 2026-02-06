@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.controlsfx.control.Notifications;
 
-public class ReviewsGController extends BaseGController{
+public class ReviewsShopUserGController extends BaseGController{
 
     @FXML
     private ListView<ReviewBean> listReview;

@@ -11,7 +11,7 @@ import javafx.scene.shape.SVGPath;
 
 import java.util.List;
 
-public class SidebarListPageGController extends BaseGController{
+public class SearchListShopGController extends BaseGController{
 
     @FXML
     private TextField searchField;

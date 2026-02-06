@@ -8,7 +8,7 @@ import it.dosti.justit.view.cli.CBookingListTechView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingPageTechGCliController extends BaseCliController{
+public class BookingsListTechGCliController extends BaseCliController{
     private CBookingListTechView bookingListTechView;
     private BookingController appController;
     private List<BookingBean> bookingList = new ArrayList<>();

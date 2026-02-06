@@ -11,7 +11,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<MasterDetailPane fx:id="masterDetailPane" detailSide="BOTTOM" dividerPosition="0.65" showDetailNode="false" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingListTechGController">
+<MasterDetailPane fx:id="masterDetailPane" detailSide="BOTTOM" dividerPosition="0.65" showDetailNode="false" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingsListTechGController">
 
     <masterNode>
         <TableView fx:id="bookingTable">

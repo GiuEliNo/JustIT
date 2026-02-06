@@ -11,7 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.MasterDetailPane;
 
-public class BookingListTechGController extends BaseGController{
+public class BookingsListTechGController extends BaseGController{
 
 
     @FXML

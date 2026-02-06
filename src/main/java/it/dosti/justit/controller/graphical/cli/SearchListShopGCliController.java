@@ -8,7 +8,7 @@ import it.dosti.justit.view.cli.CBrowseShopView;
 
 import java.util.List;
 
-public class BrowseShopGCliController extends BaseCliController{
+public class SearchListShopGCliController extends BaseCliController{
     private BrowseShopController appController;
     private CBrowseShopView browseShopView;
 

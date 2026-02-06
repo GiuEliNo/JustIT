@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class RegisterTecGController extends BaseGController{
+public class RegisterTechGController extends BaseGController{
     @FXML
     private Label warningLabel;
 

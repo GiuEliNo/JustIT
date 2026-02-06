@@ -70,17 +70,17 @@ public class CLINavigationService implements NavigationService {
             case MAIN_USER:
                 return new MainUserGCliController();
             case SEARCH_LIST_SHOP:
-                return new BrowseShopGCliController();
+                return new SearchListShopGCliController();
             case PAGE_SHOP_USER:
-                return new PageShopGCliController();
+                return new PageShopUserGCliController();
             case REVIEWS_BOX:
-                return new ReviewListGCliController();
+                return new ReviewListShopUserGCliController();
             case BOOKINGS_LIST_USER:
-                return new BookingListGCliController();
+                return new BookingsListUserGCliController();
             case ADD_REVIEW:
                 return new AddReviewGCliController();
             case NOTIFICATION_CENTER_USER:
-                return new NotificationGCliController();
+                return new NotificationUserGCliController();
             case ACCOUNT_PAGE_USER:
                 return new AccountPageGCliController();
             case MAIN_TECH:
@@ -90,7 +90,7 @@ public class CLINavigationService implements NavigationService {
             case PAGE_SHOP_TECH:
                 return new PageShopTechGCliController();
             case BOOKINGS_LIST_TECH:
-                return new BookingPageTechGCliController();
+                return new BookingsListTechGCliController();
             case NOTIFICATION_CENTER_TECH:
                 return new NotificationTechGCliController();
             case REVIEWS_LIST_TECH:
