@@ -6,6 +6,7 @@ import it.dosti.justit.dao.ClientUserDAO;
 import it.dosti.justit.dao.ClientUserDAOJDBC;
 import it.dosti.justit.dao.UserDAO;
 import it.dosti.justit.dao.UserDaoFactory;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.utils.SessionManager;
@@ -20,22 +21,17 @@ public class AccountController {
         return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
-    public boolean editName(UserBean userBean) throws UserNotFoundException, UpdateOnDBException {
-        UserDaoFactory factory = new UserDaoFactory();
-        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        return dao.updateName(username, userBean.getName());
+    public boolean editName(UserBean userBean) throws UserNotFoundException, UpdateOnDBException, ShopNotFoundException {
+        UpdateController updateController = new UpdateController();
+        return updateController.updateName(userBean.getName());
+    }
+    public boolean editEmail(UserBean userBean) throws UserNotFoundException, UpdateOnDBException, ShopNotFoundException {
+        UpdateController updateController = new UpdateController();
+        return updateController.updateEmail(userBean.getEmail());
     }
 
-    public boolean editEmail(UserBean userBean) throws UserNotFoundException, UpdateOnDBException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        return dao.updateEmail(username, userBean.getEmail());
-    }
-
-    public boolean changePassword(PasswordBean passwordBean) throws UserNotFoundException, UpdateOnDBException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        return dao.updatePassword(username, passwordBean.getNewPassword(), passwordBean.getOldPassword());
+    public boolean changePassword(PasswordBean passwordBean) throws UserNotFoundException, UpdateOnDBException, ShopNotFoundException {
+        UpdateController updateController = new UpdateController();
+        return updateController.updatePassword(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 }

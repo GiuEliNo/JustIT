@@ -9,27 +9,40 @@ import it.dosti.justit.model.user.TechnicianUser;
 
 public class UpdateController {
 
-    public boolean updateName(String name) throws UpdateOnDBException, UserNotFoundException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
+    public boolean updateName(String newName) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
+        UserDaoFactory factory = new UserDaoFactory();
+        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        if(dao.updateName(username, name)){
-            updateSessionUser(username);
+        if(dao.updateName(username, newName)){
+            if(dao instanceof ClientUserDAO) {
+                updateSessionUser(username);
+            }
+            else{
+                updateSessionTechnician(username);
+            }
             return true;
         }
         return false;
     }
 
     public boolean updatePassword(String newPassword, String oldPassword) throws UpdateOnDBException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
+        UserDaoFactory factory = new UserDaoFactory();
+        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
         return dao.updatePassword(username, newPassword, oldPassword);
     }
 
-    public boolean updateEmail(String email) throws UpdateOnDBException, UserNotFoundException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
+    public boolean updateEmail(String email) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
+        UserDaoFactory factory = new UserDaoFactory();
+        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
         if(dao.updateEmail(username, email)){
-            updateSessionUser(username);
+            if(dao instanceof ClientUserDAO) {
+                updateSessionUser(username);
+            }
+            else{
+                updateSessionTechnician(username);
+            }
             return true;
         }
         else return false;

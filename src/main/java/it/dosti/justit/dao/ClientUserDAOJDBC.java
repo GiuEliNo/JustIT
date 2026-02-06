@@ -99,14 +99,14 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean updateName(String newName, String username) throws UpdateOnDBException {
-        String sql = ClientQuery.UPDATE_USERNAME;
+    public boolean updateName(String username, String newName) throws UpdateOnDBException {
+        String sql = ClientQuery.UPDATE_NAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 ) {
-            pstmt.setString(1, newName);
             pstmt.setString(2, username);
+            pstmt.setString(1, newName);
             if(pstmt.executeUpdate() == 1) {
                 return true;
             }

@@ -204,17 +204,6 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setInt(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
 
-            Integer shopId = rs.getInt(IDSHOP);
-            String username = rs.getString(USERNAME);
-            String dateString = rs.getString(DATE);
-            String timeSlotString = rs.getString(TIMESLOT);
-            String description = rs.getString(DESCRIPTION);
-            BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
-
-            LocalDate date = LocalDate.parse(dateString);
-            TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-
-
             if (rs.next()) {
                 return new Booking.Builder(rs.getString(USERNAME))
                         .bookingId(bookingId)

@@ -2,10 +2,7 @@ package it.dosti.justit.dao;
 
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.db.ConnectionDB;
-import it.dosti.justit.db.query.LoginQuery;
-import it.dosti.justit.db.query.RegisterQuery;
-import it.dosti.justit.db.query.ShopQuery;
-import it.dosti.justit.db.query.TechnicianQuery;
+import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
@@ -91,7 +88,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             }
         }
         catch(SQLException e){
-            throw new ShopNotFoundException("Shop not found");
+            throw new ShopNotFoundException("Shop not found", e);
         }
         return 0;
     }
@@ -123,24 +120,71 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
         } catch (SQLException e) {
 
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException("User not found", e);
         }
 
         return null;
     }
-//TODO
     @Override
-    public boolean updateName(String username, String password) throws UpdateOnDBException {
+    public boolean updateName(String username, String newName) throws UpdateOnDBException {
+        String sql = TechnicianQuery.UPDATE_NAME;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(2, newName);
+            pstmt.setString(1, username);
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new UpdateOnDBException("Error updating the username", e);
+        }
         return false;
     }
 
     @Override
-    public boolean updateEmail(String username, String password) throws UpdateOnDBException {
+    public boolean updateEmail(String username, String email) throws UpdateOnDBException {
+        String sql = TechnicianQuery.UPDATE_EMAIL;
+
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        )
+        {
+            pstmt.setString(1, email);
+            pstmt.setString(2, username);
+            if(pstmt.executeUpdate() == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new UpdateOnDBException("Error updating the email", e);
+        }
+
         return false;
     }
 
     @Override
     public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException {
+        String sql = TechnicianQuery.UPDATE_PASSWORD;
+
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        )
+        {
+
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+            pstmt.setString(3, oldPassword);
+
+
+            if (pstmt.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new UpdateOnDBException("Error updating the password", e);
+        }
         return false;
     }
 

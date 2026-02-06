@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.utils.SessionManager;
@@ -28,6 +29,7 @@ public class AccountPageGController extends BaseGController {
     private AccountController appController;
 
     public static final String EDIT_EMAIL = "Edit Mail";
+    public static final String EDIT_NAME = "Edit Name";
 
 
     public void initialize(){
@@ -68,7 +70,7 @@ public class AccountPageGController extends BaseGController {
                                 .showConfirm();
                     }
                 }
-                catch ( UserNotFoundException | UpdateOnDBException e)
+                catch (UserNotFoundException | UpdateOnDBException | ShopNotFoundException e)
                 {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
@@ -78,7 +80,7 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onEditName() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionManager.getInstance().getLoggedUser().getName());
+        DialogEditUser dialog = new DialogEditUser(EDIT_NAME, SessionManager.getInstance().getLoggedUser().getName());
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
@@ -97,7 +99,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch ( UserNotFoundException | UpdateOnDBException e) {
+                } catch ( UserNotFoundException | UpdateOnDBException | ShopNotFoundException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -126,7 +128,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch ( UserNotFoundException | UpdateOnDBException e)
+                } catch ( UserNotFoundException | UpdateOnDBException | ShopNotFoundException e)
                 {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
