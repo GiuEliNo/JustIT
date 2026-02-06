@@ -8,6 +8,8 @@ import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.*;
+import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JustItLogger;
 
 public class RegisterController {
@@ -28,7 +30,9 @@ public class RegisterController {
             JustItLogger.getInstance().warn("Coordinates not found, proceding with empy beans");
         }
 
-        if(dao.register(registerBean)){
+
+        if(dao.register(new Credentials(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates()), registerBean.getPassword())))
+        {
             JustItLogger.getInstance().info("Register successful");
             return true;
         }
@@ -41,14 +45,19 @@ public class RegisterController {
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException, ShopNotFoundException {
         TechnicianDAO dao = new TechnicianDAOJDBC();
         Integer shopId = dao.getShopIDbyName(registerBean.getShopName());
-        if ( shopId == 0){  //TODO VALUTARE SE È EFFETTIVAMENTE UTILE FARE QUESTO CONTROLLO DOPPIO
+        if ( shopId == 0){
             JustItLogger.getInstance().warn("Shop name not found");
             return false;
         }
         else {
 
             JustItLogger.getInstance().info("Register successful");
-            return dao.register(registerBean);
+            Credentials cred = new Credentials(new TechnicianUser(registerBean.getUsername(),
+                    registerBean.getName(),
+                    registerBean.getEmail(),
+                    shopId),
+                    registerBean.getPassword());
+            return dao.register(cred);
         }
 
     }

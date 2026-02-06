@@ -16,6 +16,18 @@ public class ClientUser extends User {
         this.coordinates = coordinates;
     }
 
+    public ClientUser(String name, String username, String email, String address, Coordinates coordinates) {
+        this.setName(name);
+        this.setUsername(username);
+        this.setEmail(email);
+        this.setAddress(address);
+        this.coordinates = coordinates;
+    }
+
+    public ClientUser(String username) {
+        this.setUsername(username);
+    }
+
     public String getAddress() {
         return address;
     }
