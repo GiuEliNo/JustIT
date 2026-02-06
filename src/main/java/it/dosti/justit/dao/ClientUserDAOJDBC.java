@@ -7,6 +7,7 @@ import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UserNotFoundException;
+import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.user.User;
@@ -46,7 +47,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean login(String username, String password) throws LoginFromDBException {
+    public boolean login(Credentials cred) throws LoginFromDBException {
         String sql = LoginQuery.LOGIN_USER;
 
         try(
@@ -55,8 +56,8 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 )
         {
 
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            pstmt.setString(1, cred.getUser().getUsername());
+            pstmt.setString(2, cred.getPassword());
 
 
             ResultSet rs = pstmt.executeQuery();
@@ -71,7 +72,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean register(RegisterBean registerBean) throws RegisterOnDbException {
+    public boolean register(Credentials cred) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 
@@ -80,14 +81,14 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
-
-            pstmt.setString(2, registerBean.getUsername());
-            pstmt.setString(4, registerBean.getPassword());
-            pstmt.setString(1, registerBean.getName());
-            pstmt.setString(3, registerBean.getEmail());
-            pstmt.setString(5, registerBean.getAddress());
-            pstmt.setDouble(6, registerBean.getCoordinates().getLatitude());
-            pstmt.setDouble(7, registerBean.getCoordinates().getLongitude());
+            ClientUser user = (ClientUser) cred.getUser();
+            pstmt.setString(2, user.getUsername());
+            pstmt.setString(4, cred.getPassword());
+            pstmt.setString(1, user.getName());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(5, user.getAddress());
+            pstmt.setDouble(6, user.getCoordinates().getLatitude());
+            pstmt.setDouble(7, user.getCoordinates().getLongitude());
             if(pstmt.executeUpdate() == 1) {
                 return true;
             }

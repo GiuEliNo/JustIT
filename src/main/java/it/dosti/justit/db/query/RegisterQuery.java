@@ -9,6 +9,6 @@ public class RegisterQuery {
     public static final String REGISTER_USER = "INSERT INTO User(name, username, email, password, address, latitude, longitude) VALUES (?, ?, ?, ?, ?, ? ,?)";
 
     public static final String REGISTER_TECHNICIAN = "INSERT INTO TECHNICIAN (username, password, email, name, shop) " +
-            "VALUES (?, ?, ?, ?, (SELECT id FROM Shop WHERE name = ?))";
+            "VALUES (?, ?, ?, ?, ?)";
 
 }

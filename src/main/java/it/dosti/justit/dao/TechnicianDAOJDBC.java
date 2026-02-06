@@ -1,9 +1,9 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.*;
+import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 
@@ -12,7 +12,7 @@ import java.sql.*;
 public class TechnicianDAOJDBC implements TechnicianDAO {
 
 
-    public boolean login(String username, String password) throws LoginFromDBException {
+    public boolean login(Credentials cred) throws LoginFromDBException {
 
         String sql = LoginQuery.LOGIN_TECHNICIAN;
 
@@ -21,8 +21,8 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            pstmt.setString(1, cred.getUser().getUsername());
+            pstmt.setString(2, cred.getPassword());
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
                 return true;
@@ -35,39 +35,24 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     }
 
     @Override
-    public boolean register(TechnicRegisterBean registerBean) throws RegisterOnDbException {
+    public boolean register(Credentials cred) throws RegisterOnDbException {
 
         String sql1 = RegisterQuery.REGISTER_TECHNICIAN;
-        String sql2 = ShopQuery.SELECT_SHOP_BY_NAME;
-        boolean shopExist = false;
         try(
-                Connection conn = ConnectionDB.getInstance().connectDB()) {
-
-            try(PreparedStatement pstmt2 = conn.prepareStatement(sql2)){
-
-                pstmt2.setString(1, registerBean.getShopName());
-                try(ResultSet rs =pstmt2.executeQuery()){
-                    if(rs.next()) {
-                    shopExist = true;
-                }
-                }
-            }
-
-            if(shopExist){
+                Connection conn = ConnectionDB.getInstance().connectDB()
+        ) {
                 try(PreparedStatement pstmt1 = conn.prepareStatement(sql1)) {
-                    pstmt1.setString(1, registerBean.getUsername());
-                    pstmt1.setString(2, registerBean.getPassword());
-                    pstmt1.setString(3, registerBean.getEmail());
-                    pstmt1.setString(4, registerBean.getName());
-                    pstmt1.setString(5, registerBean.getShopName());
-
+                    TechnicianUser user = (TechnicianUser)cred.getUser();
+                    pstmt1.setString(1, user.getUsername());
+                    pstmt1.setString(2, cred.getPassword());
+                    pstmt1.setString(3, user.getEmail());
+                    pstmt1.setString(4, user.getName());
+                    pstmt1.setInt(5, user.getShopId());
 
                     if (pstmt1.executeUpdate() == 1) {
                         return true;
-
                     }
                 }
-            }
         }catch(SQLException e){
             throw new RegisterOnDbException("Error registering the new technician", e);
         }

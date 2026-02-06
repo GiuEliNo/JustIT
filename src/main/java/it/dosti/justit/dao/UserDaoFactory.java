@@ -1,12 +1,8 @@
 package it.dosti.justit.dao;
-
-import it.dosti.justit.bean.RegisterBean;
-import it.dosti.justit.bean.TechnicRegisterBean;
-
 public class UserDaoFactory {
 
 
-    public UserDAO<?> createUserDAO(boolean isClient) {
+    public UserDAO createUserDAO(boolean isClient) {
         if (isClient) {
             return this.createClientUserDAO();
         }
@@ -15,11 +11,11 @@ public class UserDaoFactory {
         }
     }
 
-    private UserDAO<RegisterBean> createClientUserDAO() {
+    private ClientUserDAO createClientUserDAO() {
         return new ClientUserDAOJDBC();
     }
 
-    private UserDAO<TechnicRegisterBean> createTechnicianUserDAO() {
+    private TechnicianDAO createTechnicianUserDAO() {
         return new TechnicianDAOJDBC();
     }
 

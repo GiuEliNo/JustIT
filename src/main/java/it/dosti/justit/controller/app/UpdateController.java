@@ -11,7 +11,7 @@ public class UpdateController {
 
     public boolean updateName(String newName) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
         if(dao.updateName(username, newName)){
             if(dao instanceof ClientUserDAO) {
@@ -27,14 +27,14 @@ public class UpdateController {
 
     public boolean updatePassword(String newPassword, String oldPassword) throws UpdateOnDBException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
         return dao.updatePassword(username, newPassword, oldPassword);
     }
 
     public boolean updateEmail(String email) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO<?> dao = factory.createUserDAO(SessionManager.getInstance().isClient());
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
         if(dao.updateEmail(username, email)){
             if(dao instanceof ClientUserDAO) {
