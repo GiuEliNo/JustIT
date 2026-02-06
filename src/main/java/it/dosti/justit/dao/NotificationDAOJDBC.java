@@ -52,6 +52,46 @@ public class NotificationDAOJDBC implements NotificationDAO {
         return getNotifications(username, NotificationQuery.SELECT_UNREAD_BY_USER);
     }
 
+    @Override
+    public List<Notification> getNotificationsByShopId(Integer shopId) {
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(NotificationQuery.SELECT_BY_SHOP)
+        ) {
+            pstmt.setInt(1, shopId);
+            ResultSet rs = pstmt.executeQuery();
+            List<Notification> notifications = new ArrayList<>();
+
+            while (rs.next()) {
+                Integer id = rs.getInt(ID);
+                String shopName = rs.getString(SHOPNAME);
+                Integer bookingId = rs.getInt(BOOKING_ID);
+                String oldStatus = rs.getString(OLD_STATUS);
+                String newStatus = rs.getString(NEW_STATUS);
+                LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATED_TIME));
+                boolean read = rs.getInt(READ) == 1;
+
+                Notification notification =
+                        new Notification.Builder(id)
+                                .shopName(shopName)
+                                .username(rs.getString(USERNAME))
+                                .bookingId(bookingId)
+                                .oldStatus(oldStatus)
+                                .newStatus(newStatus)
+                                .createdAt(createdAt)
+                                .read(read)
+                                .build();
+
+                notifications.add(notification);
+            }
+
+            return notifications;
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
     private List<Notification> getNotifications(String username, String sql) {
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -70,16 +110,17 @@ public class NotificationDAOJDBC implements NotificationDAO {
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATED_TIME));
                 boolean read = rs.getInt(READ) == 1;
 
-                Notification notification = new Notification(
-                        id,
-                        shopName,
-                        rs.getString(USERNAME),
-                        bookingId,
-                        oldStatus,
-                        newStatus,
-                        createdAt,
-                        read
-                );
+                Notification notification =
+                        new Notification.Builder(id)
+                                .shopName(shopName)
+                                .username(rs.getString(USERNAME))
+                                .bookingId(bookingId)
+                                .oldStatus(oldStatus)
+                                .newStatus(newStatus)
+                                .createdAt(createdAt)
+                                .read(read)
+                                .build();
+
                 notifications.add(notification);
             }
 

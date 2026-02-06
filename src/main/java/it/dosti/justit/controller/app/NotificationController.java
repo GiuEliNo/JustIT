@@ -14,13 +14,19 @@ public class NotificationController {
 
     private final NotificationDAO dao = new NotificationDAOJDBC();
     private final String username;
+    private List<Notification> notifications;
 
     public NotificationController() {
         this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
     public List<NotificationBean> getNotification() {
-        List<Notification> notifications = dao.getNotificationsByUser(username);
+        if(SessionManager.getInstance().isClient()){
+            notifications = dao.getNotificationsByUser(username);
+        } else {
+            notifications = dao.getNotificationsByShopId(SessionManager.getInstance().getCurrentShop().getId());
+        }
+
         List<NotificationBean> notificationBeans = new ArrayList<>();
 
         for (Notification notification : notifications) {
@@ -41,7 +47,7 @@ public class NotificationController {
     }
 
     public List<NotificationBean> getUnreadNotifications() {
-        List<Notification> notifications = dao.getUnreadNotificationsByUser(username);
+        notifications = dao.getUnreadNotificationsByUser(username);
         List<NotificationBean> notificationBeans = new ArrayList<>();
 
         for (Notification notification : notifications) {

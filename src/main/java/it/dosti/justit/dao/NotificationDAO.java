@@ -12,5 +12,7 @@ public interface NotificationDAO {
 
     List<Notification> getUnreadNotificationsByUser(String username);
 
+    List<Notification> getNotificationsByShopId(Integer shopId);
+
     void markRead(Integer notificationId);
 }
