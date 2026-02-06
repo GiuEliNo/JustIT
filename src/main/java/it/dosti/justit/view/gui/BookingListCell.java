@@ -21,7 +21,7 @@ public class BookingListCell extends ListCell<BookingBean> {
             VBox vbox = new VBox(5);
             HBox topRow = new HBox(10);
 
-            Label shopLabel = new Label(item.getShop().getName());
+            Label shopLabel = new Label(item.getShopName());
 
             Label dateLabel = new Label(item.getDate().toString());
 

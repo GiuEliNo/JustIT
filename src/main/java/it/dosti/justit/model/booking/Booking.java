@@ -35,9 +35,9 @@ public class Booking {
         this.timeSlot = builder.timeSlot;
         this.description = builder.description;
         this.shopName = builder.shopName;
+        this.status = builder.status;
 
         this.currentState = BookingStateFactory.fromStatus(builder.status);
-        this.initStateMachine(BookingStateFactory.fromStatus(status), status);
 
         //this.notifyStatusChange(this, null);
 
@@ -102,51 +102,6 @@ public class Booking {
         }
     }
 
-
-    public Booking(Integer bookingId, Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
-        this.bookingId = bookingId;
-        this.username = username;
-        this.shopId = shopId;
-        this.date = date;
-        this.timeSlot = timeSlot;
-        this.description = description;
-        this.status = status;
-        this.currentState = BookingStateFactory.fromStatus(status);
-    }
-
-    public Booking(Integer bookingId, String shopName, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status, Integer shopId) {
-        this.bookingId = bookingId;
-        this.username = username;
-        this.shopName = shopName;
-        this.date = date;
-        this.timeSlot = timeSlot;
-        this.description = description;
-        this.status = status;
-        this.currentState = BookingStateFactory.fromStatus(status);
-        this.shopId = shopId;
-    }
-
-    //BookingController addBook
-    public Booking(Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description) {
-        this.username = username;
-        this.shopId = shopId;
-        this.date = date;
-        this.timeSlot = timeSlot;
-        this.description = description;
-        this.status = BookingStatus.PENDING;
-        this.currentState = BookingStateFactory.fromStatus(this.status);
-
-    }
-
-    public Booking(Integer bookingId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
-        this.bookingId = bookingId;
-        this.username = username;
-        this.date = date;
-        this.timeSlot = timeSlot;
-        this.description = description;
-        this.status = status;
-        this.currentState = BookingStateFactory.fromStatus(status);
-    }
 
     public Integer getBookingId() {
         return bookingId;

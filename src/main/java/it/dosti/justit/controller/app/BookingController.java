@@ -22,14 +22,13 @@ public class BookingController {
 
     public boolean addBooking(BookingBean bookingBean) {
 
-        Booking newBooking = new Booking(
-
-                bookingBean.getShopId(),
-                bookingBean.getUsername(),
-                bookingBean.getDate(),
-                bookingBean.getTimeSlot(),
-                bookingBean.getDescription()
-        );
+        Booking newBooking = new Booking.Builder(bookingBean.getUsername())
+                .shopId(bookingBean.getShopId())
+                .date(bookingBean.getDate())
+                .timeslot(bookingBean.getTimeSlot())
+                .description(bookingBean.getDescription())
+                .status(BookingStatus.PENDING)
+                .build();
 
         try {
             Integer bookingId = dao.addBooking(newBooking);
