@@ -117,8 +117,8 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setString(2, newName);
-            pstmt.setString(1, username);
+            pstmt.setString(1, newName);
+            pstmt.setString(2, username);
             if(pstmt.executeUpdate() == 1) {
                 return true;
             }

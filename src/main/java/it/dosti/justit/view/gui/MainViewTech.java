@@ -11,9 +11,11 @@ public class MainViewTech implements MainViewLayout {
     private final Tab shopTab;
     private final Tab bookingsTab;
     private final Tab notificationsTab;
+    private final Tab profileTab;
     private final StackPane shopPane;
     private final StackPane bookingsPane;
     private final StackPane notificationsPane;
+    private final StackPane profilePane;
 
     public MainViewTech() {
         topPane = new StackPane();
@@ -22,17 +24,21 @@ public class MainViewTech implements MainViewLayout {
         shopPane = new StackPane();
         bookingsPane = new StackPane();
         notificationsPane = new StackPane();
+        profilePane = new StackPane();
 
         shopTab = new Tab("PageShop", shopPane);
         bookingsTab = new Tab("Booking list", bookingsPane);
         notificationsTab = new Tab("Notification", notificationsPane);
+        profileTab = new Tab("Profile", profilePane);
 
         shopTab.setClosable(false);
         bookingsTab.setClosable(false);
         notificationsTab.setClosable(false);
+        profileTab.setClosable(false);
 
-        mainTabPane.getTabs().addAll(shopTab, bookingsTab, notificationsTab);
+        mainTabPane.getTabs().addAll(shopTab, bookingsTab, notificationsTab, profileTab);
         mainTabPane.getSelectionModel().select(shopTab);
+
     }
 
     @Override
@@ -55,6 +61,14 @@ public class MainViewTech implements MainViewLayout {
 
     public Tab getNotificationsTab() {
         return notificationsTab;
+    }
+
+    public Tab getProfileTab() {
+        return profileTab;
+    }
+
+    public StackPane getProfilePane() {
+        return profilePane;
     }
 
     public StackPane getShopPane() {

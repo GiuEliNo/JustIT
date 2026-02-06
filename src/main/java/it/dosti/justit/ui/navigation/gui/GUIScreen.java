@@ -3,6 +3,7 @@ package it.dosti.justit.ui.navigation.gui;
 public enum GUIScreen {
 
     ACCOUNT_PAGE_USER("/accountPage.fxml"),
+    ACCOUNT_PAGE_TECH("/accountPage.fxml"),
     BOOKING_PAGE_USER("/bookingPageUser.fxml"),
     BOOKINGS_LIST_TECH("/bookingsListTech.fxml"),
     BOOKINGS_LIST_USER("/bookingsListUser.fxml"),
