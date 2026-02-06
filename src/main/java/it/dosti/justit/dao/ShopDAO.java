@@ -15,4 +15,21 @@ public interface ShopDAO {
     Shop retrieveShopById(Integer id) throws ShopNotFoundException;
 
     Image  retrieveShopImageById(Integer id) throws ShopNotFoundException;
+
+    boolean updateNameShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateEmailShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateAddressCoordinates(Shop shop) throws RegisterOnDbException;
+
+    boolean updatePhoneShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateOpeningHoursShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateHomeAssistanceShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateDescriptionShop(Shop shop) throws RegisterOnDbException;
+
+    boolean updateImageShop(Shop shop) throws RegisterOnDbException;
+
 }

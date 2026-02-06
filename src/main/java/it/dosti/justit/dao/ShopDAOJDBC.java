@@ -122,7 +122,7 @@ public class ShopDAOJDBC implements ShopDAO{
             }
 
         }catch(SQLException e){
-            throw new ShopNotFoundException("Shop not found");
+            throw new ShopNotFoundException("Shop not found", e);
         }
         return null;
     }
@@ -148,8 +148,173 @@ public class ShopDAOJDBC implements ShopDAO{
                 }
             }
         } catch (SQLException e) {
-            throw new ShopNotFoundException("Shop not found");
+            throw new ShopNotFoundException("Shop not found", e);
         }
         return defaultImage;
     }
+
+    @Override
+    public boolean updateNameShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_SHOP_NAME;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt=conn.prepareStatement(sql)
+                ){
+
+
+            pstmt.setString(1, shop.getName());
+            pstmt.setInt(2, shop.getId());
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateEmailShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_EMAIL_SHOP;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt= conn.prepareStatement(sql);
+                ){
+
+
+            pstmt.setString(1,shop.getEmail());
+            pstmt.setInt(2,shop.getId());
+
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateAddressCoordinates(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_ADDRESS_COORDINATES_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql);
+                ){
+
+            pstmt.setString(1, shop.getAddress());
+            pstmt.setDouble(2,shop.getCoordinates().getLatitude());
+            pstmt.setDouble(3, shop.getCoordinates().getLongitude());
+            pstmt.setInt(4, shop.getId());
+
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePhoneShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_PHONE_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql)
+        ){
+            pstmt.setString(1,shop.getPhone());
+            pstmt.setInt(2,shop.getId());
+
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateOpeningHoursShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_OPENING_HOURS_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql)
+        ){
+            pstmt.setString(1, shop.getOpeningHours());
+            pstmt.setInt(2,shop.getId());
+
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateHomeAssistanceShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_HOME_ASSISTANCE_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql)
+        ){
+            pstmt.setBoolean(1,shop.isHomeAssistance());
+            pstmt.setInt(2,shop.getId());
+
+            if(pstmt.executeUpdate()==1){
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateDescriptionShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_DESCRIPTION_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1,shop.getDescription());
+            pstmt.setInt(2,shop.getId());
+
+            if(pstmt.executeUpdate()==1)
+                return true;
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateImageShop(Shop shop) throws RegisterOnDbException {
+        String sql = ShopQuery.UPDATE_IMAGE_SHOP;
+        try(
+                Connection conn=ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt =conn.prepareStatement(sql);
+        ){
+            pstmt.setBytes(1, shop.getImage());
+            pstmt.setInt(2, shop.getId());
+
+            if(pstmt.executeUpdate()==1)
+                return true;
+
+        }
+        catch(SQLException e){
+            throw new RegisterOnDbException("Error on Shop update", e);
+        }
+        return false;
+    }
+
 }
