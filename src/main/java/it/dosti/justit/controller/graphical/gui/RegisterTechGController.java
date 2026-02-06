@@ -41,7 +41,6 @@ public class RegisterTechGController extends BaseGController{
 
     @FXML
     void backButtonPressed(){
-        navigation.navigate(Screen.MAIN);
         navigation.navigate(Screen.LAUNCHER);
     }
 

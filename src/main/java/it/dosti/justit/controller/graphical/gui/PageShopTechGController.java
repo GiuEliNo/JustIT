@@ -1,29 +1,27 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.ShopController;
-import it.dosti.justit.controller.app.UpdateController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
-import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
-import it.dosti.justit.utils.SessionManager;
+import it.dosti.justit.utils.AddressDialog;
 import it.dosti.justit.view.gui.DialogEditUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
 import java.io.File;
+import java.util.Optional;
 
 public class PageShopTechGController extends BaseGController{
     @FXML
@@ -97,13 +95,52 @@ public class PageShopTechGController extends BaseGController{
     }
 
     public void editAddressButtonClicked() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_SHOP_ADDRESS, addressLabel.getText());
+        Dialog<AddressDialog> dialog = new Dialog<>();
+        dialog.setTitle(EDIT_SHOP_ADDRESS);
+        dialog.setHeaderText("Update Shop Address");
 
-        dialog.showAndWait().ifPresent(response -> {
-            if(response == ButtonType.OK){
+        ButtonType loginButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField streetField = new TextField();
+        streetField.setPromptText("Es. Via Roma 1");
+
+        TextField cityField = new TextField();
+        cityField.setPromptText("Es. Milano");
+
+        TextField countryField = new TextField();
+        countryField.setPromptText("Es. Italia");
+
+        Label labelStreet = new Label("Street:");
+        Label labelCity = new Label("City:");
+        Label labelCountry = new Label("Country:");
+
+        grid.add(labelStreet, 0, 0);
+        grid.add(streetField, 1, 0);
+        grid.add(labelCity, 0, 1);
+        grid.add(cityField, 1, 1);
+        grid.add(labelCountry, 0, 2);
+        grid.add(countryField, 1, 2);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new AddressDialog(streetField.getText(), cityField.getText(), countryField.getText());
+            }
+            return null;
+        });
+        Optional<AddressDialog> result = dialog.showAndWait();
+
+            if(result.isPresent()){
                 ShopBean shopBean = new ShopBean();
 
-                shopBean.setAddress(dialog.getNewValue());
+                shopBean.setAddress(result.toString());
                 try {
                     if(!appController.editShopAddress(shopBean)){
                         Notifications.create()
@@ -120,7 +157,6 @@ public class PageShopTechGController extends BaseGController{
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
-        });
         this.updatePageInfo();
     }
 
