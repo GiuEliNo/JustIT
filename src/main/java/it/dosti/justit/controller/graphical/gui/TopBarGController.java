@@ -1,20 +1,19 @@
 package it.dosti.justit.controller.graphical.gui;
 
-
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.ui.navigation.Screen;
-
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
-public class TopBarUserGController extends BaseGController {
+public class TopBarGController extends BaseGController {
 
     @FXML
-    private javafx.scene.layout.HBox topBar;
+    private Label usernameLabel;
 
     @FXML
     public void initialize() {
+        this.usernameLabel.setText(SessionManager.getInstance().getLoggedUser().getUsername());
     }
-
     @FXML
     public void onLogout() {
         SessionManager.getInstance().logout();

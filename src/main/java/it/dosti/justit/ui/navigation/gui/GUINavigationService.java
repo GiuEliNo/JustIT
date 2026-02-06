@@ -43,11 +43,11 @@ public class GUINavigationService implements NavigationService {
                 buildMainViews();
                 showMainLayout();
                 if (isTechnician()) {
-                    setContent(techMainView.getTopPane(), loadView(Screen.TOPBARTEC));
+                    setContent(techMainView.getTopPane(), loadView(Screen.TOPBAR));
                     selectTechTab(techMainView.getShopTab());
                     setContent(techMainView.getShopPane(), loadView(Screen.PAGE_SHOP_TECH));
                 } else {
-                    setContent(userMainView.getTopPane(), loadView(Screen.TOPBARUSER));
+                    setContent(userMainView.getTopPane(), loadView(Screen.TOPBAR));
                     selectUserTab(userMainView.getSearchTab());
                     setContent(userMainView.getSearchLeftPane(), loadView(Screen.SIDEBAR_SEARCH_LIST));
                 }
@@ -56,7 +56,7 @@ public class GUINavigationService implements NavigationService {
                 break;
         }
         switch (screen) {
-            case TOPBARTEC, TOPBARUSER:
+            case TOPBAR:
                 setContent(getActiveTopPane(), loadView(screen));
                 return;
             case SIDEBAR_LIST_SETTING_USER:
@@ -147,10 +147,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.PAGE_SHOP;
             case BOOKING_PAGE:
                 return GUIScreen.BOOKING_PAGE;
-            case TOPBARUSER:
-                return GUIScreen.TOPBARUSER;
-            case TOPBARTEC:
-                return GUIScreen.TOPBARTEC;
+            case TOPBAR:
+                return GUIScreen.TOPBAR;
             case REGISTER_SHOP:
                 return GUIScreen.REGISTER_SHOP;
             case PAYMENTS:
