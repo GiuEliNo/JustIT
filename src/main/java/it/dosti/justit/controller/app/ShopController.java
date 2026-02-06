@@ -85,5 +85,12 @@ public class ShopController {
     }
 
 
+    public boolean editShopHomeAssistance(ShopBean shopBean) throws UpdateOnDBException {
+        UpdateController controller = new UpdateController();
+        return controller.updateHomeAssistanceShop(shopBean.isHomeAssistance());
+    }
 
+    public boolean isHomeAssistance(){
+        return shop.isHomeAssistance();
+    }
 }

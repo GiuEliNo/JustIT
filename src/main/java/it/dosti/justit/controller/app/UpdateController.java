@@ -1,6 +1,5 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.api.NominatimService;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;

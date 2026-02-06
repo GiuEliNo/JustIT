@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
@@ -273,7 +274,50 @@ public class PageShopTechGController extends BaseGController{
     }
 
     public void onHomeAssistanceButtonClicked() {
-        //todo
+
+        Dialog<Boolean> dialog = new Dialog<Boolean>();
+        dialog.setTitle(EDIT_SHOP_HOME_ASSISTANCE);
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        CheckBox checkBox = new CheckBox("Home Assistance?");
+        if(appController.isHomeAssistance()){
+            checkBox.setSelected(true);
+        }
+        VBox content = new VBox(checkBox);
+        content.setPadding(new Insets(10, 10, 10, 10));
+        content.setSpacing(10);
+        dialog.getDialogPane().setContent(content);
+        dialog.setResultConverter(dialogButton ->{
+            if(dialogButton == saveButtonType){
+                return checkBox.isSelected();
+            }
+            return null;
+        });
+
+        Optional<Boolean> result = dialog.showAndWait();
+
+        result.ifPresent(response -> {
+                ShopBean shopBean = new ShopBean();
+                shopBean.setHomeAssistance(response);
+                try {
+                    if(!appController.editShopHomeAssistance(shopBean)){
+                        Notifications.create()
+                                .title(EDIT_SHOP_NAME)
+                                .text("Error changing home assistance preference!")
+                                .showError();
+                    } else {
+                        Notifications.create()
+                                .title(EDIT_SHOP_NAME)
+                                .text("Success!")
+                                .showConfirm();
+                    }
+                } catch ( UpdateOnDBException e) {
+                    JustItLogger.getInstance().error(e.getMessage(), e);
+                }
+        });
+        this.updatePageInfo();
     }
 
     public void onImageButtonClicked(ActionEvent event) {

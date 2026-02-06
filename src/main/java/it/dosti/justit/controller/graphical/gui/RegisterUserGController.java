@@ -46,7 +46,6 @@ public class RegisterUserGController extends BaseGController{
 
     @FXML
     private void backButtonPressed() {
-        navigation.navigate(Screen.MAIN);
         navigation.navigate(Screen.LAUNCHER);
     }
 
