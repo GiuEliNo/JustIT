@@ -17,6 +17,9 @@ public class ShopController {
     }
 
     public ShopBean getShopBean() {
+        if (shop == null) {
+            return null;
+        }
 
         ShopBean bean = new ShopBean();
 
@@ -39,6 +42,9 @@ public class ShopController {
     }
 
     public Image getShopImage() throws ShopNotFoundException {
+        if (shop == null) {
+            throw new ShopNotFoundException("Shop not set in session.");
+        }
         ShopDAO dao = new ShopDAOJDBC();
         return dao.retrieveShopImageById(shop.getId());
     }

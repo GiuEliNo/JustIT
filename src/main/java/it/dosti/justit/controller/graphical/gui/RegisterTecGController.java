@@ -41,7 +41,7 @@ public class RegisterTecGController extends BaseGController{
 
     @FXML
     void backButtonPressed(){
-        new MainGController(navigation);
+        navigation.navigate(Screen.MAIN);
         navigation.navigate(Screen.LAUNCHER);
     }
 
@@ -64,7 +64,7 @@ public class RegisterTecGController extends BaseGController{
 
 
             } else {
-                new MainGController(navigation);
+                navigation.navigate(Screen.MAIN);
                 navigation.navigate(Screen.LAUNCHER);
             }
         }catch(RegisterOnDbException | UserNotFoundException | ShopNotFoundException e){

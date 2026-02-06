@@ -46,7 +46,7 @@ public class RegisterGController  extends BaseGController{
 
     @FXML
     private void backButtonPressed() {
-        new MainGController(navigation);
+        navigation.navigate(Screen.MAIN);
         navigation.navigate(Screen.LAUNCHER);
     }
 
@@ -66,7 +66,7 @@ public class RegisterGController  extends BaseGController{
         try {
 
             if (appController.registerNewUser(bean)) {
-                new MainGController(navigation);
+                navigation.navigate(Screen.MAIN);
                 navigation.navigate(Screen.LAUNCHER);
             }
         }catch(RegisterOnDbException | UserNotFoundException e){

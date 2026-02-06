@@ -2,6 +2,7 @@ package it.dosti.justit.ui.navigation;
 
 public enum Screen {
     LAUNCHER,
+    MAIN,
     SIDEBAR_SEARCH_LIST,
     MAIN_USER,
     MAIN_TECH,

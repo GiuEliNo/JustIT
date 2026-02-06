@@ -2,6 +2,7 @@ package it.dosti.justit.ui.navigation.cli;
 
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.*;
 import it.dosti.justit.controller.graphical.cli.*;
 
@@ -27,6 +28,8 @@ public class CLINavigationService implements NavigationService {
                 return new CLauncherView();
             case LOGIN:
                 return new CLoginView();
+            case MAIN:
+                return SessionManager.getInstance().isTechnician() ? new CMainTechView() : new CMainUserView();
             case MAIN_USER:
                 return new CMainUserView();
             case SIDEBAR_SEARCH_LIST:
@@ -62,6 +65,8 @@ public class CLINavigationService implements NavigationService {
                 return new LauncherGCliController();
             case LOGIN:
                 return new LoginGCliController();
+            case MAIN:
+                return SessionManager.getInstance().isTechnician() ? new MainTechGCliController() : new MainUserGCliController();
             case MAIN_USER:
                 return new MainUserGCliController();
             case SIDEBAR_SEARCH_LIST:

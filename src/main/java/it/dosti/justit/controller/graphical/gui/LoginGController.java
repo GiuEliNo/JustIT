@@ -40,7 +40,7 @@ public class LoginGController extends BaseGController {
 
         try {
             if (appController.checkLogin(loginBean)) {
-                new MainGController(navigation);
+                navigation.navigate(Screen.MAIN);
             }
             else {
                 outputLabel.setText("Incorrect username or password");

@@ -16,16 +16,6 @@ public class TopBarUserGController extends BaseGController {
     }
 
     @FXML
-    public void onProfile(){
-        navigation.navigate(Screen.SIDEBAR_LIST_SETTING_USER);
-    }
-
-    @FXML
-    public void onBookings() {
-        navigation.navigate(Screen.BOOKINGS);
-    }
-
-    @FXML
     public void onLogout() {
         SessionManager.getInstance().logout();
         navigation.navigate(Screen.LAUNCHER);

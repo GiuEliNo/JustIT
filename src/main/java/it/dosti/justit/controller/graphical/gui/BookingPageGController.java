@@ -4,6 +4,7 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -81,9 +82,8 @@ public class BookingPageGController extends BaseGController {
         JustItLogger.getInstance().info("bookingBean = " + bookingBean);
 
 
-        if(appController.addBooking(bookingBean)){
-            new MainGController(navigation); //TODO controllare la navigazione
+        if (appController.addBooking(bookingBean)) {
+            navigation.navigate(Screen.MAIN);
         }
     }
 }
-

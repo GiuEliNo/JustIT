@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.StackPane?>
 
-<VBox alignment="CENTER" prefWidth="220" spacing="8" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.SidebarListSettingUserGController">
-
-    <padding>
-        <Insets bottom="15" left="10" right="10" top="15" />
-    </padding>
-
-    <Button onAction="#onAccount" prefWidth="200" text="Account" />
-    <Button onAction="#onMessages" prefWidth="200" text="Messages" />
-    <Button onAction="#onPayments" prefWidth="200" text="Payment Methods" />
-    
-</VBox>
+<TabPane fx:id="settingsTabPane" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.ProfileUserGController">
+    <tabs>
+        <Tab fx:id="accountTab" closable="false" text="Account">
+            <content>
+                <StackPane fx:id="accountPane" />
+            </content>
+        </Tab>
+        <Tab fx:id="paymentTab" closable="false" text="Payment">
+            <content>
+                <StackPane fx:id="paymentPane" />
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>

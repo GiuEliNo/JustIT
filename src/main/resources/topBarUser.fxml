@@ -6,8 +6,6 @@
 
 <HBox fx:id="topBar" alignment="CENTER_RIGHT" prefHeight="40" spacing="10" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.TopBarUserGController">
 
-  <Button onAction="#onProfile" text="Profile" />
-  <Button onAction="#onBookings" text="My Bookings" />
   <Button onAction="#onLogout" text="Logout" />
    <padding>
       <Insets left="10.0" right="10.0" />
