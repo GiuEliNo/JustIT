@@ -1,9 +1,13 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.api.NominatimService;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
+import it.dosti.justit.model.Coordinates;
+import it.dosti.justit.model.Shop;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.model.user.TechnicianUser;
 
@@ -65,6 +69,100 @@ public class UpdateController {
             return true;
         }
         return false;
+    }
+
+    public boolean updateNameShop(String name) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateNameShop(new Shop
+                .Builder(name)
+                .id(shop.getId())
+                .build());
+    }
+
+    public boolean updateDescriptionShop(String description) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateDescriptionShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .description(description)
+                .build());
+    }
+
+    public boolean updateAddressShop(String address) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        CoordinatesDAO coordDao= new CoordinatesDAOAPI();
+        Coordinates coord = coordDao.getCoordinates(address).join();
+        Shop updateShop;
+        if(coord != null) {
+            updateShop = new Shop.Builder(shop.getName())
+                    .id(shop.getId())
+                    .address(address)
+                    .coordinates(coord)
+                    .build();
+        }
+        else{
+            JustItLogger.getInstance().warn("New coordinates not found");
+            updateShop = new Shop.Builder(shop.getName())
+                    .id(shop.getId())
+                    .address(address)
+                    .build();
+        }
+        return dao.updateAddressCoordinates(updateShop);
+    }
+
+    public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updatePhoneShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .phone(phoneNumber)
+                .build());
+    }
+
+
+    public boolean updateEmailShop(String email) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateEmailShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .email(email)
+                .build());
+
+    }
+
+    public boolean updateOpeningHourShop(String openingHour) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateOpeningHoursShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .openingHours(openingHour)
+                .build());
+    }
+
+    public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateHomeAssistanceShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .homeAssistance(isHomeAssistance)
+                .build());
+    }
+
+    public boolean updateImageShop(byte[] newImage) throws UpdateOnDBException {
+        ShopDAO dao = new ShopDAOJDBC();
+        Shop shop = SessionManager.getInstance().getCurrentShop();
+        return dao.updateImageShop(new Shop
+                .Builder(shop.getName())
+                .id(shop.getId())
+                .image(newImage)
+                .build());
     }
 
 }

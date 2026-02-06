@@ -5,6 +5,7 @@ import it.dosti.justit.db.query.RegisterQuery;
 import it.dosti.justit.db.query.ShopQuery;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JustItLogger;
@@ -154,7 +155,7 @@ public class ShopDAOJDBC implements ShopDAO{
     }
 
     @Override
-    public boolean updateNameShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateNameShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_SHOP_NAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -169,13 +170,13 @@ public class ShopDAOJDBC implements ShopDAO{
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateEmailShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateEmailShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_EMAIL_SHOP;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -191,13 +192,13 @@ public class ShopDAOJDBC implements ShopDAO{
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateAddressCoordinates(Shop shop) throws RegisterOnDbException {
+    public boolean updateAddressCoordinates(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_ADDRESS_COORDINATES_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -213,13 +214,13 @@ public class ShopDAOJDBC implements ShopDAO{
                 return true;
             }
         } catch (SQLException e) {
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updatePhoneShop(Shop shop) throws RegisterOnDbException {
+    public boolean updatePhoneShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_PHONE_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -233,13 +234,13 @@ public class ShopDAOJDBC implements ShopDAO{
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateOpeningHoursShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateOpeningHoursShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_OPENING_HOURS_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -253,13 +254,13 @@ public class ShopDAOJDBC implements ShopDAO{
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateHomeAssistanceShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateHomeAssistanceShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_HOME_ASSISTANCE_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -273,13 +274,13 @@ public class ShopDAOJDBC implements ShopDAO{
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateDescriptionShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateDescriptionShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_DESCRIPTION_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -292,13 +293,13 @@ public class ShopDAOJDBC implements ShopDAO{
                 return true;
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateImageShop(Shop shop) throws RegisterOnDbException {
+    public boolean updateImageShop(Shop shop) throws UpdateOnDBException {
         String sql = ShopQuery.UPDATE_IMAGE_SHOP;
         try(
                 Connection conn=ConnectionDB.getInstance().connectDB();
@@ -312,7 +313,7 @@ public class ShopDAOJDBC implements ShopDAO{
 
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error on Shop update", e);
+            throw new UpdateOnDBException("Error on Shop update", e);
         }
         return false;
     }
