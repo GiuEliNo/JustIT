@@ -5,7 +5,7 @@ import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import javafx.scene.image.Image;
 
 public class ShopController {
@@ -13,7 +13,7 @@ public class ShopController {
     private final Shop shop;
 
     public ShopController() {
-        shop = SessionModel.getInstance().getCurrentShop();
+        shop = SessionManager.getInstance().getCurrentShop();
     }
 
     public ShopBean getShopBean() {

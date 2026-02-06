@@ -1,6 +1,6 @@
 package it.dosti.justit.bean;
 
-import it.dosti.justit.model.RoleType;
+import it.dosti.justit.model.user.RoleType;
 
 public class LoginBean {
     private String username;

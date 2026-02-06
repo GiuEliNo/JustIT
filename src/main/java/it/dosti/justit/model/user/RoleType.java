@@ -1,4 +1,4 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.user;
 
 public enum RoleType {
     CLIENT,

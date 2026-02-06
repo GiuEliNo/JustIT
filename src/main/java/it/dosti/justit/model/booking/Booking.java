@@ -39,7 +39,7 @@ public class Booking {
         this.currentState = BookingStateFactory.fromStatus(builder.status);
         this.initStateMachine(BookingStateFactory.fromStatus(status), status);
 
-        this.notifyStatusChange(this, null);
+        //this.notifyStatusChange(this, null);
 
 
     }
@@ -56,7 +56,7 @@ public class Booking {
         private BookingStatus status;
 
 
-        public Builder(String name) {
+        public Builder(String username) {
             this.username = username;
         }
 
@@ -136,8 +136,6 @@ public class Booking {
         this.status = BookingStatus.PENDING;
         this.currentState = BookingStateFactory.fromStatus(this.status);
 
-        this.notifyStatusChange(this, null);
-        
     }
 
     public Booking(Integer bookingId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
@@ -194,7 +192,7 @@ public class Booking {
         this.currentState.entry(this);
     }
 
-    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+    public void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
                     .notifyChange(new BookingStatusChange(booking, oldStatus, booking.getStatus()));

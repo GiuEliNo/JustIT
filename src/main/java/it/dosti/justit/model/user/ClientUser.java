@@ -1,4 +1,6 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.user;
+
+import it.dosti.justit.model.Coordinates;
 
 public class ClientUser extends User {
 

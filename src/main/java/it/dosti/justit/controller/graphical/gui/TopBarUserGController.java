@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.ui.navigation.Screen;
 
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ public class TopBarUserGController extends BaseGController {
 
     @FXML
     public void onLogout() {
-        SessionModel.getInstance().logout();
+        SessionManager.getInstance().logout();
         navigation.navigate(Screen.LAUNCHER);
     }
 }

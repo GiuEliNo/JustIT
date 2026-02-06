@@ -7,8 +7,8 @@ import it.dosti.justit.db.query.RegisterQuery;
 import it.dosti.justit.db.query.ShopQuery;
 import it.dosti.justit.db.query.TechnicianQuery;
 import it.dosti.justit.exceptions.*;
-import it.dosti.justit.model.TechnicianUser;
-import it.dosti.justit.model.User;
+import it.dosti.justit.model.user.TechnicianUser;
+import it.dosti.justit.model.user.User;
 
 import java.sql.*;
 

@@ -4,6 +4,7 @@ import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.dao.ReviewDAO;
 import it.dosti.justit.dao.ReviewDAOJDBC;
 import it.dosti.justit.model.*;
+import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ReviewController {
     private final String username;
 
     public ReviewController() {
-        this.username = SessionModel.getInstance().getLoggedUser().getUsername();
+        this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
     public Boolean addReview(ReviewBean reviewBean) {
@@ -26,7 +27,7 @@ public class ReviewController {
     }
 
     public List<ReviewBean> getReviews() {
-        List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionModel.getInstance().getCurrentShop().getId());
+        List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getCurrentShop().getId());
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
         for (Review review : reviews) {
@@ -42,6 +43,6 @@ public class ReviewController {
     }
 
     public Boolean canReview() {
-        return reviewDao.checkUserCanReview(username, SessionModel.getInstance().getCurrentShop().getId());
+        return reviewDao.checkUserCanReview(username, SessionManager.getInstance().getCurrentShop().getId());
     }
 }

@@ -2,7 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -26,7 +26,7 @@ public class BookingPageGController extends BaseGController {
     @FXML
     void initialize() {
         appController = new BookingController();
-        Integer shopId = SessionModel.getInstance().getCurrentShop().getId();
+        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
 
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -56,7 +56,7 @@ public class BookingPageGController extends BaseGController {
     }
 
     private void updateTimeSlots(LocalDate date) {
-        Integer shopId = SessionModel.getInstance().getCurrentShop().getId();
+        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
 
         timeSlotChoiceBox.getItems().clear();
 
@@ -72,8 +72,8 @@ public class BookingPageGController extends BaseGController {
 
         BookingBean bookingBean = new BookingBean();
 
-        bookingBean.setShopId(SessionModel.getInstance().getCurrentShop().getId());
-        bookingBean.setUsername(SessionModel.getInstance().getLoggedUser().getUsername());
+        bookingBean.setShopId(SessionManager.getInstance().getCurrentShop().getId());
+        bookingBean.setUsername(SessionManager.getInstance().getLoggedUser().getUsername());
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());

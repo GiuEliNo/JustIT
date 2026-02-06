@@ -1,4 +1,4 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.user;
 
 public abstract class User {
     private Integer id;

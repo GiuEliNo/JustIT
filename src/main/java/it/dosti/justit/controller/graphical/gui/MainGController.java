@@ -1,6 +1,6 @@
 package it.dosti.justit.controller.graphical.gui;
 
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.ui.navigation.gui.GUINavigationService;
 
@@ -8,7 +8,7 @@ public class MainGController extends BaseGController {
 
     public MainGController(GUINavigationService navigation){
         this.setNavigation(navigation);
-        SessionModel session = SessionModel.getInstance();
+        SessionManager session = SessionManager.getInstance();
 
 
         if (session.isClient()) {

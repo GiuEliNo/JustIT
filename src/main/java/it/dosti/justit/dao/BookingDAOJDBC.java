@@ -81,16 +81,16 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
-                Booking booking = new Booking(
-                        bookingId,
-                        shopName,
-                        username,
-                        date,
-                        timeSlot,
-                        description,
-                        status,
-                        shopId
-                );
+                Booking booking = new Booking.Builder(username)
+                        .bookingId(bookingId)
+                        .shopId(shopId)
+                        .shopName(shopName)
+                        .date(date)
+                        .timeslot(timeSlot)
+                        .description(description)
+                        .status(status)
+                        .build();
+
 
 
                 bookings.add(booking);
@@ -126,14 +126,15 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
-                Booking booking = new Booking(
-                        bookingId,
-                        username,
-                        date,
-                        timeSlot,
-                        description,
-                        status
-                );
+                Booking booking = new Booking.Builder(username)
+                        .bookingId(bookingId)
+                        .shopId(shopId)
+                        .date(date)
+                        .timeslot(timeSlot)
+                        .description(description)
+                        .status(status)
+                        .build();
+
 
                 bookings.add(booking);
 
@@ -214,7 +215,16 @@ public class BookingDAOJDBC implements BookingDAO {
             TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
 
-            return new Booking(bookingId, shopId, username, date, timeSlot, description, status);
+            if (rs.next()) {
+                return new Booking.Builder(rs.getString(USERNAME))
+                        .bookingId(bookingId)
+                        .shopId(rs.getInt(IDSHOP))
+                        .date(LocalDate.parse(rs.getString(DATE)))
+                        .timeslot(TimeSlot.valueOf(rs.getString(TIMESLOT)))
+                        .description(rs.getString(DESCRIPTION))
+                        .status(BookingStatus.valueOf(rs.getString(STATE)))
+                        .build();
+            }
 
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);

@@ -4,7 +4,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.dao.NotificationDAO;
 import it.dosti.justit.dao.NotificationDAOJDBC;
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.model.notification.Notification;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class MessagesController {
     private final String username;
 
     public MessagesController() {
-        this.username = SessionModel.getInstance().getLoggedUser().getUsername();
+        this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
     public List<NotificationBean> getNotification() {

@@ -1,18 +1,23 @@
-package it.dosti.justit.model;
+package it.dosti.justit.utils;
 
-public final class SessionModel {
+import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.user.TechnicianUser;
+import it.dosti.justit.model.user.User;
 
-    private static SessionModel instance;
+public final class SessionManager {
+
+    private static SessionManager instance;
 
     private User loggedUser;
     private Shop selectedShop;
     private Shop ownedShop;
 
-    private SessionModel() {}
+    private SessionManager() {}
 
-    public static SessionModel getInstance() {
+    public static SessionManager getInstance() {
         if (instance == null) {
-            instance = new SessionModel();
+            instance = new SessionManager();
         }
         return instance;
     }

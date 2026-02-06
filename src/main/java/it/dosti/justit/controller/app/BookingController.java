@@ -10,6 +10,7 @@ import it.dosti.justit.model.booking.observer.BookingStatusChange;
 import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.SessionManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public class BookingController {
         );
 
         try {
-            dao.addBooking(newBooking);
+            Integer bookingId = dao.addBooking(newBooking);
+            newBooking.setBookingId(bookingId);
+            newBooking.notifyStatusChange(newBooking, null);
             JustItLogger.getInstance().info("Booking added successfully");
             return true;
 
@@ -42,7 +45,7 @@ public class BookingController {
     }
 
     public List<BookingBean> getBookingsByShop() {
-        List<Booking> bookings = dao.getBookingsByShop(SessionModel.getInstance().getCurrentShop().getId());
+        List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
         List<BookingBean> bookingBeans = new ArrayList<>();
 
         for (Booking b : bookings) {
@@ -61,7 +64,7 @@ public class BookingController {
     }
 
     public List<BookingBean> getBookingsByUser() {
-        List<Booking> bookings = dao.getBookingsByUser(SessionModel.getInstance().getLoggedUser().getUsername());
+        List<Booking> bookings = dao.getBookingsByUser(SessionManager.getInstance().getLoggedUser().getUsername());
         List<BookingBean> bookingBeans = new ArrayList<>();
 
         for(Booking b: bookings){

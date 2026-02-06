@@ -1,11 +1,10 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
-import it.dosti.justit.model.User;
+import it.dosti.justit.model.user.User;
 
 public interface UserDAO<T> {
 

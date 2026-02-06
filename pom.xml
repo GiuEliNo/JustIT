@@ -54,11 +54,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-            <dependency>
-                <groupId>org.xerial</groupId>
-                <artifactId>sqlite-jdbc</artifactId>
-                <version>3.51.1.0</version>
-            </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.51.1.0</version>
+        </dependency>
         <dependency>
             <groupId>com.gluonhq</groupId>
             <artifactId>maps</artifactId>
@@ -87,7 +87,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

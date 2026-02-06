@@ -4,7 +4,7 @@ import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.model.RoleType;
+import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;

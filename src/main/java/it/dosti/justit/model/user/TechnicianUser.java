@@ -1,6 +1,6 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.user;
 
-public class TechnicianUser extends User{
+public class TechnicianUser extends User {
     private Integer shopId;
 
     public TechnicianUser(Integer id, String name, String username, String email, Integer shopId) {

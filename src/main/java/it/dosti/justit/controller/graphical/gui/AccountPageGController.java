@@ -5,7 +5,7 @@ import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
-import it.dosti.justit.model.SessionModel;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogChangePassword;
 import it.dosti.justit.view.gui.DialogEditUser;
@@ -78,7 +78,7 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onEditName() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionModel.getInstance().getLoggedUser().getName());
+        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionManager.getInstance().getLoggedUser().getName());
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
@@ -107,7 +107,7 @@ public class AccountPageGController extends BaseGController {
     }
 
     public void onEditEmail() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionModel.getInstance().getLoggedUser().getEmail());
+        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionManager.getInstance().getLoggedUser().getEmail());
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
