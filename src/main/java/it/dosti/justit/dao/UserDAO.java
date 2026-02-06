@@ -7,11 +7,11 @@ import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.User;
 
-public interface ClientUserDAO extends UserDAO<RegisterBean> {
+public interface UserDAO<T> {
 
     boolean login(String username, String password) throws LoginFromDBException;
 
-    boolean register(RegisterBean registerBean) throws RegisterOnDbException;
+    boolean register(T registerBean) throws RegisterOnDbException;
 
     User findByUsername(String username) throws UserNotFoundException;
 
@@ -20,4 +20,5 @@ public interface ClientUserDAO extends UserDAO<RegisterBean> {
     boolean updateEmail(String username, String password) throws UpdateOnDBException;
 
     boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException;
+
 }

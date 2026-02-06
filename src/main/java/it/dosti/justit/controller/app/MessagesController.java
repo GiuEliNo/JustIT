@@ -2,7 +2,8 @@ package it.dosti.justit.controller.app;
 
 
 import it.dosti.justit.bean.NotificationBean;
-import it.dosti.justit.model.NotificationModel;
+import it.dosti.justit.dao.NotificationDAO;
+import it.dosti.justit.dao.NotificationDAOJDBC;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.notification.Notification;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class MessagesController {
 
-    private final NotificationModel notificationModel = new NotificationModel();
+    private final NotificationDAO dao = new NotificationDAOJDBC();
     private final String username;
 
     public MessagesController() {
@@ -19,7 +20,7 @@ public class MessagesController {
     }
 
     public List<NotificationBean> getNotification() {
-        List<Notification> notifications = notificationModel.getNotification(username);
+        List<Notification> notifications = dao.getNotificationsByUser(username);
         List<NotificationBean> notificationBeans = new ArrayList<>();
 
         for (Notification notification : notifications) {
@@ -40,7 +41,7 @@ public class MessagesController {
     }
 
     public List<NotificationBean> getUnreadNotifications() {
-        List<Notification> notifications = notificationModel.getUnreadNotifications(username);
+        List<Notification> notifications = dao.getUnreadNotificationsByUser(username);
         List<NotificationBean> notificationBeans = new ArrayList<>();
 
         for (Notification notification : notifications) {
@@ -61,6 +62,6 @@ public class MessagesController {
     }
 
     public void markNotificationRead(Integer notificationId) {
-        notificationModel.markNotificationRead(notificationId);
+        dao.markRead(notificationId);
     }
 }

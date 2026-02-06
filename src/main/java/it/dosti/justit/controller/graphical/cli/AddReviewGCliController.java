@@ -2,8 +2,8 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
-import it.dosti.justit.controller.app.BookingsController;
-import it.dosti.justit.controller.app.ReviewPageShopController;
+import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CAddReviewView;
 
@@ -12,16 +12,16 @@ import java.util.List;
 
 public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
-    private ReviewPageShopController reviewPageShopController;
+    private ReviewController reviewController;
     private List<Integer> shopIdCompleted = new ArrayList<>();
     private List<BookingBean> bookingCompleted = new ArrayList<>();
 
     @Override
     public void initialize() {
-        BookingsController bookAppController = new BookingsController();
-        reviewPageShopController = new ReviewPageShopController();
+        BookingController bookAppController = new BookingController();
+        reviewController = new ReviewController();
         addReviewView = (CAddReviewView) view;
-        bookingCompleted = bookAppController.getBookings();
+        bookingCompleted = bookAppController.getBookingsByUser();
 
         showCompletedBookingToReview();
 
@@ -79,6 +79,6 @@ public class AddReviewGCliController extends BaseCliController {
 
         reviewBean.setStars(rating);
 
-        reviewPageShopController.addReview(reviewBean);
+        reviewController.addReview(reviewBean);
     }
 }

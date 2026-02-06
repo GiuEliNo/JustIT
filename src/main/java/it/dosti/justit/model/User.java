@@ -5,6 +5,7 @@ public abstract class User {
     private String username;
     private String email;
     private String name;
+    private String password;
 
     Integer getId() {
         return id;
@@ -32,5 +33,6 @@ public abstract class User {
     void setName(String name) {
         this.name = name;
     }
+
 
 }

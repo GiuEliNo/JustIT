@@ -1,17 +1,18 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.ShopBean;
+import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.SessionModel;
-import it.dosti.justit.model.ShopModel;
 import javafx.scene.image.Image;
 
-public class PageShopController {
+public class ShopController {
 
-    private Shop shop;
+    private final Shop shop;
 
-    public PageShopController() {
+    public ShopController() {
         shop = SessionModel.getInstance().getCurrentShop();
     }
 
@@ -38,7 +39,7 @@ public class PageShopController {
     }
 
     public Image getShopImage() throws ShopNotFoundException {
-        ShopModel shopModel = new ShopModel();
-        return shopModel.getShopImage(shop.getId());
+        ShopDAO dao = new ShopDAOJDBC();
+        return dao.retrieveShopImageById(shop.getId());
     }
 }

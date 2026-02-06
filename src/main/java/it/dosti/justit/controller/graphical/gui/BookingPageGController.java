@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.controller.app.BookingPageController;
+import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.utils.JustItLogger;
@@ -16,19 +16,16 @@ public class BookingPageGController extends BaseGController {
     private TextArea descriptionArea;
 
     @FXML
-    private Button bookButton;
-
-    @FXML
     private ChoiceBox<TimeSlot> timeSlotChoiceBox;
 
     @FXML
     private DatePicker datePicker;
 
-    private BookingPageController appController;
+    private BookingController appController;
 
     @FXML
     void initialize() {
-        appController = new BookingPageController();
+        appController = new BookingController();
         Integer shopId = SessionModel.getInstance().getCurrentShop().getId();
 
         datePicker.setDayCellFactory(picker -> new DateCell() {
@@ -75,7 +72,7 @@ public class BookingPageGController extends BaseGController {
 
         BookingBean bookingBean = new BookingBean();
 
-        bookingBean.setShop(SessionModel.getInstance().getCurrentShop());
+        bookingBean.setShopId(SessionModel.getInstance().getCurrentShop().getId());
         bookingBean.setUsername(SessionModel.getInstance().getLoggedUser().getUsername());
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
@@ -85,7 +82,7 @@ public class BookingPageGController extends BaseGController {
 
 
         if(appController.addBooking(bookingBean)){
-            new MainGController(navigation);
+            new MainGController(navigation); //TODO controllare la navigazione
         }
     }
 }

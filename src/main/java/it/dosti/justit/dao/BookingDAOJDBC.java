@@ -70,6 +70,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
+
                 Integer shopId = rs.getInt(IDSHOP);
                 Integer bookingId = rs.getInt(ID);
                 String shopName = rs.getString(NAME);
@@ -79,7 +80,17 @@ public class BookingDAOJDBC implements BookingDAO {
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                Booking booking = new Booking(bookingId, shopName, username, date, timeSlot, description, status, shopId);
+
+                Booking booking = new Booking(
+                        bookingId,
+                        shopName,
+                        username,
+                        date,
+                        timeSlot,
+                        description,
+                        status,
+                        shopId
+                );
 
 
                 bookings.add(booking);
@@ -115,8 +126,15 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
+                Booking booking = new Booking(
+                        bookingId,
+                        username,
+                        date,
+                        timeSlot,
+                        description,
+                        status
+                );
 
-                Booking booking = new Booking(bookingId, username, date, timeSlot, description, status);
                 bookings.add(booking);
 
             }
@@ -141,28 +159,6 @@ public class BookingDAOJDBC implements BookingDAO {
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-    }
-
-    @Override
-    public Boolean checkConfirmedBookingWithShop(String username, Integer shopID) {
-        String sql = BookingQuery.CHECK_BOOKING;
-        try(
-                Connection conn = ConnectionDB.getInstance().connectDB();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
-                )
-        {
-            pstmt.setString(1, username);
-            pstmt.setInt(2, shopID);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return false;
     }
 
     @Override

@@ -17,8 +17,6 @@ public interface BookingDAO {
 
     void updateStatus(Integer bookingId, BookingStatus status);
 
-    Boolean checkConfirmedBookingWithShop(String username, Integer shopID);
-
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
 
     Booking getBookingById(Integer bookingId);

@@ -1,33 +1,32 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.dao.ReviewDAO;
+import it.dosti.justit.dao.ReviewDAOJDBC;
 import it.dosti.justit.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewPageShopController {
+public class ReviewController {
 
-    private final ReviewModel reviewModel = new ReviewModel();
-    private final BookingModel bookingModel = new BookingModel();
+    private final ReviewDAO reviewDao = new ReviewDAOJDBC();
 
     private final String username;
 
-    public ReviewPageShopController() {
+    public ReviewController() {
         this.username = SessionModel.getInstance().getLoggedUser().getUsername();
     }
 
     public Boolean addReview(ReviewBean reviewBean) {
 
-        if (reviewBean.getShopID() == null) reviewBean.setShopID(SessionModel.getInstance().getCurrentShop().getId());
         reviewBean.setUsername(username);
-        reviewModel.addReviewToShop(reviewBean);
-
+        reviewDao.addReviewToShop(new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), reviewBean.getShopID(), reviewBean.getUsername()));
         return true;
     }
 
     public List<ReviewBean> getReviews() {
-        List<Review> reviews = reviewModel.retrieveReviewsByShop(SessionModel.getInstance().getCurrentShop().getId());
+        List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionModel.getInstance().getCurrentShop().getId());
         List<ReviewBean> reviewBeans = new ArrayList<>();
 
         for (Review review : reviews) {
@@ -43,6 +42,6 @@ public class ReviewPageShopController {
     }
 
     public Boolean canReview() {
-        return bookingModel.checkConfirmedBookingWithShop(username, SessionModel.getInstance().getCurrentShop().getId());
+        return reviewDao.checkUserCanReview(username, SessionModel.getInstance().getCurrentShop().getId());
     }
 }

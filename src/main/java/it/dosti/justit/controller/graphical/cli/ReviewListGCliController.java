@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.ReviewBean;
-import it.dosti.justit.controller.app.ReviewPageShopController;
+import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CReviewListView;
@@ -12,7 +12,7 @@ public class ReviewListGCliController extends BaseCliController {
 
     @Override
     public void initialize() {
-        ReviewPageShopController appController = new ReviewPageShopController();
+        ReviewController appController = new ReviewController();
         CReviewListView reviewView = (CReviewListView) view;
 
         List<ReviewBean> reviewBeanList = appController.getReviews();

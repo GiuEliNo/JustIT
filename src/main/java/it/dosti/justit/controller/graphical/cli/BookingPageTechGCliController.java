@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.controller.app.BookingPageTechController;
+import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListTechView;
 
@@ -10,12 +10,12 @@ import java.util.List;
 
 public class BookingPageTechGCliController extends BaseCliController{
     private CBookingListTechView bookingListTechView;
-    private BookingPageTechController appController;
+    private BookingController appController;
     private List<BookingBean> bookingList = new ArrayList<>();
 
     @Override
     public void initialize() {
-        appController = new BookingPageTechController();
+        appController = new BookingController();
         bookingListTechView = (CBookingListTechView) view;
         bookingList = appController.getBookingsByShop();
 
@@ -56,10 +56,10 @@ public class BookingPageTechGCliController extends BaseCliController{
 
         do {
             bookId = bookingListTechView.askBooking();
-        } while (appController.getBookingById(bookingList, bookId) == null);
+        } while (appController.getBookingById(bookId) == null);
 
 
-        switch(appController.getBookingById(bookingList, bookId).getStatus()){
+        switch(appController.getBookingById(bookId).getStatus()){
             case PENDING:
                 this.confirmationManager(bookId);
                 navigation.navigate(Screen.BOOKING_PAGE_TECH);
@@ -74,12 +74,12 @@ public class BookingPageTechGCliController extends BaseCliController{
     }
 
     private void confirmationManager(Integer bookId){
-        switch (bookingListTechView.askConfirmation(appController.getBookingById(bookingList, bookId))){
+        switch (bookingListTechView.askConfirmation(appController.getBookingById(bookId))){
             case 1:
-                appController.rejectBooking(appController.getBookingById(bookingList, bookId));
+                appController.rejectBooking(appController.getBookingById(bookId));
                 break;
             case 2:
-                appController.approveBooking(appController.getBookingById(bookingList, bookId));
+                appController.approveBooking(appController.getBookingById(bookId));
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKING_PAGE_TECH);
@@ -91,9 +91,9 @@ public class BookingPageTechGCliController extends BaseCliController{
     }
 
     private void completedManager(Integer bookId){
-        switch (bookingListTechView.askCompleted(appController.getBookingById(bookingList, bookId))){
+        switch (bookingListTechView.askCompleted(appController.getBookingById(bookId))){
             case 1:
-                appController.rejectBooking(appController.getBookingById(bookingList, bookId));
+                appController.rejectBooking(appController.getBookingById(bookId));
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKING_PAGE_TECH);

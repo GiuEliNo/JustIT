@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.controller.app.BookingPageTechController;
+import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -41,7 +41,7 @@ public class BookingListTechGController extends BaseGController{
     private Label lblStatus;
 
 
-    private final BookingPageTechController appController = new BookingPageTechController();
+    private final BookingController appController = new BookingController();
 
     @FXML
     public void initialize() {

@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.controller.app.PageShopController;
+import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CPageShopCliView;
 
@@ -9,7 +9,7 @@ import it.dosti.justit.view.cli.CPageShopCliView;
 public class PageShopGCliController extends BaseCliController{
     @Override
     public void initialize() {
-        PageShopController appController = new PageShopController();
+        ShopController appController = new ShopController();
         CPageShopCliView pageShopCliView = (CPageShopCliView) view;
 
         ShopBean shopBean = appController.getShopBean();

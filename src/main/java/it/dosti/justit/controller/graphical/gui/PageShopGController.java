@@ -3,7 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.controller.app.PageShopController;
+import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.utils.CustomMapLayer;
 import it.dosti.justit.ui.navigation.Screen;
@@ -46,7 +46,7 @@ public class PageShopGController extends BaseGController {
     private StackPane mapContainer;
 
     public void initialize() {
-        PageShopController appControllerPageShop = new PageShopController();
+        ShopController appControllerPageShop = new ShopController();
 
         MapView mapView = new MapView();
         mapView.setMouseTransparent(true);

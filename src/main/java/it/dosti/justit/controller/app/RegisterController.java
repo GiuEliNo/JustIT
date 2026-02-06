@@ -1,7 +1,6 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.dao.CoordinatesDAO;
-import it.dosti.justit.dao.CoordinatesDAOAPI;
+import it.dosti.justit.dao.*;
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;
@@ -17,7 +16,7 @@ public class RegisterController {
 
     public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException {
 
-        ClientUserModel clientUserModel = new ClientUserModel();
+        ClientUserDAO dao = new ClientUserDAOJDBC();
 
         CoordinatesDAO coordDAO= new CoordinatesDAOAPI();
         Coordinates coord = coordDAO.getCoordinates(registerBean.getAddress()).join();
@@ -29,7 +28,7 @@ public class RegisterController {
             JustItLogger.getInstance().warn("Coordinates not found, proceding with empy beans");
         }
 
-        if(clientUserModel.registerClient(registerBean)){
+        if(dao.register(registerBean)){
             JustItLogger.getInstance().info("Register successful");
             return true;
         }
@@ -40,23 +39,23 @@ public class RegisterController {
     }
 
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException, ShopNotFoundException {
-        TechnicianModel technicianModel = new TechnicianModel();
-        Integer shopId = technicianModel.getShopIDbyName(registerBean.getShopName());
-        if ( shopId == 0){
+        TechnicianDAO dao = new TechnicianDAOJDBC();
+        Integer shopId = dao.getShopIDbyName(registerBean.getShopName());
+        if ( shopId == 0){  //TODO VALUTARE SE È EFFETTIVAMENTE UTILE FARE QUESTO CONTROLLO DOPPIO
             JustItLogger.getInstance().warn("Shop name not found");
             return false;
         }
         else {
 
             JustItLogger.getInstance().info("Register successful");
-            return technicianModel.registerTechnician(registerBean.getUsername(), registerBean.getPassword(), registerBean.getName(), registerBean.getEmail(), registerBean.getShopName());
+            return dao.register(registerBean);
         }
 
     }
 
     public boolean registerNewShop(ShopBean registerBean) throws RegisterOnDbException {
 
-        ShopModel shopModel = new ShopModel();
+        ShopDAO dao = new ShopDAOJDBC();
 
 
 
@@ -83,7 +82,7 @@ public class RegisterController {
                 .coordinates(registerBean.getCoordinates())
                 .build();
 
-        return shopModel.registerShop(shop);
+        return dao.registerShop(shop);
     }
 
 }

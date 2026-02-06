@@ -71,7 +71,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean registerClient(RegisterBean registerBean) throws RegisterOnDbException {
+    public boolean register(RegisterBean registerBean) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 

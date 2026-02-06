@@ -1,6 +1,10 @@
 package it.dosti.justit.model.booking;
 
+import it.dosti.justit.model.Coordinates;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.model.booking.observer.BookingStatusChange;
+import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
 
@@ -17,6 +21,86 @@ public class Booking {
 
     private BookingState currentState;
     private BookingStatus status;
+
+    public Booking(String username) {
+        this.username = username;
+    }
+
+    private Booking(Builder builder) {
+
+        this.bookingId = builder.bookingId;
+        this.shopId = builder.shopId;
+        this.username = builder.username;
+        this.date = builder.date;
+        this.timeSlot = builder.timeSlot;
+        this.description = builder.description;
+        this.shopName = builder.shopName;
+
+        this.currentState = BookingStateFactory.fromStatus(builder.status);
+        this.initStateMachine(BookingStateFactory.fromStatus(status), status);
+
+        this.notifyStatusChange(this, null);
+
+
+    }
+
+
+    public static class Builder {
+        private Integer bookingId;
+        private Integer shopId;
+        private String username;
+        private LocalDate date;
+        private TimeSlot timeSlot;
+        private String description;
+        private String shopName;
+        private BookingStatus status;
+
+
+        public Builder(String name) {
+            this.username = username;
+        }
+
+
+        public Builder bookingId(Integer bookingId) {
+            this.bookingId = bookingId;
+            return this;
+        }
+
+
+        public Builder shopId(Integer shopId) {
+            this.shopId = shopId;
+            return this;
+        }
+
+        public Builder date(LocalDate date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder timeslot(TimeSlot timeSlot) {
+            this.timeSlot = timeSlot;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder shopName(String shopName) {
+            this.shopName = shopName;
+            return this;
+        }
+
+        public Builder status(BookingStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Booking build() {
+            return new Booking(this);
+        }
+    }
 
 
     public Booking(Integer bookingId, Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description, BookingStatus status) {
@@ -41,7 +125,8 @@ public class Booking {
         this.currentState = BookingStateFactory.fromStatus(status);
         this.shopId = shopId;
     }
-    
+
+    //BookingController addBook
     public Booking(Integer shopId, String username, LocalDate date, TimeSlot timeSlot, String description) {
         this.username = username;
         this.shopId = shopId;
@@ -50,6 +135,8 @@ public class Booking {
         this.description = description;
         this.status = BookingStatus.PENDING;
         this.currentState = BookingStateFactory.fromStatus(this.status);
+
+        this.notifyStatusChange(this, null);
         
     }
 
@@ -105,6 +192,13 @@ public class Booking {
         this.status = newStatus;
         this.currentState = BookingStateFactory.fromStatus(newStatus);
         this.currentState.entry(this);
+    }
+
+    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+        if (oldStatus != booking.getStatus()) {
+            BookingStatusPublisher.getInstance()
+                    .notifyChange(new BookingStatusChange(booking, oldStatus, booking.getStatus()));
+        }
     }
 }
 

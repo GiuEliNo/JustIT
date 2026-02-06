@@ -1,6 +1,7 @@
 package it.dosti.justit.dao;
 
 import it.dosti.justit.db.ConnectionDB;
+import it.dosti.justit.db.query.BookingQuery;
 import it.dosti.justit.db.query.ReviewQuery;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.JustItLogger;
@@ -59,5 +60,27 @@ public class ReviewDAOJDBC implements ReviewDAO {
             } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public Boolean checkUserCanReview(String username, Integer shopID) {
+        String sql = ReviewQuery.CHECK_BOOKING;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        )
+        {
+            pstmt.setString(1, username);
+            pstmt.setInt(2, shopID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return false;
     }
 }

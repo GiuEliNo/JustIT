@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 
-import it.dosti.justit.controller.app.AccountPageController;
+import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CAccountPageView;
 
@@ -9,7 +9,7 @@ public class AccountPageGCliController extends BaseCliController {
 
     @Override
     public void initialize(){
-        AccountPageController appController = new AccountPageController();
+        AccountController appController = new AccountController();
         CAccountPageView accountPageView = (CAccountPageView) view;
 
         accountPageView.renderAccount(appController.getUserBean());

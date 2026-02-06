@@ -1,17 +1,17 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.controller.app.BookingsController;
+import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListView;
 
 public class BookingListGCliController extends BaseCliController{
     @Override
     public void initialize(){
-        BookingsController appController = new BookingsController();
+        BookingController appController = new BookingController();
         CBookingListView bookingListView = (CBookingListView) view;
 
-        for(BookingBean b : appController.getBookings()){
+        for(BookingBean b : appController.getBookingsByUser()){
             bookingListView.renderBookings(b);
         }
 

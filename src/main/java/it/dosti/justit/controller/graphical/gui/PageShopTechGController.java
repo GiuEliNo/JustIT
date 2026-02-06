@@ -1,7 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.controller.app.PageShopTechController;
+import it.dosti.justit.controller.app.ShopController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -30,7 +30,7 @@ public class PageShopTechGController extends BaseGController{
     public Label homeAssistanceLabel;
 
     public void initialize() {
-        PageShopTechController appController = new PageShopTechController();
+        ShopController appController = new ShopController();
 
         ShopBean shopBean = appController.getShopBean();
 

@@ -2,7 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
-import it.dosti.justit.controller.app.AccountPageController;
+import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.SessionModel;
@@ -25,13 +25,13 @@ public class AccountPageGController extends BaseGController {
     @FXML
     public Label emailLabel;
 
-    private AccountPageController appController;
+    private AccountController appController;
 
     public static final String EDIT_EMAIL = "Edit Mail";
 
 
     public void initialize(){
-        appController = new AccountPageController();
+        appController = new AccountController();
 
         this.getPageInfo();
 

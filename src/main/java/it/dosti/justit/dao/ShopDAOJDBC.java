@@ -43,8 +43,10 @@ public class ShopDAOJDBC implements ShopDAO{
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
                 Shop shop = new Shop.Builder(name)
-                        .id(id).address(address)
-                        .phone(phone).email(email)
+                        .id(id)
+                        .address(address)
+                        .phone(phone)
+                        .email(email)
                         .description(description)
                         .openingHours(openingHours)
                         .homeAssistance(homeAssistance)

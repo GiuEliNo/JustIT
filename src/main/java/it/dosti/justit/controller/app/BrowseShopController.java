@@ -1,9 +1,10 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.model.ClientUser;
 import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.ShopModel;
 import it.dosti.justit.model.SessionModel;
 import it.dosti.justit.utils.CalculateCoordinateRangeDistance;
 
@@ -16,8 +17,8 @@ public class BrowseShopController {
     private final List<Shop> shops;
 
     public BrowseShopController() {
-        ShopModel shopModel = new ShopModel();
-        this.shops = shopModel.getAllShops();
+        ShopDAO dao = new ShopDAOJDBC();
+        this.shops = dao.retrieveAllShops();
     }
 
     public List<Shop> getAllShops() {
