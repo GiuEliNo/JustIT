@@ -4,6 +4,7 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.AddressDialog;
@@ -59,6 +60,7 @@ public class PageShopTechGController extends BaseGController{
     private static final String EDIT_SHOP_OPENING_HOURS = "Edit Shop Opening Hours";
     private static final String EDIT_SHOP_HOME_ASSISTANCE = "Select to enable/disable home assistance";
     private static final String EDIT_SHOP_IMAGE = "Edit Shop Image";
+    private static final String SUCCESS = "Success";
 
 
     public void initialize() {
@@ -83,7 +85,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_NAME)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -151,7 +153,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_ADDRESS)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -178,7 +180,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_DESCRIPTION)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -206,7 +208,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_EMAIL)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -234,7 +236,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_PHONE)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -262,7 +264,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_OPENING_HOURS)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -310,7 +312,7 @@ public class PageShopTechGController extends BaseGController{
                     } else {
                         Notifications.create()
                                 .title(EDIT_SHOP_NAME)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch ( UpdateOnDBException e) {
@@ -345,7 +347,7 @@ public class PageShopTechGController extends BaseGController{
                     else{
                         Notifications.create()
                                 .title(EDIT_SHOP_IMAGE)
-                                .text("Success!")
+                                .text(SUCCESS)
                                 .showConfirm();
                     }
                 } catch (UpdateOnDBException e) {

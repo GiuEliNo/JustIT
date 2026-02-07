@@ -5,11 +5,19 @@ public class UserBean {
     private String email;
     private String name;
     private String password;
+    private String address;
 
     public UserBean(String name, String email, String username) {
         this.setEmail(email);
         this.setName(name);
         this.setUsername(username);
+    }
+
+    public UserBean(String name, String email, String username, String address) {
+        this.setEmail(email);
+        this.setName(name);
+        this.setUsername(username);
+        this.setAddress(address);
     }
 
     public UserBean() {
@@ -45,5 +53,12 @@ public class UserBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getAddress() {
+        return this.address;
     }
 }

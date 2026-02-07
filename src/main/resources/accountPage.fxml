@@ -5,42 +5,52 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="600" spacing="30" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.AccountPageGController">
+<VBox alignment="TOP_CENTER" spacing="20" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.AccountPageGController">
 
     <padding>
-        <Insets bottom="30" left="30" right="30" top="30" />
+        <Insets bottom="40" left="40" right="40" top="40" />
     </padding>
 
-    <Label text="Account">
-        <font>
-            <Font size="22" />
-        </font>
-    </Label>
+    <Label styleClass="page-title" text="Il mio Account" />
 
-    <GridPane hgap="15" vgap="15">
+    <GridPane fx:id="gridPaneAccount" hgap="20" styleClass="card" vgap="25">
         <columnConstraints>
-            <ColumnConstraints minWidth="120" />
-            <ColumnConstraints minWidth="300" />
-            <ColumnConstraints minWidth="120" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="350.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="90.0" />
         </columnConstraints>
 
-        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label style="-fx-font-weight: Bold;" styleClass="field-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="nameLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <Button onAction="#onEditName" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-        <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label fx:id="usernameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label fx:id="emailLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label style="-fx-font-weight: Bold;" styleClass="field-label" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="usernameLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label style="-fx-font-weight: Bold;" styleClass="field-label" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="emailLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Button onAction="#onEditEmail" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-        <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label text="*******" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <Button onAction="#onChangePassword" text="Change" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Label style="-fx-font-weight: Bold;" styleClass="field-label" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label styleClass="data-label" text="••••••••" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Button onAction="#onChangePassword" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label style="-fx-font-weight: Bold;" styleClass="field-label" text="Address" GridPane.rowIndex="4" />
+      <Label fx:id="addressLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button fx:id="addressButton" mnemonicParsing="false" onAction="#onEditAddressButtonClicked" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        </rowConstraints>
+
+        <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+        </padding>
     </GridPane>
 
 </VBox>

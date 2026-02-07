@@ -7,70 +7,71 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="712.0" prefWidth="854.0" spacing="20" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PageShopTechGController">
+<VBox alignment="TOP_CENTER" spacing="25.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PageShopTechGController">
 
     <padding>
         <Insets bottom="40" left="40" right="40" top="40" />
     </padding>
 
-    <Label text="Gestione Profilo Negozio" textFill="#333333">
-        <font>
-            <Font name="System Bold" size="24.0" />
-        </font>
-        <VBox.margin>
-            <Insets bottom="20.0" />
-        </VBox.margin>
-    </Label>
+    <VBox alignment="CENTER" spacing="5">
+        <Label styleClass="page-title" text="Shop Profile Management" />
+        <Label styleClass="small-label" text="Update your business information" />
+    </VBox>
 
-    <GridPane hgap="20" prefHeight="523.0" prefWidth="774.0" vgap="20">
+    <GridPane hgap="20" maxWidth="800.0" styleClass="card" vgap="20">
         <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" />
-            <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" prefWidth="350.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="80.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="120.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="300.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="90.0" />
         </columnConstraints>
 
-        <Label style="-fx-font-weight: bold;" text="Shop Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label fx:id="nameLabel" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Button fx:id="nameButton" onAction="#editShopNameClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" />
+        <Label styleClass="field-label" text="SHOP NAME" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="nameLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Button fx:id="nameButton" onAction="#editShopNameClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-        <Label style="-fx-font-weight: bold;" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label fx:id="addressLabel" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Button fx:id="addressButton" onAction="#editAddressButtonClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Label styleClass="field-label" text="ADDRESS" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="addressLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Button fx:id="addressButton" onAction="#editAddressButtonClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
-        <Label style="-fx-font-weight: bold;" text="Description" GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <Label styleClass="field-label" text="DESCRIPTION" GridPane.columnIndex="0" GridPane.rowIndex="2" >
             <GridPane.margin>
-                <Insets top="5.0" />
-            </GridPane.margin></Label>
-        <TextArea fx:id="descriptionArea" editable="false" prefHeight="100.0" style="-fx-background-color: transparent; -fx-control-inner-background: #f4f4f4;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button fx:id="descriptionButton" onAction="#editDescriptionButton" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Insets top="8.0" />
+            </GridPane.margin>
+        </Label>
+        <TextArea fx:id="descriptionArea" editable="false" prefHeight="80.0" styleClass="description-area-readonly" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button fx:id="descriptionButton" onAction="#editDescriptionButton" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-        <Label style="-fx-font-weight: bold;" text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label fx:id="emailLabel" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <Button fx:id="emailButton" onAction="#onEmailButtonClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Label styleClass="field-label" text="EMAIL" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label fx:id="emailLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Button fx:id="emailButton" onAction="#onEmailButtonClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
-        <Label style="-fx-font-weight: bold;" text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label fx:id="phoneLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <Button fx:id="phoneButton" onAction="#onPhoneButtonClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+        <Label styleClass="field-label" text="PHONE" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="phoneLabel" styleClass="data-label" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Button fx:id="phoneButton" onAction="#onPhoneButtonClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 
-        <Label style="-fx-font-weight: bold;" text="Opening Hours" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label fx:id="openingHoursLabel" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <Button fx:id="openingHoursButton" onAction="#onOpeningHoursButtonClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+        <Label styleClass="field-label" text="OPENING HOURS" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label fx:id="openingHoursLabel" styleClass="data-label" text="-" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Button fx:id="openingHoursButton" onAction="#onOpeningHoursButtonClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="5" />
 
-        <Label style="-fx-font-weight: bold;" text="Home Assistance" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <Label fx:id="homeAssistanceLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Button fx:id="homeAssistanceButton" onAction="#onHomeAssistanceButtonClicked" style="-fx-cursor: hand;" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-      <Button fx:id="imageButton" mnemonicParsing="false" onAction="#onImageButtonClicked" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-      <Label fx:id="imagePickerLabel" style="-fx-font-weight: bold;" text="Image" GridPane.rowIndex="7" />
-      <HBox alignment="CENTER" prefHeight="94.0" prefWidth="534.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-         <children>
-            <ImageView fx:id="previewImage" fitHeight="130.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </HBox>
+        <Label styleClass="field-label" text="HOME ASSISTANCE" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Label fx:id="homeAssistanceLabel" styleClass="data-label" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <Button fx:id="homeAssistanceButton" onAction="#onHomeAssistanceButtonClicked" styleClass="button" text="EDIT" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+
+        <Label fx:id="imagePickerLabel" styleClass="field-label" text="SHOP IMAGE" GridPane.columnIndex="0" GridPane.rowIndex="7">
+            <GridPane.margin>
+                <Insets top="10.0" />
+            </GridPane.margin>
+        </Label>
+
+        <StackPane alignment="CENTER_LEFT" styleClass="image-container" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <ImageView fx:id="previewImage" fitHeight="150.0" fitWidth="300.0" preserveRatio="true" />
+        </StackPane>
+
+        <Button fx:id="imageButton" onAction="#onImageButtonClicked" styleClass="button" text="CHANGE" GridPane.columnIndex="2" GridPane.rowIndex="7" />
 
         <rowConstraints>
             <RowConstraints />
@@ -80,8 +81,12 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-         <RowConstraints maxHeight="200.0" minHeight="50.0" prefHeight="150.0" />
+            <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
+
+        <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+        </padding>
 
     </GridPane>
 </VBox>

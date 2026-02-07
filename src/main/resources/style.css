@@ -1,11 +1,11 @@
 .root {
     -fx-font-size: 14px;
 
-    /* Colori Base */
+    /*PALETTE*/
+
     -color-bg-app: #F8F9FA;
     -color-bg-card: #FFFFFF;
 
-    /* Colori Brand */
     -color-primary: #1976D2;
     -color-accent: #42A5F5;
 
@@ -16,49 +16,491 @@
     -color-text-sub: #757575;
 
     -fx-background-color: -color-bg-app;
+
 }
 
-
-.shop-list-cell{
+.shop-list-cell {
     -fx-background-color: transparent;
     -fx-padding: 5px;
+    -fx-background-insets: 0;
 }
 
-.card{
+.list-cell:empty {
+    -fx-background-color: transparent;
+}
+
+.card {
     -fx-background-color: -color-bg-card;
     -fx-background-radius: 10;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);
+
+    /* Padding interno per il testo */
+    -fx-padding: 20;
 }
 
-.cell:selected .card{
+.cell:filled:hover .card {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(66, 165, 245, 0.4), 12, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+.cell:selected .card {
     -fx-background-color: -color-selected-bg;
     -fx-background-radius: 10;
+
     -fx-border-color: -color-selected-border;
     -fx-border-radius: 10;
     -fx-border-width: 2;
-    -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.3), 10, 0, 0, 5);
+
+    -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.25), 15, 0, 0, 5);
 }
+
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:focused,
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
 .label {
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 14px;
+    -fx-text-fill: -color-text-main;
 }
 
 .button {
-    -fx-background-color: #2196F3; /* Blu Material Design */
+    -fx-background-color: -color-primary;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 5;
     -fx-padding: 5 15 5 15;
+    -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color: #1976D2; /* Blu più scuro al passaggio del mouse */
-    -fx-cursor: hand;
+    -fx-background-color: -color-accent;
 }
 
 .text-area {
     -fx-background-radius: 5;
     -fx-border-color: #cccccc;
     -fx-border-radius: 5;
+    -fx-text-fill: -color-text-main;
 }
+
+
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primary;
+}
+
+.field-label {
+    -fx-text-fill: -color-text-sub;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.data-label {
+    -fx-text-fill: -color-text-main;
+    -fx-font-size: 15px;
+}
+
+.description-area-readonly {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-text-fill: -color-text-main;
+}
+.description-area-readonly .viewport,
+.description-area-readonly .content {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane {
+    -fx-tab-min-height: 40px;
+    -fx-tab-max-height: 40px;
+}
+
+.tab:focused{
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.tab {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-padding: 0 20 0 20;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: -color-text-sub;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tab:hover {
+    -fx-background-color: -color-selected-bg;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-primary transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -color-primary;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: transparent;
+    -fx-padding: 20 0 0 0;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+
+/* RATING DA SISTEMARE */
+
+.rating {
+    -fx-background-color: transparent;
+    -fx-effect: null;
+    -fx-padding: 0;
+}
+
+.rating > .container > .button {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: transparent;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+}
+
+.rating > .container > .button.strong {
+    -fx-background-color: #FFC107;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 193, 7, 0.4), 5, 0, 0, 0);
+}
+.rating > .container > .button.partial {
+    -fx-background-color: linear-gradient(to right, #FFC107 0%, #FFC107 50%, #e0e0e0 50%, #e0e0e0 100%);
+}
+
+.cell:selected .rating > .container > .button {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+.cell:selected .rating > .container > .button.strong {
+    -fx-background-color: #FFC107;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.icon-fill {
+    -fx-fill: -color-text-sub;
+}
+
+.button-logout {
+    -fx-background-color: transparent;
+    -fx-border-color: #9E9E9E;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-text-fill: #616161;
+    -fx-cursor: hand;
+}
+
+.button-logout:hover {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #616161;
+    -fx-text-fill: #212121;
+}
+
+
+.date-picker, .choice-box {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-font-size: 14px;
+}
+
+.date-picker:hover, .choice-box:hover {
+    -fx-border-color: -color-primary;
+}
+
+.date-picker:focused, .choice-box:focused {
+    -fx-border-color: -color-primary;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(25, 118, 210, 0.2), 5, 0, 0, 0);
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-padding: 0 10 0 10;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: -color-text-sub;
+}
+.date-picker:hover .arrow-button .arrow {
+    -fx-background-color: -color-primary;
+}
+
+.choice-box .label {
+    -fx-text-fill: -color-text-main;
+}
+.choice-box .arrow-button {
+    -fx-background-color: transparent;
+}
+.choice-box .arrow {
+    -fx-background-color: -color-text-sub;
+}
+
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+    -fx-padding: 8;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -color-primary;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(25, 118, 210, 0.2), 5, 0, 0, 0);
+}
+
+.radio-button {
+    -fx-text-fill: -color-text-main;
+    -fx-cursor: hand;
+}
+
+.radio-button .radio {
+    -fx-background-color: white;
+    -fx-border-color: #999999;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 2px;
+}
+
+.radio-button:selected .radio {
+    -fx-border-color: -color-primary;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: -color-primary;
+    -fx-background-insets: 0;
+}
+
+.radio-button:hover .radio {
+    -fx-border-color: -color-primary;
+}
+.button-secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-primary;
+    -fx-border-radius: 5;
+    -fx-border-width: 2;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.button-secondary:hover {
+    -fx-background-color: -color-selected-bg;
+}
+
+.error-label {
+    -fx-text-fill: #D32F2F;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.login-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primary;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.search-container {
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 30;
+}
+
+.search-container:hover {
+    -fx-border-color: -color-primary;
+}
+
+.search-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-font-size: 14px;
+}
+.search-field:focused {
+    -fx-background-color: transparent;
+}
+
+.filter-toggle-button {
+    -fx-background-color: white;
+    -fx-text-fill: -color-text-sub;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 5 10 5 10;
+}
+
+.filter-toggle-button:hover {
+    -fx-border-color: -color-primary;
+    -fx-text-fill: -color-primary;
+}
+
+.filter-toggle-button:selected {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: white;
+    -fx-border-color: -color-primary;
+}
+
+.slider .track {
+    -fx-background-color: #e0e0e0;
+}
+.slider .thumb {
+    -fx-background-color: -color-primary;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+.slider:focused .thumb {
+    -fx-background-color: -color-accent;
+    -fx-effect: dropshadow(three-pass-box, rgba(33,150,243,0.4), 8, 0, 0, 0); /* Glow */
+}
+
+.custom-list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.custom-list-view .list-cell {
+    -fx-background-color: transparent;
+}
+.custom-list-view:focused {
+    -fx-background-insets: 0;
+}
+
+.small-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -color-text-sub;
+}
+
+.check-box {
+    -fx-cursor: hand;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-label-padding: 0 0 0 5;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #999999;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-max-width: 18px;
+    -fx-max-height: 18px;
+
+    -fx-padding: 0;
+}
+
+.check-box:hover .box {
+    -fx-border-color: #1976D2;
+    -fx-background-color: #f5f5f5;
+}
+
+
+.check-box:selected .box {
+    -fx-background-color: #1976D2;
+    -fx-border-color: #1976D2;
+}
+
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+
+    -fx-shape: "M0,4 L3,7 L10,0 L10,3 L3,10 L0,7 Z";
+    -fx-scale-shape: true;
+
+
+    -fx-padding: 6px;
+}
+
+
+.check-box:pressed .box {
+    -fx-background-color: #1565C0;
+}
+
+.badge-success {
+    -fx-background-color: #E8F5E9;
+    -fx-text-fill: #2E7D32;
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 15;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.image-container {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 0);
+}
+
+.map-wrapper {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+
 

@@ -11,13 +11,8 @@ import javafx.scene.image.Image;
 
 public class ShopController {
 
-    private final Shop shop;
-
-    public ShopController() {
-        shop = SessionManager.getInstance().getCurrentShop();
-    }
-
     public ShopBean getShopBean() {
+        Shop shop = SessionManager.getInstance().getCurrentShop();
         if (shop == null) {
             return null;
         }
@@ -43,6 +38,7 @@ public class ShopController {
     }
 
     public Image getShopImage() throws ShopNotFoundException {
+        Shop shop = SessionManager.getInstance().getCurrentShop();
         if (shop == null) {
             throw new ShopNotFoundException("Shop not set in session.");
         }
@@ -91,6 +87,7 @@ public class ShopController {
     }
 
     public boolean isHomeAssistance(){
+        Shop shop = SessionManager.getInstance().getCurrentShop();
         return shop.isHomeAssistance();
     }
 }

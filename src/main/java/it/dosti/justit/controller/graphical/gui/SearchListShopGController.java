@@ -23,7 +23,7 @@ public class SearchListShopGController extends BaseGController{
     private ListView<Shop> listView;
 
     @FXML
-    private Button filterRadiusButton;
+    private ToggleButton filterRadiusButton;
 
     @FXML
     private Slider radiusSlider;

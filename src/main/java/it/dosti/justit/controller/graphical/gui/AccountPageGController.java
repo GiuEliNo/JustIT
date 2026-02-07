@@ -13,6 +13,7 @@ import it.dosti.justit.view.gui.DialogEditUser;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.controlsfx.control.Notifications;
 
 public class AccountPageGController extends BaseGController {
@@ -26,6 +27,12 @@ public class AccountPageGController extends BaseGController {
     @FXML
     public Label emailLabel;
 
+    @FXML
+    public Label addressLabel;
+
+    @FXML
+    public GridPane gridPaneAccount;
+
     private AccountController appController;
 
     public static final String EDIT_EMAIL = "Edit Mail";
@@ -33,8 +40,20 @@ public class AccountPageGController extends BaseGController {
 
 
     public void initialize(){
+
         appController = new AccountController();
 
+        if(appController.isTechnician()){
+            int row = 4;
+            gridPaneAccount.getChildren().forEach(node -> {
+                Integer rowIndex = GridPane.getRowIndex(node);
+                if(rowIndex == row) {
+                    node.setVisible(false);
+                    node.setManaged(false);
+
+                }
+            });
+        }
         this.getPageInfo();
 
     }
@@ -45,6 +64,9 @@ public class AccountPageGController extends BaseGController {
         nameLabel.setText(userBean.getName());
         usernameLabel.setText(userBean.getUsername());
         emailLabel.setText(userBean.getEmail());
+        if(userBean.getAddress() != null) {
+            addressLabel.setText(userBean.getAddress());
+        }
     }
 
     @FXML
@@ -135,5 +157,9 @@ public class AccountPageGController extends BaseGController {
             }
         });
         this.getPageInfo();
+    }
+
+    public void onEditAddressButtonClicked(){
+
     }
 }
