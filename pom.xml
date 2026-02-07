@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.12.1</junit.version>
         <sonar.organization>dosti</sonar.organization>
+        <sonar.exclusions>**/*.css</sonar.exclusions>
     </properties>
 
     <dependencies>

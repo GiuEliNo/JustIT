@@ -9,53 +9,52 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" spacing="30.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/" fx:controller="it.dosti.justit.controller.graphical.gui.LoginGController">
+<VBox alignment="CENTER" fillWidth="false" spacing="30.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.LoginGController">
+
     <padding>
         <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
     </padding>
 
-    <VBox alignment="CENTER" spacing="10.0">
-        <Label fx:id="welcomeText" text="Welcome to JustIT">
-            <font>
-                <Font name="System Bold" size="28.0" />
-            </font>
-        </Label>
-        <Label fx:id="outputLabel" textFill="RED" />
-    </VBox>
+    <VBox alignment="CENTER" maxWidth="450.0" minWidth="400.0" spacing="30.0" styleClass="card">
 
-    <VBox spacing="15.0">
-        <VBox spacing="5.0">
-            <Label text="Username" />
-            <TextField fx:id="user" prefHeight="35.0" prefWidth="300.0" promptText="Enter username" />
+        <padding>
+            <Insets bottom="50.0" left="40.0" right="40.0" top="50.0" />
+        </padding>
+
+        <VBox alignment="CENTER" spacing="10.0">
+            <Label fx:id="welcomeText" text="Welcome to JustIT" styleClass="login-title" />
+
+
+            <Label fx:id="outputLabel" styleClass="error-label" text="" wrapText="true"/>
         </VBox>
-        <VBox spacing="5.0">
-            <Label text="Password" />
-            <PasswordField fx:id="password" prefHeight="35.0" prefWidth="300.0" promptText="Enter password" />
+
+        <VBox spacing="20.0">
+            <VBox spacing="5.0">
+                <Label styleClass="field-label" text="USERNAME" />
+                <TextField fx:id="user" prefHeight="45.0" prefWidth="320.0" promptText="Enter your username" />
+            </VBox>
+            <VBox spacing="5.0">
+                <Label styleClass="field-label" text="PASSWORD" />
+                <PasswordField fx:id="password" prefHeight="45.0" prefWidth="320.0" promptText="Enter your password" />
+            </VBox>
         </VBox>
+
+        <HBox alignment="CENTER" spacing="40.0">
+            <RadioButton fx:id="clientRadio" mnemonicParsing="false" selected="true" text="Client">
+                <toggleGroup>
+                    <ToggleGroup fx:id="userType" />
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="technicianRadio" mnemonicParsing="false" text="Technician" toggleGroup="$userType" />
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="20.0">
+            <Button onAction="#onLogin" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="LOGIN" />
+
+            <Button onAction="#onSignIn" prefHeight="50.0" prefWidth="150.0" styleClass="button-secondary" text="SIGN UP" />
+        </HBox>
+
     </VBox>
-
-    <HBox alignment="CENTER" spacing="40.0">
-        <RadioButton fx:id="clientRadio" mnemonicParsing="false" selected="true" text="Client">
-            <toggleGroup>
-                <ToggleGroup fx:id="userType" />
-            </toggleGroup>
-        </RadioButton>
-        <RadioButton fx:id="technicianRadio" mnemonicParsing="false" text="Technician" toggleGroup="$userType" />
-    </HBox>
-
-    <HBox alignment="CENTER" spacing="20.0">
-        <Button onAction="#onLogin" prefHeight="40.0" prefWidth="140.0" text="Login">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Button>
-        <Button onAction="#onSignIn" prefHeight="40.0" prefWidth="140.0" text="Sign In">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-    </HBox>
 
 </VBox>
