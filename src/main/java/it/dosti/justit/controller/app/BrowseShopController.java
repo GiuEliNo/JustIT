@@ -10,10 +10,14 @@ import it.dosti.justit.utils.CalculateCoordinateRangeDistance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+//soppresso il warning Using pseudorandom number generators (PRNGs) is security-sensitive. Non essendo un caso d'uso di sicurezza ma un smeplice easter egg non c'è bisogno.
+@SuppressWarnings("java:S2245")
 public class BrowseShopController {
 
+    private static final Random RANDOM = new Random();
     private final List<Shop> shops;
 
     public BrowseShopController() {
@@ -54,5 +58,14 @@ public class BrowseShopController {
             }
         }
         return filteredShops;
+    }
+
+
+    public void randomShop() {
+        List<Shop> allShops = getAllShops();
+        if (allShops.isEmpty()) {
+            return;
+        }
+        this.pageSelected(allShops.get(RANDOM.nextInt(allShops.size())));
     }
 }

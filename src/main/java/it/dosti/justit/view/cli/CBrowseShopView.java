@@ -14,7 +14,7 @@ public class CBrowseShopView extends BaseCliView{
         System.out.println("===== BROWSE SHOP =====");
         System.out.println("1. List all shops");
         System.out.println("2. Search shops");
-        System.out.println("3. I'm feeling lucky"); // TODO uno shop random
+        System.out.println("3. I'm feeling lucky");
     }
 
     public String askChoice() {
@@ -57,5 +57,13 @@ public class CBrowseShopView extends BaseCliView{
     public String askQueryShop() {
         System.out.print("Search shops: ");
         return scanner.nextLine();
+    }
+
+    public void showInvalidSelection(){
+        System.out.println("Invalid selection");
+    }
+
+    public  void noShopList(){
+        System.out.println("No shop in list");
     }
 }

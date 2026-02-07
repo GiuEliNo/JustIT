@@ -30,9 +30,13 @@ public class SearchListShopGCliController extends BaseCliController{
                 navigation.navigate(Screen.PAGE_SHOP_USER);
                 break;
             case "3":
-                this.randomShop();
-                // TODO navigation.navigate(Screen.PAGE_SHOP_USER);
-                break;
+                if(this.randomShop()){
+                    navigation.navigate(Screen.PAGE_SHOP_USER);
+                    break;
+                } else {
+                    navigation.navigate(Screen.SEARCH_LIST_SHOP);
+                    break;
+                }
             default:
                 navigation.navigate(Screen.SEARCH_LIST_SHOP);
                 break;
@@ -40,22 +44,29 @@ public class SearchListShopGCliController extends BaseCliController{
 
     }
 
-    private void randomShop() {
-        //TODO easter egg
-    }
-    //TODO controllare se shop devono essere bean
-    private void askShop(List<Shop> shops) {
-        Integer shopNumberSelected;
-
-        while (true) {
-            shopNumberSelected = browseShopView.askShopSelection();
-
-            if (shopNumberSelected >= 1 && shopNumberSelected <= shops.size()) {
-                break;
-            }
+    private boolean randomShop(){
+        if(this.allShop().isEmpty()) {
+            browseShopView.noShopList();
+            return false;
+        } else {
+            appController.randomShop();
+            return true;
         }
 
-        appController.pageSelected(shops.get(shopNumberSelected-1));
+    }
+
+    private void askShop(List<Shop> shops) {
+        Integer shopIdSelected;
+
+        do {
+            shopIdSelected = browseShopView.askShopSelection();
+            if (shopIdSelected < 1 || shopIdSelected > shops.size()) {
+                browseShopView.showInvalidSelection();
+            }
+        } while (shopIdSelected < 1 || shopIdSelected > shops.size());
+
+
+        appController.pageSelected(shops.get(shopIdSelected -1));
     }
 
     private List<Shop> searchShop() {

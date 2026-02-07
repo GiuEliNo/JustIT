@@ -12,20 +12,22 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class BookingPageUserGCliController extends BaseCliController {
+    private BookingController appController = new BookingController();
+    private CBookingPageUserView bookingView = new CBookingPageUserView();
 
     @Override
     public void initialize() throws NavigationException {
-        BookingController appController = new BookingController();
-        CBookingPageUserView bookingView = (CBookingPageUserView) view;
+        appController = new BookingController();
+        bookingView = (CBookingPageUserView) view;
 
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
 
-        LocalDate date = askValidDate(appController, bookingView, shopId);
+        LocalDate date = askValidDate(shopId);
         List<TimeSlot> availableSlots = appController.getAvailableSlots(shopId, date);
         bookingView.showAvailableSlots(date, availableSlots);
 
-        TimeSlot timeSlot = askValidTimeSlot(bookingView, availableSlots);
+        TimeSlot timeSlot = askValidTimeSlot(availableSlots);
 
         BookingBean bookingBean = new BookingBean();
         bookingBean.setShopId(shopId);
@@ -42,10 +44,11 @@ public class BookingPageUserGCliController extends BaseCliController {
         }
     }
 
-    private LocalDate askValidDate(BookingController appController, CBookingPageUserView bookingView, Integer shopId) {
-        LocalDate date;
+    private LocalDate askValidDate(Integer shopId) {
         while (true) {
             String dateInput = bookingView.askDate();
+            LocalDate date;
+
             try {
                 date = LocalDate.parse(dateInput);
             } catch (Exception ex) {
@@ -55,19 +58,16 @@ public class BookingPageUserGCliController extends BaseCliController {
 
             if (date.isBefore(LocalDate.now())) {
                 bookingView.showInvalidDate();
-                continue;
-            }
-
-            if (!appController.hasAvailableSlots(shopId, date)) {
+            } else if (!appController.hasAvailableSlots(shopId, date)) {
                 bookingView.showNoAvailableSlots(date);
-                continue;
+            } else {
+                return date;
             }
-
-            return date;
         }
     }
 
-    private TimeSlot askValidTimeSlot(CBookingPageUserView bookingView, List<TimeSlot> availableSlots) {
+
+    private TimeSlot askValidTimeSlot(List<TimeSlot> availableSlots) {
         while (true) {
             String input = bookingView.askTimeSlot();
             try {
