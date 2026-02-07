@@ -1,10 +1,10 @@
 package it.dosti.justit.view.cli;
 
 @SuppressWarnings("java:S106") // uso di System.out accettabile nella CLI
-public class CSignInClient  extends BaseCliView{
+public class CSignInTech extends BaseCliView {
     @Override
     public void render() {
-        System.out.println("===== SIGN IN CLIENT =====");
+        System.out.println("===== SIGN IN TECHNICIAN =====");
     }
 
     public String askUsername() {
@@ -27,25 +27,12 @@ public class CSignInClient  extends BaseCliView{
         return scanner.nextLine();
     }
 
-    public String askCountry() {
-        System.out.print("Country (Italy): ");
+    public String askShopName() {
+        System.out.print("Shop name: ");
         return scanner.nextLine();
     }
 
-    public String askCity() {
-        System.out.print("City (Rome): ");
-        return scanner.nextLine();
+    public void errorSignInTech() {
+        System.out.println("Error sign in tech try again");
     }
-
-    public String askStreetAddress() {
-        System.out.print("Street address (Via Giolitti 1): ");
-        return scanner.nextLine();
-    }
-
-    public void errorSignInUser() {
-        System.out.print("Error sign in user try again");
-    }
-
-
-
 }

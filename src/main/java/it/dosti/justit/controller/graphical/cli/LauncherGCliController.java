@@ -12,14 +12,15 @@ public class LauncherGCliController extends BaseCliController {
 
         String choice = launcherView.askChoice();
 
-        // TODO commentato, i valori screen sono da tratatrsi come semplici placeholder per ora
         switch (choice){
             case "1":
-                // navigation.navigate(Screen.USERPROFILE); per ora riporta alla stessa view
                 navigation.navigate(Screen.LOGIN);
                 break;
             case "2":
-                //TODO signin da fare
+                navigation.navigate(Screen.REGISTER_USER);
+                break;
+            case "3":
+                navigation.navigate(Screen.REGISTER_TECH);
                 break;
             default:
                 navigation.navigate(Screen.MAIN_USER);

@@ -55,6 +55,10 @@ public class CLINavigationService implements NavigationService {
                 return new CPageShopTechView();
             case BOOKINGS_LIST_TECH:
                 return new CBookingListTechView();
+            case REGISTER_USER:
+                return new CSignInClient();
+            case REGISTER_TECH:
+                return new CSignInTech();
             default:
                 return null;
         }
@@ -96,6 +100,10 @@ public class CLINavigationService implements NavigationService {
                 return new NotificationTechGCliController();
             case REVIEWS_LIST_TECH:
                 return new ReviewListTechGCliController();
+            case REGISTER_USER:
+                return new RegisterUserGCliController();
+            case REGISTER_TECH:
+                return new RegisterTechGCliController();
             default:
                 return null;
         }
