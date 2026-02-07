@@ -4,6 +4,7 @@ import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.DatabaseInitializationException;
 import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.notification.NotificationDbObserver;
+import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.io.IOException;
@@ -23,7 +24,9 @@ public abstract class BaseAppMode implements AppMode {
         this.db = ConnectionDB.getInstance();
         this.initDataDirectory();
         this.testingConnectToDb();
-        BookingStatusPublisher.getInstance().registerObserver(new NotificationDbObserver());
+        NotificationDbObserver notificationObserver = new NotificationDbObserver();
+        BookingStatusPublisher.getInstance().registerObserver(notificationObserver);
+        ReviewCreatedPublisher.getInstance().registerObserver(notificationObserver);
 
     }
 

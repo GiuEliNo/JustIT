@@ -7,8 +7,9 @@ public class Notification {
     private final String shopName;
     private final String username;
     private final Integer bookingId;
-    private final String oldStatus;
-    private final String newStatus;
+    private final Integer reviewId;
+    private final NotificationType type;
+    private final String bookingStatus;
     private final LocalDateTime createdAt;
     private boolean read;
 
@@ -17,8 +18,9 @@ public class Notification {
         this.shopName = builder.shopName;
         this.username = builder.username;
         this.bookingId = builder.bookingId;
-        this.oldStatus = builder.oldStatus;
-        this.newStatus = builder.newStatus;
+        this.reviewId = builder.reviewId;
+        this.type = builder.type;
+        this.bookingStatus = builder.bookingStatus;
         this.createdAt = builder.createdAt;
         this.read = builder.read;
     }
@@ -30,8 +32,9 @@ public class Notification {
         private String shopName;
         private String username;
         private Integer bookingId;
-        private String oldStatus;
-        private String newStatus;
+        private Integer reviewId;
+        private NotificationType type;
+        private String bookingStatus;
         private LocalDateTime createdAt;
         private boolean read;
 
@@ -54,13 +57,18 @@ public class Notification {
             return this;
         }
 
-        public Builder oldStatus(String oldStatus) {
-            this.oldStatus = oldStatus;
+        public Builder reviewId(Integer reviewId) {
+            this.reviewId = reviewId;
             return this;
         }
 
-        public Builder newStatus(String newStatus) {
-            this.newStatus = newStatus;
+        public Builder type(NotificationType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder bookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
             return this;
         }
 
@@ -88,16 +96,20 @@ public class Notification {
         return bookingId;
     }
 
+    public Integer getReviewId() {
+        return reviewId;
+    }
+
+    public NotificationType getType() {
+        return type;
+    }
+
     public String getUsername() {
         return username;
     }
 
-    public String getOldStatus() {
-        return oldStatus;
-    }
-
-    public String getNewStatus() {
-        return newStatus;
+    public String getBookingStatus() {
+        return bookingStatus;
     }
 
     public LocalDateTime getCreatedAt() {

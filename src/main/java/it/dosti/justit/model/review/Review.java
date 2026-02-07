@@ -1,6 +1,10 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.review;
+
+import it.dosti.justit.model.review.observer.ReviewCreatedChange;
+import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
 
 public class Review {
+    private Integer id;
     private String title;
     private Integer star;
     private String reviewText;
@@ -13,6 +17,19 @@ public class Review {
         this.reviewText = review;
         this.shop = shop;
         this.username = username;
+    }
+
+    public void notifyCreated() {
+        ReviewCreatedPublisher.getInstance()
+                .notifyCreated(new ReviewCreatedChange(username, shop, id));
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getShop() {

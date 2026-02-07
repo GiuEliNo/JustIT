@@ -57,8 +57,6 @@ public class NotificationController {
         bean.setShopName(notification.getShopName());
         bean.setUsername(notification.getUsername());
         bean.setBookingId(notification.getBookingId());
-        bean.setOldStatus(notification.getOldStatus());
-        bean.setNewStatus(notification.getNewStatus());
         bean.setCreatedAt(notification.getCreatedAt());
         bean.setRead(notification.isRead());
         bean.setNotificationMessage(notification.getMessage(SessionManager.getInstance().isClient()));

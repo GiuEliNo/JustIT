@@ -3,25 +3,26 @@ package it.dosti.justit.db.query;
 public class NotificationQuery {
     private NotificationQuery() {}
     public static final String INSERT_NOTIFICATION =
-            "INSERT INTO Notification(username, booking_id, old_status, new_status, created_time, read) VALUES (?,?,?,?,?,0)";
+            "INSERT INTO Notification(username, shop_id, booking_id, review_id, type, created_time, read) " +
+                    "VALUES (?,?,?,?,?,?,0)";
 
     public static final String SELECT_BY_USER =
-            "SELECT N.id, N.username, N.booking_id, N.old_status, N.new_status, " +
+            "SELECT N.id, N.username, N.booking_id, N.review_id, N.type, B.state AS booking_status, " +
                     "N.created_time, N.read, S.name AS shop_name " +
                     "FROM Notification N " +
-                    "JOIN Booking B ON N.booking_id = B.id " +
-                    "JOIN Shop S ON B.idShop = S.id " +
-                    "WHERE N.username = ? " +
+                    "JOIN Shop S ON N.shop_id = S.id " +
+                    "LEFT JOIN Booking B ON N.booking_id = B.id " +
+                    "WHERE N.username = ? AND N.type = 'BOOKING_STATUS' " +
                     "ORDER BY N.created_time DESC";
 
 
     public static final String SELECT_UNREAD_BY_USER =
-            "SELECT N.id, N.username, N.booking_id, N.old_status, N.new_status, " +
+            "SELECT N.id, N.username, N.booking_id, N.review_id, N.type, B.state AS booking_status, " +
                     "N.created_time, N.read, S.name AS shop_name " +
                     "FROM Notification N " +
-                    "JOIN Booking B ON N.booking_id = B.id " +
-                    "JOIN Shop S ON B.idShop = S.id " +
-                    "WHERE N.username = ? AND N.read = 0 " +
+                    "JOIN Shop S ON N.shop_id = S.id " +
+                    "LEFT JOIN Booking B ON N.booking_id = B.id " +
+                    "WHERE N.username = ? AND N.read = 0 AND N.type = 'BOOKING_STATUS' " +
                     "ORDER BY N.created_time DESC";
 
 
@@ -29,11 +30,11 @@ public class NotificationQuery {
             "UPDATE Notification SET read = 1 WHERE id = ?";
 
     public static final String SELECT_BY_SHOP =
-            "SELECT N.id, N.username, N.booking_id, N.old_status, N.new_status, " +
+            "SELECT N.id, N.username, N.booking_id, N.review_id, N.type, B.state AS booking_status, " +
                     "N.created_time, N.read, S.name AS shop_name " +
                     "FROM Notification N " +
-                    "JOIN Booking B ON N.booking_id = B.id " +
-                    "JOIN Shop S ON B.idShop = S.id " +
-                    "WHERE S.id = ? " +
+                    "JOIN Shop S ON N.shop_id = S.id " +
+                    "LEFT JOIN Booking B ON N.booking_id = B.id " +
+                    "WHERE N.shop_id = ? " +
                     "ORDER BY N.created_time DESC";
 }

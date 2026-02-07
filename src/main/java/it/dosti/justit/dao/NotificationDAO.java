@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationDAO {
-    void insertNotification(String username, Integer bookingId, String oldStatus, String newStatus, LocalDateTime createdTime);
+    void insertBookingNotification(String username, Integer shopId, Integer bookingId, LocalDateTime createdTime);
+    void insertReviewNotification(String username, Integer shopId, Integer reviewId, LocalDateTime createdTime);
 
     List<Notification> getNotificationsByUser(String username);
 

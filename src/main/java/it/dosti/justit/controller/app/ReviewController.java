@@ -3,7 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.dao.ReviewDAO;
 import it.dosti.justit.dao.ReviewDAOJDBC;
-import it.dosti.justit.model.*;
+import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -22,7 +22,13 @@ public class ReviewController {
     public void addReview(ReviewBean reviewBean) {
 
         reviewBean.setUsername(username);
-        reviewDao.addReviewToShop(new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), SessionManager.getInstance().getCurrentShop().getId(), reviewBean.getUsername()));
+        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
+        Review review = new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), shopId, reviewBean.getUsername());
+        Integer reviewId = reviewDao.addReviewToShop(review);
+        if (reviewId != null) {
+            review.setId(reviewId);
+            review.notifyCreated();
+        }
     }
 
     public List<ReviewBean> getReviews() {

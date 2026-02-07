@@ -7,8 +7,6 @@ public class NotificationBean {
     private String shopName;
     private String username;
     private Integer bookingId;
-    private String oldStatus;
-    private String newStatus;
     private LocalDateTime createdAt;
     private boolean read;
 
@@ -25,14 +23,6 @@ public class NotificationBean {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getOldStatus() {
-        return oldStatus;
-    }
-
-    public String getNewStatus() {
-        return newStatus;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -53,14 +43,6 @@ public class NotificationBean {
 
     public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
-    }
-
-    public void setOldStatus(String oldStatus) {
-        this.oldStatus = oldStatus;
-    }
-
-    public void setNewStatus(String newStatus) {
-        this.newStatus = newStatus;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

@@ -11,7 +11,7 @@ public class CMessageTechView extends BaseCliView{
 
     public void renderNotifications(NotificationBean notificationBean) {
         System.out.println("Notification #: " + notificationBean.getId());
-        System.out.println("New status: " + notificationBean.getNewStatus());
+        System.out.println("New status: " + notificationBean.getCreatedAt());
         System.out.println("Time: " + notificationBean.getCreatedAt());
         System.out.println("------------------------------------------------");
     }

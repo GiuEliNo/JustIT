@@ -2,13 +2,14 @@ package it.dosti.justit.dao;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.ReviewQuery;
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +42,11 @@ public class ReviewDAOJDBC implements ReviewDAO {
         return reviews;
     }
 
-    public void addReviewToShop(Review review) {
+    public Integer addReviewToShop(Review review) {
         String sql = ReviewQuery.INSERT_REVIEW;
 
         try(Connection conn = ConnectionDB.getInstance().connectDB();
-            PreparedStatement pstmt = conn.prepareStatement(sql))
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
 
             pstmt.setString(1, review.getTitle());
@@ -56,9 +57,14 @@ public class ReviewDAOJDBC implements ReviewDAO {
 
             pstmt.executeUpdate();
 
-            } catch (SQLException e) {
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
+        return null;
     }
 
     @Override
