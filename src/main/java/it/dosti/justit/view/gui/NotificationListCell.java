@@ -22,7 +22,7 @@ public class NotificationListCell extends ListCell<NotificationBean> {
             return;
         }
 
-        Label messageLabel = new Label(this.getMessageLabel(item));
+        Label messageLabel = new Label(item.getNotificationMessage());
         Label timeLabel = new Label(item.getCreatedAt().format(DATE_FORMAT));
         Label statusLabel = new Label(item.isRead() ? "Read" : "Unread");
 
@@ -31,9 +31,5 @@ public class NotificationListCell extends ListCell<NotificationBean> {
         HBox.setHgrow(textBox, Priority.ALWAYS);
 
         setGraphic(row);
-    }
-
-    private String getMessageLabel(NotificationBean item) {
-        return "Booking #" + item.getBookingId() + ": status changed from " + item.getOldStatus() + " to " + item.getNewStatus();
     }
 }
