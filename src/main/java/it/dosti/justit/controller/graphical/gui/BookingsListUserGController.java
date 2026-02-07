@@ -4,11 +4,10 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.view.gui.BookingListCell;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 public class BookingsListUserGController extends BaseGController {
-
-
 
     private BookingController bookingController;
 

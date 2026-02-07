@@ -6,10 +6,7 @@ import it.dosti.justit.model.booking.BookingStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -46,6 +43,15 @@ public class BookingsListTechGController extends BaseGController{
     @FXML
     private Label lblStatus;
 
+    @FXML
+    private Button approveButton;
+
+    @FXML
+    private Button rejectButton;
+
+    @FXML
+    private Button completedButton;
+
 
     private final BookingController appController = new BookingController();
 
@@ -76,6 +82,25 @@ public class BookingsListTechGController extends BaseGController{
         lblTime.setText("Time Slot: " + booking.getTimeSlot());
         lblStatus.setText("Status: " + booking.getStatus());
         descriptionArea.setText(booking.getDescription());
+
+        BookingStatus status = booking.getStatus();
+        switch (status){
+            case PENDING:
+                approveButton.setVisible(true);
+                rejectButton.setVisible(true);
+                completedButton.setVisible(false);
+                break;
+            case CONFIRMED:
+                approveButton.setVisible(false);
+                rejectButton.setVisible(false);
+                completedButton.setVisible(true);
+                break;
+            case COMPLETED, REJECTED:
+                approveButton.setVisible(false);
+                rejectButton.setVisible(false);
+                completedButton.setVisible(false);
+                break;
+        }
 
         masterDetailPane.setShowDetailNode(true);
     }
