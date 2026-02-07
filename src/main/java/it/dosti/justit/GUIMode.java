@@ -11,6 +11,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class GUIMode extends BaseAppMode implements AppMode{
+    protected GUIMode(boolean isDemoMode) {
+        super(isDemoMode);
+    }
+
     @Override
     public void start(String[] args) {
         System.setProperty("javafx.platform", "desktop");

@@ -7,6 +7,10 @@ import it.dosti.justit.ui.navigation.cli.CLINavigationService;
 import it.dosti.justit.utils.JustItLogger;
 
 public class CLIMode extends BaseAppMode {
+    protected CLIMode(boolean isDemoMode) {
+        super(isDemoMode);
+    }
+
     @Override
     public void start(String[] args) throws NavigationException {
 
