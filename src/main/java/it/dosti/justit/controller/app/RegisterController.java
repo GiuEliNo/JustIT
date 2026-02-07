@@ -11,6 +11,8 @@ import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JustItLogger;
 
+import java.util.Objects;
+
 public class RegisterController {
 
 
@@ -18,7 +20,6 @@ public class RegisterController {
     public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException {
 
         ClientUserDAO dao = new ClientUserDAOJDBC();
-
         CoordinatesDAO coordDAO= new CoordinatesDAOAPI();
         Coordinates coord = coordDAO.getCoordinates(registerBean.getAddress()).join();
         if(coord!=null) {
@@ -92,5 +93,18 @@ public class RegisterController {
 
         return dao.registerShop(shop);
     }
+
+    public boolean isUsernameAvailable(RegisterBean registerBean) {
+        UserDaoFactory factory = new UserDaoFactory();
+        UserDAO dao;
+        if(Objects.equals(registerBean.getRole(), "CLIENT")){
+            dao=factory.createUserDAO(true);
+        }
+        else{
+            dao=factory.createUserDAO(false);
+        }
+        return dao.isUsernameAvailable(registerBean.getUsername());
+    }
+
 
 }
