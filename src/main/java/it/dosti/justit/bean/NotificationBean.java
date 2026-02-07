@@ -6,7 +6,6 @@ public class NotificationBean {
     private Integer id;
     private String shopName;
     private String username;
-    private Integer bookingId;
     private LocalDateTime createdAt;
     private boolean read;
 
@@ -15,10 +14,6 @@ public class NotificationBean {
 
     public Integer getId() {
         return id;
-    }
-
-    public Integer getBookingId() {
-        return bookingId;
     }
 
     public String getUsername() {
@@ -39,10 +34,6 @@ public class NotificationBean {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setBookingId(Integer bookingId) {
-        this.bookingId = bookingId;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

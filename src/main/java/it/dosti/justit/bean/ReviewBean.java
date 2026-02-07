@@ -4,7 +4,6 @@ public class ReviewBean {
     private String title;
     private String review;
     private Integer stars;
-    private Integer shopID;
     private String username;
 
     public String getTitle() {
@@ -29,14 +28,6 @@ public class ReviewBean {
 
     public void setStars(int stars) {
         this.stars = stars;
-    }
-
-    public void setShopID(int shopID) {
-        this.shopID = shopID;
-    }
-
-    public Integer getShopID(){
-        return this.shopID;
     }
 
     public void setUsername(String username) {

@@ -15,8 +15,6 @@ import java.util.Objects;
 
 public class RegisterController {
 
-
-
     public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException {
 
         ClientUserDAO dao = new ClientUserDAOJDBC();

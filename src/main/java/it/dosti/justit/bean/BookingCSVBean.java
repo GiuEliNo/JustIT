@@ -36,47 +36,23 @@ public class BookingCSVBean {
                 this.bookingId = bookingId;
         }
 
-        public Integer getBookingId() {
-                return bookingId;
-        }
-
         public void setDate(LocalDate date) {
                 this.date = date;
-        }
-
-        public LocalDate getDate() {
-                return date;
         }
 
         public void setDescription(String description) {
                 this.description = description;
         }
 
-        public String getDescription() {
-                return description;
-        }
-
         public void setStatus(String status) {
                 this.status = status;
-        }
-
-        public String getStatus() {
-                return status;
         }
 
         public void setTimeSlot(String timeSlot) {
                 this.timeSlot = timeSlot;
         }
 
-        public String getTimeSlot() {
-                return timeSlot;
-        }
-
         public void setUsername(String username) {
                 this.username = username;
-        }
-
-        public String getUsername() {
-                return username;
         }
 }

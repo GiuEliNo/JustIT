@@ -21,7 +21,11 @@ public class LoginGCliController extends BaseCliController {
         String password = loginView.askPassword();
         String role = loginView.askRole();
 
-        LoginBean loginBean = new LoginBean(username, password, role);
+        LoginBean loginBean = new LoginBean();
+
+        loginBean.setUsername(username);
+        loginBean.setPassword(password);
+        loginBean.setRoleTypeStringed(role);
 
         try {
             if (appController.checkLogin(loginBean)) {

@@ -32,4 +32,5 @@ module it.dosti.justit {
     opens it.dosti.justit.model.booking.observer to javafx.fxml;
     exports it.dosti.justit.model.user;
     exports it.dosti.justit.model.review;
+    exports it.dosti.justit.view.gui;
 }

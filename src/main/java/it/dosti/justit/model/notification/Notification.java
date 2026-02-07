@@ -7,7 +7,6 @@ public class Notification {
     private final String shopName;
     private final String username;
     private final Integer bookingId;
-    private final Integer reviewId;
     private final NotificationType type;
     private final String bookingStatus;
     private final LocalDateTime createdAt;
@@ -96,10 +95,6 @@ public class Notification {
         return bookingId;
     }
 
-    public Integer getReviewId() {
-        return reviewId;
-    }
-
     public NotificationType getType() {
         return type;
     }
@@ -118,10 +113,6 @@ public class Notification {
 
     public boolean isRead() {
         return read;
-    }
-
-    public void markRead() {
-        this.read = true;
     }
 
     public String getShopName() {

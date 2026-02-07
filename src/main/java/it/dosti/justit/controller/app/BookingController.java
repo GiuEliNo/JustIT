@@ -53,64 +53,17 @@ public class BookingController {
 
     public List<BookingBean> getBookingsByShop() {
         List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
-        List<BookingBean> bookingBeans = new ArrayList<>();
-
-
-        for (Booking b : bookings) {
-            BookingBean bean = new BookingBean();
-            bean.setBookingID(b.getBookingId());
-            bean.setUsername(String.valueOf(b.getUsername()));
-            bean.setDate(b.getDate());
-            bean.setTimeSlot(b.getTimeSlot());
-            bean.setDescription(b.getDescription());
-            bean.setStatus(b.getStatus());
-            bean.setHomeAssistance(b.getHomeAssistance());
-
-            bean.setUserAddress(b.getHomeAssistance() ? this.addressUserBooking(b.getUsername()) : null);
-
-            bookingBeans.add(bean);
-        }
-
-        return bookingBeans;
+        return toBeans(bookings);
     }
 
     public List<BookingBean> getBookingsByUser() {
         List<Booking> bookings = dao.getBookingsByUser(SessionManager.getInstance().getLoggedUser().getUsername());
-        List<BookingBean> bookingBeans = new ArrayList<>();
-
-        for(Booking b: bookings){
-            BookingBean bean = new BookingBean();
-            bean.setShopId(b.getShopId());
-            bean.setBookingID(b.getBookingId());
-            bean.setUsername(b.getUsername());
-            bean.setDate(b.getDate());
-            bean.setTimeSlot(b.getTimeSlot());
-            bean.setDescription(b.getDescription());
-            bean.setStatus(b.getStatus());
-            bean.setShopName(b.getShopName());
-            bean.setHomeAssistance(b.getHomeAssistance());
-
-            bookingBeans.add(bean);
-        }
-
-        return bookingBeans;
+        return toBeans(bookings);
     }
 
     public BookingBean getBookingById(Integer bookingId) {
         Booking booking = dao.getBookingById(bookingId);
-        BookingBean bean = new BookingBean();
-
-        bean.setShopId(booking.getShopId());
-        bean.setBookingID(booking.getBookingId());
-        bean.setUsername(booking.getUsername());
-        bean.setDate(booking.getDate());
-        bean.setTimeSlot(booking.getTimeSlot());
-        bean.setDescription(booking.getDescription());
-        bean.setStatus(booking.getStatus());
-        bean.setShopName(booking.getShopName());
-        bean.setHomeAssistance(booking.getHomeAssistance());
-
-        return bean;
+        return toBean(booking);
     }
 
     public void approveBooking(BookingBean bookingBean) {
@@ -179,5 +132,31 @@ public class BookingController {
 
         }
         daoFile.exportToFile(csvBeanList, file);
+    }
+
+
+    private List<BookingBean> toBeans(List<Booking> bookings) {
+        List<BookingBean> beans = new ArrayList<>();
+        for (Booking b : bookings) {
+            beans.add(toBean(b));
+        }
+        return beans;
+    }
+
+    private BookingBean toBean(Booking booking) {
+        BookingBean bean = new BookingBean();
+
+        bean.setShopId(booking.getShopId());
+        bean.setBookingID(booking.getBookingId());
+        bean.setUsername(booking.getUsername());
+        bean.setDate(booking.getDate());
+        bean.setTimeSlot(booking.getTimeSlot());
+        bean.setDescription(booking.getDescription());
+        bean.setStatus(booking.getStatus());
+        bean.setShopName(booking.getShopName());
+        bean.setHomeAssistance(booking.getHomeAssistance());
+        bean.setUserAddress(booking.getHomeAssistance() ? this.addressUserBooking(booking.getUsername()) : null);
+
+        return bean;
     }
 }

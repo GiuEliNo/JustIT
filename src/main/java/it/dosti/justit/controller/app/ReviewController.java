@@ -25,6 +25,7 @@ public class ReviewController {
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
         Review review = new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), shopId, reviewBean.getUsername());
         Integer reviewId = reviewDao.addReviewToShop(review);
+
         if (reviewId != null) {
             review.setId(reviewId);
             review.notifyCreated();

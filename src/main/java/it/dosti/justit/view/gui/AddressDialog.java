@@ -1,4 +1,4 @@
-package it.dosti.justit.utils;
+package it.dosti.justit.view.gui;
 
 public class AddressDialog {
     String street;

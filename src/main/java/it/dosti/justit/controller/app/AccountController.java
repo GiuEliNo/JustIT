@@ -11,14 +11,26 @@ import it.dosti.justit.model.user.User;
 
 public class AccountController {
 
-
-
     public UserBean getUserBean() {
         User user = SessionManager.getInstance().getLoggedUser();
         if(user instanceof ClientUser) {
-            return new UserBean(user.getName(), user.getEmail(), user.getUsername(), ((ClientUser) user).getAddress());
+
+            UserBean userBean = new UserBean();
+            userBean.setName(user.getName());
+            userBean.setEmail(user.getEmail());
+            userBean.setUsername(user.getUsername());
+            userBean.setAddress(((ClientUser) user).getAddress());
+
+            return userBean;
+        } else {
+
+            UserBean techBean = new UserBean();
+            techBean.setName(user.getName());
+            techBean.setEmail(user.getEmail());
+            techBean.setUsername(user.getUsername());
+
+            return techBean;
         }
-        return new UserBean(user.getName(), user.getEmail(), user.getUsername());
     }
 
     public boolean editName(UserBean userBean) throws UserNotFoundException, UpdateOnDBException, ShopNotFoundException {

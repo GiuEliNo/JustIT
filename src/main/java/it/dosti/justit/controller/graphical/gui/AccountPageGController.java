@@ -6,7 +6,7 @@ import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
-import it.dosti.justit.utils.AddressDialog;
+import it.dosti.justit.view.gui.AddressDialog;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogChangePassword;

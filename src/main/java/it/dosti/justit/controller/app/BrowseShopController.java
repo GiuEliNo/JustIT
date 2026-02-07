@@ -18,15 +18,10 @@ import java.util.stream.Collectors;
 public class BrowseShopController {
 
     private static final Random RANDOM = new Random();
-    private final List<Shop> shops;
-
-    public BrowseShopController() {
-        ShopDAO dao = new ShopDAOJDBC();
-        this.shops = dao.retrieveAllShops();
-    }
+    private final ShopDAO dao = new ShopDAOJDBC();
 
     public List<Shop> getAllShops() {
-        return new ArrayList<>(shops);
+        return dao.retrieveAllShops();
     }
 
     public void pageSelected(Shop selectedItem) {
@@ -37,35 +32,39 @@ public class BrowseShopController {
 
     public List<Shop> search(SearchBean bean) {
         String query = bean.getSearchText();
-        List<Shop> filteredShops;
+        List<Shop> shops = dao.retrieveAllShops();
+
         if (query == null || query.isEmpty()) {
-            filteredShops = new ArrayList<>(shops);
-        } else {
-            filteredShops = shops.stream()
-                    .filter(s -> s.getName().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
+            return shops;
         }
 
-        return filteredShops;
+        return shops.stream()
+                .filter(s -> s.getName().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     public List<Shop> filterByRadius(Float radius) {
-        List<Shop> filteredShops = new ArrayList<>();
+        List<Shop> shops = dao.retrieveAllShops();
         ClientUser clientUser = (ClientUser) SessionManager.getInstance().getLoggedUser();
+
+        List<Shop> filtered = new ArrayList<>();
         for (Shop shop : shops) {
-            if (CalculateCoordinateRangeDistance.distFrom((float) shop.getCoordinates().getLatitude(), (float) shop.getCoordinates().getLongitude(), (float) clientUser.getCoordinates().getLatitude(), (float) clientUser.getCoordinates().getLongitude()) < radius ){
-                filteredShops.add(shop);
+            if (CalculateCoordinateRangeDistance.distFrom(
+                    (float) shop.getCoordinates().getLatitude(),
+                    (float) shop.getCoordinates().getLongitude(),
+                    (float) clientUser.getCoordinates().getLatitude(),
+                    (float) clientUser.getCoordinates().getLongitude()
+            ) < radius) {
+                filtered.add(shop);
             }
         }
-        return filteredShops;
+        return filtered;
     }
 
-
     public void randomShop() {
-        List<Shop> allShops = getAllShops();
-        if (allShops.isEmpty()) {
-            return;
+        List<Shop> shops = dao.retrieveAllShops();
+        if (!shops.isEmpty()) {
+            pageSelected(shops.get(RANDOM.nextInt(shops.size())));
         }
-        this.pageSelected(allShops.get(RANDOM.nextInt(allShops.size())));
     }
 }

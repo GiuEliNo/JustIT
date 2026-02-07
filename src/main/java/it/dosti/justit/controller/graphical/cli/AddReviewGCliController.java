@@ -82,7 +82,6 @@ public class AddReviewGCliController extends BaseCliController {
             return;
         }
 
-        reviewBean.setShopID(shopId);
         reviewBean.setTitle(addReviewView.askTitle());
         reviewBean.setReview(addReviewView.askDescription());
 

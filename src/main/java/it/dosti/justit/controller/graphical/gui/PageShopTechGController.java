@@ -6,7 +6,7 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
-import it.dosti.justit.utils.AddressDialog;
+import it.dosti.justit.view.gui.AddressDialog;
 import it.dosti.justit.view.gui.DialogEditUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

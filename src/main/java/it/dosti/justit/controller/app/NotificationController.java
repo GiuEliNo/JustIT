@@ -13,27 +13,25 @@ public class NotificationController {
 
     private final NotificationDAO dao = new NotificationDAOJDBC();
     private final String username;
-    private List<Notification> notifications;
 
     public NotificationController() {
-        this.username = SessionManager.getInstance()
-                .getLoggedUser()
-                .getUsername();
+        this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
     public List<NotificationBean> getNotification() {
+        List<Notification> notifications;
+
         if (SessionManager.getInstance().isClient()) {
             notifications = dao.getNotificationsByUser(username);
         } else {
-            notifications = dao.getNotificationsByShopId(
-                    SessionManager.getInstance().getCurrentShop().getId()
-            );
+            notifications = dao.getNotificationsByShopId(SessionManager.getInstance().getCurrentShop().getId());
         }
+
         return toBeans(notifications);
     }
 
     public List<NotificationBean> getUnreadNotifications() {
-        notifications = dao.getUnreadNotificationsByUser(username);
+        List<Notification> notifications = dao.getUnreadNotificationsByUser(username);
         return toBeans(notifications);
     }
 
@@ -55,7 +53,6 @@ public class NotificationController {
         bean.setId(notification.getId());
         bean.setShopName(notification.getShopName());
         bean.setUsername(notification.getUsername());
-        bean.setBookingId(notification.getBookingId());
         bean.setCreatedAt(notification.getCreatedAt());
         bean.setRead(notification.isRead());
         bean.setNotificationMessage(notification.getMessage(SessionManager.getInstance().isClient()));

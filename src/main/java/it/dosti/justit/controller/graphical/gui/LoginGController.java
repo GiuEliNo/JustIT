@@ -37,7 +37,11 @@ public class LoginGController extends BaseGController {
     private void onLogin() {
 
         RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
-        LoginBean loginBean = new LoginBean(user.getText(), password.getText(), roleType);
+        LoginBean loginBean = new LoginBean();
+
+        loginBean.setUsername(user.getText());
+        loginBean.setPassword(password.getText());
+        loginBean.setRoleType(roleType);
 
         try {
             if (appController.checkLogin(loginBean)) {
