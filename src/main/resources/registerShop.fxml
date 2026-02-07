@@ -44,16 +44,16 @@
             </VBox>
             <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                 <Label styleClass="field-label" text="STREET ADDRESS" />
-                <TextField fx:id="addressStreetField" promptText="Via Roma 10" />
+                <TextField fx:id="addressStreetField" promptText="Via Roma 1" />
             </VBox>
 
             <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                 <Label styleClass="field-label" text="CITY" />
-                <TextField fx:id="addressCityField" promptText="Milan" />
+                <TextField fx:id="addressCityField" promptText="Roma" />
             </VBox>
             <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <Label styleClass="field-label" text="COUNTRY" />
-                <TextField fx:id="addressCountryField" promptText="Italy" />
+                <TextField fx:id="addressCountryField" promptText="Italia" />
             </VBox>
 
             <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="2">

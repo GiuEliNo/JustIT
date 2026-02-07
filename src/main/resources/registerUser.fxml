@@ -59,11 +59,11 @@
         <HBox spacing="15.0">
             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                 <Label styleClass="field-label" text="CITY" />
-                <TextField fx:id="cityField" promptText="Milan" />
+                <TextField fx:id="cityField" promptText="Roma" />
             </VBox>
             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                 <Label styleClass="field-label" text="COUNTRY" />
-                <TextField fx:id="countryField" promptText="Italy" />
+                <TextField fx:id="countryField" promptText="Italia" />
             </VBox>
         </HBox>
 

@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.model.user.ClientUser;
@@ -20,34 +21,47 @@ public class BrowseShopController {
     private static final Random RANDOM = new Random();
     private final ShopDAO dao = new ShopDAOJDBC();
 
-    public List<Shop> getAllShops() {
-        return dao.retrieveAllShops();
+    public List<ShopBean> getAllShops() {
+        return toBeans(dao.retrieveAllShops());
     }
 
-    public void pageSelected(Shop selectedItem) {
-        if (selectedItem != null) {
+    public void pageSelected(ShopBean bean) {
+        if (bean != null) {
+            Shop selectedItem = new Shop.Builder(bean.getName())
+                    .id(bean.getId())
+                    .address(bean.getAddress())
+                    .phone(bean.getPhone())
+                    .email(bean.getEmail())
+                    .description(bean.getDescription())
+                    .image(bean.getImage())
+                    .openingHours(bean.getOpeningHours())
+                    .homeAssistance(bean.isHomeAssistance())
+                    .coordinates(bean.getCoordinates())
+                    .build();
+
             SessionManager.getInstance().setCurrentShop(selectedItem);
         }
     }
 
-    public List<Shop> search(SearchBean bean) {
+    public List<ShopBean> search(SearchBean bean) {
         String query = bean.getSearchText();
         List<Shop> shops = dao.retrieveAllShops();
 
         if (query == null || query.isEmpty()) {
-            return shops;
+            return toBeans(shops);
         }
 
         return shops.stream()
                 .filter(s -> s.getName().toLowerCase().contains(query.toLowerCase()))
+                .map(this::toBean)
                 .collect(Collectors.toList());
     }
 
-    public List<Shop> filterByRadius(Float radius) {
+    public List<ShopBean> filterByRadius(Float radius) {
         List<Shop> shops = dao.retrieveAllShops();
         ClientUser clientUser = (ClientUser) SessionManager.getInstance().getLoggedUser();
 
-        List<Shop> filtered = new ArrayList<>();
+        List<ShopBean> filtered = new ArrayList<>();
         for (Shop shop : shops) {
             if (CalculateCoordinateRangeDistance.distFrom(
                     (float) shop.getCoordinates().getLatitude(),
@@ -55,16 +69,39 @@ public class BrowseShopController {
                     (float) clientUser.getCoordinates().getLatitude(),
                     (float) clientUser.getCoordinates().getLongitude()
             ) < radius) {
-                filtered.add(shop);
+                filtered.add(toBean(shop));
             }
         }
         return filtered;
     }
 
     public void randomShop() {
-        List<Shop> shops = dao.retrieveAllShops();
+        List<ShopBean> shops = getAllShops();
         if (!shops.isEmpty()) {
             pageSelected(shops.get(RANDOM.nextInt(shops.size())));
         }
+    }
+
+    private List<ShopBean> toBeans(List<Shop> shops) {
+        List<ShopBean> beans = new ArrayList<>();
+        for (Shop shop : shops) {
+            beans.add(toBean(shop));
+        }
+        return beans;
+    }
+
+    private ShopBean toBean(Shop shop) {
+        ShopBean bean = new ShopBean();
+        bean.setId(shop.getId());
+        bean.setName(shop.getName());
+        bean.setAddress(shop.getAddress());
+        bean.setPhone(shop.getPhone());
+        bean.setEmail(shop.getEmail());
+        bean.setDescription(shop.getDescription());
+        bean.setImage(shop.getImage());
+        bean.setOpeningHours(shop.getOpeningHours());
+        bean.setHomeAssistance(shop.isHomeAssistance());
+        bean.setCoordinates(shop.getCoordinates());
+        return bean;
     }
 }

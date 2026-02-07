@@ -14,7 +14,7 @@
         <Insets bottom="40" left="40" right="40" top="40" />
     </padding>
 
-    <Label styleClass="page-title" text="Il mio Account" />
+    <Label styleClass="page-title" text="My Account" />
 
     <GridPane fx:id="gridPaneAccount" hgap="20" styleClass="card" vgap="25">
         <columnConstraints>

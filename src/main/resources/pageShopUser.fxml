@@ -29,11 +29,11 @@
             </padding>
 
             <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-               <Label fx:id="shopName" styleClass="page-title" text="Nome Shop" />
-               <Label fx:id="shopAddress" styleClass="small-label" text="Indirizzo Shop, Città" />
+               <Label fx:id="shopName" styleClass="page-title" text="Shop Name" />
+               <Label fx:id="shopAddress" styleClass="small-label" text="Shop Address, City" />
             </VBox>
 
-            <Button fx:id="buttonBooking" onAction="#onBookingClicked" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="PRENOTA ORA" />
+            <Button fx:id="buttonBooking" onAction="#onBookingClicked" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="BOOK NOW" />
          </HBox>
 
          <GridPane hgap="30.0" styleClass="card" vgap="20.0">
@@ -52,15 +52,15 @@
                </StackPane>
 
                <HBox fx:id="homeAssistanceBox" alignment="CENTER_LEFT">
-                  <Label fx:id="homeAssistanceLabel" styleClass="badge-success" text="✔ Assistenza a Domicilio Disponibile" />
+                  <Label fx:id="homeAssistanceLabel" styleClass="badge-success" text="✔ Home Assistance Available" />
                </HBox>
             </VBox>
 
             <VBox spacing="20.0" GridPane.columnIndex="1">
 
                <VBox spacing="5.0">
-                  <Label styleClass="field-label" text="DESCRIZIONE" />
-                  <Label fx:id="shopDescription" styleClass="data-label" text="Descrizione..." wrapText="true" VBox.vgrow="ALWAYS" />
+                  <Label styleClass="field-label" text="DESCRIPTION" />
+                  <Label fx:id="shopDescription" styleClass="data-label" text="Description..." wrapText="true" VBox.vgrow="ALWAYS" />
                </VBox>
 
                <Region style="-fx-border-color: #eeeeee; -fx-border-width: 1 0 0 0;" />
@@ -76,13 +76,13 @@
                   </rowConstraints>
 
                   <VBox spacing="5.0" GridPane.columnIndex="0">
-                     <Label styleClass="field-label" text="CONTATTI" />
+                     <Label styleClass="field-label" text="CONTACTS" />
                      <Label fx:id="shopPhone" styleClass="data-label" text="+39 123 456 7890" />
                      <Label fx:id="shopEmail" styleClass="data-label" text="info@shop.it" />
                   </VBox>
 
                   <VBox spacing="5.0" GridPane.columnIndex="1">
-                     <Label styleClass="field-label" text="ORARI DI APERTURA" />
+                     <Label styleClass="field-label" text="OPENING HOURS" />
                      <Label fx:id="openingHours" styleClass="data-label" text="09:00 - 18:00" />
                   </VBox>
                </GridPane>
@@ -94,7 +94,7 @@
                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
             </padding>
 
-            <Label styleClass="field-label" text="DOVE TROVARCI" />
+            <Label styleClass="field-label" text="FIND US" />
 
             <StackPane fx:id="mapContainer" prefHeight="250.0" styleClass="map-wrapper" />
 
@@ -104,7 +104,7 @@
                </VBox.margin>
             </Region>
 
-            <Label styleClass="field-label" text="DICONO DI NOI" />
+            <Label styleClass="field-label" text="REVIEWS" />
 
             <fx:include source="reviewsBox.fxml" />
          </VBox>
