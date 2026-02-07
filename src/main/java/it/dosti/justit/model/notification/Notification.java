@@ -118,6 +118,6 @@ public class Notification {
 
 
     public String getMessage() {
-        return "Booking #" + bookingId + ": status changed from " + oldStatus + " to " + newStatus;
+        return NotificationMessageFactory.build(this);
     }
 }

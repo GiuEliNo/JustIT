@@ -3,6 +3,7 @@ package it.dosti.justit.bean;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.notification.NotificationMessageFactory;
 
 import java.time.LocalDate;
 
