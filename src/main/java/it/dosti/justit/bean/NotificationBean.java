@@ -12,6 +12,8 @@ public class NotificationBean {
     private LocalDateTime createdAt;
     private boolean read;
 
+    private String notificationMessage;
+
 
     public Integer getId() {
         return id;
@@ -80,5 +82,12 @@ public class NotificationBean {
 
     public String getShopName() {
         return shopName;
+    }
+
+    public String getNotificationMessage() {
+        return notificationMessage;
+    }
+    public void setNotificationMessage(String notificationMessage) {
+        this.notificationMessage = notificationMessage;
     }
 }
