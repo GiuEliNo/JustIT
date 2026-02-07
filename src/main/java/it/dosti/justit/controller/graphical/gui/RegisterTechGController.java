@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
@@ -39,7 +40,7 @@ public class RegisterTechGController extends BaseGController{
     private Button backButton;
 
     @FXML
-    void backButtonPressed(){
+    void backButtonPressed() throws NavigationException {
         navigation.navigate(Screen.LAUNCHER);
     }
 
@@ -64,7 +65,7 @@ public class RegisterTechGController extends BaseGController{
             } else {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException| ShopNotFoundException e){
+        }catch(RegisterOnDbException| ShopNotFoundException | NavigationException e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
@@ -72,7 +73,7 @@ public class RegisterTechGController extends BaseGController{
 
 
     @FXML
-    void onSignShopButtonClicked(){
+    void onSignShopButtonClicked() throws NavigationException {
         navigation.navigate(Screen.REGISTER_SHOP);
     }
 

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.BrowseShopController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBrowseShopView;
@@ -13,7 +14,7 @@ public class SearchListShopGCliController extends BaseCliController{
     private CBrowseShopView browseShopView;
 
     @Override
-    public void initialize() {
+    public void initialize() throws NavigationException {
         this.appController = new BrowseShopController();
         this.browseShopView = (CBrowseShopView) view;
 

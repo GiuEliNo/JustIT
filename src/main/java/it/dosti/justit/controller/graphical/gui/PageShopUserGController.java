@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.utils.CustomMapLayer;
 import it.dosti.justit.ui.navigation.Screen;
@@ -110,7 +111,7 @@ public class PageShopUserGController extends BaseGController {
     }
 
     @FXML
-    public void onBookingClicked() {
+    public void onBookingClicked() throws NavigationException {
         navigation.navigate(Screen.BOOKING_PAGE_USER);
     }
 }

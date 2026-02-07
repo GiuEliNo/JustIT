@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromDBException;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
@@ -46,13 +47,13 @@ public class LoginGController extends BaseGController {
                 outputLabel.setText("Incorrect username or password");
             }
         }
-            catch(LoginFromDBException | ShopNotFoundException e){
+            catch(LoginFromDBException | ShopNotFoundException | NavigationException e){
                 JustItLogger.getInstance().error(e.getMessage());
         }
     }
 
     @FXML
-    public void onSignIn() {
+    public void onSignIn() throws NavigationException {
 
         if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_USER);
 

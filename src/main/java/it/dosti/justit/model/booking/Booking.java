@@ -38,10 +38,6 @@ public class Booking {
         this.homeAssistance = builder.homeAssistance;
 
         this.currentState = BookingStateFactory.fromStatus(builder.status);
-
-        //this.notifyStatusChange(this, null);
-
-
     }
 
 
@@ -143,12 +139,6 @@ public class Booking {
 
     public boolean getHomeAssistance() {
         return homeAssistance;
-    }
-
-    public void initStateMachine(BookingState initialState, BookingStatus status) {
-        this.status = status;
-        this.currentState = BookingStateFactory.fromStatus(status);
-        this.currentState.entry(this);
     }
 
     public void goNext(BookingEvent event) {

@@ -4,6 +4,7 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CAddReviewView;
 
@@ -17,7 +18,7 @@ public class AddReviewGCliController extends BaseCliController {
     private List<BookingBean> bookingCompleted = new ArrayList<>();
 
     @Override
-    public void initialize() {
+    public void initialize() throws NavigationException {
         BookingController bookAppController = new BookingController();
         reviewController = new ReviewController();
         addReviewView = (CAddReviewView) view;
@@ -27,7 +28,7 @@ public class AddReviewGCliController extends BaseCliController {
 
     }
 
-    private void showCompletedBookingToReview() {
+    private void showCompletedBookingToReview() throws NavigationException {
         if (bookingCompleted.isEmpty()) {
             addReviewView.noCompletedBookings();
             navigation.navigate(Screen.MAIN_USER);

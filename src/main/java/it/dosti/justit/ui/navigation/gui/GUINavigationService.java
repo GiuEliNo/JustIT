@@ -1,8 +1,10 @@
 package it.dosti.justit.ui.navigation.gui;
 
 import it.dosti.justit.controller.graphical.gui.BaseGController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.gui.MainViewFactory;
 import it.dosti.justit.view.gui.MainViewTech;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -34,7 +37,7 @@ public class GUINavigationService implements NavigationService {
     }
 
     @Override
-    public void navigate(Screen screen) {
+    public void navigate(Screen screen) throws NavigationException {
         switch (screen) {
             case LAUNCHER, REGISTER_USER, REGISTER_TECH, REGISTER_SHOP:
                 showStandaloneView(loadView(screen));
@@ -109,12 +112,11 @@ public class GUINavigationService implements NavigationService {
                 } else {
                     setContent(userMainView.getSearchRightPane(), loadView(screen));
                 }
-                return;
         }
     }
 
     @Override
-    public Parent loadView(Screen screen) {
+    public Parent loadView(Screen screen) throws NavigationException {
         GUIScreen guiScreen = mapToGuiScreen(screen);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(guiScreen.getFxmlPath()));
 
@@ -129,49 +131,31 @@ public class GUINavigationService implements NavigationService {
             return rootParent;
 
         } catch (IOException e) {
-            throw new RuntimeException("Impossibile caricare FXML: " + guiScreen.getFxmlPath(), e);
+            throw new NavigationException("Impossible navigate to fxml path " + e.getMessage(), e);
         }
     }
 
-    private GUIScreen mapToGuiScreen(Screen screen) {
-        switch (screen) {
-            case LAUNCHER:
-                return GUIScreen.LOGIN;
-            case REGISTER_TECH:
-                return GUIScreen.REGISTER_TECH;
-            case REGISTER_USER:
-                return GUIScreen.REGISTER_USER;
-            case SEARCH_LIST_SHOP:
-                return GUIScreen.SEARCH_LIST_SHOP;
-            case PAGE_SHOP_USER:
-                return GUIScreen.PAGE_SHOP_USER;
-            case BOOKING_PAGE_USER:
-                return GUIScreen.BOOKING_PAGE_USER;
-            case TOPBAR:
-                return GUIScreen.TOPBAR;
-            case REGISTER_SHOP:
-                return GUIScreen.REGISTER_SHOP;
-            case PAYMENTS:
-                return GUIScreen.PAYMENTS;
-            case ACCOUNT_PAGE_USER:
-                return GUIScreen.ACCOUNT_PAGE_USER;
-            case NOTIFICATION_CENTER_USER:
-                return GUIScreen.NOTIFICATION_CENTER_USER;
-            case BOOKINGS_LIST_USER:
-                return GUIScreen.BOOKINGS_LIST_USER;
-            case PAGE_SHOP_TECH:
-                return GUIScreen.PAGE_SHOP_TECH;
-            case BOOKINGS_LIST_TECH:
-                return GUIScreen.BOOKINGS_LIST_TECH;
-            case NOTIFICATION_CENTER_TECH:
-                return GUIScreen.NOTIFICATION_CENTER_TECH;
-            case ACCOUNT_PAGE_TECH:
-                return GUIScreen.ACCOUNT_PAGE_TECH;
-            case REVIEWS_LIST_TECH:
-                return GUIScreen.REVIEWS_LIST_TECH;
-                default:
-                throw new IllegalArgumentException("Screen non mappato: " + screen);
-        }
+    private GUIScreen mapToGuiScreen(Screen screen) throws NavigationException {
+        return switch (screen) {
+            case LAUNCHER -> GUIScreen.LOGIN;
+            case REGISTER_TECH -> GUIScreen.REGISTER_TECH;
+            case REGISTER_USER -> GUIScreen.REGISTER_USER;
+            case SEARCH_LIST_SHOP -> GUIScreen.SEARCH_LIST_SHOP;
+            case PAGE_SHOP_USER -> GUIScreen.PAGE_SHOP_USER;
+            case BOOKING_PAGE_USER -> GUIScreen.BOOKING_PAGE_USER;
+            case TOPBAR -> GUIScreen.TOPBAR;
+            case REGISTER_SHOP -> GUIScreen.REGISTER_SHOP;
+            case PAYMENTS -> GUIScreen.PAYMENTS;
+            case ACCOUNT_PAGE_USER -> GUIScreen.ACCOUNT_PAGE_USER;
+            case NOTIFICATION_CENTER_USER -> GUIScreen.NOTIFICATION_CENTER_USER;
+            case BOOKINGS_LIST_USER -> GUIScreen.BOOKINGS_LIST_USER;
+            case PAGE_SHOP_TECH -> GUIScreen.PAGE_SHOP_TECH;
+            case BOOKINGS_LIST_TECH -> GUIScreen.BOOKINGS_LIST_TECH;
+            case NOTIFICATION_CENTER_TECH -> GUIScreen.NOTIFICATION_CENTER_TECH;
+            case ACCOUNT_PAGE_TECH -> GUIScreen.ACCOUNT_PAGE_TECH;
+            case REVIEWS_LIST_TECH -> GUIScreen.REVIEWS_LIST_TECH;
+            default -> throw new NavigationException("Screen non mappato: " + screen);
+        };
     }
 
     private void showMainLayout() {
@@ -218,11 +202,23 @@ public class GUINavigationService implements NavigationService {
         }
     }
 
-    private void showProfileUserView(Screen initialScreen) {
+    private void showProfileUserView(Screen initialScreen) throws NavigationException {
         ProfileUserView profileView = new ProfileUserView();
         profileView.setOnTabChange(
-                () -> navigate(Screen.ACCOUNT_PAGE_USER),
-                () -> navigate(Screen.PAYMENTS)
+                () -> {
+                    try {
+                        navigate(Screen.ACCOUNT_PAGE_USER);
+                    } catch (NavigationException e) {
+                        JustItLogger.getInstance().error(e.getMessage(), e);
+                    }
+                },
+                () -> {
+                    try {
+                        navigate(Screen.PAYMENTS);
+                    } catch (NavigationException e) {
+                        JustItLogger.getInstance().error(e.getMessage(), e);
+                    }
+                }
         );
         if (initialScreen == Screen.PAYMENTS) {
             profileView.selectPaymentTab();
@@ -241,39 +237,29 @@ public class GUINavigationService implements NavigationService {
         userMainView.getMainTabPane().getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             if (ignoreUserTabSelection || newTab == null) {
                 return;
-            }
-            if (newTab == userMainView.getProfileTab() && userMainView.getProfilePane().getChildren().isEmpty()) {
-                navigate(Screen.TAB_PANE_USER_PROFILE);
-            } else if (newTab == userMainView.getNotificationsTab() && userMainView.getNotificationsPane().getChildren().isEmpty()) {
-                navigate(Screen.NOTIFICATION_CENTER_USER);
-            } else if (newTab == userMainView.getBookingsTab() && userMainView.getBookingsPane().getChildren().isEmpty()) {
-                navigate(Screen.BOOKINGS_LIST_USER);
-            } else if (newTab == userMainView.getSearchTab() && userMainView.getSearchLeftPane().getChildren().isEmpty()) {
-                navigate(Screen.SEARCH_LIST_SHOP);
+            }try{
+                handleUserTabChange(newTab);
+            }catch(NavigationException e){
+                JustItLogger.getInstance().error("Error navigating fxml + "+ e.getMessage(), e);
             }
         });
     }
 
     private void configureTechTabSelection() {
-        if (techMainView == null) {
-            return;
-        }
-        techMainView.getMainTabPane().getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
-            if (ignoreTechTabSelection || newTab == null) {
+            if (techMainView == null) {
                 return;
             }
-            if (newTab == techMainView.getShopTab() && techMainView.getShopPane().getChildren().isEmpty()) {
-                navigate(Screen.PAGE_SHOP_TECH);
-            } else if (newTab == techMainView.getBookingsTab() && techMainView.getBookingsPane().getChildren().isEmpty()) {
-                navigate(Screen.BOOKINGS_LIST_TECH);
-            } else if (newTab == techMainView.getNotificationsTab() && techMainView.getNotificationsPane().getChildren().isEmpty()) {
-                navigate(Screen.NOTIFICATION_CENTER_TECH);
-            } else if (newTab == techMainView.getProfileTab() && techMainView.getProfilePane().getChildren().isEmpty()) {
-                navigate(Screen.ACCOUNT_PAGE_TECH);
-            } else if (newTab == techMainView.getReviewTab() && techMainView.getReviewPane().getChildren().isEmpty()) {
-                navigate(Screen.REVIEWS_LIST_TECH);
-            }
-        });
+            techMainView.getMainTabPane().getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+                    if (ignoreTechTabSelection || newTab == null) {
+                        return;
+                    }
+                    try {
+                        handleTechTabChange(newTab);
+
+                            } catch (NavigationException e) {
+                                JustItLogger.getInstance().error(e.getMessage(), e);
+                    }
+            });
     }
 
     private boolean isTechnician() {
@@ -296,5 +282,29 @@ public class GUINavigationService implements NavigationService {
             userMainView = (MainViewUser) mainViewFactory.getMainView(sessionManager);
             configureUserTabSelection();
         }
+    }
+
+    private void handleTechTabChange(Tab newTab) throws NavigationException {
+        if (changeAndNavigate(newTab, techMainView.getShopTab(), techMainView.getShopPane(), Screen.PAGE_SHOP_TECH)) return;
+        if (changeAndNavigate(newTab, techMainView.getBookingsTab(), techMainView.getBookingsPane(), Screen.BOOKINGS_LIST_TECH )) return;
+        if (changeAndNavigate(newTab, techMainView.getNotificationsTab(), techMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_TECH)) return;
+        if(changeAndNavigate(newTab, techMainView.getProfileTab(), techMainView.getProfilePane(), Screen.ACCOUNT_PAGE_TECH)) return;
+        changeAndNavigate(newTab, techMainView.getReviewTab(), techMainView.getReviewPane(), Screen.REVIEWS_LIST_TECH);
+    }
+
+    private void handleUserTabChange(Tab newTab) throws NavigationException {
+        if (changeAndNavigate(newTab, userMainView.getProfileTab(), userMainView.getProfilePane(), Screen.TAB_PANE_USER_PROFILE)) return;
+        if (changeAndNavigate(newTab, userMainView.getNotificationsTab(), userMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_USER )) return;
+        if (changeAndNavigate(newTab, userMainView.getBookingsTab(), userMainView.getBookingsPane(), Screen.BOOKINGS_LIST_USER)) return;
+        changeAndNavigate(newTab, userMainView.getSearchTab(), userMainView.getSearchLeftPane(), Screen.SEARCH_LIST_SHOP);
+
+    }
+
+    private boolean changeAndNavigate(Tab newTab, Tab targetTab, Pane targetPane, Screen targetScreen) throws NavigationException {
+        if(newTab == targetTab && targetPane.getChildren().isEmpty()) {
+            navigate(targetScreen);
+            return true;
+        }
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package it.dosti.justit.ui.navigation.cli;
 
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.SessionManager;
@@ -9,7 +10,7 @@ import it.dosti.justit.controller.graphical.cli.*;
 public class CLINavigationService implements NavigationService {
 
     @Override
-    public void navigate(Screen screen) {
+    public void navigate(Screen screen) throws NavigationException {
         BaseCliView view = loadView(screen);
         BaseCliController controller = createController(screen);
         

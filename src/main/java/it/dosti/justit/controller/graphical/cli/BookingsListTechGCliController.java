@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListTechView;
 
@@ -14,7 +15,7 @@ public class BookingsListTechGCliController extends BaseCliController{
     private List<BookingBean> bookingList = new ArrayList<>();
 
     @Override
-    public void initialize() {
+    public void initialize() throws NavigationException {
         appController = new BookingController();
         bookingListTechView = (CBookingListTechView) view;
         bookingList = appController.getBookingsByShop();
@@ -23,7 +24,7 @@ public class BookingsListTechGCliController extends BaseCliController{
 
     }
 
-    private void showBooking() {
+    private void showBooking() throws NavigationException {
         if (bookingList.isEmpty()) {
             bookingListTechView.noBookings();
             navigation.navigate(Screen.MAIN_TECH);
@@ -51,7 +52,7 @@ public class BookingsListTechGCliController extends BaseCliController{
 
     }
 
-    private void bookingManager(){
+    private void bookingManager() throws NavigationException {
         Integer bookId;
 
         do {
@@ -73,7 +74,7 @@ public class BookingsListTechGCliController extends BaseCliController{
         }
     }
 
-    private void confirmationManager(Integer bookId){
+    private void confirmationManager(Integer bookId) throws NavigationException {
         switch (bookingListTechView.askConfirmation(appController.getBookingById(bookId))){
             case 1:
                 appController.rejectBooking(appController.getBookingById(bookId));
@@ -90,7 +91,7 @@ public class BookingsListTechGCliController extends BaseCliController{
         }
     }
 
-    private void completedManager(Integer bookId){
+    private void completedManager(Integer bookId) throws NavigationException {
         switch (bookingListTechView.askCompleted(appController.getBookingById(bookId))){
             case 1:
                 appController.rejectBooking(appController.getBookingById(bookId));

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
@@ -38,7 +39,7 @@ public class RegisterUserGController extends BaseGController{
 
 
     @FXML
-    private void backButtonPressed() {
+    private void backButtonPressed() throws NavigationException {
         navigation.navigate(Screen.LAUNCHER);
     }
 
@@ -60,7 +61,7 @@ public class RegisterUserGController extends BaseGController{
             if (appController.registerNewUser(bean)) {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException e){
+        }catch(RegisterOnDbException | NavigationException e){
             JustItLogger.getInstance().error(e.getMessage());
         }
     }

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.controller.app.NotificationController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CNotificationView;
 
@@ -15,7 +16,7 @@ public class NotificationTechGCliController extends BaseCliController{
     private List<NotificationBean> notificationBeanList = new ArrayList<>();
 
     @Override
-    public void initialize() {
+    public void initialize() throws NavigationException {
         appController = new NotificationController();
         notificationView = (CNotificationView) view;
         notificationBeanList = appController.getUnreadNotifications();
@@ -24,7 +25,7 @@ public class NotificationTechGCliController extends BaseCliController{
 
     }
 
-    private void showNotification() {
+    private void showNotification() throws NavigationException {
         if(notificationBeanList.isEmpty()){
             notificationView.noNotification();
             navigation.navigate(Screen.MAIN_TECH);

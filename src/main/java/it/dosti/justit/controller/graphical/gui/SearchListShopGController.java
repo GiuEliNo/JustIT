@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.controller.app.BrowseShopController;
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.gui.ShopListCell;
@@ -58,7 +59,7 @@ public class SearchListShopGController extends BaseGController{
         listView.getItems().setAll(results);
     }
 
-    public void onSelectPage() {
+    public void onSelectPage() throws NavigationException {
 
         Shop selected = listView.getSelectionModel().getSelectedItem();
         if (selected != null) {

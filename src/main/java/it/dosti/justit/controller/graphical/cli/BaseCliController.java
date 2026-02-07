@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.graphical.cli;
 
+import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.NavigationService;
 import it.dosti.justit.view.cli.BaseCliView;
 
@@ -18,6 +19,6 @@ public abstract class BaseCliController implements BaseCliControllerInterface{
 }
 
 interface BaseCliControllerInterface{
-    public void initialize();
+    public void initialize() throws NavigationException;
 }
 
