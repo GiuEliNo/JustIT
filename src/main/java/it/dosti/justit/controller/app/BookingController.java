@@ -2,10 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.BookingCSVBean;
-import it.dosti.justit.dao.BookingDAO;
-import it.dosti.justit.dao.BookingDAOJDBC;
-import it.dosti.justit.dao.BookingFileDAO;
-import it.dosti.justit.dao.BookingFileDAOCSV;
+import it.dosti.justit.dao.*;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -49,9 +46,15 @@ public class BookingController {
         }
     }
 
+    private String addressUserBooking(String username) {
+        ClientUserDAO userDao= new ClientUserDAOJDBC();
+        return userDao.getAddress(username);
+    }
+
     public List<BookingBean> getBookingsByShop() {
         List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
         List<BookingBean> bookingBeans = new ArrayList<>();
+
 
         for (Booking b : bookings) {
             BookingBean bean = new BookingBean();
@@ -62,6 +65,8 @@ public class BookingController {
             bean.setDescription(b.getDescription());
             bean.setStatus(b.getStatus());
             bean.setHomeAssistance(b.getHomeAssistance());
+
+            bean.setUserAddress(b.getHomeAssistance() ? this.addressUserBooking(b.getUsername()) : null);
 
             bookingBeans.add(bean);
         }

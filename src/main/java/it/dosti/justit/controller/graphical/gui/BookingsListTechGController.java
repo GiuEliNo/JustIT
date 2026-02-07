@@ -2,7 +2,6 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
-import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.controlsfx.control.MasterDetailPane;
 
 import java.io.File;
@@ -47,6 +45,8 @@ public class BookingsListTechGController extends BaseGController{
     private TextArea descriptionArea;
     @FXML
     private Label lblStatus;
+    @FXML
+    private Label lblUserAddress;
 
     @FXML
     private Button approveButton;
@@ -67,7 +67,7 @@ public class BookingsListTechGController extends BaseGController{
         dateCol.setCellValueFactory(new PropertyValueFactory<>("Date"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("TimeSlot"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-        homeAssistanceCol.setCellValueFactory(new PropertyValueFactory<>("homeAssistance"));
+        homeAssistanceCol.setCellValueFactory(new PropertyValueFactory<>("homeAssistanceLabel"));
 
 
 
@@ -88,7 +88,13 @@ public class BookingsListTechGController extends BaseGController{
         lblDate.setText("Date: " + booking.getDate());
         lblTime.setText("Time Slot: " + booking.getTimeSlot());
         lblStatus.setText("Status: " + booking.getStatus());
-        lblHomeAssistance.setText("Home Assistance: " + booking.getHomeAssistance().toString());
+        lblHomeAssistance.setText("Home Assistance: " + booking.getHomeAssistanceLabel());
+        if(booking.getHomeAssistance().booleanValue()){
+            lblUserAddress.setText("User Address : " + booking.getUserAddress());
+        } else {
+            lblUserAddress.setVisible(false);
+        }
+
         descriptionArea.setText(booking.getDescription());
 
         BookingStatus status = booking.getStatus();
@@ -147,7 +153,7 @@ public class BookingsListTechGController extends BaseGController{
         fileChooser.setTitle("Export to CSV");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
 
-        File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+        File file = fileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
 
         if (file != null) {
             appController.exportBookingsListTech(file);

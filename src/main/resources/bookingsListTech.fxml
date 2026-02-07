@@ -49,6 +49,7 @@
             <Label fx:id="lblTime"/>
             <Label fx:id="lblStatus"/>
             <Label fx:id="lblHomeAssistance"/>
+            <Label fx:id="lblUserAddress"/>
 
             <Separator/>
 

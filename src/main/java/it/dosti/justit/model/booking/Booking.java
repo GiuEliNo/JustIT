@@ -18,7 +18,7 @@ public class Booking {
     private TimeSlot timeSlot;
     private String description;
     private String shopName;
-    private Boolean homeAssistance;
+    private boolean homeAssistance;
 
     private BookingState currentState;
     private BookingStatus status;
@@ -56,7 +56,7 @@ public class Booking {
         private String description;
         private String shopName;
         private BookingStatus status;
-        private Boolean homeAssistance;
+        private boolean homeAssistance;
 
 
         public Builder(String username) {
@@ -100,7 +100,7 @@ public class Booking {
             return this;
         }
 
-        public Builder homeAssistance(Boolean homeAssistance) {
+        public Builder homeAssistance(boolean homeAssistance) {
             this.homeAssistance = homeAssistance;
             return this;
         }
@@ -139,11 +139,11 @@ public class Booking {
     public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
     }
-    public void setHomeAssistance(Boolean homeAssistance){
+    public void setHomeAssistance(boolean homeAssistance){
         this.homeAssistance = homeAssistance;
     }
 
-    public Boolean getHomeAssistance() {
+    public boolean getHomeAssistance() {
         return homeAssistance;
     }
 

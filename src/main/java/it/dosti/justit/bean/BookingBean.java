@@ -17,6 +17,7 @@ public class BookingBean {
     private BookingStatus status;
     private String shopName;
     private Boolean homeAssistance;
+    private String userAddress;
 
 
 
@@ -74,13 +75,24 @@ public class BookingBean {
     public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
-
     public void setHomeAssistance(Boolean homeAssistance) {
         this.homeAssistance = homeAssistance;
     }
-
     public Boolean getHomeAssistance() {
         return homeAssistance;
+    }
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public String getHomeAssistanceLabel() {
+        if (homeAssistance == null) {
+            return "N/A";
+        }
+        return homeAssistance.booleanValue() ? "Yes" : "No";
     }
 }
 
