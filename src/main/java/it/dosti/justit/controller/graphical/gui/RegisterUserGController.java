@@ -4,10 +4,12 @@ import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class RegisterUserGController extends BaseGController{
@@ -37,6 +39,9 @@ public class RegisterUserGController extends BaseGController{
     @FXML
     private TextField countryField;
 
+    @FXML
+    private Label warningLabel;
+
 
     @FXML
     private void backButtonPressed() throws NavigationException {
@@ -54,6 +59,13 @@ public class RegisterUserGController extends BaseGController{
         bean.setEmail(emailField.getText());
         bean.setUsername(usernameField.getText());
         bean.setAddress(streetField.getText() + ","  + cityField.getText() + "," + countryField.getText());
+        bean.setRole(String.valueOf(RoleType.CLIENT));
+
+        if(appController.isUsernameAvailable(bean)){
+
+            warningLabel.setText("Username not available");
+            return;
+        }
 
 
         try {

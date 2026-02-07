@@ -163,6 +163,27 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
+    public boolean isUsernameAvailable(String username) {
+        String sql = RegisterQuery.USERNAME_AVAILABLE;
+        try(
+            Connection conn = ConnectionDB.getInstance().connectDB();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, username);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+        }catch(SQLException e){
+            JustItLogger.getInstance().error("Error checking if the username is available", e);
+        }
+        return true;
+    }
+
+    @Override
     public String getAddress(String username) {
         String sql = ClientQuery.SELECT_ADDRESS;
         try(

@@ -11,4 +11,8 @@ public class RegisterQuery {
     public static final String REGISTER_TECHNICIAN = "INSERT INTO TECHNICIAN (username, password, email, name, shop) " +
             "VALUES (?, ?, ?, ?, ?)";
 
+    public static final String USERNAME_AVAILABLE = "SELECT username FROM User WHERE username = ? "+
+            "UNION ALL  " +
+            "SELECT username FROM Technician WHERE username = ? ";
+
 }

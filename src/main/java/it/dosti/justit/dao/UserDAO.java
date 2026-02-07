@@ -21,4 +21,7 @@ public interface UserDAO {
 
     boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException;
 
+    boolean isUsernameAvailable(String username);
+
+
 }

@@ -9,6 +9,7 @@ public class RegisterBean {
     private String name;
     private String address;
     private Coordinates coordinates;
+    private String role;
 
 
     public String getUsername() {
@@ -52,5 +53,12 @@ public class RegisterBean {
     }
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
     }
 }
