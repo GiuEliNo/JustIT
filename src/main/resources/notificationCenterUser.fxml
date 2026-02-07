@@ -5,24 +5,34 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="600" spacing="20" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.NotificationUserGController">
+<VBox alignment="TOP_CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.NotificationUserGController">
 
     <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
 
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label text="Messages">
-            <font>
-                <Font size="22" />
-            </font>
-        </Label>
-        <Button onAction="#updateMessages" text="Refresh" />
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+
+        <VBox>
+            <Label styleClass="page-title" text="Inbox Messages" />
+            <Label styleClass="small-label" text="Updates on your requests" />
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <Button onAction="#updateMessages" styleClass="button-secondary" text="REFRESH LIST" />
     </HBox>
 
-    <ListView fx:id="messageListView" prefHeight="520" prefWidth="560" />
+    <ListView fx:id="messageListView" styleClass="clean-list-view" VBox.vgrow="ALWAYS">
+        <placeholder>
+            <VBox alignment="CENTER" spacing="5">
+                <Label style="-fx-text-fill: #9e9e9e; -fx-font-size: 14px;" text="No new messages" />
+                <Label style="-fx-text-fill: #bdbdbd; -fx-font-size: 12px;" text="Check back later" />
+            </VBox>
+        </placeholder>
+    </ListView>
 
 </VBox>
