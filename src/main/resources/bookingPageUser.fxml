@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
 <VBox alignment="TOP_CENTER" spacing="20" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingPageGController">
 
    <padding>
@@ -31,10 +32,14 @@
          <Label styleClass="field-label" text="SELECT A TIMESLOT" />
          <ChoiceBox fx:id="timeSlotChoiceBox" maxWidth="Infinity" />
       </VBox>
-
       <VBox spacing="5" VBox.vgrow="ALWAYS">
          <Label styleClass="field-label" text="DESCRIBE THE PROBLEM" />
          <TextArea fx:id="descriptionArea" prefHeight="120.0" promptText="Describe your troubles..." wrapText="true" />
+      </VBox>
+
+      <VBox spacing="5" VBox.vgrow="ALWAYS">
+         <Label styleClass="check-box" text="NEED HOME ASSISTANCE?" />
+         <CheckBox fx:id="homeAssistance"/>
       </VBox>
 
       <Button fx:id="bookButton" maxWidth="Infinity" onAction="#bookButtonPressed" text="CONFIRM BOOKING">
