@@ -2,10 +2,6 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
-import it.dosti.justit.dao.ClientUserDAO;
-import it.dosti.justit.dao.ClientUserDAOJDBC;
-import it.dosti.justit.dao.UserDAO;
-import it.dosti.justit.dao.UserDaoFactory;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
@@ -34,9 +30,14 @@ public class AccountController {
         return updateController.updateEmail(userBean.getEmail());
     }
 
-    public boolean changePassword(PasswordBean passwordBean) throws UserNotFoundException, UpdateOnDBException, ShopNotFoundException {
+    public boolean changePassword(PasswordBean passwordBean) throws UpdateOnDBException {
         UpdateController updateController = new UpdateController();
         return updateController.updatePassword(passwordBean.getNewPassword(), passwordBean.getOldPassword());
+    }
+
+    public boolean editAddress(UserBean userBean) throws  UpdateOnDBException {
+        UpdateController updateController = new UpdateController();
+        return updateController.updateAddress(userBean.getAddress());
     }
 
     public boolean isTechnician(){
