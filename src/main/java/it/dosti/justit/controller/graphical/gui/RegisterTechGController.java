@@ -3,7 +3,6 @@ import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;

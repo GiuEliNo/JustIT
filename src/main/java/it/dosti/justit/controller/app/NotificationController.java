@@ -4,7 +4,6 @@ import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.dao.NotificationDAO;
 import it.dosti.justit.dao.NotificationDAOJDBC;
 import it.dosti.justit.model.notification.Notification;
-import it.dosti.justit.model.notification.NotificationMessageFactory;
 import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
