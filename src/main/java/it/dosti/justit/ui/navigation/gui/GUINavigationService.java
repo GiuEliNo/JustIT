@@ -59,17 +59,17 @@ public class GUINavigationService implements NavigationService {
             case TOPBAR:
                 setContent(getActiveTopPane(), loadView(screen));
                 return;
-            case TAB_PANE_USER_PROFILE:
-                selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.ACCOUNT_PAGE_USER);
-                return;
-            case ACCOUNT_PAGE_USER:
+            case TAB_PANE_USER_PROFILE, ACCOUNT_PAGE_USER:
                 selectUserTab(userMainView.getProfileTab());
                 showProfileUserView(Screen.ACCOUNT_PAGE_USER);
                 return;
             case ACCOUNT_PAGE_TECH:
                 selectTechTab(techMainView.getProfileTab());
                 setContent(techMainView.getProfilePane(), loadView(screen));
+                return;
+            case REVIEWS_LIST_TECH:
+                selectTechTab(techMainView.getReviewTab());
+                setContent(techMainView.getReviewPane(), loadView(screen));
                 return;
             case PAYMENTS:
                 selectUserTab(userMainView.getProfileTab());
@@ -119,14 +119,14 @@ public class GUINavigationService implements NavigationService {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(guiScreen.getFxmlPath()));
 
         try {
-            Parent root = loader.load();
+            Parent rootParent = loader.load();
             BaseGController controller = loader.getController();
 
             if (controller != null) {
                 controller.setNavigation(this);
             }
 
-            return root;
+            return rootParent;
 
         } catch (IOException e) {
             throw new RuntimeException("Impossibile caricare FXML: " + guiScreen.getFxmlPath(), e);
@@ -167,6 +167,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.NOTIFICATION_CENTER_TECH;
             case ACCOUNT_PAGE_TECH:
                 return GUIScreen.ACCOUNT_PAGE_TECH;
+            case REVIEWS_LIST_TECH:
+                return GUIScreen.REVIEWS_LIST_TECH;
                 default:
                 throw new IllegalArgumentException("Screen non mappato: " + screen);
         }
@@ -268,6 +270,8 @@ public class GUINavigationService implements NavigationService {
                 navigate(Screen.NOTIFICATION_CENTER_TECH);
             } else if (newTab == techMainView.getProfileTab() && techMainView.getProfilePane().getChildren().isEmpty()) {
                 navigate(Screen.ACCOUNT_PAGE_TECH);
+            } else if (newTab == techMainView.getReviewTab() && techMainView.getReviewPane().getChildren().isEmpty()) {
+                navigate(Screen.REVIEWS_LIST_TECH);
             }
         });
     }

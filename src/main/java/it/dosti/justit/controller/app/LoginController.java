@@ -38,7 +38,8 @@ public class LoginController {
                 }
                 return false;
             }
+
+            default -> { return false; }
         }
-        return false;
     }
 }

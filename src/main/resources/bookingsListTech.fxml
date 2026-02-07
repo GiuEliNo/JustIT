@@ -34,6 +34,7 @@
                     <TableColumn fx:id="dateCol" text="Date"/>
                     <TableColumn fx:id="timeCol" text="Time Slot"/>
                     <TableColumn fx:id="statusCol" text="Status"/>
+                    <TableColumn fx:id="homeAssistanceCol" text="Home Assistance"/>
                 </columns>
             </TableView>
 
@@ -47,6 +48,8 @@
             <Label fx:id="lblDate"/>
             <Label fx:id="lblTime"/>
             <Label fx:id="lblStatus"/>
+            <Label fx:id="lblHomeAssistance"/>
+            <Label fx:id="lblUserAddress"/>
 
             <Separator/>
 

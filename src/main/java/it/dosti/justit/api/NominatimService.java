@@ -1,5 +1,6 @@
 package it.dosti.justit.api;
 
+
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -17,7 +18,6 @@ public class NominatimService {
     public CompletableFuture<String> searchAddress(String query) {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String urlString = String.format("%s?q=%s&format=json&limit=1",NOMINATIM, encodedQuery);
-
 
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(urlString)).header("User-Agent", "UniversityProject-JustIT/1.0 (giuelinomail@gmail.com)").GET().build();
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body);

@@ -4,7 +4,6 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
-import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.AddressDialog;
@@ -277,7 +276,7 @@ public class PageShopTechGController extends BaseGController{
 
     public void onHomeAssistanceButtonClicked() {
 
-        Dialog<Boolean> dialog = new Dialog<Boolean>();
+        Dialog<Boolean> dialog = new Dialog<>();
         dialog.setTitle(EDIT_SHOP_HOME_ASSISTANCE);
 
         ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);

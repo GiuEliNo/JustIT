@@ -16,7 +16,7 @@ public class RegisterController {
 
 
 
-    public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException {
+    public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException {
 
         ClientUserDAO dao = new ClientUserDAOJDBC();
 
@@ -42,7 +42,7 @@ public class RegisterController {
         }
     }
 
-    public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, UserNotFoundException, ShopNotFoundException {
+    public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, ShopNotFoundException {
         TechnicianDAO dao = new TechnicianDAOJDBC();
         Integer shopId = dao.getShopIDbyName(registerBean.getShopName());
         if ( shopId == 0){

@@ -67,7 +67,7 @@ public class RegisterUserGController extends BaseGController{
             if (appController.registerNewUser(bean)) {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException | UserNotFoundException e){
+        }catch(RegisterOnDbException e){
             JustItLogger.getInstance().error(e.getMessage());
         }
     }

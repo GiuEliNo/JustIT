@@ -28,4 +28,8 @@ public class CReviewListView extends BaseCliView{
         System.out.println(OPTION_BACK);
         return scanner.nextLine();
     }
+
+    public void noReview() {
+        System.out.println("No review");
+    }
 }

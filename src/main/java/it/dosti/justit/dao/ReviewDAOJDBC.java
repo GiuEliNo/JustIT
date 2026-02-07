@@ -1,7 +1,6 @@
 package it.dosti.justit.dao;
 
 import it.dosti.justit.db.ConnectionDB;
-import it.dosti.justit.db.query.BookingQuery;
 import it.dosti.justit.db.query.ReviewQuery;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.JustItLogger;

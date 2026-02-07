@@ -28,6 +28,17 @@ public class ClientUser extends User {
         this.setUsername(username);
     }
 
+    public ClientUser(String username, String address, Coordinates coordinates) {
+        this.setUsername(username);
+        this.coordinates = coordinates;
+        this.address = address;
+    }
+
+    public ClientUser(String username, String address) {
+        this.setUsername(username);
+        this.address = address;
+    }
+
     public String getAddress() {
         return address;
     }

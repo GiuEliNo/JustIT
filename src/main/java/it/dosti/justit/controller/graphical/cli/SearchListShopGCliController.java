@@ -52,8 +52,6 @@ public class SearchListShopGCliController extends BaseCliController{
             if (shopNumberSelected >= 1 && shopNumberSelected <= shops.size()) {
                 break;
             }
-
-            System.out.println("Invalid selection, try again.");
         }
 
         appController.pageSelected(shops.get(shopNumberSelected-1));
