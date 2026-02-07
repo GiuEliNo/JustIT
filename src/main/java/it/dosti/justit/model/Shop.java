@@ -146,7 +146,6 @@ public class Shop {
     }
 
     // javaFX chiama toString per mostrare l'oggetto in una lista
-    //TODO ADAPTER per mostrare i dati nella varie view
     @Override
     public String toString() {
        return name;
