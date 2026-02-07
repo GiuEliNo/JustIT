@@ -37,6 +37,8 @@ public class CLINavigationService implements NavigationService {
                 return new CBrowseShopView();
             case PAGE_SHOP_USER:
                 return new CPageShopCliView();
+            case BOOKING_PAGE_USER:
+                return new CBookingPageUserView();
             case REVIEWS_BOX, REVIEWS_LIST_TECH:
                 return new CReviewListView();
             case BOOKINGS_LIST_USER:
@@ -78,6 +80,8 @@ public class CLINavigationService implements NavigationService {
                 return new SearchListShopGCliController();
             case PAGE_SHOP_USER:
                 return new PageShopUserGCliController();
+            case BOOKING_PAGE_USER:
+                return new BookingPageUserGCliController();
             case REVIEWS_BOX:
                 return new ReviewListShopUserGCliController();
             case BOOKINGS_LIST_USER:

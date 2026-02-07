@@ -27,7 +27,7 @@ public class CBookingListTechView extends BaseCliView {
 
     public Integer askBooking() {
         System.out.println("Select Booking ID: ");
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public Integer askConfirmation(BookingBean bookingBean) {
@@ -35,14 +35,14 @@ public class CBookingListTechView extends BaseCliView {
         System.out.println("1. Reject Booking");
         System.out.println("2. Confirmed Booking");
         System.out.println(OPTION_BACK);
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public Integer askCompleted(BookingBean bookingBean) {
         System.out.println("Actual Status: " + bookingBean.getStatus());
         System.out.println("1. Mark as completed");
         System.out.println(OPTION_BACK);
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public void noBookings(){

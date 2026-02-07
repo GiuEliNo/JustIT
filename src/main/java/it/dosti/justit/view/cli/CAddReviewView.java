@@ -24,7 +24,7 @@ public class CAddReviewView extends BaseCliView{
 
     public Integer askShopToReview() {
         System.out.println("Enter Shop ID: ");
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public String askTitle() {
@@ -39,7 +39,7 @@ public class CAddReviewView extends BaseCliView{
 
     public Integer askRating() {
         System.out.println("Rating 0-5: ");
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public void noCompletedBookings() {

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CMainUserView;
 
 public class MainUserGCliController extends BaseCliController{
@@ -26,6 +27,10 @@ public class MainUserGCliController extends BaseCliController{
                 break;
             case "5":
                 navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
+                break;
+            case "6":
+                SessionManager.getInstance().logout();
+                navigation.navigate(Screen.LAUNCHER);
                 break;
             default:
                 navigation.navigate(Screen.MAIN_USER);

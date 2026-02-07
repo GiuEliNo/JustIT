@@ -4,8 +4,13 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.NavigationException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CAddReviewView;
 
 import java.util.ArrayList;
@@ -62,12 +67,20 @@ public class AddReviewGCliController extends BaseCliController {
     private void addReview(){
 
         ReviewBean reviewBean = new ReviewBean();
+        ShopDAO shopDAO = new ShopDAOJDBC();
 
         Integer shopId;
 
         do {
             shopId = addReviewView.askShopToReview();
         } while (!shopIdCompleted.contains(shopId));
+
+        try {
+            SessionManager.getInstance().setCurrentShop(shopDAO.retrieveShopById(shopId));
+        } catch (ShopNotFoundException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            return;
+        }
 
         reviewBean.setShopID(shopId);
         reviewBean.setTitle(addReviewView.askTitle());

@@ -51,11 +51,7 @@ public class CBrowseShopView extends BaseCliView{
 
     public Integer askShopSelection() {
         System.out.print("Select shop number: ");
-        try {
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        return readIntCheck();
     }
 
     public String askQueryShop() {

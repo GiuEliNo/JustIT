@@ -11,7 +11,7 @@ public class CNotificationView extends BaseCliView {
 
     public void renderNotifications(NotificationBean notificationBean) {
         System.out.println("Notification #: " + notificationBean.getId());
-        //System.out.println("New status: " + notificationBean.getNewStatus());
+        System.out.println("Body: " + notificationBean.getNotificationMessage());
         System.out.println("Time: " + notificationBean.getCreatedAt());
         System.out.println("------------------------------------------------");
     }
@@ -24,7 +24,7 @@ public class CNotificationView extends BaseCliView {
 
     public Integer askNotificationToMarkAsRead() {
         System.out.println("Enter Notification ID: ");
-        return Integer.parseInt(scanner.nextLine());
+        return readIntCheck();
     }
 
     public void noNotification() {

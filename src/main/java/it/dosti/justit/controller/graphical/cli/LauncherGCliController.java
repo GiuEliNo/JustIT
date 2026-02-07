@@ -23,7 +23,7 @@ public class LauncherGCliController extends BaseCliController {
                 navigation.navigate(Screen.REGISTER_TECH);
                 break;
             default:
-                navigation.navigate(Screen.MAIN_USER);
+                navigation.navigate(Screen.LAUNCHER);
         }
     }
 }

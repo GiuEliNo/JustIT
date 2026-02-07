@@ -94,7 +94,7 @@ public class BookingsListTechGCliController extends BaseCliController{
     private void completedManager(Integer bookId) throws NavigationException {
         switch (bookingListTechView.askCompleted(appController.getBookingById(bookId))){
             case 1:
-                appController.rejectBooking(appController.getBookingById(bookId));
+                appController.completeBooking(appController.getBookingById(bookId));
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH);
