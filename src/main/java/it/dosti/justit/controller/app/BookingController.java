@@ -1,8 +1,11 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.BookingCSVBean;
 import it.dosti.justit.dao.BookingDAO;
 import it.dosti.justit.dao.BookingDAOJDBC;
+import it.dosti.justit.dao.BookingFileDAO;
+import it.dosti.justit.dao.BookingFileDAOCSV;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -12,6 +15,7 @@ import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.List;
 
 public class BookingController {
     private final BookingDAO dao = new BookingDAOJDBC();
+    private final BookingFileDAO daoFile = new BookingFileDAOCSV();
 
     public boolean addBooking(BookingBean bookingBean) {
 
@@ -147,4 +152,23 @@ public class BookingController {
         return !getAvailableSlots(shopId, date).isEmpty();
     }
 
+    public void exportBookingsListTech(File file) {
+        List<Booking> bookingsList = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
+        List<BookingCSVBean> csvBeanList = new ArrayList<>();
+
+        for(Booking b : bookingsList) {
+            BookingCSVBean csvBean = new BookingCSVBean();
+
+            csvBean.setBookingId(b.getBookingId());
+            csvBean.setDescription(b.getDescription());
+            csvBean.setDate(b.getDate());
+            csvBean.setStatus(b.getStatus().toString());
+            csvBean.setTimeSlot(b.getTimeSlot().toString());
+            csvBean.setUsername(b.getUsername());
+
+            csvBeanList.add(csvBean);
+
+        }
+        daoFile.exportToFile(csvBeanList, file);
+    }
 }

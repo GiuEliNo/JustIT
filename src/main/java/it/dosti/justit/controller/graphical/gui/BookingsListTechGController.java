@@ -3,13 +3,19 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.model.booking.BookingStatus;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.controlsfx.control.MasterDetailPane;
+
+import java.io.File;
 
 public class BookingsListTechGController extends BaseGController{
 
@@ -103,7 +109,16 @@ public class BookingsListTechGController extends BaseGController{
     }
 
     @FXML
-    public void onExport() {
+    public void onExport(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export to CSV");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+
+        File file = fileChooser.showSaveDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+            appController.exportBookingsListTech(file);
+        }
     }
 }
 
