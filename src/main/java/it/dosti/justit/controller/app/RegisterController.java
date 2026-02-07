@@ -6,7 +6,6 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;

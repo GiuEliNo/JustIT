@@ -3,7 +3,6 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.RegisterOnDbException;
-import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -37,12 +36,6 @@ public class RegisterUserGController extends BaseGController{
     @FXML
     private TextField countryField;
 
-    @FXML
-    private void initialize() {
-        //TODO
-
-
-    }
 
     @FXML
     private void backButtonPressed() {

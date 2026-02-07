@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<VBox alignment="CENTER_LEFT" spacing="10" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PaymentsGController">
+<VBox alignment="CENTER" spacing="20.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PaymentsGController">
+
     <padding>
-        <Insets bottom="16" left="16" right="16" top="16" />
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
     </padding>
-    <Label text="Payment methods" />
-    <Label text="No payment methods configured." />
+
+    <StackPane>
+        <VBox alignment="CENTER" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" style="-fx-background-color: #E3F2FD; -fx-background-radius: 50;">
+            <SVGPath content="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" fill="#2196F3" scaleX="2.0" scaleY="2.0" />
+        </VBox>
+    </StackPane>
+
+    <VBox alignment="CENTER" spacing="5.0">
+        <Label styleClass="page-title" text="Payment Methods" />
+        <Label styleClass="small-label" text="No payment methods configured yet." />
+        <Label style="-fx-text-fill: #bdbdbd; -fx-font-size: 12px;" text="Add a credit card to proceed with booking." />
+    </VBox>
+
+    <Button styleClass="button" text="ADD NEW CARD" />
+
 </VBox>
