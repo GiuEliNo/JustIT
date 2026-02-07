@@ -71,6 +71,9 @@ public class GUINavigationService implements NavigationService {
                 selectTechTab(techMainView.getProfileTab());
                 setContent(techMainView.getProfilePane(), loadView(screen));
                 return;
+            case REVIEWS_LIST_TECH:
+                selectTechTab(techMainView.getReviewTab());
+                setContent(techMainView.getReviewPane(), loadView(screen));
             case PAYMENTS:
                 selectUserTab(userMainView.getProfileTab());
                 showProfileUserView(Screen.PAYMENTS);
@@ -167,6 +170,8 @@ public class GUINavigationService implements NavigationService {
                 return GUIScreen.NOTIFICATION_CENTER_TECH;
             case ACCOUNT_PAGE_TECH:
                 return GUIScreen.ACCOUNT_PAGE_TECH;
+            case REVIEWS_LIST_TECH:
+                return GUIScreen.REVIEWS_LIST_TECH;
                 default:
                 throw new IllegalArgumentException("Screen non mappato: " + screen);
         }
@@ -268,6 +273,8 @@ public class GUINavigationService implements NavigationService {
                 navigate(Screen.NOTIFICATION_CENTER_TECH);
             } else if (newTab == techMainView.getProfileTab() && techMainView.getProfilePane().getChildren().isEmpty()) {
                 navigate(Screen.ACCOUNT_PAGE_TECH);
+            } else if (newTab == techMainView.getReviewTab() && techMainView.getReviewPane().getChildren().isEmpty()) {
+                navigate(Screen.REVIEWS_LIST_TECH);
             }
         });
     }
