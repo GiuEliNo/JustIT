@@ -30,7 +30,7 @@
          <Region HBox.hgrow="ALWAYS" />
       </HBox>
 
-      <ListView fx:id="reviewsListView" styleClass="clean-list-view" VBox.vgrow="ALWAYS">
+      <ListView fx:id="listReview" styleClass="clean-list-view" VBox.vgrow="ALWAYS">
          <placeholder>
             <Label text="No reviews received yet." textFill="#9e9e9e"/>
          </placeholder>
