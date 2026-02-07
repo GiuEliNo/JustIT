@@ -7,6 +7,7 @@ public class Notification {
     private final String shopName;
     private final String username;
     private final Integer bookingId;
+    private final Integer reviewId;
     private final NotificationType type;
     private final String bookingStatus;
     private final LocalDateTime createdAt;
