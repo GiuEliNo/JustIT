@@ -10,6 +10,7 @@ import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.user.User;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 
@@ -163,7 +164,44 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
 
     @Override
     public String getAddress(String username) {
-        return "";
+        String sql = ClientQuery.SELECT_ADDRESS;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ){
+            pstmt.setString(1,username);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+
+                return rs.getString("address");
+            }
+        }
+        catch(SQLException e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateAddress(ClientUser user) throws UpdateOnDBException {
+        String sql = ClientQuery.UPDATE_ADDRESS;
+        try(
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ){
+            pstmt.setString(1, user.getAddress());
+            pstmt.setDouble(2, user.getCoordinates().getLatitude());
+            pstmt.setDouble(3, user.getCoordinates().getLongitude());
+            pstmt.setString(4, user.getUsername());
+
+            if(pstmt.executeUpdate()==1) {
+                return true;
+            }
+        }
+        catch(SQLException e){
+            throw new UpdateOnDBException("Error updating the address", e);
+        }
+        return false;
     }
 
 }

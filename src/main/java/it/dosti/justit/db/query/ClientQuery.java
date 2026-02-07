@@ -13,4 +13,6 @@ public class ClientQuery {
 
     public static final String SELECT_ADDRESS = "SELECT address FROM User WHERE username = ?";
 
+    public static final String UPDATE_ADDRESS = "UPDATE User SET address = ?, latitude = ?. longitude = ? WHERE username = ?";
+
 }

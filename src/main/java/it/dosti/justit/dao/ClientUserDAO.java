@@ -5,6 +5,7 @@ import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 
 public interface ClientUserDAO extends UserDAO {
@@ -22,4 +23,6 @@ public interface ClientUserDAO extends UserDAO {
     boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException;
 
     String getAddress(String username);
+
+    boolean updateAddress(ClientUser user) throws UpdateOnDBException;
 }

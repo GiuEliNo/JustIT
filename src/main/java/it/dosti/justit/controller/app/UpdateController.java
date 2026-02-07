@@ -6,6 +6,7 @@ import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.model.user.TechnicianUser;
@@ -51,6 +52,21 @@ public class UpdateController {
             return true;
         }
         else return false;
+    }
+
+    public boolean updateAddress(String address) throws UpdateOnDBException {
+        ClientUserDAO dao = new ClientUserDAOJDBC();
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        CoordinatesDAO coordDao= new CoordinatesDAOAPI();
+        Coordinates coord = coordDao.getCoordinates(address).join();
+        ClientUser user;
+        if(coord != null){
+            user = new ClientUser(username,address, coord);
+        }
+        else{
+            user = new ClientUser(username, address);
+        }
+        return dao.updateAddress(user);
     }
 
 
