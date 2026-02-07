@@ -8,16 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import org.controlsfx.control.MasterDetailPane;
 
 import java.io.File;
 
 public class BookingsListTechGController extends BaseGController{
 
-
-    @FXML
-    private MasterDetailPane masterDetailPane;
 
     @FXML
     private TableView<BookingBean> bookingTable;
@@ -57,6 +54,9 @@ public class BookingsListTechGController extends BaseGController{
     @FXML
     private Button completedButton;
 
+    @FXML
+    private VBox detailsVBox;
+
 
     private final BookingController appController = new BookingController();
 
@@ -75,12 +75,20 @@ public class BookingsListTechGController extends BaseGController{
 
         bookingTable.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((obs, oldB, newB) -> showDetail(newB));
+                .addListener((obs, oldB, newB) -> {
+                    if(newB != null) {
+                        detailsVBox.setVisible(true);
+                        showDetail(newB);
+                    }
+                    else{
+                        detailsVBox.setVisible(false);
+                    }
+                });
     }
 
     private void showDetail(BookingBean booking) {
         if (booking == null) {
-            masterDetailPane.setShowDetailNode(false);
+            detailsVBox.setVisible(false);
             return;
         }
 
@@ -89,7 +97,7 @@ public class BookingsListTechGController extends BaseGController{
         lblTime.setText("Time Slot: " + booking.getTimeSlot());
         lblStatus.setText("Status: " + booking.getStatus());
         lblHomeAssistance.setText("Home Assistance: " + booking.getHomeAssistanceLabel());
-        if(booking.getHomeAssistance().booleanValue()){
+        if(Boolean.TRUE.equals(booking.getHomeAssistance())){
             lblUserAddress.setText("User Address : " + booking.getUserAddress());
         } else {
             lblUserAddress.setVisible(false);
@@ -116,7 +124,7 @@ public class BookingsListTechGController extends BaseGController{
                 break;
         }
 
-        masterDetailPane.setShowDetailNode(true);
+        detailsVBox.setVisible(true);
     }
 
     private BookingBean getSelectedBooking() {

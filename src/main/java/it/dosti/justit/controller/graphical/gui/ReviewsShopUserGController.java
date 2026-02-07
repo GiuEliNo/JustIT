@@ -40,7 +40,6 @@ public class ReviewsShopUserGController extends BaseGController{
                 reviewBean.setTitle(dialog.getTitleField());
                 reviewBean.setReview(dialog.getReviewArea());
                 reviewBean.setStars((int) dialog.getRatingStars());
-                reviewBean.setShopID(listReview.getSelectionModel().getSelectedItem().getShopID());
                 appControllerReviewPageShop.addReview(reviewBean);
                 this.updateReviewList();
 

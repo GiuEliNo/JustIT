@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingsListUserGController">
-   <children>
-      <Label alignment="CENTER" layoutX="384.0" layoutY="39.0" text="My Bookings" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <ListView fx:id="bookingListView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0" />
-   </children>
-</AnchorPane>
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.BookingsListUserGController">
+
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+
+   <VBox alignment="CENTER_LEFT" spacing="5.0">
+      <Label styleClass="page-title" text="My Bookings" />
+      <Label styleClass="small-label" text="Track the status of your appointments" />
+   </VBox>
+
+   <ListView fx:id="bookingListView" styleClass="clean-list-view" VBox.vgrow="ALWAYS">
+      <placeholder>
+         <VBox alignment="CENTER" spacing="10">
+            <Label style="-fx-font-size: 16px; -fx-text-fill: #9e9e9e;" text="No active bookings found." />
+            <Label style="-fx-font-size: 12px; -fx-text-fill: #bdbdbd;" text="Book your first appointment with a shop!" />
+         </VBox>
+      </placeholder>
+   </ListView>
+
+</VBox>

@@ -19,11 +19,10 @@ public class ReviewController {
         this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
-    public Boolean addReview(ReviewBean reviewBean) {
+    public void addReview(ReviewBean reviewBean) {
 
         reviewBean.setUsername(username);
-        reviewDao.addReviewToShop(new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), reviewBean.getShopID(), reviewBean.getUsername()));
-        return true;
+        reviewDao.addReviewToShop(new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), SessionManager.getInstance().getCurrentShop().getId(), reviewBean.getUsername()));
     }
 
     public List<ReviewBean> getReviews() {
