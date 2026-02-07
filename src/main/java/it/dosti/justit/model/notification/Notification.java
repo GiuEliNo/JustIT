@@ -117,7 +117,7 @@ public class Notification {
     }
 
 
-    public String getMessage() {
-        return NotificationMessageFactory.build(this);
+    public String getMessage(Boolean isClient) {
+        return NotificationMessageFactory.createNotification(this, isClient);
     }
 }
