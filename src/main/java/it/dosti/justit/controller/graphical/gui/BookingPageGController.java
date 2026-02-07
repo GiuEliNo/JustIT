@@ -22,6 +22,9 @@ public class BookingPageGController extends BaseGController {
     @FXML
     private DatePicker datePicker;
 
+    @FXML
+    private CheckBox homeAssistance;
+
     private BookingController appController;
 
     @FXML
@@ -78,6 +81,7 @@ public class BookingPageGController extends BaseGController {
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());
+        bookingBean.setHomeAssistance(homeAssistance.isSelected());
 
         JustItLogger.getInstance().info("bookingBean = " + bookingBean);
 

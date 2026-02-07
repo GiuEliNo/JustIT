@@ -16,6 +16,7 @@ public class BookingBean {
     private String description;
     private BookingStatus status;
     private String shopName;
+    private Boolean homeAssistance;
 
 
 
@@ -72,6 +73,14 @@ public class BookingBean {
     }
     public void setShopId(Integer shopId) {
         this.shopId = shopId;
+    }
+
+    public void setHomeAssistance(Boolean homeAssistance) {
+        this.homeAssistance = homeAssistance;
+    }
+
+    public Boolean getHomeAssistance() {
+        return homeAssistance;
     }
 }
 

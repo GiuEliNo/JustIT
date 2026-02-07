@@ -11,4 +11,6 @@ public class ClientQuery {
 
     public static final String UPDATE_PASSWORD = "UPDATE User SET password = ? WHERE username = ? AND password = ?";
 
+    public static final String SELECT_ADDRESS = "SELECT address FROM User WHERE username = ?";
+
 }

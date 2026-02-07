@@ -33,6 +33,7 @@ public class BookingController {
                 .timeslot(bookingBean.getTimeSlot())
                 .description(bookingBean.getDescription())
                 .status(BookingStatus.PENDING)
+                .homeAssistance(bookingBean.getHomeAssistance())
                 .build();
 
         try {
@@ -60,6 +61,7 @@ public class BookingController {
             bean.setTimeSlot(b.getTimeSlot());
             bean.setDescription(b.getDescription());
             bean.setStatus(b.getStatus());
+            bean.setHomeAssistance(b.getHomeAssistance());
 
             bookingBeans.add(bean);
         }
@@ -81,6 +83,7 @@ public class BookingController {
             bean.setDescription(b.getDescription());
             bean.setStatus(b.getStatus());
             bean.setShopName(b.getShopName());
+            bean.setHomeAssistance(b.getHomeAssistance());
 
             bookingBeans.add(bean);
         }
@@ -100,6 +103,7 @@ public class BookingController {
         bean.setDescription(booking.getDescription());
         bean.setStatus(booking.getStatus());
         bean.setShopName(booking.getShopName());
+        bean.setHomeAssistance(booking.getHomeAssistance());
 
         return bean;
     }

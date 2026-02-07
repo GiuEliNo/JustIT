@@ -18,6 +18,7 @@ public class Booking {
     private TimeSlot timeSlot;
     private String description;
     private String shopName;
+    private Boolean homeAssistance;
 
     private BookingState currentState;
     private BookingStatus status;
@@ -36,6 +37,7 @@ public class Booking {
         this.description = builder.description;
         this.shopName = builder.shopName;
         this.status = builder.status;
+        this.homeAssistance = builder.homeAssistance;
 
         this.currentState = BookingStateFactory.fromStatus(builder.status);
 
@@ -48,12 +50,13 @@ public class Booking {
     public static class Builder {
         private Integer bookingId;
         private Integer shopId;
-        private String username;
+        private final String username;
         private LocalDate date;
         private TimeSlot timeSlot;
         private String description;
         private String shopName;
         private BookingStatus status;
+        private Boolean homeAssistance;
 
 
         public Builder(String username) {
@@ -97,9 +100,15 @@ public class Booking {
             return this;
         }
 
+        public Builder homeAssistance(Boolean homeAssistance) {
+            this.homeAssistance = homeAssistance;
+            return this;
+        }
+
         public Booking build() {
             return new Booking(this);
         }
+
     }
 
 
@@ -129,6 +138,13 @@ public class Booking {
     }
     public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
+    }
+    public void setHomeAssistance(Boolean homeAssistance){
+        this.homeAssistance = homeAssistance;
+    }
+
+    public Boolean getHomeAssistance() {
+        return homeAssistance;
     }
 
     public void initStateMachine(BookingState initialState, BookingStatus status) {

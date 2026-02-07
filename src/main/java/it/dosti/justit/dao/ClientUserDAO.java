@@ -20,4 +20,6 @@ public interface ClientUserDAO extends UserDAO {
     boolean updateEmail(String username, String password) throws UpdateOnDBException;
 
     boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException;
+
+    String getAddress(String username);
 }

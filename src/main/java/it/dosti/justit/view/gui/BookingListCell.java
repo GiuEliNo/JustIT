@@ -31,7 +31,9 @@ public class BookingListCell extends ListCell<BookingBean> {
 
             Label statusLabel = new Label(item.getStatus().toString());
 
-            topRow.getChildren().addAll(shopLabel, dateLabel, timeSlotLabel, descriptionLabel, statusLabel);
+            Label homeAssistanceLabel = new Label(item.getHomeAssistance().toString());
+
+            topRow.getChildren().addAll(shopLabel, dateLabel, timeSlotLabel, descriptionLabel, statusLabel, homeAssistanceLabel);
 
             vbox.getChildren().addAll(topRow);
             setGraphic(vbox);

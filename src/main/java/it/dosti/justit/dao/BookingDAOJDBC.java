@@ -23,6 +23,7 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String STATE = "state";
     private static final String USERNAME = "username";
     private static final String IDSHOP = "idShop";
+    private static final String ISHOMEASSISTANCE = "isHomeAssistance";
 
     @Override
     public int addBooking(Booking booking) {
@@ -37,6 +38,7 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setString(3, booking.getDate().toString());
             pstmt.setString(4, booking.getTimeSlot().toString());
             pstmt.setString(5, booking.getDescription());
+            pstmt.setBoolean(6, booking.getHomeAssistance());
 
             pstmt.executeUpdate();
 
@@ -80,6 +82,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -89,6 +92,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .timeslot(timeSlot)
                         .description(description)
                         .status(status)
+                        .homeAssistance(homeAssistance)
                         .build();
 
 
@@ -126,6 +130,8 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
+                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
                         .shopId(shopId)
@@ -133,6 +139,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .timeslot(timeSlot)
                         .description(description)
                         .status(status)
+                        .homeAssistance(homeAssistance)
                         .build();
 
 
@@ -212,6 +219,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .timeslot(TimeSlot.valueOf(rs.getString(TIMESLOT)))
                         .description(rs.getString(DESCRIPTION))
                         .status(BookingStatus.valueOf(rs.getString(STATE)))
+                        .homeAssistance(rs.getBoolean(ISHOMEASSISTANCE))
                         .build();
             }
 
