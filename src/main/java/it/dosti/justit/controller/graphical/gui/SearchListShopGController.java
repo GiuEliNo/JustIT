@@ -1,9 +1,9 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.gui.ShopListCell;
 import javafx.fxml.FXML;
@@ -21,7 +21,7 @@ public class SearchListShopGController extends BaseGController{
     private SVGPath searchIcon;
 
     @FXML
-    private ListView<Shop> listView;
+    private ListView<ShopBean> listView;
 
     @FXML
     private ToggleButton filterRadiusButton;
@@ -45,7 +45,7 @@ public class SearchListShopGController extends BaseGController{
 
         listView.setCellFactory(ls -> new ShopListCell(){});
         float defaultRadius = (float) radiusSlider.getMin();
-        List<Shop> shopList = appController.filterByRadius(defaultRadius);
+        List<ShopBean> shopList = appController.filterByRadius(defaultRadius);
         listView.getItems().addAll(shopList);
         searchField.textProperty().addListener((observable, oldValue, newValue) ->
             updateListView(newValue));
@@ -55,13 +55,13 @@ public class SearchListShopGController extends BaseGController{
         SearchBean bean = new SearchBean();
         bean.setSearchText(searchText);
 
-        List<Shop> results = appController.search(bean);
+        List<ShopBean> results = appController.search(bean);
         listView.getItems().setAll(results);
     }
 
     public void onSelectPage() throws NavigationException {
 
-        Shop selected = listView.getSelectionModel().getSelectedItem();
+        ShopBean selected = listView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             appController.pageSelected(selected);
             navigation.navigate(Screen.PAGE_SHOP_USER);
@@ -70,7 +70,7 @@ public class SearchListShopGController extends BaseGController{
 
     public void filterRadiusButtonClicked() {
         listView.getItems().clear();
-        List<Shop>shopList = appController.filterByRadius(radiusSlider.valueProperty().getValue().floatValue());
+        List<ShopBean> shopList = appController.filterByRadius(radiusSlider.valueProperty().getValue().floatValue());
         listView.getItems().addAll(shopList);
     }
 }

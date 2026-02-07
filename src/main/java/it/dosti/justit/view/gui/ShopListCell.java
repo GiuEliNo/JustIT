@@ -1,6 +1,6 @@
 package it.dosti.justit.view.gui;
 
-import it.dosti.justit.model.Shop;
+import it.dosti.justit.bean.ShopBean;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -10,12 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class ShopListCell extends ListCell<Shop> {
+public class ShopListCell extends ListCell<ShopBean> {
     public ShopListCell() {
         getStyleClass().add("shop-list-cell");
     }
     @Override
-    protected void updateItem(Shop item, boolean empty) {
+    protected void updateItem(ShopBean item, boolean empty) {
         super.updateItem(item, empty);
 
         if(empty || item == null) {

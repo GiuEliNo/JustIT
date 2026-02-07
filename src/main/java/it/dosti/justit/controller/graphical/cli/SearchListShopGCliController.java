@@ -1,9 +1,9 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBrowseShopView;
 
@@ -55,7 +55,7 @@ public class SearchListShopGCliController extends BaseCliController{
 
     }
 
-    private void askShop(List<Shop> shops) {
+    private void askShop(List<ShopBean> shops) {
         Integer shopIdSelected;
 
         do {
@@ -66,17 +66,17 @@ public class SearchListShopGCliController extends BaseCliController{
         } while (shopIdSelected < 1 || shopIdSelected > shops.size());
 
 
-        appController.pageSelected(shops.get(shopIdSelected -1));
+        appController.pageSelected(shops.get(shopIdSelected - 1));
     }
 
-    private List<Shop> searchShop() {
+    private List<ShopBean> searchShop() {
 
         String queryShop = browseShopView.askQueryShop();
 
         SearchBean searchBean = new SearchBean();
         searchBean.setSearchText(queryShop);
 
-        List<Shop> shops = appController.search(searchBean);
+        List<ShopBean> shops = appController.search(searchBean);
 
         browseShopView.renderShops(shops);
 
@@ -84,8 +84,8 @@ public class SearchListShopGCliController extends BaseCliController{
 
     }
 
-    private List<Shop> allShop() {
-        List<Shop> shops = appController.getAllShops();
+    private List<ShopBean> allShop() {
+        List<ShopBean> shops = appController.getAllShops();
         browseShopView.renderShops(shops);
 
         return shops;
