@@ -3,6 +3,7 @@ package it.dosti.justit.bean;
 import it.dosti.justit.model.Coordinates;
 
 public class ShopBean {
+    private Integer id;
     private String name;
     private String address;
     private String phone;
@@ -13,6 +14,14 @@ public class ShopBean {
     private boolean homeAssistance;
     private String homeAssistanceMessage;
     private Coordinates coordinates;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

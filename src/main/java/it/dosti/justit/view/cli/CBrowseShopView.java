@@ -1,6 +1,6 @@
 package it.dosti.justit.view.cli;
 
-import it.dosti.justit.model.Shop;
+import it.dosti.justit.bean.ShopBean;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class CBrowseShopView extends BaseCliView{
         return scanner.nextLine();
     }
 
-    public void renderShops(List<Shop> allShops) {
+    public void renderShops(List<ShopBean> allShops) {
         if (allShops == null || allShops.isEmpty()) {
             System.out.println("Shop not found");
             return;
@@ -36,7 +36,7 @@ public class CBrowseShopView extends BaseCliView{
         System.out.println(separatorLine);
 
         for (int i = 0; i < allShops.size(); i++) {
-            Shop shop = allShops.get(i);
+            ShopBean shop = allShops.get(i);
             System.out.printf(
                     TABLE_HEADER_FORMAT,
                     (i + 1),
