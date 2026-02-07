@@ -27,13 +27,10 @@ public class ReviewListShopUserGCliController extends BaseCliController {
 
         String choice = reviewView.askChoice();
 
-        switch (choice){
-            case "0":
-                navigation.navigate(Screen.PAGE_SHOP_USER);
-                break;
-            default:
-                navigation.navigate(Screen.REVIEWS_BOX);
-                break;
+        if(choice.contentEquals("0")) {
+            navigation.navigate(Screen.PAGE_SHOP_USER);
+        } else {
+            navigation.navigate(Screen.REVIEWS_BOX);
         }
     }
 }

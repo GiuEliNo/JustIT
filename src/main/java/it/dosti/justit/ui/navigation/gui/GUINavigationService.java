@@ -59,11 +59,7 @@ public class GUINavigationService implements NavigationService {
             case TOPBAR:
                 setContent(getActiveTopPane(), loadView(screen));
                 return;
-            case TAB_PANE_USER_PROFILE:
-                selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.ACCOUNT_PAGE_USER);
-                return;
-            case ACCOUNT_PAGE_USER:
+            case TAB_PANE_USER_PROFILE, ACCOUNT_PAGE_USER:
                 selectUserTab(userMainView.getProfileTab());
                 showProfileUserView(Screen.ACCOUNT_PAGE_USER);
                 return;
@@ -74,6 +70,7 @@ public class GUINavigationService implements NavigationService {
             case REVIEWS_LIST_TECH:
                 selectTechTab(techMainView.getReviewTab());
                 setContent(techMainView.getReviewPane(), loadView(screen));
+                return;
             case PAYMENTS:
                 selectUserTab(userMainView.getProfileTab());
                 showProfileUserView(Screen.PAYMENTS);
@@ -122,14 +119,14 @@ public class GUINavigationService implements NavigationService {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(guiScreen.getFxmlPath()));
 
         try {
-            Parent root = loader.load();
+            Parent rootParent = loader.load();
             BaseGController controller = loader.getController();
 
             if (controller != null) {
                 controller.setNavigation(this);
             }
 
-            return root;
+            return rootParent;
 
         } catch (IOException e) {
             throw new RuntimeException("Impossibile caricare FXML: " + guiScreen.getFxmlPath(), e);

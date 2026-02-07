@@ -17,7 +17,7 @@ public class ReviewListTechGCliController extends BaseCliController {
         List<ReviewBean> reviewBeanList = appController.getReviews();
 
         if (reviewBeanList.isEmpty()) {
-            System.out.println("No reviews available.");
+            reviewView.noReview();
         } else {
             for (ReviewBean reviewBean : reviewBeanList) {
                 reviewView.renderReview(reviewBean);
@@ -26,13 +26,10 @@ public class ReviewListTechGCliController extends BaseCliController {
 
         String choice = reviewView.askChoice();
 
-        switch (choice){
-            case "0":
-                navigation.navigate(Screen.MAIN_TECH);
-                break;
-            default:
-                navigation.navigate(Screen.MAIN_TECH);
-                break;
+         if (choice.contentEquals("0")) {
+             navigation.navigate(Screen.MAIN_TECH);
+         } else{
+             navigation.navigate(Screen.REVIEWS_LIST_TECH);
         }
     }
 }

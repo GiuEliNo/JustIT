@@ -65,7 +65,7 @@ public class RegisterTechGController extends BaseGController{
             } else {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException | UserNotFoundException | ShopNotFoundException e){
+        }catch(RegisterOnDbException| ShopNotFoundException e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
 

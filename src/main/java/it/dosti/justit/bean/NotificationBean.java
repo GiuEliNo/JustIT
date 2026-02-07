@@ -12,16 +12,6 @@ public class NotificationBean {
     private LocalDateTime createdAt;
     private boolean read;
 
-    public NotificationBean(Integer id, String shopName, String username, Integer bookingId, String oldStatus, String newStatus, LocalDateTime createdAt, boolean read) {
-        this.id = id;
-        this.shopName = shopName;
-        this.username = username;
-        this.bookingId = bookingId;
-        this.oldStatus = oldStatus;
-        this.newStatus = newStatus;
-        this.createdAt = createdAt;
-        this.read = read;
-    }
 
     public Integer getId() {
         return id;
@@ -47,6 +37,39 @@ public class NotificationBean {
         return createdAt;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setBookingId(Integer bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public void setOldStatus(String oldStatus) {
+        this.oldStatus = oldStatus;
+    }
+
+    public void setNewStatus(String newStatus) {
+        this.newStatus = newStatus;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+
     public boolean isRead() {
         return read;
     }
@@ -55,9 +78,6 @@ public class NotificationBean {
         this.read = true;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
     public String getShopName() {
         return shopName;
     }

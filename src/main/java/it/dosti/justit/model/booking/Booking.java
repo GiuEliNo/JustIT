@@ -1,7 +1,5 @@
 package it.dosti.justit.model.booking;
 
-import it.dosti.justit.model.Coordinates;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.observer.BookingStatusChange;
 import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
