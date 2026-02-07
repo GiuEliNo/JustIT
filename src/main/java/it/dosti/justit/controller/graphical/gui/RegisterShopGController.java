@@ -84,7 +84,6 @@ public class RegisterShopGController extends BaseGController {
         try {
             if (registerController.registerNewShop(shopBean)) {
                 JustItLogger.getInstance().info("Register shop successful");
-                navigation.navigate(Screen.MAIN);
                 navigation.navigate(Screen.REGISTER_TECH);
             } else {
                 throw new RegisterOnDbException("Register shop failed");

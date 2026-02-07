@@ -17,6 +17,7 @@ public enum GUIScreen {
     REGISTER_TECH("/registerTech.fxml"),
     REGISTER_USER("/registerUser.fxml"),
     REVIEWS_BOX("/reviewsBox.fxml"),
+    REVIEWS_LIST_TECH("/reviewsTech.fxml"),
     SEARCH_LIST_SHOP("/searchListShop.fxml"),
     TOPBAR("/topBar.fxml");
 
