@@ -43,7 +43,7 @@ class LoginControllerTest {
     void loginTestTechUser() {
         LoginController loginController = new LoginController();
 
-        boolean flag = true;
+        boolean flag;
         LoginBean loginBean = new LoginBean();
         loginBean.setUsername("tec.demo");
         loginBean.setPassword("password");
