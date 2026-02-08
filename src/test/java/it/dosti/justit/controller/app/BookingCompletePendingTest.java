@@ -9,10 +9,14 @@ import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
+import it.dosti.justit.utils.JustItLogger;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -52,5 +56,21 @@ class BookingCompletePendingTest {
         bookingBean.setBookingID(bookingId);
 
         assertThrows(InvalidBookingStateException.class, () -> controller.completeBooking(bookingBean));
+    }
+
+    @AfterEach
+    void tearDown() {
+        ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
+        if (bookingId == null) {
+            return;
+        }
+        String sql = "DELETE FROM Booking WHERE id = ?";
+        try (Connection conn = ConnectionDB.getInstance().connectDB();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bookingId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
     }
 }
