@@ -1,5 +1,6 @@
 package it.dosti.justit.model.booking.state;
 
+import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.model.booking.*;
 
 public class PendingState extends BookingState {
@@ -9,11 +10,10 @@ public class PendingState extends BookingState {
         switch (event) {
             case CONFIRM -> booking.changeStatus(BookingStatus.CONFIRMED);
             case REJECT  -> booking.changeStatus(BookingStatus.REJECTED);
-            default -> throw new IllegalStateException(
+            default -> throw new InvalidBookingStateException(
                     "Event " + event + " not allowed in PENDING"
             );
         }
     }
 }
-
 
