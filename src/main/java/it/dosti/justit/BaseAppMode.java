@@ -93,7 +93,7 @@ public abstract class BaseAppMode implements AppMode {
                 boolean r = f.setReadable(true, true);
                 boolean w = f.setWritable(true, true);
                 if (!r || !w) {
-                    JustItLogger.getInstance().warn("[DEMO MODE] Warning: permessi file temp non restrittivi.");
+                    JustItLogger.getInstance().warn("[DEMO MODE] Warning: temp file permissive not restricted.");
                 }
             }
 
@@ -101,7 +101,7 @@ public abstract class BaseAppMode implements AppMode {
                 db.setDbPath(tempDbPath);
                 populateDbData();
                 } catch (IOException | DatabaseInitializationException e) {
-            JustItLogger.getInstance().error("Errore critico avvio Demo Mode", e);
+            JustItLogger.getInstance().error("Critic Error Demo Mode", e);
         }
     }
 
