@@ -1,7 +1,6 @@
-package controllers;
+package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.LoginBean;
-import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.model.user.RoleType;
 import org.junit.jupiter.api.BeforeEach;

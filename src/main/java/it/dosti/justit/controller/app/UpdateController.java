@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.dao.*;
+import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
@@ -33,7 +34,11 @@ public class UpdateController {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        return dao.updatePassword(username, newPassword, oldPassword);
+        boolean updated = dao.updatePassword(username, newPassword, oldPassword);
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
     }
 
     public boolean updateEmail(String email) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
@@ -54,19 +59,42 @@ public class UpdateController {
         else return false;
     }
 
-    public boolean updateAddress(String address) throws UpdateOnDBException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        CoordinatesDAO coordDao= new CoordinatesDAOAPI();
-        Coordinates coord = coordDao.getCoordinates(address).join();
-        ClientUser user;
-        if(coord != null){
-            user = new ClientUser(username,address, coord);
+    public boolean updateAddress(String address) throws UpdateOnDBException, InvalidAddressException {
+        Coordinates coord;
+        try {
+            CoordinatesDAO coordDao = new CoordinatesDAOAPI();
+            coord = coordDao.getCoordinates(address).join();
+        } catch (Exception e) {
+            throw new InvalidAddressException("Invalid address", e);
         }
-        else{
-            user = new ClientUser(username, address);
+        if (coord == null) {
+            throw new InvalidAddressException("Invalid address");
         }
-        return dao.updateAddress(user);
+
+        if (SessionManager.getInstance().isClient()) {
+            ClientUserDAO dao = new ClientUserDAOJDBC();
+            String username = SessionManager.getInstance().getLoggedUser().getUsername();
+            ClientUser user = new ClientUser(username, address, coord);
+            boolean updated = dao.updateAddress(user);
+            if (updated) {
+                refreshSession();
+            }
+            return updated;
+        } else {
+
+            ShopDAO dao = new ShopDAOJDBC();
+            Shop shop = SessionManager.getInstance().getCurrentShop();
+            Shop updateShop = new Shop.Builder(shop.getName())
+                    .id(shop.getId())
+                    .address(address)
+                    .coordinates(coord)
+                    .build();
+            boolean updated = dao.updateAddressCoordinates(updateShop);
+            if (updated) {
+                refreshSession();
+            }
+            return updated;
+        }
     }
 
 
@@ -91,95 +119,113 @@ public class UpdateController {
     public boolean updateNameShop(String name) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateNameShop(new Shop
+        boolean updated = dao.updateNameShop(new Shop
                 .Builder(name)
                 .id(shop.getId())
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
     }
 
     public boolean updateDescriptionShop(String description) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateDescriptionShop(new Shop
+        boolean updated = dao.updateDescriptionShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .description(description)
                 .build());
-    }
-
-    public boolean updateAddressShop(String address) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
-        CoordinatesDAO coordDao= new CoordinatesDAOAPI();
-        Coordinates coord = coordDao.getCoordinates(address).join();
-        Shop updateShop;
-        if(coord != null) {
-            updateShop = new Shop.Builder(shop.getName())
-                    .id(shop.getId())
-                    .address(address)
-                    .coordinates(coord)
-                    .build();
+        if (updated) {
+            refreshSession();
         }
-        else{
-            JustItLogger.getInstance().warn("New coordinates not found");
-            updateShop = new Shop.Builder(shop.getName())
-                    .id(shop.getId())
-                    .address(address)
-                    .build();
-        }
-        return dao.updateAddressCoordinates(updateShop);
+        return updated;
     }
 
     public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updatePhoneShop(new Shop
+        boolean updated = dao.updatePhoneShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .phone(phoneNumber)
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
     }
 
 
     public boolean updateEmailShop(String email) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateEmailShop(new Shop
+        boolean updated = dao.updateEmailShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .email(email)
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
 
     }
 
     public boolean updateOpeningHourShop(String openingHour) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateOpeningHoursShop(new Shop
+        boolean updated = dao.updateOpeningHoursShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .openingHours(openingHour)
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
     }
 
     public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateHomeAssistanceShop(new Shop
+        boolean updated = dao.updateHomeAssistanceShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .homeAssistance(isHomeAssistance)
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
     }
 
     public boolean updateImageShop(byte[] newImage) throws UpdateOnDBException {
         ShopDAO dao = new ShopDAOJDBC();
         Shop shop = SessionManager.getInstance().getCurrentShop();
-        return dao.updateImageShop(new Shop
+        boolean updated = dao.updateImageShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .image(newImage)
                 .build());
+        if (updated) {
+            refreshSession();
+        }
+        return updated;
+    }
+
+    private void refreshSession() {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        try {
+            if (SessionManager.getInstance().isClient()) {
+                updateSessionUser(username);
+            } else {
+                updateSessionTechnician(username);
+            }
+        } catch (UserNotFoundException | ShopNotFoundException e) {
+            JustItLogger.getInstance().error("Failed to refresh session", e);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
+import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
@@ -47,7 +48,7 @@ public class AccountController {
         return updateController.updatePassword(passwordBean.getNewPassword(), passwordBean.getOldPassword());
     }
 
-    public boolean editAddress(UserBean userBean) throws  UpdateOnDBException {
+    public boolean editAddress(UserBean userBean) throws UpdateOnDBException, InvalidAddressException {
         UpdateController updateController = new UpdateController();
         return updateController.updateAddress(userBean.getAddress());
     }

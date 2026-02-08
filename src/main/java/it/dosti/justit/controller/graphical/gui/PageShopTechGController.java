@@ -3,6 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
@@ -87,7 +88,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch (UpdateOnDBException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -110,10 +111,10 @@ public class PageShopTechGController extends BaseGController{
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField streetField = new TextField();
-        streetField.setPromptText("Es. Via Roma 1");
+        streetField.setPromptText("Es. Via Rieti 1");
 
         TextField cityField = new TextField();
-        cityField.setPromptText("Es. Milano");
+        cityField.setPromptText("Es. Roma");
 
         TextField countryField = new TextField();
         countryField.setPromptText("Es. Italia");
@@ -142,7 +143,7 @@ public class PageShopTechGController extends BaseGController{
             if(result.isPresent()){
                 ShopBean shopBean = new ShopBean();
 
-                shopBean.setAddress(result.toString());
+                shopBean.setAddress(result.get().toString());
                 try {
                     if(!appController.editShopAddress(shopBean)){
                         Notifications.create()
@@ -155,8 +156,18 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch (InvalidAddressException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
+                    Notifications.create()
+                            .title(EDIT_SHOP_ADDRESS)
+                            .text("Address not valid!")
+                            .showError();
+                } catch (UpdateOnDBException e) {
+                    JustItLogger.getInstance().error(e.getMessage(), e);
+                    Notifications.create()
+                            .title(EDIT_SHOP_ADDRESS)
+                            .text("Error save address, try again!")
+                            .showError();
                 }
             }
         this.updatePageInfo();

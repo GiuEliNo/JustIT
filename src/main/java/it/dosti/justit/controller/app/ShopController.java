@@ -4,6 +4,7 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;
@@ -29,9 +30,9 @@ public class ShopController {
         bean.setCoordinates(shop.getCoordinates());
 
         if (shop.isHomeAssistance()) {
-            bean.setHomeAssistanceMessage("Assistenza a domicilio disponibile");
+            bean.setHomeAssistanceMessage("Home assistance available");
         } else {
-            bean.setHomeAssistanceMessage("Assistenza a domicilio non disponibile");
+            bean.setHomeAssistanceMessage("Home assistance not available");
         }
 
         return bean;
@@ -51,9 +52,9 @@ public class ShopController {
         return controller.updateNameShop(bean.getName());
     }
 
-    public boolean editShopAddress(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopAddress(ShopBean bean) throws UpdateOnDBException, InvalidAddressException {
         UpdateController controller = new UpdateController();
-        return controller.updateAddressShop(bean.getAddress());
+        return controller.updateAddress(bean.getAddress());
     }
 
     public boolean editShopDescription(ShopBean bean) throws UpdateOnDBException {

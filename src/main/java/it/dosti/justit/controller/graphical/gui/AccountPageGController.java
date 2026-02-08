@@ -4,6 +4,7 @@ import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.view.gui.AddressDialog;
@@ -223,13 +224,21 @@ public class AccountPageGController extends BaseGController {
                             .text("Success")
                             .showConfirm();
                 }
-            } catch ( UpdateOnDBException e) {
+            } catch (InvalidAddressException e) {
                 JustItLogger.getInstance().error(e.getMessage(), e);
+                Notifications.create()
+                        .title(EDIT_ADDRESS)
+                        .text("Address not valid")
+                        .showError();
+            } catch (UpdateOnDBException e) {
+                JustItLogger.getInstance().error(e.getMessage(), e);
+                Notifications.create()
+                        .title(EDIT_ADDRESS)
+                        .text("Error save address, try again!")
+                        .showError();
             }
         }
         this.getPageInfo();
-
-
 
     }
 }
