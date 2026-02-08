@@ -32,6 +32,9 @@ public class BookingPageGController extends BaseGController {
     void initialize() {
         appController = new BookingController();
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
+        if(!SessionManager.getInstance().getCurrentShop().isHomeAssistance()) {
+            homeAssistanceCheck.setDisable(true);
+        }
 
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
