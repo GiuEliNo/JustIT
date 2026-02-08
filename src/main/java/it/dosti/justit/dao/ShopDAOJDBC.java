@@ -143,9 +143,11 @@ public class ShopDAOJDBC implements ShopDAO{
             if(rs.next()){
                 JustItLogger.getInstance().info(String.format("Shop image by id %d", shopId));
                 InputStream is = rs.getBinaryStream("image");
-                Image checkImage = new Image(is);
-                if(!checkImage.isError()){
-                    return checkImage;
+                if(is!=null){
+                    Image checkImage = new Image(is);
+                    if(!checkImage.isError()){
+                        return checkImage;
+                    }
                 }
             }
         } catch (SQLException e) {

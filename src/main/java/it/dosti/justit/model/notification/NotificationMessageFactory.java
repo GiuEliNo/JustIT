@@ -39,8 +39,8 @@ public class NotificationMessageFactory {
 
     private static String buildReview(Notification n, Boolean isClient) {
         if (Boolean.TRUE.equals(isClient)) {
-            return "Review created.";
+            return "Review #" + n.getReviewId() +" created.";
         }
-        return n.getUsername() + " left a new review for " + n.getShopName() + ".";
+        return n.getUsername() + " left a new review #" + n.getReviewId() + " for " + n.getShopName() + ".";
     }
 }

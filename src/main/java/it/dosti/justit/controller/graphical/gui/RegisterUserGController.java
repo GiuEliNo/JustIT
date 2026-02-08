@@ -61,7 +61,7 @@ public class RegisterUserGController extends BaseGController{
         bean.setAddress(streetField.getText() + ","  + cityField.getText() + "," + countryField.getText());
         bean.setRole(String.valueOf(RoleType.CLIENT));
 
-        if(appController.isUsernameAvailable(bean)){
+        if(!appController.isUsernameAvailable(bean)){
 
             warningLabel.setText("Username not available");
             return;

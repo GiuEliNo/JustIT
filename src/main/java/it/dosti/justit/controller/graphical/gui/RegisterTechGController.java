@@ -57,7 +57,7 @@ public class RegisterTechGController extends BaseGController{
         technicRegisterBean.setName(nameField.getText());
         technicRegisterBean.setRole(RoleType.TECHNICIAN.toString());
 
-        if(registerController.isUsernameAvailable(technicRegisterBean)) {
+        if(!registerController.isUsernameAvailable(technicRegisterBean)) {
             warningLabel.setText("Username already in use");
             return;
         }
