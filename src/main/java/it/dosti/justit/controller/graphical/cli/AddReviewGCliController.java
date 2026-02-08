@@ -7,7 +7,9 @@ import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.exceptions.NavigationException;
+import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CAddReviewView;
 
 import java.util.List;
@@ -87,7 +89,11 @@ public class AddReviewGCliController extends BaseCliController {
         reviewBean.setStars(rating);
         reviewBean.setBookingId(selectedBooking.getBookingID());
 
-        reviewController.addReview(reviewBean);
+        try{
+            reviewController.addReview(reviewBean);
+        }catch(ReviewWithoutBookingException e){
+            JustItLogger.getInstance().error(e.getMessage(),e);
+        }
     }
 
     private BookingBean findBookingById(Integer bookingId, List<BookingBean> bookingCompleted) {
