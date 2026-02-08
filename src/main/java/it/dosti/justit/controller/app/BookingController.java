@@ -3,6 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.BookingCSVBean;
 import it.dosti.justit.dao.*;
+import it.dosti.justit.exceptions.BookingAlreadyExistsException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -13,6 +14,7 @@ import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +36,16 @@ public class BookingController {
                 .build();
 
         try {
+            if (dao.existsBooking(newBooking.getShopId(), newBooking.getDate(), newBooking.getTimeSlot())) {
+                throw new BookingAlreadyExistsException("Booking already active for shop/date/timeslot");
+            }
             Integer bookingId = dao.addBooking(newBooking);
             newBooking.setBookingId(bookingId);
             newBooking.notifyStatusChange(newBooking, null);
             JustItLogger.getInstance().info("Booking added successfully");
             return true;
 
-        } catch (Exception ex) {
+        } catch (SQLException e) {
             JustItLogger.getInstance().error("Error adding booking");
             return false;
         }

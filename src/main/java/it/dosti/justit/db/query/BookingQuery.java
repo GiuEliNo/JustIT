@@ -19,4 +19,6 @@ public class BookingQuery {
     public static final String SELECT_COMPLETED_WITHOUT_REVIEW_SHOP = "SELECT B.id, B.username, B.date, B.timeSlot, " +
             "B.description, B.state, B.isHomeAssistance FROM Booking B LEFT JOIN reviews R ON R.booking_id = B.id " +
             "WHERE B.username = ? AND B.idShop = ? AND B.state IN ('COMPLETED') AND R.booking_id IS NULL";
+
+    public static final String EXIST_BOOKING = "SELECT 1 FROM Booking WHERE idShop = ? AND date = ? AND timeSlot = ? " + "AND state IN ('PENDING', 'CONFIRMED') LIMIT 1";
 }

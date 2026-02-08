@@ -1,5 +1,4 @@
 package it.dosti.justit.controller.graphical.gui;
-
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;

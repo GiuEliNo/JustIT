@@ -26,7 +26,7 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String ISHOMEASSISTANCE = "isHomeAssistance";
 
     @Override
-    public int addBooking(Booking booking) {
+    public int addBooking(Booking booking) throws SQLException {
         String sql = BookingQuery.INSERT_BOOKING;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -42,18 +42,34 @@ public class BookingDAOJDBC implements BookingDAO {
 
             pstmt.executeUpdate();
 
-            try(ResultSet rs = pstmt.getGeneratedKeys()){
-                if(rs.next()) {
-                    return rs.getInt(1);
-                }
-                else {
-                    throw new SQLException();
-                }
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()) {
+                return rs.getInt(1);
             }
 
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
-            return -1;
+            throw e;
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) throws SQLException {
+        String sql = BookingQuery.EXIST_BOOKING;
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setInt(1, shopId);
+            pstmt.setString(2, date.toString());
+            pstmt.setString(3, timeSlot.name());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            throw e;
         }
     }
 
