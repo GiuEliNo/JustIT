@@ -3,6 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.dao.ReviewDAO;
 import it.dosti.justit.dao.ReviewDAOJDBC;
+import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.SessionManager;
 
@@ -19,7 +20,7 @@ public class ReviewController {
         this.username = SessionManager.getInstance().getLoggedUser().getUsername();
     }
 
-    public void addReview(ReviewBean reviewBean) {
+    public void addReview(ReviewBean reviewBean) throws ReviewWithoutBookingException {
 
         reviewBean.setUsername(username);
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
@@ -31,12 +32,11 @@ public class ReviewController {
                 reviewBean.getUsername(),
                 reviewBean.getBookingId()
         );
-        Integer reviewId = reviewDao.addReviewToShop(review);
-
-        if (reviewId != null) {
-            review.setId(reviewId);
-            review.notifyCreated();
-        }
+            Integer reviewId = reviewDao.addReviewToShop(review);
+            if (reviewId != null) {
+                review.setId(reviewId);
+                review.notifyCreated();
+            }
     }
 
     public List<ReviewBean> getReviews() {
