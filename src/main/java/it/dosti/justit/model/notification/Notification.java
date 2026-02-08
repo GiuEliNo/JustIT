@@ -120,6 +120,9 @@ public class Notification {
         return shopName;
     }
 
+    public Integer getReviewId() {
+        return reviewId;
+    }
 
     public String getMessage(Boolean isClient) {
         return NotificationMessageFactory.createNotification(this, isClient);
