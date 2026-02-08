@@ -168,7 +168,7 @@ public class AccountPageGController extends BaseGController {
 
         Dialog<AddressDialog> dialog = new Dialog<>();
         dialog.setTitle(EDIT_ADDRESS);
-        dialog.setHeaderText("Update Shop Address");
+        dialog.setHeaderText("Update user Address");
 
         ButtonType loginButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
