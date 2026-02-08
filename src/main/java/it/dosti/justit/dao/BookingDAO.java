@@ -20,4 +20,8 @@ public interface BookingDAO {
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
 
     Booking getBookingById(Integer bookingId);
+
+    List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId);
+
+    List<Booking> getCompletedBookingsWithoutReview(String username);
 }

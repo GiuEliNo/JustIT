@@ -1,15 +1,20 @@
 package it.dosti.justit.view.gui;
 
+import it.dosti.justit.bean.BookingBean;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import org.controlsfx.control.Rating;
+
+import java.util.List;
 
 public class DialogAddReview extends Dialog<ButtonType>{
     private final TextField titleField;
     private final TextArea reviewArea;
     private final Rating ratingStars;
+    private final ComboBox<BookingBean> bookingCombo;
 
-    public DialogAddReview() {
+    public DialogAddReview(List<BookingBean> bookings) {
         setTitle("Add a Review");
 
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -28,7 +33,28 @@ public class DialogAddReview extends Dialog<ButtonType>{
 
         this.ratingStars = new Rating(5);
 
+        this.bookingCombo = new ComboBox<>();
+        bookingCombo.getItems().setAll(bookings);
+        bookingCombo.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(BookingBean booking) {
+                if (booking == null) {
+                    return "";
+                }
+                return "Booking #" + booking.getBookingID() + " - " + booking.getDate() + " - " + booking.getTimeSlot();
+            }
+
+            @Override
+            public BookingBean fromString(String string) {
+                return null;
+            }
+        });
+        if (!bookingCombo.getItems().isEmpty()) {
+            bookingCombo.getSelectionModel().selectFirst();
+        }
+
         vbox.getChildren().addAll(
+                new Label("Booking"), bookingCombo,
                 new Label("Title"), titleField,
                 new Label("Review"), reviewArea,
                 new Label("Rating"), ratingStars
@@ -45,6 +71,10 @@ public class DialogAddReview extends Dialog<ButtonType>{
     }
     public double getRatingStars() {
         return ratingStars.getRating();
+    }
+
+    public BookingBean getSelectedBooking() {
+        return bookingCombo.getSelectionModel().getSelectedItem();
     }
 
 }

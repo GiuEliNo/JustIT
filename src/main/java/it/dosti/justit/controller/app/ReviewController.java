@@ -23,7 +23,14 @@ public class ReviewController {
 
         reviewBean.setUsername(username);
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
-        Review review = new Review(reviewBean.getTitle(), reviewBean.getStars(), reviewBean.getReview(), shopId, reviewBean.getUsername());
+        Review review = new Review(
+                reviewBean.getTitle(),
+                reviewBean.getStars(),
+                reviewBean.getReview(),
+                shopId,
+                reviewBean.getUsername(),
+                reviewBean.getBookingId()
+        );
         Integer reviewId = reviewDao.addReviewToShop(review);
 
         if (reviewId != null) {
@@ -46,9 +53,5 @@ public class ReviewController {
         }
 
         return reviewBeans;
-    }
-
-    public Boolean canReview() {
-        return reviewDao.checkUserCanReview(username, SessionManager.getInstance().getCurrentShop().getId());
     }
 }

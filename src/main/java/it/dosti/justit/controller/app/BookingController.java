@@ -66,6 +66,19 @@ public class BookingController {
         return toBean(booking);
     }
 
+    public List<BookingBean> getCompletedBookingsWithoutReviewUserPerShop() {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
+        List<Booking> bookings = dao.getCompletedBookingsWithoutReviewPerShop(username, shopId);
+        return toBeans(bookings);
+    }
+
+    public List<BookingBean> getCompletedBookingsWithoutReviewUser() {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        List<Booking> bookings = dao.getCompletedBookingsWithoutReview(username);
+        return toBeans(bookings);
+    }
+
     public void approveBooking(BookingBean bookingBean) {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();

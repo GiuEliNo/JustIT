@@ -32,8 +32,16 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 Integer star = rs.getInt("stars");
                 String text = rs.getString("review");
                 String username = rs.getString("username");
+                Integer bookingId = rs.getInt("booking_id");
 
-                Review review = new Review(title, star, text, shopId, username);
+                Review review = new Review(title,
+                        star,
+                        text,
+                        shopId,
+                        username,
+                        bookingId
+                );
+
                 reviews.add(review);
             }
         } catch (SQLException e) {
@@ -54,6 +62,7 @@ public class ReviewDAOJDBC implements ReviewDAO {
             pstmt.setString(3, review.getReview());
             pstmt.setInt(4, review.getShop());
             pstmt.setString(5, review.getUsername());
+            pstmt.setObject(6, review.getBookingId(), java.sql.Types.INTEGER);
 
             pstmt.executeUpdate();
 
@@ -65,27 +74,5 @@ public class ReviewDAOJDBC implements ReviewDAO {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
-    }
-
-    @Override
-    public Boolean checkUserCanReview(String username, Integer shopID) {
-        String sql = ReviewQuery.CHECK_BOOKING;
-        try(
-                Connection conn = ConnectionDB.getInstance().connectDB();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
-        )
-        {
-            pstmt.setString(1, username);
-            pstmt.setInt(2, shopID);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return false;
     }
 }

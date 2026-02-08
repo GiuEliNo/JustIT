@@ -228,4 +228,90 @@ public class BookingDAOJDBC implements BookingDAO {
         }
         return null;
     }
+
+    @Override
+    public List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId) {
+        String sql = BookingQuery.SELECT_COMPLETED_WITHOUT_REVIEW_SHOP;
+
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, username);
+            pstmt.setInt(2, shopId);
+
+            ResultSet rs = pstmt.executeQuery();
+            List<Booking> bookings = new ArrayList<>();
+            while (rs.next()) {
+                Integer bookingId = rs.getInt(ID);
+                String dateString = rs.getString(DATE);
+                String timeSlotString = rs.getString(TIMESLOT);
+                String description = rs.getString(DESCRIPTION);
+                BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
+                LocalDate date = LocalDate.parse(dateString);
+                TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+
+                Booking booking = new Booking.Builder(username)
+                        .bookingId(bookingId)
+                        .shopId(shopId)
+                        .date(date)
+                        .timeslot(timeSlot)
+                        .description(description)
+                        .status(status)
+                        .homeAssistance(homeAssistance)
+                        .build();
+
+                bookings.add(booking);
+            }
+            return bookings;
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<Booking> getCompletedBookingsWithoutReview(String username) {
+        String sql = BookingQuery.SELECT_COMPLETED_WITHOUT_REVIEW_USER;
+
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+            List<Booking> bookings = new ArrayList<>();
+            while (rs.next()) {
+                Integer shopId = rs.getInt(IDSHOP);
+                Integer bookingId = rs.getInt(ID);
+                String shopName = rs.getString(NAME);
+                String dateString = rs.getString(DATE);
+                String timeSlotString = rs.getString(TIMESLOT);
+                String description = rs.getString(DESCRIPTION);
+                BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
+                LocalDate date = LocalDate.parse(dateString);
+                TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
+                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+
+                Booking booking = new Booking.Builder(username)
+                        .bookingId(bookingId)
+                        .shopId(shopId)
+                        .shopName(shopName)
+                        .date(date)
+                        .timeslot(timeSlot)
+                        .description(description)
+                        .status(status)
+                        .homeAssistance(homeAssistance)
+                        .build();
+
+                bookings.add(booking);
+            }
+            return bookings;
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
 }

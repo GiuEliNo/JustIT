@@ -11,8 +11,9 @@ public class CAddReviewView extends BaseCliView{
         }
 
     public void renderBookingsCompleted(BookingBean bookingBean) {
-        System.out.println("Shop: " + bookingBean.getShopName());
-        System.out.println("Shop ID: " + bookingBean.getShopId());
+        System.out.println("Booking ID: " + bookingBean.getBookingID());
+        System.out.println("Shop: " + bookingBean.getShopName() + " (ID " + bookingBean.getShopId() + ")");
+        System.out.println("Date: " + bookingBean.getDate() + " - " + bookingBean.getTimeSlot());
         System.out.println("------------------------------------------------");
         }
 
@@ -22,8 +23,8 @@ public class CAddReviewView extends BaseCliView{
         return scanner.nextLine();
         }
 
-    public Integer askShopToReview() {
-        System.out.println("Enter Shop ID: ");
+    public Integer askBookingToReview() {
+        System.out.println("Enter Booking ID: ");
         return readIntCheck();
     }
 

@@ -2,48 +2,40 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.controller.app.ReviewController;
-import it.dosti.justit.dao.ShopDAO;
-import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.utils.JustItLogger;
-import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CAddReviewView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
     private ReviewController reviewController;
-    private List<Integer> shopIdCompleted = new ArrayList<>();
-    private List<BookingBean> bookingCompleted = new ArrayList<>();
 
     @Override
     public void initialize() throws NavigationException {
-        BookingController bookAppController = new BookingController();
         reviewController = new ReviewController();
         addReviewView = (CAddReviewView) view;
-        bookingCompleted = bookAppController.getBookingsByUser();
 
         showCompletedBookingToReview();
 
     }
 
     private void showCompletedBookingToReview() throws NavigationException {
+        BookingController bookAppController =  new BookingController();
+        List<BookingBean> bookingCompleted = bookAppController.getCompletedBookingsWithoutReviewUser();
+
         if (bookingCompleted.isEmpty()) {
             addReviewView.noCompletedBookings();
             navigation.navigate(Screen.MAIN_USER);
         }
 
         for(BookingBean b : bookingCompleted){
-            if(b.getStatus().name().equals("COMPLETED")){
-                shopIdCompleted.add(b.getShopId());
-                addReviewView.renderBookingsCompleted(b);
-            }
+            addReviewView.renderBookingsCompleted(b);
         }
 
         String choice = addReviewView.askChoice();
@@ -53,7 +45,7 @@ public class AddReviewGCliController extends BaseCliController {
                 navigation.navigate(Screen.MAIN_USER);
                 break;
             case "1":
-                this.addReview();
+                this.addReview(bookingCompleted);
                 navigation.navigate(Screen.ADD_REVIEW);
                 break;
             default:
@@ -64,23 +56,25 @@ public class AddReviewGCliController extends BaseCliController {
 
     }
 
-    private void addReview(){
+    private void addReview(List<BookingBean> bookingCompleted){
 
         ReviewBean reviewBean = new ReviewBean();
-        ShopDAO shopDAO = new ShopDAOJDBC();
+        BrowseShopController browseShopController = new BrowseShopController();
 
-        Integer shopId;
+        Integer bookingId;
+        BookingBean selectedBooking;
 
         do {
-            shopId = addReviewView.askShopToReview();
-        } while (!shopIdCompleted.contains(shopId));
+            bookingId = addReviewView.askBookingToReview();
+            selectedBooking = findBookingById(bookingId, bookingCompleted);
+        } while (selectedBooking == null);
 
-        try {
-            SessionManager.getInstance().setCurrentShop(shopDAO.retrieveShopById(shopId));
-        } catch (ShopNotFoundException e) {
-            JustItLogger.getInstance().error(e.getMessage(), e);
-            return;
-        }
+        ShopBean shopBean = new ShopBean();
+        shopBean.setId(selectedBooking.getShopId());
+        String shopName = selectedBooking.getShopName();
+
+        shopBean.setName(shopName != null ? shopName : "Shop #" + selectedBooking.getShopId());
+        browseShopController.pageSelected(shopBean);
 
         reviewBean.setTitle(addReviewView.askTitle());
         reviewBean.setReview(addReviewView.askDescription());
@@ -91,7 +85,17 @@ public class AddReviewGCliController extends BaseCliController {
         } while (rating < 0 || rating > 5);
 
         reviewBean.setStars(rating);
+        reviewBean.setBookingId(selectedBooking.getBookingID());
 
         reviewController.addReview(reviewBean);
+    }
+
+    private BookingBean findBookingById(Integer bookingId, List<BookingBean> bookingCompleted) {
+        for (BookingBean booking : bookingCompleted) {
+            if (booking.getBookingID().equals(bookingId)) {
+                return booking;
+            }
+        }
+        return null;
     }
 }

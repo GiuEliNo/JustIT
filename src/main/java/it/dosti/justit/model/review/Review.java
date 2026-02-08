@@ -10,13 +10,15 @@ public class Review {
     private String reviewText;
     private Integer shop;
     private String username;
+    private Integer bookingId;
 
-    public Review(String title, Integer star, String review, Integer shop, String username) {
+    public Review(String title, Integer star, String review, Integer shop, String username,  Integer bookingId) {
         this.title = title;
         this.star = star;
         this.reviewText = review;
         this.shop = shop;
         this.username = username;
+        this.bookingId = bookingId;
     }
 
     public void notifyCreated() {
@@ -63,5 +65,13 @@ public class Review {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Integer bookingId) {
+        this.bookingId = bookingId;
     }
 }
