@@ -21,7 +21,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UpdateFakeAddressTest {
+class UpdateFakeAddressTest {
 
     private static final String USERNAME = "demo";
     private static final String CITY = "Melly Town";
