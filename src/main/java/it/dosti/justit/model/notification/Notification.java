@@ -11,6 +11,7 @@ public class Notification {
     private final NotificationType type;
     private final String bookingStatus;
     private final LocalDateTime createdAt;
+    private final String message;
     private boolean read;
 
     private Notification(Builder builder) {
@@ -22,6 +23,7 @@ public class Notification {
         this.type = builder.type;
         this.bookingStatus = builder.bookingStatus;
         this.createdAt = builder.createdAt;
+        this.message = builder.message;
         this.read = builder.read;
     }
 
@@ -36,6 +38,7 @@ public class Notification {
         private NotificationType type;
         private String bookingStatus;
         private LocalDateTime createdAt;
+        private String message;
         private boolean read;
 
         public Builder(Integer id) {
@@ -74,6 +77,11 @@ public class Notification {
 
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
             return this;
         }
 
@@ -124,7 +132,7 @@ public class Notification {
         return reviewId;
     }
 
-    public String getMessage(Boolean isClient) {
-        return NotificationMessageFactory.createNotification(this, isClient);
+    public String getMessage() {
+        return message;
     }
 }

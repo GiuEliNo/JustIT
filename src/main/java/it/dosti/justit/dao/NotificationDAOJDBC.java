@@ -24,12 +24,13 @@ public class NotificationDAOJDBC implements NotificationDAO {
     private static final String REVIEW_ID = "review_id";
     private static final String BOOKING_STATUS = "booking_status";
     private static final String TYPE = "type";
+    private static final String MESSAGE = "message";
     private static final String CREATED_TIME = "created_time";
     private static final String READ = "read";
     private static final String SHOPNAME = "shop_name";
 
     @Override
-    public void insertBookingNotification(String username, Integer shopId, Integer bookingId, LocalDateTime createdTime) {
+    public void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime) {
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(NotificationQuery.INSERT_NOTIFICATION)
@@ -39,7 +40,8 @@ public class NotificationDAOJDBC implements NotificationDAO {
             pstmt.setInt(3, bookingId);
             pstmt.setNull(4, Types.INTEGER);
             pstmt.setString(5, NotificationType.BOOKING_STATUS.name());
-            pstmt.setString(6, createdTime.toString());
+            pstmt.setString(6, message);
+            pstmt.setString(7, createdTime.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -47,7 +49,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
     }
 
     @Override
-    public void insertReviewNotification(String username, Integer shopId, Integer reviewId, LocalDateTime createdTime) {
+    public void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime) {
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(NotificationQuery.INSERT_NOTIFICATION)
@@ -57,7 +59,8 @@ public class NotificationDAOJDBC implements NotificationDAO {
             pstmt.setNull(3, Types.INTEGER);
             pstmt.setInt(4, reviewId);
             pstmt.setString(5, NotificationType.REVIEW_CREATED.name());
-            pstmt.setString(6, createdTime.toString());
+            pstmt.setString(6, message);
+            pstmt.setString(7, createdTime.toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -97,6 +100,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
                 }
                 NotificationType type = NotificationType.valueOf(rs.getString(TYPE));
                 String bookingStatus = rs.getString(BOOKING_STATUS);
+                String message = rs.getString(MESSAGE);
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATED_TIME));
                 boolean read = rs.getInt(READ) == 1;
 
@@ -108,6 +112,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
                                 .reviewId(reviewId)
                                 .type(type)
                                 .bookingStatus(bookingStatus)
+                                .message(message)
                                 .createdAt(createdAt)
                                 .read(read)
                                 .build();
@@ -144,6 +149,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
                 }
                 NotificationType type = NotificationType.valueOf(rs.getString(TYPE));
                 String bookingStatus = rs.getString(BOOKING_STATUS);
+                String message = rs.getString(MESSAGE);
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATED_TIME));
                 boolean read = rs.getInt(READ) == 1;
 
@@ -155,6 +161,7 @@ public class NotificationDAOJDBC implements NotificationDAO {
                                 .reviewId(reviewId)
                                 .type(type)
                                 .bookingStatus(bookingStatus)
+                                .message(message)
                                 .createdAt(createdAt)
                                 .read(read)
                                 .build();

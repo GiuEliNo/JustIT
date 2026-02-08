@@ -6,41 +6,28 @@ public class NotificationMessageFactory {
     private NotificationMessageFactory(){}
 
 
-    public static String createNotification(Notification n, Boolean isClient) {
+    public static String createNotification(Notification n) {
         if (n.getType() == NotificationType.REVIEW_CREATED) {
-            return buildReview(n, isClient);
+            return buildReview(n);
         }
-        if (Boolean.TRUE.equals(isClient)) {
-            return buildClient(n);
-        }
-        return buildTech(n);
+        return buildBookingStatus(n);
     }
 
-    private static String buildTech(Notification n) {
+    private static String buildBookingStatus(Notification n) {
+        String shopLabel = n.getShopName() != null ? n.getShopName() : "the shop";
+        String userLabel = n.getUsername() != null ? n.getUsername() : "the user";
         return switch (n.getBookingStatus()) {
-            case "PENDING" -> BOOKING + n.getBookingId() + " : " + n.getUsername() + " send you a new booking.";
-            case "REJECTED" -> BOOKING + n.getBookingId() + WITH + n.getUsername() + " now has been rejected.";
-            case "CONFIRMED" -> BOOKING + n.getBookingId() + WITH + n.getUsername() + " now has been confirmed.";
-            case "COMPLETED" -> BOOKING + n.getBookingId() + WITH + n.getUsername() + " now has been marked as completed";
+            case "PENDING" -> BOOKING + n.getBookingId() + " created for " + userLabel + " at " + shopLabel + ".";
+            case "REJECTED" -> BOOKING + n.getBookingId() + WITH + shopLabel + " was rejected for " + userLabel + ".";
+            case "CONFIRMED" -> BOOKING + n.getBookingId() + WITH + shopLabel + " was confirmed for " + userLabel + ".";
+            case "COMPLETED" -> BOOKING + n.getBookingId() + WITH + shopLabel + " was completed for " + userLabel + ". You can now leave a review.";
             default -> BOOKING + n.getBookingId() + " status updated.";
         };
     }
 
-    private static String buildClient(Notification n) {
-
-        return switch (n.getBookingStatus()) {
-            case "PENDING" -> BOOKING + n.getBookingId() + " has been created. Please wait for confirmation from " + n.getShopName() + ".";
-            case "REJECTED" -> "Your booking #" + n.getBookingId() + WITH + n.getShopName() + " has been rejected.";
-            case "CONFIRMED" -> "Your booking #" + n.getBookingId() + WITH + n.getShopName() + " has been confirmed.";
-            case "COMPLETED" -> n.getShopName() + " marked your booking #" + n.getBookingId() + " as completed. You can now leave a review.";
-            default -> BOOKING + n.getBookingId() + " status updated.";
-        };
-    }
-
-    private static String buildReview(Notification n, Boolean isClient) {
-        if (Boolean.TRUE.equals(isClient)) {
-            return "Review #" + n.getReviewId() +" created.";
-        }
-        return n.getUsername() + " left a new review #" + n.getReviewId() + " for " + n.getShopName() + ".";
+    private static String buildReview(Notification n) {
+        String shopLabel = n.getShopName() != null ? n.getShopName() : "the shop";
+        String userLabel = n.getUsername() != null ? n.getUsername() : "A user";
+        return userLabel + " left a new review #" + n.getReviewId() + " for " + shopLabel + ".";
     }
 }

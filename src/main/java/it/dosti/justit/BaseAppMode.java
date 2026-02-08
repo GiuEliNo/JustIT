@@ -152,7 +152,8 @@ public abstract class BaseAppMode implements AppMode {
                     "stars    INTEGER, " +
                     "review   TEXT, " +
                     "shop_id  INTEGER REFERENCES Shop, " +
-                    "username TEXT" +
+                    "booking_id INTEGER REFERENCES Booking, " +
+                    "username TEXT REFERENCES User" +
                     ");");
 
             stmt.execute("CREATE TABLE IF NOT EXISTS Notification (" +
@@ -162,6 +163,7 @@ public abstract class BaseAppMode implements AppMode {
                     "booking_id   INTEGER, " +
                     "review_id    INTEGER, " +
                     "type         TEXT    NOT NULL, " +
+                    "message      TEXT    NOT NULL, " +
                     "created_time TEXT    NOT NULL, " +
                     "read         INTEGER NOT NULL DEFAULT 0, " +
                     "FOREIGN KEY (booking_id) REFERENCES Booking (id), " +

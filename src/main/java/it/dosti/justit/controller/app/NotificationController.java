@@ -55,7 +55,7 @@ public class NotificationController {
         bean.setUsername(notification.getUsername());
         bean.setCreatedAt(notification.getCreatedAt());
         bean.setRead(notification.isRead());
-        bean.setNotificationMessage(notification.getMessage(SessionManager.getInstance().isClient()));
+        bean.setNotificationMessage(notification.getMessage());
 
         return bean;
     }

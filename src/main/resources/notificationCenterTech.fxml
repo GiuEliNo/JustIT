@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.NotificationTechGController">
+<VBox alignment="TOP_CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.NotificationGController">
 
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

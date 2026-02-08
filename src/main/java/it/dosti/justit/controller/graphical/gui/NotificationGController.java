@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 
-public class NotificationUserGController extends BaseGController {
+public class NotificationGController extends BaseGController {
 
     @FXML
     private ListView<NotificationBean> messageListView;
