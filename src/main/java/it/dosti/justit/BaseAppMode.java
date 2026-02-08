@@ -6,15 +6,21 @@ import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.notification.NotificationDbObserver;
 import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
 import it.dosti.justit.utils.JustItLogger;
+import org.apache.commons.lang3.SystemUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
 
 public abstract class BaseAppMode implements AppMode {
     protected ConnectionDB db;
@@ -60,7 +66,7 @@ public abstract class BaseAppMode implements AppMode {
                 }
             }
 
-            db.setConfiguration(dbPath, false);
+            db.setDbPath(dbPath);
 
 
         } catch (DatabaseInitializationException | IOException e ) {
@@ -68,15 +74,34 @@ public abstract class BaseAppMode implements AppMode {
         }
     }
 
+    @SuppressWarnings("java:S5443")
     private void initDemoMode() {
-        try{
-            JustItLogger.getInstance().info("Initializing Demo Mode");
-            db.setConfiguration(null, true);
 
-            populateDbData();
-        }
-        catch(DatabaseInitializationException e){
-            JustItLogger.getInstance().error(e.getMessage(),e);
+        try {
+            JustItLogger.getInstance().info("Initializing Demo Mode");
+
+            Path tempDbPath;
+            if(SystemUtils.IS_OS_UNIX) {
+                Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-------");
+                FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
+                tempDbPath = Files.createTempFile("justit_demo_", ".db", attr);
+            }
+            else {
+                tempDbPath = Files.createTempFile("justit_demo_", ".db");
+                File f = tempDbPath.toFile();
+
+                boolean r = f.setReadable(true, true);
+                boolean w = f.setWritable(true, true);
+                if (!r || !w) {
+                    JustItLogger.getInstance().warn("[DEMO MODE] Warning: permessi file temp non restrittivi.");
+                }
+            }
+
+                tempDbPath.toFile().deleteOnExit();
+                db.setDbPath(tempDbPath);
+                populateDbData();
+                } catch (IOException | DatabaseInitializationException e) {
+            JustItLogger.getInstance().error("Errore critico avvio Demo Mode", e);
         }
     }
 

@@ -12,6 +12,7 @@ module it.dosti.justit {
     requires com.gluonhq.attach.util;
     requires javafx.swing;
     requires com.opencsv;
+    requires org.apache.commons.lang3;
     opens it.dosti.justit to javafx.fxml;
 
     exports it.dosti.justit;
