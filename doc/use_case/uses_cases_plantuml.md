@@ -1,37 +1,32 @@
-```plantuml
 @startuml
 left to right direction
-skinparam packageStyle rectangle
-skinparam linetype polyline
-
-
-actor "cliente" as c
-actor "assistente" as a
-
-
-actor "servizio mappe" as sm
-actor "servizio pagamento" as sp
+actor "Client" as c
+actor "Technician" as t
+actor "Payment System" as p
 
 package JustIT {
-
-  c -> (prenotare intervento*)
-  c -d-> (aggiungere recensione*)
-  c -d-> (ricerca assistente)
-
-  (ricerca assistente) ..> (navigare tra assistenti) : <<extend>>
-  (esaminare profilo assistente) ..> (navigare tra assistenti) : <<include>>
-  (prenotare intervento*) ..> (esaminare profilo assistente) : <<include>>
-  (prenotare intervento*) ..> (pagamento) : <<include>>
-  (filtro assistente posizione) ..> (navigare tra assistenti) : <<extend>>
-
-  a -d-> (valutare intervento*)
-  (valutare intervento*) ..> (prenotare intervento*) : <<extend>>
-  a -r-> (gestire pagina assistente*)
-  (filtro assistente posizione) -d-> sm
-  (pagamento) -d-> sp
-  (aggiungere recensione*) --> (esaminare profilo assistente) : <<include>>
-  a -> (gestire recensioni*)
+usecase "Add review*" as UC1
+usecase "Book an appointment*" as UC2
+usecase "Inbox notification*" as UC3
+usecase "Manage shop page*" as UC4
+usecase "View booking list*" as UC5
+usecase "Export booking*" as UC6
+usecase "Manage booking status*" as UC7
 
 }
+
+note bottom of JustIT
+* includes login
+  end note
+
+c --> UC1
+c --> UC2
+c --> UC3
+t --> UC3
+t --> UC4
+t --> UC5
+t --> UC6
+UC7 .> UC5: extend
+UC2 --> p
+
 @enduml
-```
