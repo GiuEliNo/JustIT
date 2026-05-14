@@ -13,6 +13,8 @@ public final class SessionManager {
     private Shop selectedShop;
     private Shop ownedShop;
 
+    private boolean demoMode;
+
     private SessionManager() {}
 
     public static SessionManager getInstance() {
@@ -53,5 +55,13 @@ public final class SessionManager {
         loggedUser = null;
         selectedShop = null;
         ownedShop = null;
+    }
+
+    public void setDemoMode(boolean isDemoMode) {
+        this.demoMode = isDemoMode;
+    }
+
+    public boolean isDemoMode() {
+        return demoMode;
     }
 }

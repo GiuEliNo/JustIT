@@ -6,6 +6,7 @@ import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
 import it.dosti.justit.model.notification.NotificationDbObserver;
 import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.SessionManager;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public abstract class BaseAppMode implements AppMode {
 
     protected BaseAppMode(boolean isDemoMode) {
         this.isDemoMode = isDemoMode;
+        SessionManager.getInstance().setDemoMode(isDemoMode);
         this.db= ConnectionDB.getInstance();
         if(this.isDemoMode) {
             this.initDemoMode();
