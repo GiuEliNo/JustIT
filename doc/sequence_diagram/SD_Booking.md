@@ -8,16 +8,22 @@ activate LoginGUI
 LoginGUI -> BookingGUI: 2: Search Shop GUI
 activate BookingGUI
 deactivate LoginGUI
+destroy LoginGUI
+
 
 BookingGUI -> BookingController: 3: Initialize a booking controller
 
 activate BookingController
 
-BookingController -->> Booking: 4: Initialize a booking
+
+BookingController -->> Booking **: 4:Initialize a booking
 activate Booking
 
 Booking -->> BookingController
 deactivate Booking
+
+BookingController -->>BookingGUI
+
 
 deactivate BookingController
 
@@ -36,7 +42,15 @@ activate Booking
 Booking -->> BookingController
 deactivate Booking
 
-BookingController ->> Notification: 8: Send Notification
+BookingController -> DB: 8: Commit data to DB
+activate DB
+DB -->> BookingController: return
+deactivate DB
+
+destroy Booking
+
+
+BookingController ->> Notification **: 9: Send Notification
 activate Notification
 
 Notification -->> BookingController
