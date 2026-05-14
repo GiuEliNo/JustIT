@@ -19,25 +19,34 @@ activate Booking
 Booking -->> BookingController
 deactivate Booking
 
-User -> BookingGUI: 5 Select Add Booking
+deactivate BookingController
 
-BookingGUI -> BookingController: 6 Add Booking
+deactivate BookingGUI
 
-BookingController ->> Booking: 7 Add booking data
+
+User -> BookingGUI: 5: Select Add Booking
+activate BookingGUI
+
+BookingGUI -> BookingController: 6: Add Booking
+activate BookingController
+
+BookingController ->> Booking: 7: Add booking data
 activate Booking
 
-Booking ->> BookingController
+Booking -->> BookingController
 deactivate Booking
 
-BookingController -->> Notification: 8 Send Notification
+BookingController ->> Notification: 8: Send Notification
 activate Notification
 
 Notification -->> BookingController
 deactivate Notification
 
+BookingController -->> BookingGUI: Done
+
 deactivate BookingController
 
-BookingGUI -> User: Done
+BookingGUI -->> User: Done
 
 deactivate BookingGUI
 
