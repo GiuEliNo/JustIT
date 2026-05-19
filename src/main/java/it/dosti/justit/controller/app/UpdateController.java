@@ -72,7 +72,7 @@ public class UpdateController {
         }
 
         if (SessionManager.getInstance().isClient()) {
-            ClientUserDAO dao = new ClientUserDAOJDBC();
+            ClientUserDAO dao = DaoFactory.getClientUserDAO();
             String username = SessionManager.getInstance().getLoggedUser().getUsername();
             ClientUser user = new ClientUser(username, address, coord);
             boolean updated = dao.updateAddress(user);
@@ -82,7 +82,7 @@ public class UpdateController {
             return updated;
         } else {
 
-            ShopDAO dao = new ShopDAOJDBC();
+            ShopDAO dao = DaoFactory.getShopDAO();
             Shop shop = SessionManager.getInstance().getCurrentShop();
             Shop updateShop = new Shop.Builder(shop.getName())
                     .id(shop.getId())
@@ -99,14 +99,14 @@ public class UpdateController {
 
 
     private void updateSessionUser(String username) throws UserNotFoundException {
-        ClientUserDAO dao = new ClientUserDAOJDBC();
+        ClientUserDAO dao = DaoFactory.getClientUserDAO();
         SessionManager.getInstance().setLoggedUser(dao.findByUsername(username));
     }
 
 
     private boolean updateSessionTechnician(String username) throws UserNotFoundException, ShopNotFoundException {
-        TechnicianDAO dao = new TechnicianDAOJDBC();
-        ShopDAO shopDao = new ShopDAOJDBC();
+        TechnicianDAO dao = DaoFactory.getTechnicianDAO();
+        ShopDAO shopDao = DaoFactory.getShopDAO();
         SessionManager.getInstance().setLoggedUser(dao.findByUsername(username));
         if(SessionManager.getInstance().getLoggedUser() != null) {
             TechnicianUser technicianUser = (TechnicianUser) SessionManager.getInstance().getLoggedUser();
@@ -117,7 +117,7 @@ public class UpdateController {
     }
 
     public boolean updateNameShop(String name) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateNameShop(new Shop
                 .Builder(name)
@@ -130,7 +130,7 @@ public class UpdateController {
     }
 
     public boolean updateDescriptionShop(String description) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateDescriptionShop(new Shop
                 .Builder(shop.getName())
@@ -144,7 +144,7 @@ public class UpdateController {
     }
 
     public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updatePhoneShop(new Shop
                 .Builder(shop.getName())
@@ -159,7 +159,7 @@ public class UpdateController {
 
 
     public boolean updateEmailShop(String email) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateEmailShop(new Shop
                 .Builder(shop.getName())
@@ -174,7 +174,7 @@ public class UpdateController {
     }
 
     public boolean updateOpeningHourShop(String openingHour) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateOpeningHoursShop(new Shop
                 .Builder(shop.getName())
@@ -188,7 +188,7 @@ public class UpdateController {
     }
 
     public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateHomeAssistanceShop(new Shop
                 .Builder(shop.getName())
@@ -202,7 +202,7 @@ public class UpdateController {
     }
 
     public boolean updateImageShop(byte[] newImage) throws UpdateOnDBException {
-        ShopDAO dao = new ShopDAOJDBC();
+        ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateImageShop(new Shop
                 .Builder(shop.getName())

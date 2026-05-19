@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class BookingController {
-    private final BookingDAO dao = new BookingDAOJDBC();
+    private final BookingDAO dao = DaoFactory.getBookingDAO();
     private final BookingFileDAO daoFile = new BookingFileDAOCSV();
 
     public boolean addBooking(BookingBean bookingBean) {
@@ -52,7 +52,7 @@ public class BookingController {
     }
 
     private String addressUserBooking(String username) {
-        ClientUserDAO userDao= new ClientUserDAOJDBC();
+        ClientUserDAO userDao = DaoFactory.getClientUserDAO();
         return userDao.getAddress(username);
     }
 

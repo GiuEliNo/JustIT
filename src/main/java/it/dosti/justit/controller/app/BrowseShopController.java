@@ -2,8 +2,8 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.bean.ShopBean;
+import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.ShopDAO;
-import it.dosti.justit.dao.ShopDAOJDBC;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class BrowseShopController {
 
     private static final Random RANDOM = new Random();
-    private final ShopDAO dao = new ShopDAOJDBC();
+    private final ShopDAO dao = DaoFactory.getShopDAO();
 
     public List<ShopBean> getAllShops() {
         return toBeans(dao.retrieveAllShops());

@@ -1,12 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.LoginBean;
-import it.dosti.justit.dao.ClientUserDAO;
-import it.dosti.justit.dao.ClientUserDAOJDBC;
-import it.dosti.justit.dao.ShopDAO;
-import it.dosti.justit.dao.ShopDAOJDBC;
-import it.dosti.justit.dao.TechnicianDAO;
-import it.dosti.justit.dao.TechnicianDAOJDBC;
+import it.dosti.justit.dao.*;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Credentials;
@@ -18,7 +13,7 @@ public class LoginController {
     public boolean checkLogin(LoginBean loginBean) throws IllegalArgumentException, LoginFromDBException, ShopNotFoundException {
         switch (loginBean.getRoleType()) {
             case CLIENT -> {
-                ClientUserDAO dao = new ClientUserDAOJDBC();
+                ClientUserDAO dao = DaoFactory.getClientUserDAO();
 
                 if (dao.login(new Credentials(new ClientUser(loginBean.getUsername()), loginBean.getPassword()))) {
                     SessionManager.getInstance().setLoggedUser(dao.findByUsername(loginBean.getUsername()));
@@ -27,12 +22,12 @@ public class LoginController {
                 return false;
             }
             case TECHNICIAN -> {
-                TechnicianDAO dao = new TechnicianDAOJDBC();
+                TechnicianDAO dao = DaoFactory.getTechnicianDAO();
                 if(dao.login(new Credentials(new TechnicianUser(loginBean.getUsername()), loginBean.getPassword()))) {
                     SessionManager session = SessionManager.getInstance();
                     session.setLoggedUser(dao.findByUsername(loginBean.getUsername()));
                     TechnicianUser technicianUser = (TechnicianUser) session.getLoggedUser();
-                    ShopDAO shopDao = new ShopDAOJDBC();
+                    ShopDAO shopDao = DaoFactory.getShopDAO();
                     session.setCurrentShop(shopDao.retrieveShopById(technicianUser.getShopId()));
                     return true;
                 }

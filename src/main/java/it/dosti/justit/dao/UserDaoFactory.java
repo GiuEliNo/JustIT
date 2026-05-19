@@ -12,11 +12,11 @@ public class UserDaoFactory {
     }
 
     private ClientUserDAO createClientUserDAO() {
-        return new ClientUserDAOJDBC();
+        return DaoFactory.getClientUserDAO();
     }
 
     private TechnicianDAO createTechnicianUserDAO() {
-        return new TechnicianDAOJDBC();
+        return DaoFactory.getTechnicianDAO();
     }
 
 }
