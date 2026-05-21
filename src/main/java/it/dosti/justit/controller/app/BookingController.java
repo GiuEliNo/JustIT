@@ -22,7 +22,7 @@ import java.util.List;
 
 public class BookingController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
-    private final BookingFileDAO daoFile = new BookingFileDAOCSV();
+    private final BookingExportFileDAO daoFile = new BookingExportFileDAOCSV();
 
     public boolean addBooking(BookingBean bookingBean) {
 

@@ -13,6 +13,7 @@ module it.dosti.justit {
     requires javafx.swing;
     requires com.opencsv;
     requires org.apache.commons.lang3;
+    requires org.apache.commons.codec;
     opens it.dosti.justit to javafx.fxml;
 
     exports it.dosti.justit;

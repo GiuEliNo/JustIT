@@ -23,13 +23,13 @@ public abstract class User {
         return email;
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
     public String getName() {
         return name;
     }
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

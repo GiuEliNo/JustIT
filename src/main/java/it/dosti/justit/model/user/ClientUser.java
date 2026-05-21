@@ -52,4 +52,5 @@ public class ClientUser extends User {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
 }

@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.List;
 
-public class BookingFileDAOCSV implements BookingFileDAO {
+public class BookingExportFileDAOCSV implements BookingExportFileDAO {
     @Override
     public void exportToFile(List<BookingCSVBean> bookings, File file) {
         try (Writer writer = new FileWriter(file)) {

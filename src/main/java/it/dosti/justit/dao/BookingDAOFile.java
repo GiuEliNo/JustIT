@@ -1,0 +1,162 @@
+package it.dosti.justit.dao;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.utils.JsonHandler;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class BookingDAOFile implements BookingDAO{
+    private static final String FILENAME = "booking";
+
+    @Override
+    public int addBooking(Booking booking) throws SQLException{
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {
+            });
+            bookings.add(booking);
+            JsonHandler.writeJsonFile(bookings, FILENAME);
+            return 1;
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot){
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {
+            });
+            if (!bookings.isEmpty()){
+                boolean found = false;
+                for (Booking booking : bookings) {
+                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().compareTo(date)==0  && booking.getTimeSlot().compareTo(timeSlot)==0){
+                        found = true;
+                        break;
+                    }
+                }
+                return found;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<Booking> getBookingsByUser(String username){
+        try {
+            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            if(!bookingsGeneral.isEmpty()){
+                List<Booking> bookingsUser = new ArrayList<>();
+                for(Booking booking : bookingsGeneral){
+                    if(booking.getUsername().equals(username)){
+                        bookingsUser.add(booking);
+                    }
+                }
+                return bookingsUser;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Booking> getBookingsByShop(Integer shopId){
+        try {
+            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            if(!bookingsGeneral.isEmpty()){
+                List<Booking> bookingsShop = new ArrayList<>();
+                for(Booking booking : bookingsGeneral){
+                    if(booking.getShopId().compareTo(shopId)==0){
+                        bookingsShop.add(booking);
+                    }
+                }
+                return bookingsShop;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void updateStatus(Integer bookingId, BookingStatus status){
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            if(!bookings.isEmpty()){
+                for(Booking booking : bookings){
+                    if(booking.getBookingId().compareTo(bookingId)==0){
+                        booking.changeStatus( status);
+                        }
+                    }
+            }
+            JsonHandler.writeJsonFile(bookings, FILENAME);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date){
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>(){});
+            if(!bookings.isEmpty()){
+                List<TimeSlot> timeSlots = new ArrayList<>();
+                for(Booking booking : bookings){
+                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().isEqual(date)){
+                        timeSlots.add(booking.getTimeSlot());
+                    }
+                }
+                return timeSlots;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Booking getBookingById(Integer bookingId){
+        try{
+
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            if(!bookings.isEmpty()){
+                for(Booking booking : bookings){
+                    if(booking.getBookingId().compareTo(bookingId)==0){
+                        return booking;
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId){
+        //TODO
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Booking> getCompletedBookingsWithoutReview(String username){
+        //TODO
+        return Collections.emptyList();
+    }
+
+
+
+}

@@ -180,10 +180,10 @@ public class AccountPageGController extends BaseGController {
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField streetField = new TextField();
-        streetField.setPromptText("Es. Via Roma 1");
+        streetField.setPromptText("Es. Via Napoli 1");
 
         TextField cityField = new TextField();
-        cityField.setPromptText("Es. Milano");
+        cityField.setPromptText("Es. Roma");
 
         TextField countryField = new TextField();
         countryField.setPromptText("Es. Italia");

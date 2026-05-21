@@ -1,41 +1,47 @@
 @startuml
 
+
+title Manage Booking
+
 actor Technician
 
-Technician -> BookingPageGUI
+participant BookingPageGUI <<View>>
+
+Technician -> BookingPageGUI: Select ManageBooking
 activate BookingPageGUI
 
-BookingPageGUI -> BookingList: init BookingList
-activate BookingList
-BookingList -->> Booking: init data
-activate Booking
+BookingPageGUI -> BookingController ++: <<create>>
+BookingController -> BookingList ++: <<create>>
+deactivate BookingList
+BookingController -> Booking++: <<create>>
+
 deactivate Booking
 
-BookingList -> DB: load data from DB
+database DB
+BookingController -> DB ++: load
 
+DB -->> BookingController --: return Bookings data
 
-activate DB
-DB -->> BookingList
-deactivate DB
-
-BookingList -->> BookingPageGUI
+BookingController -> BookingList++: populate Bookings
 deactivate BookingList
+
+BookingController -->> BookingPageGUI--: return bookings data
+
 
 deactivate BookingPageGUI
 
 Technician -> BookingPageGUI: select booking
 activate BookingPageGUI
 
-BookingPageGUI -> Booking
-activate Booking
+BookingPageGUI -> BookingController ++:
 
-Booking -> DB: load booking details
-activate DB
-deactivate DB
+Booking -> DB ++: load booking details
+DB -->> Booking--: return booking data
 
-deactivate Booking
+Booking-->> BookingPageGUI --: shows booking data
 
 deactivate BookingPageGUI
+
 
 Technician -> BookingPageGUI: change booking status
 activate BookingPageGUI
@@ -46,20 +52,16 @@ deactivate Booking
 
 deactivate BookingPageGUI
 
-Technician -> BookingPageGUI: select confirm
-activate BookingPageGUI
+Technician -> BookingPageGUI ++: select confirm
 
-BookingPageGUI ->> Booking
-activate Booking
+BookingPageGUI ->> Booking++: prova
 
-Booking ->> DB
-activate DB
-DB -->> Booking
-deactivate DB
+Booking -> DB ++
+DB -->> Booking --: prova
 
+Booking -->> BookingPageGUI--
 
-
-
+deactivate BookingPageGUI
 
 
 

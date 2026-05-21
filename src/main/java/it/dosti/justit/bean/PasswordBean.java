@@ -1,5 +1,7 @@
 package it.dosti.justit.bean;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class PasswordBean {
     private String oldPassword;
     private String newPassword;
@@ -13,10 +15,10 @@ public class PasswordBean {
     }
 
     public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+        this.newPassword = DigestUtils.sha256Hex(newPassword);
     }
 
     public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
+        this.oldPassword = DigestUtils.sha256Hex(oldPassword);
     }
 }

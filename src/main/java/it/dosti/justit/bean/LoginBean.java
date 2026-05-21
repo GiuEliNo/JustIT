@@ -1,6 +1,7 @@
 package it.dosti.justit.bean;
 
 import it.dosti.justit.model.user.RoleType;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class LoginBean {
     private String username;
@@ -20,7 +21,7 @@ public class LoginBean {
     }
 
     public void setPassword(String password){
-        this.password = password;
+        this.password = DigestUtils.sha256Hex(password);
     }
 
     public void setRoleType(RoleType roleType) {

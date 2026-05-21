@@ -1,6 +1,7 @@
 package it.dosti.justit.bean;
 
 import it.dosti.justit.model.Coordinates;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class RegisterBean {
     private String username;
@@ -24,7 +25,8 @@ public class RegisterBean {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        this.password = DigestUtils.sha256Hex(password);
     }
 
     public String getEmail() {
