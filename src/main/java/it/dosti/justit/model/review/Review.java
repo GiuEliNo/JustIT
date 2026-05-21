@@ -21,6 +21,16 @@ public class Review {
         this.bookingId = bookingId;
     }
 
+    public Review(Integer id, String title, Integer star, String reviewText, Integer shop, String username,  Integer bookingId) {
+        this.id = id;
+        this.title = title;
+        this.star = star;
+        this.reviewText = reviewText;
+        this.shop = shop;
+        this.username = username;
+        this.bookingId = bookingId;
+    }
+
     public void notifyCreated() {
         ReviewCreatedPublisher.getInstance()
                 .notifyCreated(new ReviewCreatedChange(username, shop, id));

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.JsonHandler;
 
 import java.sql.SQLException;
@@ -11,17 +12,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class BookingDAOFile implements BookingDAO{
-    private static final String FILENAME = "booking";
+    private static final String FILENAME_BOOKINGS = "bookings";
+    private static final String FILENAME_REVIEWS = "reviews";
 
     @Override
     public int addBooking(Booking booking) throws SQLException{
         try{
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
             bookings.add(booking);
-            JsonHandler.writeJsonFile(bookings, FILENAME);
+            JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
             return 1;
         }catch(Exception e){
             e.printStackTrace();
@@ -32,7 +36,7 @@ public class BookingDAOFile implements BookingDAO{
     @Override
     public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot){
         try{
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
             if (!bookings.isEmpty()){
                 boolean found = false;
@@ -54,7 +58,7 @@ public class BookingDAOFile implements BookingDAO{
     @Override
     public List<Booking> getBookingsByUser(String username){
         try {
-            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookingsGeneral.isEmpty()){
                 List<Booking> bookingsUser = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
@@ -73,7 +77,7 @@ public class BookingDAOFile implements BookingDAO{
     @Override
     public List<Booking> getBookingsByShop(Integer shopId){
         try {
-            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            List<Booking> bookingsGeneral = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookingsGeneral.isEmpty()){
                 List<Booking> bookingsShop = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
@@ -92,7 +96,7 @@ public class BookingDAOFile implements BookingDAO{
     @Override
     public void updateStatus(Integer bookingId, BookingStatus status){
         try{
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
                     if(booking.getBookingId().compareTo(bookingId)==0){
@@ -100,7 +104,7 @@ public class BookingDAOFile implements BookingDAO{
                         }
                     }
             }
-            JsonHandler.writeJsonFile(bookings, FILENAME);
+            JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -110,7 +114,7 @@ public class BookingDAOFile implements BookingDAO{
     @Override
     public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date){
         try{
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>(){});
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>(){});
             if(!bookings.isEmpty()){
                 List<TimeSlot> timeSlots = new ArrayList<>();
                 for(Booking booking : bookings){
@@ -130,7 +134,7 @@ public class BookingDAOFile implements BookingDAO{
     public Booking getBookingById(Integer bookingId){
         try{
 
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME, new TypeReference<>() {});
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
                     if(booking.getBookingId().compareTo(bookingId)==0){
@@ -147,13 +151,41 @@ public class BookingDAOFile implements BookingDAO{
 
     @Override
     public List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId){
-        //TODO
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+            List<Booking> filteredBookings;
+            List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
+                filteredBookings = bookings.stream()
+                        .filter(booking -> shopId.equals(booking.getShopId()) && booking.getStatus()== BookingStatus.COMPLETED)
+                        .filter(a -> reviews.stream()
+                                .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
+                        .collect(Collectors.toList());
+
+                return filteredBookings;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return Collections.emptyList();
     }
 
     @Override
     public List<Booking> getCompletedBookingsWithoutReview(String username){
-        //TODO
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+            List<Booking> filteredBookings;
+            List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
+            filteredBookings = bookings.stream()
+                    .filter(booking -> username.equals(booking.getUsername()) && booking.getStatus()== BookingStatus.COMPLETED)
+                    .filter(a -> reviews.stream()
+                            .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
+                    .collect(Collectors.toList());
+
+            return filteredBookings;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return Collections.emptyList();
     }
 

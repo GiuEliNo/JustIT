@@ -124,6 +124,11 @@ public class Notification {
         return read;
     }
 
+    public boolean setRead(boolean read) {
+        this.read = read;
+        return read;
+    }
+
     public String getShopName() {
         return shopName;
     }

@@ -105,6 +105,40 @@ public class Shop {
 
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public void setHomeAssistance(boolean homeAssistance) {
+        this.homeAssistance = homeAssistance;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     public Integer getId() {
         return id;
     }

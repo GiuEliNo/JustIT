@@ -22,31 +22,31 @@ public class ClientUserDAOFile implements ClientUserDAO{
 
     @Override
     public boolean login(Credentials cred) throws LoginFromDBException{
-        try{
+        try {
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
-            boolean found = false;
-            if(!users.isEmpty()) {
-                for (ClientUser user : users) {
-                    if (cred.getUser().getUsername().equals(user.getUsername())) {
-                        found = true;
-                        break;
-                    }
-                }
+
+            String targetUsername = cred.getUser().getUsername();
+            String targetPassword = cred.getPassword();
+
+            boolean isClient = users.stream()
+                    .anyMatch(user -> targetUsername.equals(user.getUsername()));
+
+            if (!isClient) {
+                return false;
             }
-            if(!credentials.isEmpty() && found ){
-                for (Credentials credential : credentials) {
-                        if (credential.getUser().getUsername().compareTo(cred.getUser().getUsername()) == 0 && credential.getPassword().compareTo(cred.getPassword()) == 0) {
-                            return true;
-                        }
-                    }
-            }
-        }catch(Exception e){
+            return credentials.stream()
+                    .anyMatch(c -> targetUsername.equals(c.getUser().getUsername()) &&
+                            targetPassword.equals(c.getPassword()));
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
+    @Override
     public boolean register(Credentials cred) throws RegisterOnDbException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -62,6 +62,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return false;
     }
 
+    @Override
     public User findByUsername(String username) throws UserNotFoundException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -77,6 +78,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return null;
     }
 
+    @Override
     public boolean updateName(String username, String newName) throws UpdateOnDBException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -96,6 +98,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return false;
     }
 
+    @Override
     public boolean updateEmail(String username, String newEmail) throws UpdateOnDBException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -115,6 +118,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return false;
     }
 
+    @Override
     public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException{
         try {
             List<Credentials> creds = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
@@ -134,6 +138,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return false;
     }
 
+    @Override
     public String getAddress(String username){
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -150,6 +155,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return null;
     }
 
+    @Override
     public boolean updateAddress(ClientUser user) throws UpdateOnDBException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -170,6 +176,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
         return false;
     }
 
+    @Override
     public boolean isUsernameAvailable(String username){
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
