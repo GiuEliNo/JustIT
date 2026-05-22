@@ -1,9 +1,9 @@
 package it.dosti.justit.model.notification;
 
-public class NotificationMessageFactory {
+public class NotificationMessageBuilder {
     private static final String BOOKING = "Booking #";
     private static final String WITH = " with ";
-    private NotificationMessageFactory(){}
+    private NotificationMessageBuilder(){}
 
 
     public static String createNotification(Notification n) {
