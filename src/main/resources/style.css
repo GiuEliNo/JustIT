@@ -591,3 +591,7 @@
     -fx-background-color: #FFEBEE;
 }
 
+.label-bold {
+    -fx-font-weight: bold;
+}
+

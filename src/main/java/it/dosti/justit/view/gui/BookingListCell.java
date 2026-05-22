@@ -32,20 +32,19 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox firstRow = new HBox(5);
 
         Label shopLabel = new Label("Shop:");
-        String STYLE_TEXT_BOLD = "-fx-font-weight: bold;";
-        shopLabel.setStyle(STYLE_TEXT_BOLD);
+        shopLabel.getStyleClass().add("label-bold");
 
         Label shopValue = new Label(booking.getShopName());
 
         Label dateLabel = new Label(" Date:");
-        dateLabel.setStyle(STYLE_TEXT_BOLD);
+        dateLabel.getStyleClass().add("label-bold");
 
         Label dateValue = new Label(
                 booking.getDate() + " " + booking.getTimeSlot()
         );
 
         Label statusLabel = new Label(" Status:");
-        statusLabel.setStyle(STYLE_TEXT_BOLD);
+        statusLabel.getStyleClass().add("label-bold");
 
         Label statusValue = new Label(
                 String.valueOf(booking.getStatus())
@@ -60,7 +59,7 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox secondRow = new HBox(5);
 
         Label descLabel = new Label("Description:");
-        descLabel.setStyle(STYLE_TEXT_BOLD);
+        descLabel.getStyleClass().add("label-bold");
 
         Label descValue = new Label(booking.getDescription());
 
@@ -69,7 +68,7 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox thirdRow = new HBox(5);
 
         Label homeLabel = new Label("Home Assistance:");
-        homeLabel.setStyle(STYLE_TEXT_BOLD);
+        homeLabel.getStyleClass().add("label-bold");
 
         Label homeValue = new Label(
                 booking.getHomeAssistanceLabel()
