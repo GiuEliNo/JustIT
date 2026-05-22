@@ -2,6 +2,7 @@ package it.dosti.justit.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 
@@ -9,7 +10,7 @@ public class JsonHandler {
 
     private static final String DIRPATH = "data/json/";
     private static final String JSON = ".json";
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private JsonHandler(){
     }

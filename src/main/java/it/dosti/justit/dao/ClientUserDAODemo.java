@@ -25,20 +25,18 @@ public class ClientUserDAODemo implements ClientUserDAO {
     @Override
     public boolean login(Credentials cred) {
 
-        String username = cred.getUser().getUsername();
+        String username = cred.getUser();
         String expectedPassword = passwordsByUsername.get(username);
         return expectedPassword != null && expectedPassword.equals(cred.getPassword());
     }
 
     @Override
-    public boolean register(Credentials cred) {
+    public boolean register(ClientUser user, Credentials cred) {
 
-        String username = cred.getUser().getUsername();
+        String username = user.getUsername();
         if (usersByUsername.containsKey(username)) {
             return false;
         }
-
-        ClientUser user = (ClientUser) cred.getUser();
         usersByUsername.put(username, user);
         passwordsByUsername.put(username, cred.getPassword());
         return true;

@@ -5,26 +5,50 @@ import it.dosti.justit.utils.SessionManager;
 public class DaoFactory {
     private DaoFactory(){}
     public static BookingDAO getBookingDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new BookingDAODemo() : new BookingDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()) {
+            case DATABASE -> new BookingDAOJDBC();
+            case FILESYSTEM -> new BookingDAOFile();
+            case DEMOMODE -> new BookingDAODemo();
+        };
     }
 
     public static ClientUserDAO getClientUserDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new ClientUserDAODemo() : new ClientUserDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()){
+            case DATABASE -> new ClientUserDAOJDBC();
+            case FILESYSTEM -> new ClientUserDAOFile();
+            case DEMOMODE -> new ClientUserDAODemo();
+        };
     }
 
     public static NotificationDAO getNotificationDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new NotificationDAODemo() : new NotificationDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()){
+            case DATABASE -> new NotificationDAOJDBC();
+            case FILESYSTEM -> new NotificationDAOFile();
+            case DEMOMODE ->  new NotificationDAODemo();
+        };
     }
 
     public static ReviewDAO getReviewDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new ReviewDAODemo() : new ReviewDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()){
+            case DATABASE -> new ReviewDAOJDBC();
+            case FILESYSTEM -> new ReviewDAOFile();
+            case DEMOMODE -> new ReviewDAODemo();
+        };
     }
 
     public static ShopDAO getShopDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new ShopDAODemo() : new ShopDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()){
+            case DATABASE -> new ShopDAOJDBC();
+            case FILESYSTEM -> new ShopDAOFile();
+            case DEMOMODE ->  new ShopDAODemo();
+        };
     }
 
     public static TechnicianDAO getTechnicianDAO(){
-        return SessionManager.getInstance().isDemoMode() ? new TechnicianDAODemo() : new TechnicianDAOJDBC();
+        return switch (SessionManager.getInstance().getPersistencyType()){
+            case DATABASE -> new TechnicianDAOJDBC();
+            case FILESYSTEM -> new TechnicianDAOFile();
+            case DEMOMODE ->   new TechnicianDAODemo();
+        };
     }
 }

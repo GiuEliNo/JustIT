@@ -28,8 +28,9 @@ public class RegisterController {
             JustItLogger.getInstance().warn("Coordinates not found, proceding with empy beans");
         }
 
+        Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-        if(dao.register(new Credentials(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates()), registerBean.getPassword())))
+        if(dao.register(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates() ), cred ))
         {
             JustItLogger.getInstance().info("Register successful");
             return true;
@@ -50,12 +51,9 @@ public class RegisterController {
         else {
 
             JustItLogger.getInstance().info("Register successful");
-            Credentials cred = new Credentials(new TechnicianUser(registerBean.getUsername(),
-                    registerBean.getName(),
-                    registerBean.getEmail(),
-                    shopId),
-                    registerBean.getPassword());
-            return dao.register(cred);
+            Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
+
+            return dao.register(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), shopId), cred);
         }
 
     }
@@ -92,7 +90,9 @@ public class RegisterController {
 
     public boolean isUsernameAvailable(RegisterBean registerBean) {
         UserDaoFactory factory = new UserDaoFactory();
+
         UserDAO dao;
+
         if(Objects.equals(registerBean.getRole(), "CLIENT")){
             dao=factory.createUserDAO(true);
         }

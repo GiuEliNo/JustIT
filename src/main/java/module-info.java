@@ -14,6 +14,7 @@ module it.dosti.justit {
     requires com.opencsv;
     requires org.apache.commons.lang3;
     requires org.apache.commons.codec;
+    requires com.fasterxml.jackson.datatype.jsr310;
     opens it.dosti.justit to javafx.fxml;
 
     exports it.dosti.justit;
@@ -35,4 +36,8 @@ module it.dosti.justit {
     exports it.dosti.justit.model.user;
     exports it.dosti.justit.model.review;
     exports it.dosti.justit.view.gui;
+    opens it.dosti.justit.model to com.fasterxml.jackson.databind;
+    opens it.dosti.justit.model.user  to com.fasterxml.jackson.databind;
+    opens it.dosti.justit.model.booking to com.fasterxml.jackson.databind;
+    opens it.dosti.justit.model.notification to com.fasterxml.jackson.databind;
 }

@@ -26,7 +26,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
 
-            String targetUsername = cred.getUser().getUsername();
+            String targetUsername = cred.getUser();
             String targetPassword = cred.getPassword();
 
             boolean isClient = users.stream()
@@ -36,7 +36,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
                 return false;
             }
             return credentials.stream()
-                    .anyMatch(c -> targetUsername.equals(c.getUser().getUsername()) &&
+                    .anyMatch(c -> targetUsername.equals(c.getUser()) &&
                             targetPassword.equals(c.getPassword()));
 
         } catch (Exception e) {
@@ -47,11 +47,11 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean register(Credentials cred) throws RegisterOnDbException{
+    public boolean register(ClientUser user, Credentials cred) throws RegisterOnDbException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
-            users.add((ClientUser) cred.getUser());
+            users.add(user);
             credentials.add(cred);
             JsonHandler.writeJsonFile(users, FILENAME_USER);
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
@@ -124,7 +124,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             List<Credentials> creds = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             if(!creds.isEmpty()){
                 for(Credentials cred : creds){
-                    if(cred.getUser().getUsername().equals(username) &&  cred.getPassword().equals(oldPassword)){
+                    if(cred.getUser().equals(username) &&  cred.getPassword().equals(oldPassword)){
                         cred.setPassword(newPassword);
                         JsonHandler.writeJsonFile(creds, FILENAME_CREDENTIALS);
                         return true;

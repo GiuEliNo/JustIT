@@ -15,6 +15,8 @@ public final class SessionManager {
 
     private boolean demoMode;
 
+    private PersistencyType persistencyType;
+
     private SessionManager() {}
 
     public static SessionManager getInstance() {
@@ -63,5 +65,13 @@ public final class SessionManager {
 
     public boolean isDemoMode() {
         return demoMode;
+    }
+
+    public void setPersistencyType(PersistencyType persistencyType) {
+        this.persistencyType = persistencyType;
+    }
+
+    public PersistencyType getPersistencyType() {
+        return persistencyType;
     }
 }

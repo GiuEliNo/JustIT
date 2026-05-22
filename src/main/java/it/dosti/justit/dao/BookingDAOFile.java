@@ -1,6 +1,7 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class BookingDAOFile implements BookingDAO{
     private static final String FILENAME_BOOKINGS = "bookings";
     private static final String FILENAME_REVIEWS = "reviews";
+    private static final String FILENAME_SHOPS = "shops";
 
     @Override
     public int addBooking(Booking booking) throws SQLException{
@@ -63,6 +65,8 @@ public class BookingDAOFile implements BookingDAO{
                 List<Booking> bookingsUser = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
                     if(booking.getUsername().equals(username)){
+                        String shopName = retrieveShopName(booking.getShopId());
+                        booking.setShopName(shopName);
                         bookingsUser.add(booking);
                     }
                 }
@@ -190,5 +194,21 @@ public class BookingDAOFile implements BookingDAO{
     }
 
 
+    public String retrieveShopName(Integer shopId){
+        try{
+            List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {
+            });
+            if(!shops.isEmpty()){
+                for(Shop shop : shops){
+                    if (shop.getId().equals(shopId)) {
+                        return shop.getName();
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
 
 }

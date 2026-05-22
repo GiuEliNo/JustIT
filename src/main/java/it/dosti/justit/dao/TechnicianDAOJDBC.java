@@ -22,7 +22,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
-            pstmt.setString(1, cred.getUser().getUsername());
+            pstmt.setString(1, cred.getUser());
             pstmt.setString(2, cred.getPassword());
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
@@ -36,14 +36,13 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     }
 
     @Override
-    public boolean register(Credentials cred) throws RegisterOnDbException {
+    public boolean register(TechnicianUser user, Credentials cred) throws RegisterOnDbException {
 
         String sql1 = RegisterQuery.REGISTER_TECHNICIAN;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB()
         ) {
                 try(PreparedStatement pstmt1 = conn.prepareStatement(sql1)) {
-                    TechnicianUser user = (TechnicianUser)cred.getUser();
                     pstmt1.setString(1, user.getUsername());
                     pstmt1.setString(2, cred.getPassword());
                     pstmt1.setString(3, user.getEmail());

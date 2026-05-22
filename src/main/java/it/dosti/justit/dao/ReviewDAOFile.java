@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ReviewDAOFIle implements ReviewDAO{
+public class ReviewDAOFile implements ReviewDAO{
 
     private static final String FILENAME_REVIEWS = "reviews";
     private static final String FILENAME_BOOKINGS = "bookings";

@@ -12,6 +12,7 @@ public class Review {
     private String username;
     private Integer bookingId;
 
+    public Review() {}
     public Review(String title, Integer star, String review, Integer shop, String username,  Integer bookingId) {
         this.title = title;
         this.star = star;

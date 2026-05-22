@@ -1,5 +1,8 @@
 package it.dosti.justit.model.booking;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.observer.BookingStatusChange;
 import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
@@ -8,6 +11,7 @@ import it.dosti.justit.model.booking.state.BookingState;
 
 import java.time.LocalDate;
 
+@JsonDeserialize(builder = Booking.Builder.class)
 public class Booking {
     private Integer bookingId;
     private Integer shopId;
@@ -40,11 +44,11 @@ public class Booking {
         this.currentState = BookingStateFactory.fromStatus(builder.status);
     }
 
-
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Integer bookingId;
         private Integer shopId;
-        private final String username;
+        private String username;
         private LocalDate date;
         private TimeSlot timeSlot;
         private String description;
@@ -53,10 +57,16 @@ public class Booking {
         private boolean homeAssistance;
 
 
+        public Builder(){
+        }
         public Builder(String username) {
             this.username = username;
         }
 
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
 
         public Builder bookingId(Integer bookingId) {
             this.bookingId = bookingId;
@@ -135,6 +145,9 @@ public class Booking {
     }
     public void setHomeAssistance(boolean homeAssistance){
         this.homeAssistance = homeAssistance;
+    }
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public boolean getHomeAssistance() {

@@ -1,7 +1,12 @@
 package it.dosti.justit.model.notification;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import it.dosti.justit.model.booking.Booking;
+
 import java.time.LocalDateTime;
 
+@JsonDeserialize(builder = Notification.Builder.class)
 public class Notification {
     private final Integer id;
     private final String shopName;
@@ -27,9 +32,11 @@ public class Notification {
         this.read = builder.read;
     }
 
+
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
 
-        private final Integer id;
+        private  Integer id;
 
         private String shopName;
         private String username;
@@ -40,6 +47,15 @@ public class Notification {
         private LocalDateTime createdAt;
         private String message;
         private boolean read;
+
+        public Builder(){
+
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder(Integer id) {
             this.id = id;
@@ -95,6 +111,9 @@ public class Notification {
         }
     }
 
+    public void setRead(boolean b) {
+        this.read = b;
+    }
 
     public Integer getId() {
         return id;
@@ -121,11 +140,6 @@ public class Notification {
     }
 
     public boolean isRead() {
-        return read;
-    }
-
-    public boolean setRead(boolean read) {
-        this.read = read;
         return read;
     }
 

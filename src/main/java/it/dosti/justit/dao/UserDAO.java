@@ -7,11 +7,11 @@ import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.User;
 
-public interface UserDAO {
+public interface UserDAO<T extends User> {
 
     boolean login(Credentials cred) throws LoginFromDBException;
 
-    boolean register(Credentials cred) throws RegisterOnDbException;
+    boolean register(T user, Credentials cred) throws RegisterOnDbException;
 
     User findByUsername(String username) throws UserNotFoundException;
 

@@ -1,6 +1,10 @@
 package it.dosti.justit.model;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = Shop.Builder.class)
 public class Shop {
     private Integer id;
     private String name;
@@ -33,6 +37,7 @@ public class Shop {
 
     }
 
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
 
 
@@ -48,6 +53,8 @@ public class Shop {
         private Coordinates coordinates;
 
 
+        public Builder(){}
+
         public Builder(String name) {
             this.name = name;
         }
@@ -55,6 +62,11 @@ public class Shop {
 
         public Builder id(Integer id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 

@@ -11,8 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class GUIMode extends BaseAppMode implements AppMode{
-    protected GUIMode(boolean isDemoMode) {
-        super(isDemoMode);
+    protected GUIMode() {
+        super();
     }
 
     @Override

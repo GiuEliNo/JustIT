@@ -7,6 +7,8 @@ public class ClientUser extends User {
     private String address;
     private Coordinates coordinates;
 
+    public ClientUser() {}
+
     public ClientUser(Integer id, String name, String username, String email, String address, Coordinates coordinates) {
         this.setId(id);
         this.setName(name);

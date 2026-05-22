@@ -3,6 +3,8 @@ package it.dosti.justit.model.user;
 public class TechnicianUser extends User {
     private Integer shopId;
 
+    public TechnicianUser() {}
+
     public TechnicianUser(Integer id, String name, String username, String email, Integer shopId) {
         this.setId(id);
         this.setName(name);

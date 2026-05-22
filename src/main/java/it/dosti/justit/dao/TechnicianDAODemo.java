@@ -30,21 +30,21 @@ public class TechnicianDAODemo implements TechnicianDAO {
     @Override
     public boolean login(Credentials cred) throws LoginFromDBException {
 
-        String username = cred.getUser().getUsername();
+        String username = cred.getUser();
         String expectedPassword = passwordsByUsername.get(username);
         return expectedPassword != null && expectedPassword.equals(cred.getPassword());
     }
 
     @Override
-    public boolean register(Credentials cred) throws RegisterOnDbException {
+    public boolean register(TechnicianUser tec, Credentials cred) throws RegisterOnDbException {
 
-        String username = cred.getUser().getUsername();
+        String username = tec.getUsername();
         if (usersByUsername.containsKey(username)) {
             return false;
         }
 
-        TechnicianUser user = (TechnicianUser) cred.getUser();
-        usersByUsername.put(username, user);
+
+        usersByUsername.put(username, tec);
         passwordsByUsername.put(username, cred.getPassword());
         return true;
     }

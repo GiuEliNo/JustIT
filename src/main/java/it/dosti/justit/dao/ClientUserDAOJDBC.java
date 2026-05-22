@@ -56,7 +56,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 )
         {
 
-            pstmt.setString(1, cred.getUser().getUsername());
+            pstmt.setString(1, cred.getUser());
             pstmt.setString(2, cred.getPassword());
 
 
@@ -72,7 +72,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean register(Credentials cred) throws RegisterOnDbException {
+    public boolean register(ClientUser user, Credentials cred) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 
@@ -81,7 +81,6 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
-            ClientUser user = (ClientUser) cred.getUser();
             pstmt.setString(2, user.getUsername());
             pstmt.setString(4, cred.getPassword());
             pstmt.setString(1, user.getName());
