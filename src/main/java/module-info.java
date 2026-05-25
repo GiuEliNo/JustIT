@@ -40,4 +40,5 @@ module it.dosti.justit {
     opens it.dosti.justit.model.user  to com.fasterxml.jackson.databind;
     opens it.dosti.justit.model.booking to com.fasterxml.jackson.databind;
     opens it.dosti.justit.model.notification to com.fasterxml.jackson.databind;
+    opens it.dosti.justit.dto to  com.fasterxml.jackson.databind;
 }

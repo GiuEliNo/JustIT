@@ -1,6 +1,7 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dto.NotificationDTO;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.notification.Notification;
@@ -102,15 +103,31 @@ public class NotificationDAOFile implements NotificationDAO{
     public List<Notification> getNotificationsByUser(String username){
 
         try{
-            List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<Notification> filteredNotifications = new ArrayList<>();
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            List<NotificationDTO> filteredNotifications = new ArrayList<>();
+            List<Notification> notificationFinal = new ArrayList<>();
             if(!notifications.isEmpty()){
-                for(Notification notification : notifications){
+                for(NotificationDTO notification : notifications){
                     if(notification.getUsername().equals(username)){
                         filteredNotifications.add(notification);
                     }
                 }
-                return filteredNotifications;
+                for(NotificationDTO notification : filteredNotifications){
+                    notification.setShopName(findShopName(notification.getShopId()));
+                    notificationFinal.add(
+                            new Notification.Builder(notification.getId())
+                            .username(username)
+                            .shopName(notification.getShopName())
+                            .reviewId(notification.getReviewId())
+                            .bookingId(notification.getBookingId())
+                            .type(notification.getType())
+                            .message(notification.getMessage())
+                            .createdAt(notification.getCreatedTime())
+                            .bookingStatus(notification.getBookingStatus())
+                            .build());
+
+                }
+                return notificationFinal;
             }
 
         }
@@ -124,15 +141,32 @@ public class NotificationDAOFile implements NotificationDAO{
     @Override
     public List<Notification> getUnreadNotificationsByUser(String username){
         try{
-            List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<Notification> filteredNotifications = new ArrayList<>();
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            List<NotificationDTO> filteredNotifications = new ArrayList<>();
+            List<Notification> notificationFinal = new ArrayList<>();
             if(!notifications.isEmpty()){
-                for(Notification notification : notifications){
+                for(NotificationDTO notification : notifications){
                     if(notification.getUsername().equals(username) && !notification.isRead()){
                         filteredNotifications.add(notification);
                     }
                 }
-                return filteredNotifications;
+                for(NotificationDTO notification : filteredNotifications){
+                        notification.setShopName(findShopName(notification.getShopId()));
+                        notificationFinal.add(
+                                new Notification.Builder(notification.getId())
+                                        .username(username)
+                                        .shopName(notification.getShopName())
+                                        .reviewId(notification.getReviewId())
+                                        .bookingId(notification.getBookingId())
+                                        .type(notification.getType())
+                                        .message(notification.getMessage())
+                                        .createdAt(notification.getCreatedTime())
+                                        .bookingStatus(notification.getBookingStatus())
+                                        .build());
+
+                }
+
+                return notificationFinal;
             }
 
         }
