@@ -24,7 +24,7 @@ public class NotificationDbObserver implements BookingStatusObserver, ReviewCrea
                 .bookingStatus(change.getNewStatus())
                 .type(NotificationType.BOOKING_STATUS)
                 .build();
-        String message = NotificationMessageFactory.createNotification(notification);
+        String message = NotificationMessageBuilder.createNotification(notification);
         notificationDAO.insertBookingNotification(
                 change.getUsername(),
                 change.getShopId(),
@@ -43,7 +43,7 @@ public class NotificationDbObserver implements BookingStatusObserver, ReviewCrea
                 .reviewId(change.getReviewId())
                 .type(NotificationType.REVIEW_CREATED)
                 .build();
-        String message = NotificationMessageFactory.createNotification(notification);
+        String message = NotificationMessageBuilder.createNotification(notification);
         notificationDAO.insertReviewNotification(
                 change.getUsername(),
                 change.getShopId(),

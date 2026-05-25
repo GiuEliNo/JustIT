@@ -1,6 +1,7 @@
 package it.dosti.justit.view.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -8,39 +9,79 @@ import javafx.scene.layout.VBox;
 
 public class BookingListCell extends ListCell<BookingBean> {
 
+    private final VBox container = new VBox();
+
+    public BookingListCell() {
+        container.setSpacing(6);
+        container.setPadding(new Insets(8));
+
+
+    }
+
     @Override
-    protected void updateItem(BookingBean item, boolean empty) {
-        super.updateItem(item, empty);
+    protected void updateItem(BookingBean booking, boolean empty) {
+        super.updateItem(booking, empty);
 
-        if (empty || item == null) {
-            setText(null);
+        if (empty || booking == null) {
             setGraphic(null);
+            return;
         }
 
-        else {
-            VBox vbox = new VBox(5);
-            HBox topRow = new HBox(10);
+        container.getChildren().clear();
 
-            Label shopLabel = new Label(item.getShopName());
+        HBox firstRow = new HBox(5);
 
-            Label dateLabel = new Label(item.getDate().toString());
+        Label shopLabel = new Label("Shop:");
+        shopLabel.getStyleClass().add("label-bold");
 
-            Label timeSlotLabel = new Label(item.getTimeSlot().toString());
+        Label shopValue = new Label(booking.getShopName());
 
-            Label descriptionLabel = new Label(item.getDescription());
+        Label dateLabel = new Label(" Date:");
+        dateLabel.getStyleClass().add("label-bold");
 
-            Label statusLabel = new Label(item.getStatus().toString());
+        Label dateValue = new Label(
+                booking.getDate() + " " + booking.getTimeSlot()
+        );
 
-            Label homeAssistanceLabel = new Label(item.getHomeAssistance().toString());
+        Label statusLabel = new Label(" Status:");
+        statusLabel.getStyleClass().add("label-bold");
 
-            topRow.getChildren().addAll(shopLabel, dateLabel, timeSlotLabel, descriptionLabel, statusLabel, homeAssistanceLabel);
+        Label statusValue = new Label(
+                String.valueOf(booking.getStatus())
+        );
 
-            vbox.getChildren().addAll(topRow);
-            setGraphic(vbox);
-        }
+        firstRow.getChildren().addAll(
+                shopLabel, shopValue,
+                dateLabel, dateValue,
+                statusLabel, statusValue
+        );
 
+        HBox secondRow = new HBox(5);
 
+        Label descLabel = new Label("Description:");
+        descLabel.getStyleClass().add("label-bold");
 
+        Label descValue = new Label(booking.getDescription());
 
+        secondRow.getChildren().addAll(descLabel, descValue);
+
+        HBox thirdRow = new HBox(5);
+
+        Label homeLabel = new Label("Home Assistance:");
+        homeLabel.getStyleClass().add("label-bold");
+
+        Label homeValue = new Label(
+                booking.getHomeAssistanceLabel()
+        );
+
+        thirdRow.getChildren().addAll(homeLabel, homeValue);
+
+        container.getChildren().addAll(
+                firstRow,
+                secondRow,
+                thirdRow
+        );
+
+        setGraphic(container);
     }
 }
