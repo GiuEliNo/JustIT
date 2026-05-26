@@ -1,57 +1,49 @@
 ```plantuml
 @startuml
-
 start
-note
-start for "call intervent"
+
+note right
+manage call of intervention
 end note
 
-:display list technician based on geoip;
+:receive service request notification;
+:view request details;
 
-if (user search by technician's name?) then (yes)
-    :enter technician's name;
-    :list based on query;
-else (no)
-    if (user use filter?) then (yes)
-    fork
-        :fill field address;
-    fork again
-        :provide a maximum range;
-    end merge
+if (request acceptable?) then (yes)
 
-    :select type of techincian;
-
-    :list based on filter;
-
-
-endif
-endif
-
-:select technician;
-
-fork
-    :add note about issue;
-fork again
-    if (request home delivery service?) then (yes)
-        fork
-            :provide home's address;
-        fork again
-            :select available date for home's service;
-        end merge
+    if (requested date available?) then (yes)
+        :accept request;
     else (no)
-        :select available date;
+        :propose alternative date;
+        fork
+            :wait for customer response;
+            
+        fork again
+        
+            :\t\t\t timer 48h; <<timeEvent>>
+            
+        end fork
+        
+        if (customer responds?) then (yes)
+                :accept new date;
+            else (timeout)
+                :cancel request;
+        endif
+        
     endif
-end merge
 
-if (pay with card?) then (yes)
-    :fill invoice;
+    :update request status;
+    :update technician schedule;
+    :notify customer;
+
 else (no)
-    :cash payment;
-endif
 
-:system notify techincian;
+    :reject request;
+    :update request status;
+    :notify customer;
+
+endif
 
 end
-
 @enduml
 ```
