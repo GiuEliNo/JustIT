@@ -9,11 +9,11 @@ end note
 :receive service request notification;
 :view request details;
 
-if (request acceptable?) then (yes)
+if (request acceptable?) then ([yes])
 
-    if (requested date available?) then (yes)
+    if (requested date available?) then ([yes])
         :accept request;
-    else (no)
+    else ([no])
         :propose alternative date;
         fork
             :wait for customer response;
@@ -24,25 +24,25 @@ if (request acceptable?) then (yes)
             
         end fork
         
-        if (customer responds?) then (yes)
+        if (customer responds?) then ([yes])
                 :accept new date;
-            else (timeout)
+            else ([timeout OR no])
                 :cancel request;
+        
         endif
         
     endif
 
-    :update request status;
-    :update technician schedule;
-    :notify customer;
 
-else (no)
+else ([no])
 
     :reject request;
-    :update request status;
-    :notify customer;
+
 
 endif
+
+:update request status;
+:notify customer;
 
 end
 @enduml
