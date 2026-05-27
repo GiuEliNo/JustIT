@@ -12,8 +12,8 @@ public class NotificationDAODemo implements NotificationDAO {
     private final List<Notification> notifications = new ArrayList<>();
     private int nextId = 3004;
 
-    private final String SHOP_NAME_DEMO = "Arindale Riparazione";
-    private final String USER_DEMO = "demo_client";
+    private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
+    private static final String USER_DEMO = "demo_client";
 
     public NotificationDAODemo() {
         notifications.add(new Notification.Builder(3001)
@@ -52,7 +52,7 @@ public class NotificationDAODemo implements NotificationDAO {
     @Override
     public void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime) {
         Notification notification = new Notification.Builder(nextId++)
-                .shopName("Arindale Riparazione")
+                .shopName(SHOP_NAME_DEMO)
                 .username(username)
                 .bookingId(bookingId)
                 .type(NotificationType.BOOKING_STATUS)
@@ -66,7 +66,7 @@ public class NotificationDAODemo implements NotificationDAO {
     @Override
     public void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime) {
         Notification notification = new Notification.Builder(nextId++)
-                .shopName("Arindale Riparazione")
+                .shopName(SHOP_NAME_DEMO)
                 .username(username)
                 .reviewId(reviewId)
                 .type(NotificationType.REVIEW_CREATED)

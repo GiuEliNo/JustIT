@@ -91,15 +91,16 @@ public class RegisterController {
     public boolean isUsernameAvailable(RegisterBean registerBean) {
         UserDaoFactory factory = new UserDaoFactory();
 
-        UserDAO dao;
 
         if(Objects.equals(registerBean.getRole(), "CLIENT")){
-            dao=factory.createUserDAO(true);
+            ClientUserDAO dao = (ClientUserDAO) factory.createUserDAO(true);
+            return dao.isUsernameAvailable(registerBean.getUsername());
         }
         else{
-            dao=factory.createUserDAO(false);
+            TechnicianDAO dao=(TechnicianDAO) factory.createUserDAO(false);
+            return dao.isUsernameAvailable(registerBean.getUsername());
         }
-        return dao.isUsernameAvailable(registerBean.getUsername());
+
     }
 
 

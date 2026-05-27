@@ -9,6 +9,8 @@ import javafx.scene.layout.VBox;
 
 public class BookingListCell extends ListCell<BookingBean> {
 
+    private static final String BOLD_LABEL = "label-bold";
+
     private final VBox container = new VBox();
 
     public BookingListCell() {
@@ -32,19 +34,19 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox firstRow = new HBox(5);
 
         Label shopLabel = new Label("Shop:");
-        shopLabel.getStyleClass().add("label-bold");
+        shopLabel.getStyleClass().add(BOLD_LABEL);
 
         Label shopValue = new Label(booking.getShopName());
 
         Label dateLabel = new Label(" Date:");
-        dateLabel.getStyleClass().add("label-bold");
+        dateLabel.getStyleClass().add(BOLD_LABEL);
 
         Label dateValue = new Label(
                 booking.getDate() + " " + booking.getTimeSlot()
         );
 
         Label statusLabel = new Label(" Status:");
-        statusLabel.getStyleClass().add("label-bold");
+        statusLabel.getStyleClass().add(BOLD_LABEL);
 
         Label statusValue = new Label(
                 String.valueOf(booking.getStatus())
@@ -59,7 +61,7 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox secondRow = new HBox(5);
 
         Label descLabel = new Label("Description:");
-        descLabel.getStyleClass().add("label-bold");
+        descLabel.getStyleClass().add(BOLD_LABEL);
 
         Label descValue = new Label(booking.getDescription());
 
@@ -68,7 +70,7 @@ public class BookingListCell extends ListCell<BookingBean> {
         HBox thirdRow = new HBox(5);
 
         Label homeLabel = new Label("Home Assistance:");
-        homeLabel.getStyleClass().add("label-bold");
+        homeLabel.getStyleClass().add(BOLD_LABEL);
 
         Label homeValue = new Label(
                 booking.getHomeAssistanceLabel()

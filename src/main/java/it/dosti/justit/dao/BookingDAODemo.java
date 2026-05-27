@@ -13,8 +13,8 @@ public class BookingDAODemo implements BookingDAO {
     private final List<Booking> bookings = new ArrayList<>();
     private int nextId = 1004;
 
-    private final String SHOP_NAME_DEMO = "Arindale Riparazione";
-    private final String USER_DEMO = "demo_client";
+    private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
+    private static final String USER_DEMO = "demo_client";
 
     public BookingDAODemo() {
         bookings.add(new Booking.Builder(USER_DEMO)
@@ -42,7 +42,7 @@ public class BookingDAODemo implements BookingDAO {
         bookings.add(new Booking.Builder("demo_client")
                 .bookingId(1003)
                 .shopId(1)
-                .shopName("Arindale Riparazione")
+                .shopName(SHOP_NAME_DEMO)
                 .date(LocalDate.now().plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
                 .description("Pulizia steam controller")
@@ -53,7 +53,7 @@ public class BookingDAODemo implements BookingDAO {
         bookings.add(new Booking.Builder("demo_client_2")
                 .bookingId(2001)
                 .shopId(1)
-                .shopName("Arindale Riparazione")
+                .shopName(SHOP_NAME_DEMO)
                 .date(LocalDate.now().minusDays(5))
                 .timeSlot(TimeSlot.MORNING)
                 .description("Aggiornamento Gentoo")

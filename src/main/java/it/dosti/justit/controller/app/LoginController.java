@@ -5,7 +5,6 @@ import it.dosti.justit.dao.*;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Credentials;
-import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.SessionManager;
 

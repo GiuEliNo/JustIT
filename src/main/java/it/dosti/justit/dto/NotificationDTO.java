@@ -20,7 +20,7 @@ public class NotificationDTO {
 
 
     public NotificationDTO(){
-
+        // It's only needed by Jackson data binding
     }
 
 
