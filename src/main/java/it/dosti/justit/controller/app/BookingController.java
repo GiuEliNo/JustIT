@@ -29,7 +29,7 @@ public class BookingController {
         Booking newBooking = new Booking.Builder(bookingBean.getUsername())
                 .shopId(bookingBean.getShopId())
                 .date(bookingBean.getDate())
-                .timeslot(bookingBean.getTimeSlot())
+                .timeSlot(bookingBean.getTimeSlot())
                 .description(bookingBean.getDescription())
                 .status(BookingStatus.PENDING)
                 .homeAssistance(bookingBean.getHomeAssistance())

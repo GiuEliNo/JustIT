@@ -19,9 +19,10 @@ public class NotificationDTO {
     String bookingStatus;
 
 
-    NotificationDTO(){
+    public NotificationDTO(){
 
     }
+
 
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;

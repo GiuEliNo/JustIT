@@ -26,6 +26,12 @@ public class BookingDAOFile implements BookingDAO{
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
+            if(!bookings.isEmpty()){
+                booking.setBookingId(bookings.stream().mapToInt(Booking::getBookingId).max().getAsInt() +1);
+            }
+            else{
+                booking.setBookingId(1);
+            }
             bookings.add(booking);
             JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
             return 1;
@@ -43,7 +49,7 @@ public class BookingDAOFile implements BookingDAO{
             if (!bookings.isEmpty()){
                 boolean found = false;
                 for (Booking booking : bookings) {
-                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().compareTo(date)==0  && booking.getTimeSlot().compareTo(timeSlot)==0){
+                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().isEqual(date) && booking.getTimeSlot().compareTo(timeSlot)==0){
                         found = true;
                         break;
                     }

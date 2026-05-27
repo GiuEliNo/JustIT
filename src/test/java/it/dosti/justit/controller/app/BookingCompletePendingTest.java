@@ -40,7 +40,7 @@ class BookingCompletePendingTest {
         Booking booking = new Booking.Builder(USERNAME)
                 .shopId(SHOP_ID)
                 .date(date)
-                .timeslot(TIME_SLOT)
+                .timeSlot(TIME_SLOT)
                 .description("Booking pending test")
                 .status(BookingStatus.PENDING)
                 .homeAssistance(false)

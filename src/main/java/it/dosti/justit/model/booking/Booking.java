@@ -2,7 +2,6 @@ package it.dosti.justit.model.booking;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.observer.BookingStatusChange;
 import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
@@ -84,7 +83,7 @@ public class Booking {
             return this;
         }
 
-        public Builder timeslot(TimeSlot timeSlot) {
+        public Builder timeSlot(TimeSlot timeSlot) {
             this.timeSlot = timeSlot;
             return this;
         }

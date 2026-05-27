@@ -39,7 +39,7 @@ class BookingAlreadyExistsTest {
         Booking booking = new Booking.Builder(USERNAME)
                 .shopId(SHOP_ID)
                 .date(bookingDate)
-                .timeslot(TIME_SLOT)
+                .timeSlot(TIME_SLOT)
                 .description("Booking test")
                 .status(BookingStatus.PENDING)
                 .homeAssistance(false)

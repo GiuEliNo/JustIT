@@ -21,38 +21,34 @@ public class NotificationDAOFile implements NotificationDAO{
     public void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime){
         try{
             int notificationId = 1;
-            String shopName = findShopName(shopId);
-            List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            NotificationDTO item = new NotificationDTO();
 
             if(notifications.isEmpty()){
-                notifications.add(new Notification
-                        .Builder(notificationId)
-                        .username(username)
-                        .shopName(shopName)
-                        .bookingId(bookingId)
-                        .bookingStatus(BookingStatus.PENDING.name())
-                        .type(NotificationType.BOOKING_STATUS)
-                        .message(message)
-                        .createdAt(createdTime)
-                        .build());
+
+                item.setId(notificationId);
+                item.setUsername(username);
+                item.setBookingId(bookingId);
+                item.setBookingStatus(BookingStatus.PENDING.name());
+                item.setType(NotificationType.BOOKING_STATUS);
+                item.setMessage(message);
+                item.setCreatedTime(createdTime);
             }
-            else{
+            else {
                 notificationId = notifications.stream()
-                        .mapToInt(Notification::getId)
+                        .mapToInt(NotificationDTO::getId)
                         .max()
-                        .getAsInt() +1 ;
-                notifications.add(new Notification
-                        .Builder(notificationId)
-                        .username(username)
-                        .shopName(shopName)
-                        .bookingId(bookingId)
-                        .bookingStatus(BookingStatus.PENDING.name())
-                        .type(NotificationType.BOOKING_STATUS)
-                        .message(message)
-                        .createdAt(createdTime)
-                        .build());
+                        .getAsInt() + 1;
+                item.setId(notificationId);
+                item.setUsername(username);
+                item.setBookingId(bookingId);
+                item.setBookingStatus(BookingStatus.PENDING.name());
+                item.setType(NotificationType.BOOKING_STATUS);
+                item.setMessage(message);
+                item.setCreatedTime(createdTime);
             }
 
+            notifications.add(item);
             JsonHandler.writeJsonFile(notifications, FILENAME_NOTIFICATION);
 
         }
@@ -65,34 +61,33 @@ public class NotificationDAOFile implements NotificationDAO{
     public  void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime){
         try{
             int notificationId = 1;
-            String shopName = findShopName(shopId);
-                List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-                if(notifications.isEmpty()){
-                    notifications.add(new Notification
-                            .Builder(notificationId)
-                            .username(username)
-                            .shopName(shopName)
-                            .reviewId(reviewId)
-                            .type(NotificationType.REVIEW_CREATED)
-                            .message(message)
-                            .createdAt(createdTime)
-                            .build());
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            if(notifications.isEmpty()){
+                            NotificationDTO item =new NotificationDTO();
+                                    item.setId(notificationId);
+                                    item.setUsername(username);
+                                    item.setReviewId(reviewId);
+                                    item.setType(NotificationType.REVIEW_CREATED);
+                                    item.setMessage(message);
+                                    item.setCreatedTime(createdTime);
+                                    notifications.add(item);
+
                 }
-                else{
-                    notificationId = notifications.stream()
-                            .mapToInt(Notification::getId)
-                            .max()
-                            .getAsInt() +1 ;
-                    notifications.add(new Notification
-                            .Builder(notificationId)
-                            .username(username)
-                            .shopName(shopName)
-                            .reviewId(reviewId)
-                            .type(NotificationType.REVIEW_CREATED)
-                            .message(message)
-                            .createdAt(createdTime)
-                            .build());
-                }
+                else {
+                notificationId = notifications.stream()
+                        .mapToInt(NotificationDTO::getId)
+                        .max()
+                        .getAsInt() + 1;
+                NotificationDTO item = new NotificationDTO();
+                item.setId(notificationId);
+                item.setUsername(username);
+                item.setReviewId(reviewId);
+                item.setType(NotificationType.REVIEW_CREATED);
+                item.setMessage(message);
+                item.setCreatedTime(createdTime);
+                notifications.add(item);
+            }
+
                 JsonHandler.writeJsonFile(notifications, FILENAME_NOTIFICATION);
         }
         catch(Exception e){
@@ -180,17 +175,30 @@ public class NotificationDAOFile implements NotificationDAO{
     public List<Notification> getNotificationsByShopId(Integer shopId){
         try{
             String shopName = findShopName(shopId);
-            List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<Notification> filteredNotifications = new ArrayList<>();
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            List<NotificationDTO> filteredNotifications = new ArrayList<>();
+            List<Notification> notificationFinal = new ArrayList<>();
             if(!notifications.isEmpty()){
-                for(Notification notification : notifications){
-                    if(notification.getShopName().equals(shopName)){
+                for(NotificationDTO notification : notifications){
+                    if(notification.getShopId().equals(shopId)){
                         filteredNotifications.add(notification);
                     }
                 }
-                return filteredNotifications;
+                for(NotificationDTO notification : filteredNotifications){
+                    notificationFinal.add(
+                            new Notification.Builder(notification.getId())
+                                    .username(notification.getUsername())
+                                    .shopName(shopName)
+                                    .reviewId(notification.getReviewId())
+                                    .bookingId(notification.getBookingId())
+                                    .type(notification.getType())
+                                    .message(notification.getMessage())
+                                    .createdAt(notification.getCreatedTime())
+                                    .bookingStatus(notification.getBookingStatus())
+                                    .build());
+                }
             }
-
+            return notificationFinal;
         }
         catch(Exception e){
             e.printStackTrace();
@@ -201,9 +209,9 @@ public class NotificationDAOFile implements NotificationDAO{
     @Override
     public void markRead(Integer notificationId){
         try{
-            List<Notification> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
             if(!notifications.isEmpty()){
-                for(Notification notification : notifications){
+                for(NotificationDTO notification : notifications){
                     if(notification.getId().equals(notificationId)) {
                         notification.setRead(true);
                         break;

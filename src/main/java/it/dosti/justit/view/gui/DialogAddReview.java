@@ -16,7 +16,7 @@ public class DialogAddReview extends Dialog<ButtonType>{
 
     public DialogAddReview(List<BookingBean> bookings) {
         setTitle("Add a Review");
-
+        getDialogPane().getStyleClass().add("my-Review-dialog");
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         VBox vbox = new VBox(10);
