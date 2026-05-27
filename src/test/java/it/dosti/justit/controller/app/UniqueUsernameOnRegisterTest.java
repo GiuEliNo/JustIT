@@ -4,6 +4,8 @@ import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.PersistencyType;
+import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ class UniqueUsernameOnRegisterTest {
     void setUp() {
 
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
+        SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
     }
 
     @Test

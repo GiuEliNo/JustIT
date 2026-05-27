@@ -10,6 +10,8 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.PersistencyType;
+import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,7 @@ class BookingCompletePendingTest {
     @BeforeEach
     void setupBooking() throws SQLException {
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
+        SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
         BookingDAO dao = new BookingDAOJDBC();
 
         LocalDate date = LocalDate.now().plusDays(7);

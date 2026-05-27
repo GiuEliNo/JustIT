@@ -5,6 +5,8 @@ import it.dosti.justit.dao.ReviewDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.review.Review;
+import it.dosti.justit.utils.PersistencyType;
+import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +19,7 @@ class ReviewNotEditableWithoutCompleteBookingTest {
     @BeforeEach
     void setUp() {
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
+        SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
     }
 
     @Test

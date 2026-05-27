@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
+import java.io.IOException;
 
 public class JsonHandler {
 
@@ -16,13 +17,13 @@ public class JsonHandler {
     private JsonHandler(){
     }
 
-    public static <T> void writeJsonFile(T object, String filename) throws Exception{
+    public static <T> void writeJsonFile(T object, String filename) throws IOException {
         mapper.writerWithDefaultPrettyPrinter().writeValue(new File(DIRPATH+filename+JSON), object);
     }
 
 
 
-    public static <T> T readCollectionOnJsonFile(String filename, TypeReference<T> typeReference) throws Exception{
+    public static <T> T readCollectionOnJsonFile(String filename, TypeReference<T> typeReference) throws IOException {
         return mapper.readValue(new File(DIRPATH+filename+JSON), typeReference);
     }
 
