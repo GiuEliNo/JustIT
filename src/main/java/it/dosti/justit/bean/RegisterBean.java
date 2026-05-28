@@ -71,4 +71,9 @@ public class RegisterBean {
     public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
+
+
+    public boolean emailValidation(String email) {
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
 }

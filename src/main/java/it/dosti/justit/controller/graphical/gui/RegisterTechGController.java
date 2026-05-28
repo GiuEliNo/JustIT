@@ -50,7 +50,12 @@ public class RegisterTechGController extends BaseGController{
         RegisterController registerController = new RegisterController();
         TechnicRegisterBean technicRegisterBean = new TechnicRegisterBean();
 
-        technicRegisterBean.setEmail(emailField.getText());
+        if(!technicRegisterBean.emailValidation(emailField.getText())){
+            warningLabel.setText("Email address is invalid");
+            return;
+        }else {
+            technicRegisterBean.setEmail(emailField.getText());
+        }
         technicRegisterBean.setPassword(passwordField.getText());
         technicRegisterBean.setShopName(shopField.getText());
         technicRegisterBean.setUsername(usernameField.getText());

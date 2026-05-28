@@ -55,7 +55,13 @@ public class RegisterUserGController extends BaseGController{
 
         bean.setName(nameField.getText());
         bean.setPassword(passwordField.getText());
-        bean.setEmail(emailField.getText());
+        if(!bean.emailValidation(emailField.getText())) {
+            warningLabel.setText("Email address is invalid");
+            return;
+        }else{
+            bean.setEmail(emailField.getText());
+        }
+
         bean.setUsername(usernameField.getText());
         bean.setAddress(streetField.getText() + ","  + cityField.getText() + "," + countryField.getText());
         bean.setRole(String.valueOf(RoleType.CLIENT));
