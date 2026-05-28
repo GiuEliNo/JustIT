@@ -7,6 +7,7 @@ import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.notification.Notification;
 import it.dosti.justit.model.notification.NotificationType;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class NotificationDAOFile implements NotificationDAO{
 
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
@@ -91,7 +92,7 @@ public class NotificationDAOFile implements NotificationDAO{
                 JsonHandler.writeJsonFile(notifications, FILENAME_NOTIFICATION);
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
     @Override
@@ -119,6 +120,7 @@ public class NotificationDAOFile implements NotificationDAO{
                             .message(notification.getMessage())
                             .createdAt(notification.getCreatedTime())
                             .bookingStatus(notification.getBookingStatus())
+                                    .read(notification.isRead())
                             .build());
 
                 }
@@ -127,7 +129,7 @@ public class NotificationDAOFile implements NotificationDAO{
 
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
 
@@ -157,6 +159,7 @@ public class NotificationDAOFile implements NotificationDAO{
                                         .message(notification.getMessage())
                                         .createdAt(notification.getCreatedTime())
                                         .bookingStatus(notification.getBookingStatus())
+                                        .read(notification.isRead())
                                         .build());
 
                 }
@@ -166,7 +169,7 @@ public class NotificationDAOFile implements NotificationDAO{
 
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -195,13 +198,14 @@ public class NotificationDAOFile implements NotificationDAO{
                                     .message(notification.getMessage())
                                     .createdAt(notification.getCreatedTime())
                                     .bookingStatus(notification.getBookingStatus())
+                                    .read(notification.isRead())
                                     .build());
                 }
             }
             return notificationFinal;
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -221,7 +225,7 @@ public class NotificationDAOFile implements NotificationDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
     }
@@ -236,7 +240,7 @@ public class NotificationDAOFile implements NotificationDAO{
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return "";
 

@@ -11,6 +11,7 @@ import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
                             targetPassword.equals(c.getPassword()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
         return false;
@@ -58,7 +59,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -74,7 +75,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -94,7 +95,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -114,7 +115,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -134,7 +135,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -151,7 +152,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -172,7 +173,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -198,7 +199,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }

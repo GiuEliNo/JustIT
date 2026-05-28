@@ -6,6 +6,7 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 import javafx.scene.image.Image;
 
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class ShopDAOFile implements ShopDAO{
             return JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -47,7 +48,7 @@ public class ShopDAOFile implements ShopDAO{
             return true;
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -64,7 +65,7 @@ public class ShopDAOFile implements ShopDAO{
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -89,7 +90,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -109,7 +110,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -129,7 +130,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -150,7 +151,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -170,7 +171,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -190,7 +191,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -210,7 +211,7 @@ public class ShopDAOFile implements ShopDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }

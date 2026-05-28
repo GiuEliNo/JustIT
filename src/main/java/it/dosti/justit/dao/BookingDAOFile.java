@@ -7,6 +7,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -58,7 +59,7 @@ public class BookingDAOFile implements BookingDAO{
             }
 
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -79,7 +80,7 @@ public class BookingDAOFile implements BookingDAO{
                 return bookingsUser;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -98,7 +99,7 @@ public class BookingDAOFile implements BookingDAO{
                 return bookingsShop;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -117,7 +118,7 @@ public class BookingDAOFile implements BookingDAO{
             JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
@@ -135,7 +136,7 @@ public class BookingDAOFile implements BookingDAO{
                 return timeSlots;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -154,7 +155,7 @@ public class BookingDAOFile implements BookingDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -174,7 +175,7 @@ public class BookingDAOFile implements BookingDAO{
                 return filteredBookings;
 
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -194,7 +195,7 @@ public class BookingDAOFile implements BookingDAO{
             return filteredBookings;
 
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -212,7 +213,7 @@ public class BookingDAOFile implements BookingDAO{
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return "";
     }

@@ -5,6 +5,7 @@ import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,7 @@ public class ReviewDAOFile implements ReviewDAO{
                 return filteredReviews;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -58,7 +59,7 @@ public class ReviewDAOFile implements ReviewDAO{
             }
             JsonHandler.writeJsonFile(reviews, FILENAME_REVIEWS);
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -77,7 +78,7 @@ public class ReviewDAOFile implements ReviewDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
