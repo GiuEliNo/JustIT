@@ -1,83 +1,61 @@
 @startuml
+
+title Booking
+
 actor User
+participant LoginGUI <<boundary>>
+participant ShopPageGUI <<boundary>>
+participant BookingGUI <<boundary>>
+participant ShopController <<controller>>
+participant BookingController <<controller>>
+participant Shop <<entity>>
+participant Booking <<entity>>
+database DB
+actor PaymentServiceProvider
 
 
-User -> LoginGUI: 1:Login
-activate LoginGUI
+User -> LoginGUI ++: Login
 
-LoginGUI -> ShopSearchGUI **: 2: create ShopSearchGUI
+LoginGUI -> ShopPageGUI ++ :  initialize ShopPageGUI
+ShopPageGUI -> ShopController ++ :  initialize ShopController
 
+ShopController -->> ShopPageGUI --:
+ShopPageGUI -->> LoginGUI --:
 deactivate LoginGUI
-destroy LoginGUI
 
-deactivate ShopSearchGUI
+User -> ShopPageGUI ++: select shop
+ShopPageGUI -> ShopController ++: get shop info
+ShopController -> Shop ++: <<create>>
+deactivate Shop
 
-
-User -> ShopSearchGUI: 3 select Shop
-activate ShopSearchGUI
-
-ShopSearchGUI -> ShopPageGUI **:4: Init Shop Page View
-activate ShopPageGUI
-deactivate ShopSearchGUI
-destroy ShopSearchGUI
-
-ShopPageGUI -> BookingGUI **: 5: Init booking View
-
-activate BookingGUI
+ShopController ->> DB ++: getShopDB
+DB -->> ShopController --
+ShopController -->> ShopPageGUI --: show shop details
 deactivate ShopPageGUI
 
+User -> BookingGUI ++: select add Booking
 
+BookingGUI -> BookingController ++: add booking
 
+BookingController ->> Booking ++: <<create>>
+BookingController ->> Shop ++: get shop data
+Booking -->> BookingController --
+Shop -->> BookingController --
 
-BookingGUI -> BookingController **: 6: Initialize a booking controller
-
-activate BookingController
-
-
-BookingController -->> Booking **: 7:Initialize a booking
-activate Booking
-
-Booking -->> BookingController
+BookingController -> Booking ++: setup booking
 deactivate Booking
 
-BookingController -->>BookingGUI
-
-
-deactivate BookingController
-deactivate BookingGUI
-
-
-User -> BookingGUI: 8: Select Add Booking
-activate BookingGUI
-
-BookingGUI -> BookingController: 9: Add Booking
-activate BookingController
-
-BookingController ->> Booking: 10: Add booking data
-activate Booking
-
-Booking -->> BookingController
-deactivate Booking
-
-BookingController -> DB: 11: Commit data to DB
-activate DB
-DB -->> BookingController: return
+BookingController -> DB ++: commit data to DB
 deactivate DB
 
-destroy Booking
+BookingController -> PaymentServiceProvider ++: pay with card
+deactivate PaymentServiceProvider
 
-
-BookingController ->> Notification **: 12: Send Notification
-activate Notification
-
-Notification -->> BookingController
-deactivate Notification
-
-BookingController -->> BookingGUI: Done
+BookingController -->> BookingGUI
 
 deactivate BookingController
 
-BookingGUI -->> User: Done
+BookingGUI -->> User
 
 deactivate BookingGUI
 
