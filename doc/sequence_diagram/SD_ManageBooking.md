@@ -11,7 +11,7 @@ participant BookingController <<controller>>
 participant Booking <<entity>>
 participant Client <<entity>>
 database DB
-participant NotificationService <<boundary>>
+actor NotificationService
 
 Technician -> HomePageGUI: select ManageBooking
 activate HomePageGUI
@@ -39,8 +39,9 @@ BookingController ->> Booking : load booking details
 activate Booking
 BookingController ->> Client : load user info
 activate Client
-deactivate Booking
-deactivate Client
+Booking -->> BookingController --:
+Client -->> BookingController --:
+
 
 BookingController-->> BookingPageGUI --: shows data
 
