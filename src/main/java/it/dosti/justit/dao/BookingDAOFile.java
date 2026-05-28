@@ -9,7 +9,6 @@ import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +22,7 @@ public class BookingDAOFile implements BookingDAO{
     private static final String FILENAME_SHOPS = "shops";
 
     @Override
-    public int addBooking(Booking booking) throws SQLException{
+    public int addBooking(Booking booking) {
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
@@ -37,7 +36,7 @@ public class BookingDAOFile implements BookingDAO{
             JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
             return 1;
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
             return 0;
         }
     }

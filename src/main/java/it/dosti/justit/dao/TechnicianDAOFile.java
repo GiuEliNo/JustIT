@@ -9,6 +9,7 @@ import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
     private static final String FILENAME_USER = "users";
 
     @Override
-    public Integer getShopIDbyName(String shopName) throws ShopNotFoundException{
+    public Integer getShopIDbyName(String shopName) {
         try{
             List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
             if (!shops.isEmpty()){
@@ -32,7 +33,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return 0;
     }
@@ -57,7 +58,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
                     .anyMatch(c -> targetUsername.equals(c.getUser()) &&
                             targetPassword.equals(c.getPassword()));
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
 
@@ -74,7 +75,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -90,7 +91,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -110,7 +111,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -131,7 +132,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -151,7 +152,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -177,7 +178,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
