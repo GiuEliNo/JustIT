@@ -44,7 +44,7 @@ class UpdateFakeAddressTest {
     void testAddressClient() throws UserNotFoundException {
         UpdateController appController = new UpdateController();
 
-        UserDAO<ClientUser> dao = new ClientUserDAOJDBC();
+        UserDAO dao = new ClientUserDAOJDBC();
 
         SessionManager.getInstance().setLoggedUser(dao.findByUsername(USERNAME));
 
