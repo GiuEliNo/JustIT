@@ -7,8 +7,6 @@ import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.*;
-import it.dosti.justit.model.user.ClientUser;
-import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.util.Objects;
@@ -30,7 +28,7 @@ public class RegisterController {
 
         Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-        if(dao.register(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates() ), cred ))
+        if(dao.register(registerBean, cred ))
         {
             JustItLogger.getInstance().info("Register successful");
             return true;
@@ -43,8 +41,8 @@ public class RegisterController {
 
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, ShopNotFoundException {
         TechnicianDAO dao = DaoFactory.getTechnicianDAO();
-        Integer shopId = dao.getShopIDbyName(registerBean.getShopName());
-        if ( shopId == 0){
+        registerBean.setShopId(dao.getShopIDbyName(registerBean.getShopName()));
+        if ( registerBean.getShopId() == 0){
             JustItLogger.getInstance().warn("Shop name not found");
             return false;
         }
@@ -53,7 +51,7 @@ public class RegisterController {
             JustItLogger.getInstance().info("Register successful");
             Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-            return dao.register(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), shopId), cred);
+            return dao.register(registerBean, cred);
         }
 
     }

@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
@@ -8,11 +9,11 @@ import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 
-public interface ClientUserDAO extends UserDAO<ClientUser> {
+public interface ClientUserDAO extends UserDAO {
 
     boolean login(Credentials cred) throws LoginFromDBException;
 
-    boolean register(ClientUser user, Credentials cred) throws RegisterOnDbException;
+    boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException;
 
     User findByUsername(String username) throws UserNotFoundException;
 

@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.*;
@@ -36,7 +37,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
     }
 
     @Override
-    public boolean register(TechnicianUser user, Credentials cred) throws RegisterOnDbException {
+    public boolean register(RegisterBean user, Credentials cred) throws RegisterOnDbException {
 
         String sql1 = RegisterQuery.REGISTER_TECHNICIAN;
         try(

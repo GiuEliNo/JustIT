@@ -1,6 +1,7 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.Shop;
@@ -63,11 +64,11 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean register(TechnicianUser user, Credentials cred) throws RegisterOnDbException{
+    public boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException{
         try{
             List<TechnicianUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
-            users.add(user);
+            users.add(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShopId()));
             credentials.add(cred);
             JsonHandler.writeJsonFile(users, FILENAME_TECHNICIANS);
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
