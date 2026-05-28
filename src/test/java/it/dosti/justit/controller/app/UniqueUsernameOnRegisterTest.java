@@ -1,6 +1,6 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.bean.RegisterBean;
+import it.dosti.justit.bean.ClientRegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.utils.JustItLogger;
@@ -30,8 +30,9 @@ class UniqueUsernameOnRegisterTest {
     void registerUserWithDuplicateUsername() {
         boolean flag = true;
         RegisterController registerController = new RegisterController();
-       RegisterBean user1 = createUser();
-       RegisterBean user2 = createUser();
+       ClientRegisterBean user1 = createUser();
+       ClientRegisterBean user2 = createUser();
+
        try {
            registerController.registerNewUser(user1);
        } catch (RegisterOnBackEndException e) {
@@ -43,8 +44,8 @@ class UniqueUsernameOnRegisterTest {
     }
 
 
-    private RegisterBean createUser() {
-        RegisterBean registerBean =  new RegisterBean();
+    private ClientRegisterBean createUser() {
+        ClientRegisterBean registerBean =  new ClientRegisterBean();
         registerBean.setUsername("pippo");
         registerBean.setPassword("pippo");
         registerBean.setName("pippo");
