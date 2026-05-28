@@ -5,40 +5,44 @@ title Manage Booking
 
 actor Technician
 
-participant BookingPageGUI <<View>>
+participant HomePageGUI <<boundary>>
+participant BookingPageGUI <<boundary>>
+participant BookingController <<controller>>
+participant Booking <<entity>>
+participant Client <<entity>>
+database DB
+participant NotificationService <<boundary>>
 
-Technician -> BookingPageGUI: Select ManageBooking
+Technician -> HomePageGUI: select ManageBooking
+activate HomePageGUI
+HomePageGUI -> BookingPageGUI: initialize BookingPageGUI
 activate BookingPageGUI
 
 BookingPageGUI -> BookingController ++: <<create>>
-BookingController -> BookingList ++: <<create>>
-deactivate BookingList
-BookingController -> Booking++: <<create>>
-
+BookingController -> Booking ++: <<create>>
 deactivate Booking
-
-database DB
-BookingController -> DB ++: load
-
+BookingController ->> DB ++: getAllBookingsDB
 DB -->> BookingController --: return Bookings data
 
-BookingController -> BookingList++: populate Bookings
-deactivate BookingList
 
-BookingController -->> BookingPageGUI--: return bookings data
+BookingController -->> BookingPageGUI --: return bookings data
+deactivate HomePageGUI
 
 
 deactivate BookingPageGUI
 
-Technician -> BookingPageGUI: select booking
+Technician -> BookingPageGUI: select show booking info
 activate BookingPageGUI
 
-BookingPageGUI -> BookingController ++:
+BookingPageGUI -> BookingController ++: get selected booking
+BookingController ->> Booking : load booking details
+activate Booking
+BookingController ->> Client : load user info
+activate Client
+deactivate Booking
+deactivate Client
 
-Booking -> DB ++: load booking details
-DB -->> Booking--: return booking data
-
-Booking-->> BookingPageGUI --: shows booking data
+BookingController-->> BookingPageGUI --: shows data
 
 deactivate BookingPageGUI
 
@@ -46,24 +50,12 @@ deactivate BookingPageGUI
 Technician -> BookingPageGUI: change booking status
 activate BookingPageGUI
 
-BookingPageGUI -> Booking: update Booking information
-activate Booking
-deactivate Booking
-
+BookingPageGUI -> BookingController ++: update Booking
+BookingController ->> DB ++: save on db
+deactivate DB
+BookingController ->> NotificationService ++: send notification to client
+deactivate NotificationService
+deactivate BookingController
 deactivate BookingPageGUI
-
-Technician -> BookingPageGUI ++: select confirm
-
-BookingPageGUI ->> Booking++: prova
-
-Booking -> DB ++
-DB -->> Booking --: prova
-
-Booking -->> BookingPageGUI--
-
-deactivate BookingPageGUI
-
-
-
 
 @enduml
