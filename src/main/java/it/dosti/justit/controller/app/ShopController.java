@@ -5,7 +5,7 @@ import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.ShopDAO;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.InvalidAddressException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;
 import javafx.scene.image.Image;
@@ -47,42 +47,42 @@ public class ShopController {
         return dao.retrieveShopImageById(shop.getId());
     }
 
-    public boolean editShopName(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopName(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateNameShop(bean.getName());
     }
 
-    public boolean editShopAddress(ShopBean bean) throws UpdateOnDBException, InvalidAddressException {
+    public boolean editShopAddress(ShopBean bean) throws UpdateOnBackEndException, InvalidAddressException {
         UpdateController controller = new UpdateController();
         return controller.updateAddress(bean.getAddress());
     }
 
-    public boolean editShopDescription(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopDescription(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateDescriptionShop(bean.getDescription());
     }
 
-    public boolean editShopOpeningHours(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopOpeningHours(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateOpeningHourShop(bean.getOpeningHours());
     }
-    public boolean editShopEmail(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopEmail(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateEmailShop(bean.getEmail());
     }
 
-    public boolean editShopPhone(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopPhone(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updatePhoneNumberShop(bean.getPhone());
     }
 
-    public boolean editShopImage(ShopBean bean) throws UpdateOnDBException {
+    public boolean editShopImage(ShopBean bean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateImageShop(bean.getImage());
     }
 
 
-    public boolean editShopHomeAssistance(ShopBean shopBean) throws UpdateOnDBException {
+    public boolean editShopHomeAssistance(ShopBean shopBean) throws UpdateOnBackEndException {
         UpdateController controller = new UpdateController();
         return controller.updateHomeAssistanceShop(shopBean.isHomeAssistance());
     }

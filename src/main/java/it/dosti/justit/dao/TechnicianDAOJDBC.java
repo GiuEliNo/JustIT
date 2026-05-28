@@ -1,6 +1,5 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.*;
@@ -14,7 +13,7 @@ import java.sql.*;
 public class TechnicianDAOJDBC implements TechnicianDAO {
 
 
-    public boolean login(Credentials cred) throws LoginFromDBException {
+    public boolean login(Credentials cred) throws LoginFromBackEndException {
 
         String sql = LoginQuery.LOGIN_TECHNICIAN;
 
@@ -31,13 +30,13 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             }
         }
         catch(SQLException e){
-            throw new LoginFromDBException("Error checking login", e);
+            throw new LoginFromBackEndException("Error checking login", e);
         }
         return false;
     }
 
     @Override
-    public boolean register(RegisterBean user, Credentials cred) throws RegisterOnDbException {
+    public boolean registerTech(TechnicianUser user, Credentials cred) throws RegisterOnBackEndException {
 
         String sql1 = RegisterQuery.REGISTER_TECHNICIAN;
         try(
@@ -55,7 +54,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                     }
                 }
         }catch(SQLException e){
-            throw new RegisterOnDbException("Error registering the new technician", e);
+            throw new RegisterOnBackEndException("Error registering the new technician", e);
         }
         return false;
     }
@@ -112,7 +111,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         return null;
     }
     @Override
-    public boolean updateName(String username, String newName) throws UpdateOnDBException {
+    public boolean updateName(String username, String newName) throws UpdateOnBackEndException {
         String sql = TechnicianQuery.UPDATE_NAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -124,13 +123,13 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the username", e);
+            throw new UpdateOnBackEndException("Error updating the username", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateEmail(String username, String email) throws UpdateOnDBException {
+    public boolean updateEmail(String username, String email) throws UpdateOnBackEndException {
         String sql = TechnicianQuery.UPDATE_EMAIL;
 
         try(
@@ -144,14 +143,14 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the email", e);
+            throw new UpdateOnBackEndException("Error updating the email", e);
         }
 
         return false;
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException {
+    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnBackEndException {
         String sql = TechnicianQuery.UPDATE_PASSWORD;
 
         try(
@@ -169,7 +168,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the password", e);
+            throw new UpdateOnBackEndException("Error updating the password", e);
         }
         return false;
     }

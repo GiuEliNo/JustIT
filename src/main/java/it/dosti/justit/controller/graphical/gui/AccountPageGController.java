@@ -5,7 +5,7 @@ import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.InvalidAddressException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.view.gui.AddressDialog;
 import it.dosti.justit.utils.SessionManager;
@@ -97,7 +97,7 @@ public class AccountPageGController extends BaseGController {
                                 .showConfirm();
                     }
                 }
-                catch ( UpdateOnDBException  e)
+                catch ( UpdateOnBackEndException e)
                 {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
@@ -126,7 +126,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch ( UserNotFoundException | UpdateOnDBException | ShopNotFoundException e) {
+                } catch (UserNotFoundException | UpdateOnBackEndException | ShopNotFoundException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -155,7 +155,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch ( UserNotFoundException | UpdateOnDBException | ShopNotFoundException e)
+                } catch (UserNotFoundException | UpdateOnBackEndException | ShopNotFoundException e)
                 {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
@@ -230,7 +230,7 @@ public class AccountPageGController extends BaseGController {
                         .title(EDIT_ADDRESS)
                         .text("Address not valid")
                         .showError();
-            } catch (UpdateOnDBException e) {
+            } catch (UpdateOnBackEndException e) {
                 JustItLogger.getInstance().error(e.getMessage(), e);
                 Notifications.create()
                         .title(EDIT_ADDRESS)

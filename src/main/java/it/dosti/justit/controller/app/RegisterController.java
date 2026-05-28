@@ -1,19 +1,22 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.dao.*;
+import it.dosti.justit.bean.ClientRegisterBean;
 import it.dosti.justit.bean.RegisterBean;
+import it.dosti.justit.dao.*;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.TechnicRegisterBean;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.*;
+import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.util.Objects;
 
 public class RegisterController {
 
-    public boolean registerNewUser(RegisterBean registerBean) throws RegisterOnDbException {
+    public boolean registerNewUser(ClientRegisterBean registerBean) throws RegisterOnBackEndException {
 
         ClientUserDAO dao = DaoFactory.getClientUserDAO();
         CoordinatesDAO coordDAO= new CoordinatesDAOAPI();
@@ -28,7 +31,7 @@ public class RegisterController {
 
         Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-        if(dao.register(registerBean, cred ))
+        if(dao.registerUser(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates()), cred ))
         {
             JustItLogger.getInstance().info("Register successful");
             return true;
@@ -39,7 +42,7 @@ public class RegisterController {
         }
     }
 
-    public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnDbException, ShopNotFoundException {
+    public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnBackEndException, ShopNotFoundException {
         TechnicianDAO dao = DaoFactory.getTechnicianDAO();
         registerBean.setShopId(dao.getShopIDbyName(registerBean.getShopName()));
         if ( registerBean.getShopId() == 0){
@@ -51,12 +54,12 @@ public class RegisterController {
             JustItLogger.getInstance().info("Register successful");
             Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-            return dao.register(registerBean, cred);
+            return dao.registerTech(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShopId()), cred);
         }
 
     }
 
-    public boolean registerNewShop(ShopBean registerBean) throws RegisterOnDbException {
+    public boolean registerNewShop(ShopBean registerBean) throws RegisterOnBackEndException {
 
         ShopDAO dao = DaoFactory.getShopDAO();
 

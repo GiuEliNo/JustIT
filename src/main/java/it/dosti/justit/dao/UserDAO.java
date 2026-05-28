@@ -1,26 +1,23 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.RegisterBean;
-import it.dosti.justit.exceptions.LoginFromDBException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.LoginFromBackEndException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.User;
 
 public interface UserDAO {
 
-    boolean login(Credentials cred) throws LoginFromDBException;
+    boolean login(Credentials cred) throws LoginFromBackEndException;
 
-    boolean register(RegisterBean bean, Credentials cred) throws RegisterOnDbException;
 
     User findByUsername(String username) throws UserNotFoundException;
 
-    boolean updateName(String username, String password) throws UpdateOnDBException;
+    boolean updateName(String username, String password) throws UpdateOnBackEndException;
 
-    boolean updateEmail(String username, String password) throws UpdateOnDBException;
+    boolean updateEmail(String username, String password) throws UpdateOnBackEndException;
 
-    boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException;
+    boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnBackEndException;
 
     boolean isUsernameAvailable(String username);
 
