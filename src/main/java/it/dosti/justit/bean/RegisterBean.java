@@ -1,6 +1,4 @@
 package it.dosti.justit.bean;
-
-import it.dosti.justit.model.Coordinates;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class RegisterBean {
@@ -8,10 +6,7 @@ public class RegisterBean {
     private String password;
     private String email;
     private String name;
-    private String address;
-    private Coordinates coordinates;
     private String role;
-    private Integer shopId;
 
 
     public String getUsername() {
@@ -44,19 +39,6 @@ public class RegisterBean {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
 
     public String getRole() {
         return role;
@@ -65,12 +47,6 @@ public class RegisterBean {
         this.role = role;
     }
 
-    public Integer getShopId() {
-        return shopId;
-    }
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
-    }
 
 
     public boolean emailValidation(String email) {

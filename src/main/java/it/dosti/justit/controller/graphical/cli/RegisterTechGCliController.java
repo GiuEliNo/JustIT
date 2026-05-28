@@ -3,7 +3,7 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
@@ -30,7 +30,7 @@ public class RegisterTechGCliController extends BaseCliController {
                 signInTechView.errorSignInTech();
                 navigation.navigate(Screen.REGISTER_TECH);
             }
-        } catch (RegisterOnDbException | ShopNotFoundException | NavigationException e) {
+        } catch (RegisterOnBackEndException | ShopNotFoundException | NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }

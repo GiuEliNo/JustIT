@@ -4,7 +4,7 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.InvalidAddressException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.AddressDialog;
@@ -88,7 +88,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch (UpdateOnDBException e) {
+                } catch (UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -162,7 +162,7 @@ public class PageShopTechGController extends BaseGController{
                             .title(EDIT_SHOP_ADDRESS)
                             .text("Address not valid!")
                             .showError();
-                } catch (UpdateOnDBException e) {
+                } catch (UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                     Notifications.create()
                             .title(EDIT_SHOP_ADDRESS)
@@ -193,7 +193,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch ( UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -221,7 +221,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch ( UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -249,7 +249,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch ( UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -277,7 +277,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch ( UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -325,7 +325,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch ( UpdateOnDBException e) {
+                } catch ( UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
         });
@@ -360,7 +360,7 @@ public class PageShopTechGController extends BaseGController{
                                 .text(SUCCESS)
                                 .showConfirm();
                     }
-                } catch (UpdateOnDBException e) {
+                } catch (UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }

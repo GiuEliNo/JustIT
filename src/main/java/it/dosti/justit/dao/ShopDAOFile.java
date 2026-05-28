@@ -1,9 +1,9 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
@@ -29,7 +29,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean registerShop(Shop shop) throws RegisterOnDbException{
+    public boolean registerShop(Shop shop) throws RegisterOnBackEndException {
         try{
             List<Shop> shops = retrieveAllShops();
             int shopId;
@@ -76,7 +76,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateNameShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateNameShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -96,7 +96,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateEmailShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateEmailShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -116,7 +116,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateAddressCoordinates(Shop shop) throws UpdateOnDBException{
+    public boolean updateAddressCoordinates(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -137,7 +137,7 @@ public class ShopDAOFile implements ShopDAO{
 
 
     @Override
-    public boolean updatePhoneShop(Shop shop) throws UpdateOnDBException{
+    public boolean updatePhoneShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -157,7 +157,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateOpeningHoursShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateOpeningHoursShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -177,7 +177,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateHomeAssistanceShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateHomeAssistanceShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -197,7 +197,7 @@ public class ShopDAOFile implements ShopDAO{
     }
 
     @Override
-    public boolean updateDescriptionShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateDescriptionShop(Shop shop) throws UpdateOnBackEndException {
         try {
             List<Shop> shops = retrieveAllShops();
             if(!shops.isEmpty()){
@@ -218,7 +218,7 @@ public class ShopDAOFile implements ShopDAO{
 
     //NOT SUPPORTED ON JSON FILESYSTEM
     @Override
-    public boolean updateImageShop(Shop shop) throws UpdateOnDBException{
+    public boolean updateImageShop(Shop shop) throws UpdateOnBackEndException {
         return false;
     }
 

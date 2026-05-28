@@ -1,6 +1,5 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Credentials;
@@ -32,9 +31,7 @@ public class ClientUserDAODemo implements ClientUserDAO {
     }
 
     @Override
-    public boolean register(RegisterBean registerBean, Credentials cred) {
-
-        ClientUser user = new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates());
+    public boolean registerUser(ClientUser user, Credentials cred) {
 
         String username = user.getUsername();
         if (usersByUsername.containsKey(username)) {

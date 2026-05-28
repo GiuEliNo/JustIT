@@ -1,11 +1,10 @@
 package it.dosti.justit.dao;
 
-import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
-import it.dosti.justit.exceptions.LoginFromDBException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.LoginFromBackEndException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
@@ -48,7 +47,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean login(Credentials cred) throws LoginFromDBException {
+    public boolean login(Credentials cred) throws LoginFromBackEndException {
         String sql = LoginQuery.LOGIN_USER;
 
         try(
@@ -67,13 +66,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         }catch(SQLException e){
-            throw new LoginFromDBException("Error checking login", e);
+            throw new LoginFromBackEndException("Error checking login", e);
         }
         return false;
     }
 
     @Override
-    public boolean register(RegisterBean user, Credentials cred) throws RegisterOnDbException {
+    public boolean registerUser(ClientUser user, Credentials cred) throws RegisterOnBackEndException {
 
         String sql = RegisterQuery.REGISTER_USER;
 
@@ -94,13 +93,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
             }
         }
         catch(SQLException e){
-            throw new RegisterOnDbException("Error registering the new Client", e);
+            throw new RegisterOnBackEndException("Error registering the new Client", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateName(String username, String newName) throws UpdateOnDBException {
+    public boolean updateName(String username, String newName) throws UpdateOnBackEndException {
         String sql = ClientQuery.UPDATE_NAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -112,13 +111,13 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the username", e);
+            throw new UpdateOnBackEndException("Error updating the username", e);
         }
         return false;
     }
 
     @Override
-    public boolean updateEmail(String username, String email) throws UpdateOnDBException {
+    public boolean updateEmail(String username, String email) throws UpdateOnBackEndException {
         String sql = ClientQuery.UPDATE_EMAIL;
 
         try(
@@ -132,14 +131,14 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the email", e);
+            throw new UpdateOnBackEndException("Error updating the email", e);
         }
 
         return false;
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException {
+    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnBackEndException {
         String sql = ClientQuery.UPDATE_PASSWORD;
 
         try(
@@ -157,7 +156,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new UpdateOnDBException("Error updating the password", e);
+            throw new UpdateOnBackEndException("Error updating the password", e);
         }
         return false;
     }
@@ -204,7 +203,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean updateAddress(ClientUser user) throws UpdateOnDBException {
+    public boolean updateAddress(ClientUser user) throws UpdateOnBackEndException {
         String sql = ClientQuery.UPDATE_ADDRESS;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -220,7 +219,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
             }
         }
         catch(SQLException e){
-            throw new UpdateOnDBException("Error updating the address", e);
+            throw new UpdateOnBackEndException("Error updating the address", e);
         }
         return false;
     }

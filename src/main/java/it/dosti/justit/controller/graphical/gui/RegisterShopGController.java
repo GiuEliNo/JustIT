@@ -3,7 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
@@ -87,10 +87,10 @@ public class RegisterShopGController extends BaseGController {
                 JustItLogger.getInstance().info("Register shop successful");
                 navigation.navigate(Screen.REGISTER_TECH);
             } else {
-                throw new RegisterOnDbException("Register shop failed");
+                throw new RegisterOnBackEndException("Register shop failed");
             }
 
-        }catch(RegisterOnDbException | NavigationException e){
+        }catch(RegisterOnBackEndException | NavigationException e){
             JustItLogger.getInstance().error(e.getMessage());
         }
     }

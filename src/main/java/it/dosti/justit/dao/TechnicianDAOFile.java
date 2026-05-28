@@ -1,7 +1,6 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.Shop;
@@ -39,7 +38,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean login(Credentials cred) throws LoginFromDBException{
+    public boolean login(Credentials cred) throws LoginFromBackEndException {
         try {
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             List<TechnicianUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
@@ -65,11 +64,11 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException{
+    public boolean registerTech(TechnicianUser user, Credentials cred) throws RegisterOnBackEndException {
         try{
             List<TechnicianUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
-            users.add(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShopId()));
+            users.add(user);
             credentials.add(cred);
             JsonHandler.writeJsonFile(users, FILENAME_TECHNICIANS);
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
@@ -97,7 +96,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean updateName(String username, String newName) throws UpdateOnDBException{
+    public boolean updateName(String username, String newName) throws UpdateOnBackEndException {
         try{
             List<TechnicianUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
             if(!users.isEmpty()){
@@ -117,7 +116,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean updateEmail(String username, String newEmail) throws UpdateOnDBException{
+    public boolean updateEmail(String username, String newEmail) throws UpdateOnBackEndException {
 
         try{
             List<TechnicianUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
@@ -138,7 +137,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException{
+    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnBackEndException {
         try {
             List<Credentials> creds = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             if(!creds.isEmpty()){
@@ -164,7 +163,9 @@ public class TechnicianDAOFile implements TechnicianDAO{
             if(!users.isEmpty()){
                 for(ClientUser user : users){
                     if(user.getUsername().equals(username)){
-                        return true;
+
+
+                        return false;
                     }
                 }
             }
@@ -172,7 +173,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
             if(!techs.isEmpty()){
                 for(TechnicianUser user : techs){
                     if(user.getUsername().equals(username)){
-                        return true;
+                        return false;
                     }
                 }
             }
@@ -180,7 +181,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
         catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-        return false;
+        return true;
     }
 
 

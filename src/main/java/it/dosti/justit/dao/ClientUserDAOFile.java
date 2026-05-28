@@ -1,10 +1,9 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import it.dosti.justit.bean.RegisterBean;
-import it.dosti.justit.exceptions.LoginFromDBException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.LoginFromBackEndException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
@@ -23,7 +22,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
 
 
     @Override
-    public boolean login(Credentials cred) throws LoginFromDBException{
+    public boolean login(Credentials cred) throws LoginFromBackEndException {
         try {
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
@@ -49,11 +48,11 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException{
+    public boolean registerUser(ClientUser user, Credentials cred) throws RegisterOnBackEndException {
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
-            users.add(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates() ));
+            users.add( user );
             credentials.add(cred);
             JsonHandler.writeJsonFile(users, FILENAME_USER);
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
@@ -81,7 +80,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean updateName(String username, String newName) throws UpdateOnDBException{
+    public boolean updateName(String username, String newName) throws UpdateOnBackEndException {
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             if(!users.isEmpty()){
@@ -101,7 +100,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean updateEmail(String username, String newEmail) throws UpdateOnDBException{
+    public boolean updateEmail(String username, String newEmail) throws UpdateOnBackEndException {
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             if(!users.isEmpty()){
@@ -121,7 +120,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnDBException{
+    public boolean updatePassword(String username, String newPassword, String oldPassword) throws UpdateOnBackEndException {
         try {
             List<Credentials> creds = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
             if(!creds.isEmpty()){
@@ -158,7 +157,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
     }
 
     @Override
-    public boolean updateAddress(ClientUser user) throws UpdateOnDBException{
+    public boolean updateAddress(ClientUser user) throws UpdateOnBackEndException {
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             if(!users.isEmpty()){
@@ -185,7 +184,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             if(!users.isEmpty()){
                 for(ClientUser user : users){
                     if(user.getUsername().equals(username)){
-                        return true;
+                        return false;
                     }
                 }
             }
@@ -193,7 +192,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             if(!techs.isEmpty()){
                 for(TechnicianUser user : techs){
                     if(user.getUsername().equals(username)){
-                        return true;
+                        return false;
                     }
                 }
             }
@@ -201,6 +200,6 @@ public class ClientUserDAOFile implements ClientUserDAO{
         catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-        return false;
+        return true;
     }
 }

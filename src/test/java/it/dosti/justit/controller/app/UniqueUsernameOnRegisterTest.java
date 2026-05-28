@@ -2,7 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
@@ -34,7 +34,7 @@ class UniqueUsernameOnRegisterTest {
        RegisterBean user2 = createUser();
        try {
            registerController.registerNewUser(user1);
-       } catch (RegisterOnDbException e) {
+       } catch (RegisterOnBackEndException e) {
            JustItLogger.getInstance().error("Error registering user", e);
        }
        flag = registerController.isUsernameAvailable(user2);

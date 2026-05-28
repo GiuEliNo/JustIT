@@ -1,8 +1,8 @@
 package it.dosti.justit.controller.graphical.gui;
-import it.dosti.justit.bean.RegisterBean;
+import it.dosti.justit.bean.ClientRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
@@ -50,7 +50,7 @@ public class RegisterUserGController extends BaseGController{
 
     @FXML
     public void signInPressed() {
-        RegisterBean bean = new RegisterBean();
+        ClientRegisterBean bean = new ClientRegisterBean();
         RegisterController appController = new RegisterController();
 
         bean.setName(nameField.getText());
@@ -78,7 +78,7 @@ public class RegisterUserGController extends BaseGController{
             if (appController.registerNewUser(bean)) {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException | NavigationException e){
+        }catch(RegisterOnBackEndException | NavigationException e){
             JustItLogger.getInstance().error(e.getMessage());
         }
     }

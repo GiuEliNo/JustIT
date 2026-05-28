@@ -2,7 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.TechnicRegisterBean;
 import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnDbException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
@@ -77,7 +77,7 @@ public class RegisterTechGController extends BaseGController{
             } else {
                 navigation.navigate(Screen.LAUNCHER);
             }
-        }catch(RegisterOnDbException| ShopNotFoundException | NavigationException e){
+        }catch(RegisterOnBackEndException | ShopNotFoundException | NavigationException e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
 

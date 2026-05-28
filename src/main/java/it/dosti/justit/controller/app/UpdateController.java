@@ -3,7 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.exceptions.UpdateOnDBException;
+import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
@@ -14,7 +14,7 @@ import it.dosti.justit.model.user.TechnicianUser;
 
 public class UpdateController {
 
-    public boolean updateName(String newName) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateName(String newName) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
@@ -30,7 +30,7 @@ public class UpdateController {
         return false;
     }
 
-    public boolean updatePassword(String newPassword, String oldPassword) throws UpdateOnDBException {
+    public boolean updatePassword(String newPassword, String oldPassword) throws UpdateOnBackEndException {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
@@ -41,7 +41,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updateEmail(String email) throws UpdateOnDBException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateEmail(String email) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
@@ -59,7 +59,7 @@ public class UpdateController {
         else return false;
     }
 
-    public boolean updateAddress(String address) throws UpdateOnDBException, InvalidAddressException {
+    public boolean updateAddress(String address) throws UpdateOnBackEndException, InvalidAddressException {
         Coordinates coord;
         try {
             CoordinatesDAO coordDao = new CoordinatesDAOAPI();
@@ -116,7 +116,7 @@ public class UpdateController {
         return false;
     }
 
-    public boolean updateNameShop(String name) throws UpdateOnDBException {
+    public boolean updateNameShop(String name) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateNameShop(new Shop
@@ -129,7 +129,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updateDescriptionShop(String description) throws UpdateOnDBException {
+    public boolean updateDescriptionShop(String description) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateDescriptionShop(new Shop
@@ -143,7 +143,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnDBException {
+    public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updatePhoneShop(new Shop
@@ -158,7 +158,7 @@ public class UpdateController {
     }
 
 
-    public boolean updateEmailShop(String email) throws UpdateOnDBException {
+    public boolean updateEmailShop(String email) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateEmailShop(new Shop
@@ -173,7 +173,7 @@ public class UpdateController {
 
     }
 
-    public boolean updateOpeningHourShop(String openingHour) throws UpdateOnDBException {
+    public boolean updateOpeningHourShop(String openingHour) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateOpeningHoursShop(new Shop
@@ -187,7 +187,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnDBException {
+    public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateHomeAssistanceShop(new Shop
@@ -201,7 +201,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updateImageShop(byte[] newImage) throws UpdateOnDBException {
+    public boolean updateImageShop(byte[] newImage) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
         Shop shop = SessionManager.getInstance().getCurrentShop();
         boolean updated = dao.updateImageShop(new Shop

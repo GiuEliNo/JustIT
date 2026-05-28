@@ -1,6 +1,6 @@
 package it.dosti.justit.exceptions;
 
-public class UserNotFoundException extends LoginFromDBException {
+public class UserNotFoundException extends LoginFromBackEndException {
     public UserNotFoundException(String message) {
         super(message);
     }
