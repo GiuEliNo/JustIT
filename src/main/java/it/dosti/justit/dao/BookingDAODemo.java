@@ -39,7 +39,7 @@ public class BookingDAODemo implements BookingDAO {
                 .homeAssistance(true)
                 .build());
 
-        bookings.add(new Booking.Builder("demo_client")
+        bookings.add(new Booking.Builder(USER_DEMO)
                 .bookingId(1003)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)

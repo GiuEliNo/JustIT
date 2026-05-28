@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.LoginFromDBException;
@@ -72,7 +73,7 @@ public class ClientUserDAOJDBC implements ClientUserDAO {
     }
 
     @Override
-    public boolean register(ClientUser user, Credentials cred) throws RegisterOnDbException {
+    public boolean register(RegisterBean user, Credentials cred) throws RegisterOnDbException {
 
         String sql = RegisterQuery.REGISTER_USER;
 

@@ -10,17 +10,24 @@ import java.util.zip.ZipInputStream;
 
 public class ZipExtractor {
 
-    @SuppressWarnings("java:S5042")
+    @SuppressWarnings({"java:S5042"})
     public void extractZip(Path target, String resource) {
 
         try (InputStream is = getClass().getResourceAsStream(resource);
              ZipInputStream zis = new ZipInputStream(is)) {
-            Files.createDirectories(target);
+
+            Path safeTargetDir = target.toAbsolutePath().normalize();
+
+            Files.createDirectories(safeTargetDir);
 
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
-                Path targetPath = target.resolve(entry.getName()).normalize();
+                Path targetPath = safeTargetDir.resolve(entry.getName()).normalize();
+
+                if(!targetPath.startsWith(safeTargetDir)) {
+                    throw new SecurityException("Invalid zip entry: " + entry.getName());
+                }
 
                 if (entry.isDirectory()) {
                     Files.createDirectories(targetPath);
@@ -33,7 +40,7 @@ public class ZipExtractor {
                 zis.closeEntry();
             }
 
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }

@@ -11,7 +11,6 @@ import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
-import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.AfterEach;
@@ -44,7 +43,7 @@ class UpdateFakeAddressTest {
     void testAddressClient() throws UserNotFoundException {
         UpdateController appController = new UpdateController();
 
-        UserDAO<ClientUser> dao = new ClientUserDAOJDBC();
+        UserDAO dao = new ClientUserDAOJDBC();
 
         SessionManager.getInstance().setLoggedUser(dao.findByUsername(USERNAME));
 

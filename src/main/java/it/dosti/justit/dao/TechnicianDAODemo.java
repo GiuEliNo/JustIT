@@ -1,5 +1,6 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
@@ -35,8 +36,9 @@ public class TechnicianDAODemo implements TechnicianDAO {
         return expectedPassword != null && expectedPassword.equals(cred.getPassword());
     }
 
-    @Override
-    public boolean register(TechnicianUser tec, Credentials cred) throws RegisterOnDbException {
+    public boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException {
+
+        TechnicianUser tec = new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShopId());
 
         String username = tec.getUsername();
         if (usersByUsername.containsKey(username)) {

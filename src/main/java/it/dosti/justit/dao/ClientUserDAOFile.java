@@ -1,6 +1,7 @@
 package it.dosti.justit.dao;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.bean.RegisterBean;
 import it.dosti.justit.exceptions.LoginFromDBException;
 import it.dosti.justit.exceptions.RegisterOnDbException;
 import it.dosti.justit.exceptions.UpdateOnDBException;
@@ -10,6 +11,7 @@ import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
+import it.dosti.justit.utils.JustItLogger;
 
 import java.util.List;
 
@@ -40,24 +42,24 @@ public class ClientUserDAOFile implements ClientUserDAO{
                             targetPassword.equals(c.getPassword()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
         return false;
     }
 
     @Override
-    public boolean register(ClientUser user, Credentials cred) throws RegisterOnDbException{
+    public boolean register(RegisterBean registerBean, Credentials cred) throws RegisterOnDbException{
         try{
             List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USER, new TypeReference<>() {});
             List<Credentials> credentials = JsonHandler.readCollectionOnJsonFile(FILENAME_CREDENTIALS, new TypeReference<>() {});
-            users.add(user);
+            users.add(new ClientUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getAddress(), registerBean.getCoordinates() ));
             credentials.add(cred);
             JsonHandler.writeJsonFile(users, FILENAME_USER);
             JsonHandler.writeJsonFile(credentials, FILENAME_CREDENTIALS);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -73,7 +75,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -93,7 +95,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -113,7 +115,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }catch(Exception e){
 
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -133,7 +135,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -150,7 +152,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
     }
@@ -171,7 +173,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }
@@ -197,7 +199,7 @@ public class ClientUserDAOFile implements ClientUserDAO{
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
     }

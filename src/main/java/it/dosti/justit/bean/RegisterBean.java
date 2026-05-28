@@ -11,6 +11,7 @@ public class RegisterBean {
     private String address;
     private Coordinates coordinates;
     private String role;
+    private Integer shopId;
 
 
     public String getUsername() {
@@ -62,5 +63,12 @@ public class RegisterBean {
     }
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }
