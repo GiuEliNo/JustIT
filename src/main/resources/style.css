@@ -639,3 +639,27 @@
     -fx-font-weight: bold;
 }
 
+
+.custom-loading-spinner{
+    -fx-progress-color: -color-primary;
+    -fx-max-width: 60px;
+    -fx-max-height: 60px;
+}
+
+.custom-loading-spinner .indicator {
+    -fx-background-color: transparent;
+}
+
+.loading-overlay {
+    -fx-background-color: rgba(248, 249, 250, 0.85);
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+}
+
+
+.loading-text {
+    -fx-text-fill: -color-text-main;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}

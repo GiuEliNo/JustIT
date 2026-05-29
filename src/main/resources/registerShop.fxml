@@ -15,107 +15,110 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<VBox alignment="CENTER" fillWidth="false" spacing="25.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.RegisterShopGController">
-
-    <padding>
-        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-    </padding>
-
-    <VBox alignment="CENTER" spacing="5">
-        <Label styleClass="page-title" text="Register Shop" />
-        <Label styleClass="small-label" text="Create your business profile" />
-    </VBox>
-
-    <VBox maxWidth="700.0" minWidth="600.0" spacing="20.0" styleClass="card">
+<?import javafx.scene.layout.StackPane?>
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="it.dosti.justit.controller.graphical.gui.RegisterShopGController" >
+    <VBox alignment="CENTER" fillWidth="false" spacing="25.0" >
 
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
         </padding>
 
-        <GridPane hgap="20.0" vgap="20.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
-            </columnConstraints>
+        <VBox alignment="CENTER" spacing="5">
+            <Label styleClass="page-title" text="Register Shop" />
+            <Label styleClass="small-label" text="Create your business profile" />
+        </VBox>
 
-            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label styleClass="field-label" text="SHOP NAME" />
-                <TextField fx:id="nameField" promptText="e.g. Tech Fixer" />
-            </VBox>
-            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label styleClass="field-label" text="STREET ADDRESS" />
-                <TextField fx:id="addressStreetField" promptText="Via Roma 1" />
-            </VBox>
+        <VBox maxWidth="700.0" minWidth="600.0" spacing="20.0" styleClass="card">
 
-            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label styleClass="field-label" text="CITY" />
-                <TextField fx:id="addressCityField" promptText="Roma" />
-            </VBox>
-            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Label styleClass="field-label" text="COUNTRY" />
-                <TextField fx:id="addressCountryField" promptText="Italia" />
-            </VBox>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
 
-            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Label styleClass="field-label" text="PHONE NUMBER" />
-                <TextField fx:id="phoneField" promptText="+39 333 0000000" />
-            </VBox>
-            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                <Label styleClass="field-label" text="BUSINESS EMAIL" />
-                <TextField fx:id="emailField" promptText="shop@example.com" />
-            </VBox>
+            <GridPane hgap="20.0" vgap="20.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+                </columnConstraints>
 
-            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                <Label styleClass="field-label" text="DESCRIPTION" />
-                <TextArea fx:id="descriptionField" prefHeight="60.0" promptText="Short description..." wrapText="true" />
-            </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label styleClass="field-label" text="SHOP NAME" />
+                    <TextField fx:id="nameField" promptText="e.g. Tech Fixer" />
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label styleClass="field-label" text="STREET ADDRESS" />
+                    <TextField fx:id="addressStreetField" promptText="Via Roma 1" />
+                </VBox>
 
-            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                <Label styleClass="field-label" text="SHOP PHOTO" />
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <Button fx:id="imagePickerButton" onAction="#onPickerClick" styleClass="button-secondary" text="CHOOSE FILE">
-                        <graphic>
-                            <SVGPath content="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="#1976D2" scaleX="0.8" scaleY="0.8" />
-                        </graphic>
-                    </Button>
-                    <ImageView fx:id="previewImage" fitHeight="40.0" fitWidth="60.0" preserveRatio="true" />
-                </HBox>
-            </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label styleClass="field-label" text="CITY" />
+                    <TextField fx:id="addressCityField" promptText="Roma" />
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label styleClass="field-label" text="COUNTRY" />
+                    <TextField fx:id="addressCountryField" promptText="Italia" />
+                </VBox>
 
-            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                <Label styleClass="field-label" text="OPENING HOURS (HH:MM)" />
-                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                    <TextField fx:id="openingField1" alignment="CENTER" prefWidth="70.0" promptText="09:00" />
-                    <Label style="-fx-font-weight:bold; -fx-text-fill:#999;" text=":" />
-                    <TextField fx:id="openingField2" alignment="CENTER" prefWidth="70.0" promptText="18:00" />
-                </HBox>
-            </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label styleClass="field-label" text="PHONE NUMBER" />
+                    <TextField fx:id="phoneField" promptText="+39 333 0000000" />
+                </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label styleClass="field-label" text="BUSINESS EMAIL" />
+                    <TextField fx:id="emailField" promptText="shop@example.com" />
+                </VBox>
 
-            <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                <Label styleClass="field-label" text="SERVICES" />
-                <CheckBox fx:id="homeAssistanceCheck" mnemonicParsing="false" text="Home Assistance Available" />
-            </VBox>
+                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label styleClass="field-label" text="DESCRIPTION" />
+                    <TextArea fx:id="descriptionField" prefHeight="60.0" promptText="Short description..." wrapText="true" />
+                </VBox>
 
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints valignment="TOP" /> <RowConstraints />
-            </rowConstraints>
-        </GridPane>
+                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label styleClass="field-label" text="SHOP PHOTO" />
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Button fx:id="imagePickerButton" onAction="#onPickerClick" styleClass="button-secondary" text="CHOOSE FILE">
+                            <graphic>
+                                <SVGPath content="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="#1976D2" scaleX="0.8" scaleY="0.8" />
+                            </graphic>
+                        </Button>
+                        <ImageView fx:id="previewImage" fitHeight="40.0" fitWidth="60.0" preserveRatio="true" />
+                    </HBox>
+                </VBox>
 
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
-            <VBox.margin>
-                <Insets top="10.0" />
-            </VBox.margin>
+                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                    <Label styleClass="field-label" text="OPENING HOURS (HH:MM)" />
+                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                        <TextField fx:id="openingField1" alignment="CENTER" prefWidth="70.0" promptText="09:00" />
+                        <Label style="-fx-font-weight:bold; -fx-text-fill:#999;" text=":" />
+                        <TextField fx:id="openingField2" alignment="CENTER" prefWidth="70.0" promptText="18:00" />
+                    </HBox>
+                </VBox>
 
-            <Button fx:id="backButton" cancelButton="true" onAction="#backButtonPressed" prefWidth="90.0" styleClass="button-secondary" text="BACK" />
+                <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Label styleClass="field-label" text="SERVICES" />
+                    <CheckBox fx:id="homeAssistanceCheck" mnemonicParsing="false" text="Home Assistance Available" />
+                </VBox>
 
-            <Region HBox.hgrow="ALWAYS" />
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints valignment="TOP" /> <RowConstraints />
+                </rowConstraints>
+            </GridPane>
 
-            <Button fx:id="signInButton" defaultButton="true" onAction="#signInPressed" prefWidth="150.0" styleClass="button" text="REGISTER SHOP" />
-        </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+
+                <Button fx:id="backButton" cancelButton="true" onAction="#backButtonPressed" prefWidth="90.0" styleClass="button-secondary" text="BACK" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button fx:id="signInButton" defaultButton="true" onAction="#signInPressed" prefWidth="150.0" styleClass="button" text="REGISTER SHOP" />
+            </HBox>
+
+        </VBox>
 
     </VBox>
-
-</VBox>
+</StackPane>

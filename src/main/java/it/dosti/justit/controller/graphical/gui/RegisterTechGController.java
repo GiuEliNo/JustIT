@@ -7,12 +7,22 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.view.gui.LoadingOverlayUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
+import java.util.concurrent.CompletableFuture;
 
 public class RegisterTechGController extends BaseGController{
+
+    @FXML
+    public StackPane rootPane;
+
     @FXML
     private Label warningLabel;
 
@@ -47,6 +57,10 @@ public class RegisterTechGController extends BaseGController{
 
     @FXML
     void signInPressed() {
+
+        VBox loadingOverlay= LoadingOverlayUtils.buildLoadingOverlay("Registering Tech in progress\nPlease wait...");
+
+
         RegisterController registerController = new RegisterController();
         TechnicRegisterBean technicRegisterBean = new TechnicRegisterBean();
 
@@ -67,19 +81,27 @@ public class RegisterTechGController extends BaseGController{
             return;
         }
 
-        try {
-            if (!registerController.registerNewTechnician(technicRegisterBean)) {
+        rootPane.getChildren().add(loadingOverlay);
 
-                warningLabel.setText("Shop not found, register it first");
-                signInButton.setDisable(true);
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return registerController.registerNewTechnician(technicRegisterBean);
 
-
-            } else {
-                navigation.navigate(Screen.LAUNCHER);
+            }catch(RegisterOnBackEndException | ShopNotFoundException e){
+                JustItLogger.getInstance().error(e.getMessage(), e);
+                return false;
             }
-        }catch(RegisterOnBackEndException | ShopNotFoundException | NavigationException e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
+        }).thenAccept(result -> Platform.runLater(() -> {
+            if (Boolean.TRUE.equals(result)) {
+                JustItLogger.getInstance().info("Technician successfully registered");
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER );
+            }
+            else{
+                warningLabel.setText("Shop not found, register it first");
+                rootPane.getChildren().remove(loadingOverlay);
+                signInButton.setDisable(true);
+            }
+        }));
 
     }
 
