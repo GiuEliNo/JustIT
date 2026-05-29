@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 .kotlin
 
-/data/
+data/justit.db
 out/
 
 ### IntelliJ IDEA ###
