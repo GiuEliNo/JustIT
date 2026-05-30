@@ -37,6 +37,9 @@ public class AccountPageGController extends BaseGController {
     @FXML
     public GridPane gridPaneAccount;
 
+    @FXML
+    public Button addressButton;
+
     private AccountController appController;
 
     public static final String EDIT_EMAIL = "Edit Mail";
@@ -162,9 +165,11 @@ public class AccountPageGController extends BaseGController {
             }
         });
         this.getPageInfo();
+
     }
 
     public void onEditAddressButtonClicked(){
+
 
         Dialog<AddressDialog> dialog = new Dialog<>();
         dialog.setTitle(EDIT_ADDRESS);

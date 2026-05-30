@@ -663,3 +663,36 @@
     -fx-font-weight: bold;
     -fx-text-alignment: center;
 }
+
+.notification-bar > .pane {
+    -fx-background-color: -color-bg-card;
+    -fx-background-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+}
+
+.notification-bar > .pane .title {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 5 0;
+}
+
+.notification-bar > .pane .label {
+    -fx-text-fill: -color-text-sub;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+
+.notification-bar > .pane .close-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.notification-bar > .pane .close-button > .graphic {
+    -fx-background-color: -color-text-sub;
+}
+
+.notification-bar > .pane .close-button:hover > .graphic {
+    -fx-background-color: -color-accent;
+}

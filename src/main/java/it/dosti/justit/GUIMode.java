@@ -31,7 +31,7 @@ public class GUIMode extends BaseAppMode implements AppMode{
 
             NavigationService navigation = new GUINavigationService(root);
 
-            Scene scene = new Scene(root, 1280, 720);
+            Scene scene = new Scene(root, 1280, 800);
 
             stage.getIcons().add(new Image(GUIMode.class.getResourceAsStream("/iconJustIT.png")));
 
