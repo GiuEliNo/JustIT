@@ -7,21 +7,28 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.FilesToBlob;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.view.gui.LoadingOverlayUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
 
 public class RegisterShopGController extends BaseGController {
+
+
+    @FXML
+    private StackPane rootPane;
 
     @FXML
     private TextArea descriptionField;
@@ -69,6 +76,11 @@ public class RegisterShopGController extends BaseGController {
 
     @FXML
     void signInPressed() {
+
+        VBox loadingOverlay = LoadingOverlayUtils.buildLoadingOverlay("Registering shop in progress\nPlease wait...");
+
+        rootPane.getChildren().add(loadingOverlay);
+
         ShopBean shopBean = new ShopBean();
         RegisterController registerController = new RegisterController();
 
@@ -82,17 +94,27 @@ public class RegisterShopGController extends BaseGController {
         shopBean.setHomeAssistance(homeAssistanceCheck.isSelected());
         shopBean.setImage(blobDb);
 
-        try {
-            if (registerController.registerNewShop(shopBean)) {
-                JustItLogger.getInstance().info("Register shop successful");
-                navigation.navigate(Screen.REGISTER_TECH);
-            } else {
-                throw new RegisterOnBackEndException("Register shop failed");
-            }
+        CompletableFuture.supplyAsync(() -> {
 
-        }catch(RegisterOnBackEndException | NavigationException e){
-            JustItLogger.getInstance().error(e.getMessage());
-        }
+            try {
+
+                return registerController.registerNewShop(shopBean);
+
+            }catch(RegisterOnBackEndException e){
+                JustItLogger.getInstance().error(e.getMessage());
+                return false;
+            }
+        }).thenAccept(result -> Platform.runLater(() -> {
+            if(Boolean.TRUE.equals(result)) {
+                JustItLogger.getInstance().info("Register shop successful");
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.REGISTER_TECH);
+            }
+            else{
+                JustItLogger.getInstance().info("Register shop failed.\nTry again.");
+                rootPane.getChildren().remove(loadingOverlay);
+            }
+        }));
+
     }
 
     @FXML

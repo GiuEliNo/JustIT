@@ -6,12 +6,21 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.view.gui.LoadingOverlayUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
+import java.util.concurrent.CompletableFuture;
 
 public class RegisterUserGController extends BaseGController{
+
+    @FXML
+    public StackPane rootPane;
 
     @FXML
     private TextField emailField;
@@ -50,6 +59,8 @@ public class RegisterUserGController extends BaseGController{
 
     @FXML
     public void signInPressed() {
+        VBox loadingOverlay = LoadingOverlayUtils.buildLoadingOverlay("Registering User\n Wait please...");
+
         ClientRegisterBean bean = new ClientRegisterBean();
         RegisterController appController = new RegisterController();
 
@@ -72,14 +83,27 @@ public class RegisterUserGController extends BaseGController{
             return;
         }
 
+        rootPane.getChildren().add(loadingOverlay);
+        CompletableFuture.supplyAsync(() -> {
+            try {
 
-        try {
+                return appController.registerNewUser(bean);
 
-            if (appController.registerNewUser(bean)) {
-                navigation.navigate(Screen.LAUNCHER);
+
+            }catch(RegisterOnBackEndException e){
+                JustItLogger.getInstance().error(e.getMessage());
+                return false;
             }
-        }catch(RegisterOnBackEndException | NavigationException e){
-            JustItLogger.getInstance().error(e.getMessage());
-        }
+
+        }).thenAccept(result -> Platform.runLater(() -> {
+            if (Boolean.TRUE.equals(result)) {
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER);
+            }
+            else{
+                JustItLogger.getInstance().info("User register failed");
+                rootPane.getChildren().remove(loadingOverlay);
+            }
+            }));
+
     }
 }

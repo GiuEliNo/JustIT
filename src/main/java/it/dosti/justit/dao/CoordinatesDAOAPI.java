@@ -30,7 +30,7 @@ public class CoordinatesDAOAPI implements CoordinatesDAO {
                 }
             }catch(Exception e) {
 
-                JustItLogger.getInstance().error("Error get coord JSON", e);
+                JustItLogger.getInstance().error("Error getting coordinates JSON", e);
 
             }
             JustItLogger.getInstance().error("JSON empty, maybe address error");
