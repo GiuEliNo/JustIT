@@ -7,6 +7,7 @@ import it.dosti.justit.utils.JustItLogger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -31,6 +32,8 @@ public class GUIMode extends BaseAppMode implements AppMode{
             NavigationService navigation = new GUINavigationService(root);
 
             Scene scene = new Scene(root, 1280, 720);
+
+            stage.getIcons().add(new Image(GUIMode.class.getResourceAsStream("/iconJustIT.png")));
 
             scene.getStylesheets().add(GUIMode.class.getResource("/style.css").toExternalForm());
 
