@@ -1,25 +1,24 @@
-```plantuml
 @startuml
 
 start
 note
-start for "book an intervent"
+start for "Booking an appointment"
 end note
 
-:display list technician based on geoip;
+:display list technician based on geo ip;
 
-if (user search by technician's name?) then ([yes])
+if (user searches by technician's name?) then ([yes])
     :enter technician's name;
-    :list based on query;
+    :list based on a query;
 else ([no])
-    if (user use filter?) then ([yes])
+    if (user uses filter?) then ([yes])
     fork
         :fill field address;
     fork again
         :provide a maximum range;
     end merge
 
-    :select type of techincian;
+    :select type of technician;
 
     :list based on filter;
     
@@ -63,9 +62,8 @@ end merge
 
 repeat while (session timer expired?) is ([yes]) not ([no])
 
-:system notify techincian;
+:systems notify technician;
 
 end
 
 @enduml
-```

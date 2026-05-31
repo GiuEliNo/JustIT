@@ -15,7 +15,7 @@ usecase "View booking list*" as UC5
 usecase "Export booking" as UC6
 usecase "Change booking status*" as UC7
 usecase "Process Payment" as UC8
-usecase "Reply notificaion" as UC9
+usecase "Reply notification" as UC9
 
 
 }
