@@ -5,6 +5,7 @@ import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ClientUserDAODemo implements ClientUserDAO {
 
         usersByUsername.put(user.getUsername(), user);
 
-        passwordsByUsername.put(user.getUsername(), "password");
+        passwordsByUsername.put(user.getUsername(), DigestUtils.sha256Hex("password"));
     }
 
     @Override

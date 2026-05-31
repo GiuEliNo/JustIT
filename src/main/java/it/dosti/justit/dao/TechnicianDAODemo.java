@@ -1,12 +1,12 @@
 package it.dosti.justit.dao;
 
 import it.dosti.justit.exceptions.LoginFromBackEndException;
-import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
 
         usersByUsername.put(user1.getUsername(), user1);
 
-        passwordsByUsername.put(user1.getUsername(), "password");
+        passwordsByUsername.put(user1.getUsername(), DigestUtils.sha256Hex("password"));
 
         shopIdByShopName.put("Arindale Riparazione", 1);
     }
@@ -35,7 +35,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
         return expectedPassword != null && expectedPassword.equals(cred.getPassword());
     }
 
-    public boolean registerTech(TechnicianUser user, Credentials cred) throws RegisterOnBackEndException {
+    public boolean registerTech(TechnicianUser user, Credentials cred) {
 
         TechnicianUser tec = new TechnicianUser(user.getName(), user.getUsername(), user.getEmail(), user.getShopId());
 
