@@ -1,0 +1,99 @@
+@startuml
+
+
+skinparam class {
+BackgroundColor<<controller>> PowderBlue
+BackgroundColor<<bean>> White
+BackgroundColor<<entity>> MistyRose
+BackgroundColor<<boundary>> LemonChiffon
+BackgroundColor<<singleton>> palegreen
+BackgroundColor<<dao>> Silver
+
+}
+
+class ReviewController <<(C) controller>> {
+    + addReview(ReviewBean: reviewBean): void
+    + getReviews(): List<ReviewBean>
+}
+
+class ReviewBoundary <<(B) boundary>>{
+    + addReview(): void
+    + updateReviewList(): void
+}
+
+class SessionManager <<(S) singleton>>{
+    - selectedShop: Shop
+    - loggedUser: User
+    + getSelectedShop(): Shop
+    + getLoggedUser(): User
+}
+
+entity User <<entity>>{
+    - username: String
+    + getUsername(): String
+}
+
+entity Shop <<entity>>{
+    - id: Integer
+    + getId(): Integer
+}
+
+class ReviewBean <<(B) bean>>{
+    - title: String
+    - review: String
+    - stars: Integer
+    - username: String
+    - bookingId: Integer
+
+    + getTitle(): String
+    + setTitle(String: title): void
+    + getReview(): String
+    + setReview(String: reviewText): void
+    + getStars(): Integer
+    + setStars(Integer: stars): void
+    + getUsername(): String
+    + setUsername(String: username): void
+    + getBookingId(): Integer
+    + setBookingId(Integer: bookingId): void
+}
+
+class ReviewDAO <<(D) DAO>>{
+  + addReviewToShop(Review: review): Integer
+  + retrieveReviewsByShop(Integer: shopId): List<Review>
+}
+
+entity Review <<entity>>{
+    - id: Integer
+    - title: String
+    - star: Integer
+    - reviewText: String
+    - shop: Integer
+    - username: String
+    - bookingId: Integer
+    + getId(): Integer
+    + setId(Integer: id): void
+    + getShop(): Integer
+    + setShop(Integer: shopId): void
+    + getTitle(): String
+    + setTitle(String: title): void
+    + getStar(): Integer
+    + setStar(Integer: stars): void
+    + getReview(): String
+    + setReview(String: reviewText): void
+    + getUsername(): String
+    + setUsername(String: username): void
+    + getBookingId(): Integer
+    + setBookingId(Integer: bookingId): void
+}
+
+ReviewBoundary -d- ReviewController
+ReviewBoundary .r. ReviewBean
+ReviewController .u. ReviewBean
+ReviewController -l- SessionManager
+ReviewController -r- User
+ReviewController -- Shop
+ReviewController -d- ReviewDAO
+ReviewController -- Review
+ReviewDAO -- Review
+
+@enduml
