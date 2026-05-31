@@ -12,13 +12,10 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationDAO dao = DaoFactory.getNotificationDAO();
-    private final String username;
-
-    public NotificationController() {
-        this.username = SessionManager.getInstance().getLoggedUser().getUsername();
-    }
 
     public List<NotificationBean> getNotification() {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+
         List<Notification> notifications;
 
         if (SessionManager.getInstance().isClient()) {
@@ -31,6 +28,7 @@ public class NotificationController {
     }
 
     public List<NotificationBean> getUnreadNotifications() {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
         List<Notification> notifications = dao.getUnreadNotificationsByUser(username);
         return toBeans(notifications);
     }

@@ -14,13 +14,8 @@ public class ReviewController {
 
     private final ReviewDAO reviewDao = DaoFactory.getReviewDAO();
 
-    private final String username;
-
-    public ReviewController() {
-        this.username = SessionManager.getInstance().getLoggedUser().getUsername();
-    }
-
     public void addReview(ReviewBean reviewBean) throws ReviewWithoutBookingException {
+        String username = SessionManager.getInstance().getLoggedUser().getUsername();
 
         reviewBean.setUsername(username);
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
