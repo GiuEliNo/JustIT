@@ -32,7 +32,7 @@ object AccountController <<controller>>{
 
 }
 
-AccountController -r-> UserDaoFactory: ask for new objects
+AccountController -r-> UserDaoFactory: asks for new objects
 AccountController -r-> UserDAO: uses
 UserDaoFactory .u.> ClientUserDAO : creates
 UserDaoFactory .u.> TechnicianDAO : creates
