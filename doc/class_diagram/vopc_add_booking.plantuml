@@ -1,0 +1,142 @@
+@startuml
+
+
+skinparam class {
+BackgroundColor<<controller>> PowderBlue
+BackgroundColor<<bean>> White
+BackgroundColor<<entity>> MistyRose
+BackgroundColor<<boundary>> LemonChiffon
+BackgroundColor<<singleton>> palegreen
+BackgroundColor<<dao>> Silver
+
+}
+
+class BookingController <<(C) controller>> {
+    + addBooking(BookingBean: bookingBean): Boolean
+    + getBookingsByUser(): List<BookingBean>
+}
+
+class AddBookingBoundary <<(B) boundary>>{
+    + addBooking(): void
+}
+
+class ShopPageBoundary <<(B) boundary>>{
+    + onBookingClicked(): void
+    + updateReviewList(): void
+}
+
+class SessionManager <<(S) singleton>>{
+    - selectedShop: Shop
+    - loggedUser: User
+    + getSelectedShop(): Shop
+    + getLoggedUser(): User
+}
+
+entity User <<entity>>{
+    - username: String
+    + getUsername(): String
+}
+
+entity Shop <<entity>>{
+    - id: Integer
+    + getId(): Integer
+}
+
+
+entity BookingBean <<(B) bean>> {
+    - bookingID: Integer
+    - shop: Shop
+    - shopId: Integer
+    - username: String
+    - date: LocalDate
+    - timeSlot: TimeSlot
+    - description: String
+    - status: BookingStatus
+    - homeAssistance: Boolean
+    - userAddress: String
+
+    + getShop(): Shop
+    + setShop(Shop shop): void
+    + getUsername(): String
+    + setUsername(String user): void
+    + getDate(): LocalDate
+    + setDate(LocalDate date): void
+    + getTimeSlot(): TimeSlot
+    + setTimeSlot(TimeSlot timeSlot): void
+    + getDescription(): String
+    + setDescription(String description): void
+    + getBookingID(): Integer
+    + setBookingID(Integer bookingID): void
+    + getStatus(): BookingStatus
+    + setStatus(BookingStatus status): void
+    + getShopId(): Integer
+    + setShopId(Integer shopId): void
+    + getHomeAssistance(): Boolean
+    + setHomeAssistance(Boolean homeAssistance): void
+    + getUserAddress(): String
+    + setUserAddress(String userAddress): void
+    + getHomeAssistanceLabel(): String
+}
+
+class BookingDAO <<(D) DAO>>{
+  + addBooking(Booking: booking): Integer
+  + updateStatus(Integer: bookingId, BookingStatus status): void
+}
+
+entity Booking <<entity>>{
+    - bookingId: Integer
+    - shopId: Integer
+    - username: String
+    - date: LocalDate
+    - timeSlot: TimeSlot
+    - description: String
+    - homeAssistance: Boolean
+    - status: BookingStatus
+    + getBookingId(): Integer
+    + setBookingId(Integer bookingId): void
+    + getShopId(): Integer
+    + setShopId(Integer shopId): void
+    + getUsername(): String
+    + setUsername(String username): void
+    + getDate(): LocalDate
+    + setDate(LocalDate date): void
+    + getTimeSlot(): TimeSlot
+    + setTimeSlot(TimeSlot timeSlot): void
+    + getDescription(): String
+    + setDescription(String desc): void
+    + getHomeAssistance(): Boolean
+    + setHomeAssistance(Boolean homeAssistance): void
+    + getStatus(): BookingStatus
+    + changeStatus(BookingStatus newStatus): void
+    + notifyStatusChange(Booking booking, BookingStatus oldStatus): void
+}
+
+enum TimeSlot {
+  MORNING,
+  AFTERNOON
+  EVENING
+}
+
+enum BookingStatus {
+  PENDING,
+  CONFIRMED
+  REJECTED
+  COMPLETED
+}
+
+
+
+ShopPageBoundary -d- BookingController
+AddBookingBoundary -d- BookingController
+AddBookingBoundary .r. BookingBean
+BookingController .u. BookingBean
+BookingController -l- SessionManager
+BookingController -r- User
+BookingController -- Shop
+BookingController -d- BookingDAO
+BookingController -- Booking
+BookingDAO -- Booking
+Booking -r- TimeSlot
+Booking -l- BookingStatus
+
+@enduml
