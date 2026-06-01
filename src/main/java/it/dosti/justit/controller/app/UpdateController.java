@@ -1,6 +1,13 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.dao.*;
+import it.dosti.justit.dao.clientuser.ClientUserDAO;
+import it.dosti.justit.dao.coordinates.CoordinatesDAO;
+import it.dosti.justit.dao.coordinates.CoordinatesDAOAPI;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dao.tech.TechnicianDAO;
+import it.dosti.justit.dao.user.UserDAO;
+import it.dosti.justit.dao.user.UserDaoFactory;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;

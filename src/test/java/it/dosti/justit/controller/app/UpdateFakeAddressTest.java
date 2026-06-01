@@ -1,12 +1,12 @@
 package it.dosti.justit.controller.app;
 
 
-import it.dosti.justit.dao.ClientUserDAOJDBC;
-import it.dosti.justit.dao.ShopDAO;
-import it.dosti.justit.dao.ShopDAOJDBC;
-import it.dosti.justit.dao.TechnicianDAO;
-import it.dosti.justit.dao.TechnicianDAOJDBC;
-import it.dosti.justit.dao.UserDAO;
+import it.dosti.justit.dao.clientuser.ClientUserDAOJDBC;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dao.shop.ShopDAOJDBC;
+import it.dosti.justit.dao.tech.TechnicianDAO;
+import it.dosti.justit.dao.tech.TechnicianDAOJDBC;
+import it.dosti.justit.dao.user.UserDAO;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;

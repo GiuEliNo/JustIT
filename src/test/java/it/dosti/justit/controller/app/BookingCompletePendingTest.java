@@ -1,8 +1,8 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.dao.BookingDAO;
-import it.dosti.justit.dao.BookingDAOJDBC;
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.model.TimeSlot;

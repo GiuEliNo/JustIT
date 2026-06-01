@@ -1,5 +1,29 @@
 package it.dosti.justit.dao;
 
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.booking.BookingDAODemo;
+import it.dosti.justit.dao.booking.BookingDAOFile;
+import it.dosti.justit.dao.booking.BookingDAOJDBC;
+import it.dosti.justit.dao.clientuser.ClientUserDAO;
+import it.dosti.justit.dao.clientuser.ClientUserDAODemo;
+import it.dosti.justit.dao.clientuser.ClientUserDAOFile;
+import it.dosti.justit.dao.clientuser.ClientUserDAOJDBC;
+import it.dosti.justit.dao.notification.NotificationDAO;
+import it.dosti.justit.dao.notification.NotificationDAODemo;
+import it.dosti.justit.dao.notification.NotificationDAOFile;
+import it.dosti.justit.dao.notification.NotificationDAOJDBC;
+import it.dosti.justit.dao.review.ReviewDAO;
+import it.dosti.justit.dao.review.ReviewDAODemo;
+import it.dosti.justit.dao.review.ReviewDAOFile;
+import it.dosti.justit.dao.review.ReviewDAOJDBC;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dao.shop.ShopDAODemo;
+import it.dosti.justit.dao.shop.ShopDAOFile;
+import it.dosti.justit.dao.shop.ShopDAOJDBC;
+import it.dosti.justit.dao.tech.TechnicianDAO;
+import it.dosti.justit.dao.tech.TechnicianDAODemo;
+import it.dosti.justit.dao.tech.TechnicianDAOFile;
+import it.dosti.justit.dao.tech.TechnicianDAOJDBC;
 import it.dosti.justit.utils.SessionManager;
 
 public class DaoFactory {

@@ -2,6 +2,9 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.dao.*;
+import it.dosti.justit.dao.clientuser.ClientUserDAO;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dao.tech.TechnicianDAO;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Credentials;

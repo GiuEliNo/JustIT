@@ -2,7 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.dao.DaoFactory;
-import it.dosti.justit.dao.NotificationDAO;
+import it.dosti.justit.dao.notification.NotificationDAO;
 import it.dosti.justit.model.notification.Notification;
 import it.dosti.justit.utils.SessionManager;
 

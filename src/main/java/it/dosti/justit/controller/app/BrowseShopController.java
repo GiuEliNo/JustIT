@@ -3,7 +3,7 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.SearchBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.dao.DaoFactory;
-import it.dosti.justit.dao.ShopDAO;
+import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;

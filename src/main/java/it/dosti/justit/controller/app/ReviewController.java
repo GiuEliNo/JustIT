@@ -2,7 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.dao.DaoFactory;
-import it.dosti.justit.dao.ReviewDAO;
+import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.review.Review;
 import it.dosti.justit.utils.SessionManager;
