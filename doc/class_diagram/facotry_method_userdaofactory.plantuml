@@ -1,0 +1,46 @@
+@startuml
+
+object UserDAO <<interface>> {
+    login(credentials cred): Boolean
+    findByUsername(String username): User
+    updateName(String username, String password): Boolean
+    updateEmail(String username, String password): Boolean
+    updatePassword(String username, String newPassword, String oldPassword): Boolean
+    isUsernameAvailable(String username): Boolean
+
+}
+
+object ClientUserDAO <<interface>>{
+    getAddress(String username): String
+    updateAddress(ClientUser user): Boolean
+    registerUser(ClientUser user, Credentials cred): Boolean
+}
+
+object TechnicianDAO <<interface>>{
+    getShopIDbyName(String shopName): Integer
+    registerTech(TechnicianUser user , Credentials cred): Boolean
+
+}
+
+object UserDaoFactory <<factory>>{
+    createUserDAO(boolean isClient): UserDAO
+    createClientUserDAO(): ClientUserDAO
+    createTechnicianUserDAO(): TechnicianDAO
+}
+
+object RegisterController <<controller>>{
+}
+
+RegisterController -r-> UserDaoFactory: ask for new objects
+RegisterController -r-> UserDAO: uses
+UserDaoFactory .u.> ClientUserDAO : creates
+UserDaoFactory .u.> TechnicianDAO : creates
+
+
+
+
+UserDAO <|.. ClientUserDAO
+UserDAO <|.. TechnicianDAO
+
+
+@enduml
