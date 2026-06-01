@@ -28,11 +28,12 @@ object UserDaoFactory <<factory>>{
     createTechnicianUserDAO(): TechnicianDAO
 }
 
-object RegisterController <<controller>>{
+object AccountController <<controller>>{
+
 }
 
-RegisterController -r-> UserDaoFactory: ask for new objects
-RegisterController -r-> UserDAO: uses
+AccountController -r-> UserDaoFactory: ask for new objects
+AccountController -r-> UserDAO: uses
 UserDaoFactory .u.> ClientUserDAO : creates
 UserDaoFactory .u.> TechnicianDAO : creates
 
