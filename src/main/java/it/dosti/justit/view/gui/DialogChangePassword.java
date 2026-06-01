@@ -9,6 +9,7 @@ public class DialogChangePassword extends Dialog<ButtonType> {
 
 
     public DialogChangePassword() {
+        getDialogPane().getStyleClass().add("dialog-change-password");
         setTitle("Change Password");
 
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -16,10 +17,10 @@ public class DialogChangePassword extends Dialog<ButtonType> {
         VBox vbox = new VBox(10);
         vbox.setPrefWidth(400);
 
-        this.oldPassword = new TextField();
+        this.oldPassword = new PasswordField();
         oldPassword.setPromptText("Old password ...");
 
-        this.newPassword = new TextField();
+        this.newPassword = new PasswordField();
         newPassword.setPromptText("New password ...");
 
 

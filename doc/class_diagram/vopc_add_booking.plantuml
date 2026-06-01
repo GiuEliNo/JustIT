@@ -1,5 +1,6 @@
 @startuml
 
+title VOPC Add Booking
 
 skinparam class {
 BackgroundColor<<controller>> PowderBlue
@@ -54,28 +55,6 @@ entity BookingBean <<(B) bean>> {
     - status: BookingStatus
     - homeAssistance: Boolean
     - userAddress: String
-
-    + getShop(): Shop
-    + setShop(Shop shop): void
-    + getUsername(): String
-    + setUsername(String user): void
-    + getDate(): LocalDate
-    + setDate(LocalDate date): void
-    + getTimeSlot(): TimeSlot
-    + setTimeSlot(TimeSlot timeSlot): void
-    + getDescription(): String
-    + setDescription(String description): void
-    + getBookingID(): Integer
-    + setBookingID(Integer bookingID): void
-    + getStatus(): BookingStatus
-    + setStatus(BookingStatus status): void
-    + getShopId(): Integer
-    + setShopId(Integer shopId): void
-    + getHomeAssistance(): Boolean
-    + setHomeAssistance(Boolean homeAssistance): void
-    + getUserAddress(): String
-    + setUserAddress(String userAddress): void
-    + getHomeAssistanceLabel(): String
 }
 
 class BookingDAO <<(D) DAO>>{
@@ -92,21 +71,6 @@ entity Booking <<entity>>{
     - description: String
     - homeAssistance: Boolean
     - status: BookingStatus
-    + getBookingId(): Integer
-    + setBookingId(Integer bookingId): void
-    + getShopId(): Integer
-    + setShopId(Integer shopId): void
-    + getUsername(): String
-    + setUsername(String username): void
-    + getDate(): LocalDate
-    + setDate(LocalDate date): void
-    + getTimeSlot(): TimeSlot
-    + setTimeSlot(TimeSlot timeSlot): void
-    + getDescription(): String
-    + setDescription(String desc): void
-    + getHomeAssistance(): Boolean
-    + setHomeAssistance(Boolean homeAssistance): void
-    + getStatus(): BookingStatus
     + changeStatus(BookingStatus newStatus): void
     + notifyStatusChange(Booking booking, BookingStatus oldStatus): void
 }
