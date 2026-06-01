@@ -9,7 +9,6 @@ class SessionManager <<(S) singleton>> {
     - loggedUser: User
     - selectedShop: Shop
     - ownedShop: Shop
-    - demoMode: boolean
     - persistencyType: PersistencyType
 
     - SessionManager()
@@ -22,8 +21,6 @@ class SessionManager <<(S) singleton>> {
     + setCurrentShop(Shop shop): void
     + getCurrentShop(): Shop
     + logout(): void
-    + setDemoMode(boolean isDemoMode): void
-    + isDemoMode(): boolean
     + setPersistencyType(PersistencyType persistencyType): void
     + getPersistencyType(): PersistencyType
 }
