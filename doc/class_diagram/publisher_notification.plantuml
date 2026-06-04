@@ -1,0 +1,60 @@
+@startuml
+
+object BookingStatusObserver <<interface observer>>{
++onStatusChanged(BookingStatusDTO change)
+}
+
+object ReviewCreatedObserver <<interface observer>>{
++onReviewCreated(ReviewCreatedDTO change)
+}
+
+object NotificationObserver <<concrete observer>>{
++onStatusChanged()
++onReviewCreated()
+}
+
+object BookingStatusPublisher <<singleton subject>>{
+- {static} instance: BookingStatusPublisher
+- observers: List<BookingStatusObserver>
+
++getInstance(): BookingStatusPublisher
++attach()
++notify()
+}
+
+object ReviewCreatedPublisher <<singleton subject>> {
+- {static} instance: ReviewCreatedPublisher
+- observers: List<ReviewCreatedObserver>
+
++getInstance(): ReviewCreatedPublisher
++attach()
++notify()
+}
+
+object BookingStatusDTO <<DTO>> {
+}
+
+object ReviewCreatedDTO <<DTO>> {
+}
+
+note left of ReviewCreatedPublisher::notify
+  for (ReviewCreatedObserver observer : observers) {
+            observer.onReviewCreated(change);
+end note
+
+note right of BookingStatusPublisher::notify
+  for (BookingStatusObserver observer : observers) {
+            observer.onStatusChanged(change);
+end note
+
+NotificationObserver --|> BookingStatusObserver
+NotificationObserver --|> ReviewCreatedObserver
+
+ReviewCreatedPublisher --> ReviewCreatedObserver
+ReviewCreatedPublisher -- ReviewCreatedDTO
+ReviewCreatedObserver -- ReviewCreatedDTO
+BookingStatusPublisher --> BookingStatusObserver
+BookingStatusPublisher -- BookingStatusDTO
+BookingStatusObserver -- BookingStatusDTO
+
+@enduml
