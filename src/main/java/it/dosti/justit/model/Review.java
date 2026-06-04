@@ -1,7 +1,7 @@
-package it.dosti.justit.model.review;
+package it.dosti.justit.model;
 
-import it.dosti.justit.model.review.observer.ReviewCreatedChange;
-import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
+import it.dosti.justit.dto.ReviewCreatedDTO;
+import it.dosti.justit.events.subjects.ReviewCreatedPublisher;
 
 public class Review {
     private Integer id;
@@ -34,7 +34,7 @@ public class Review {
 
     public void notifyCreated() {
         ReviewCreatedPublisher.getInstance()
-                .notifyCreated(new ReviewCreatedChange(username, shop, id));
+                .notify(new ReviewCreatedDTO(username, shop, id));
     }
 
     public Integer getId() {

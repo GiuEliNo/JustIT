@@ -1,4 +1,7 @@
-package it.dosti.justit.model.review.observer;
+package it.dosti.justit.events.subjects;
+
+import it.dosti.justit.dto.ReviewCreatedDTO;
+import it.dosti.justit.events.observers.ReviewCreatedObserver;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,11 +20,13 @@ public class ReviewCreatedPublisher {
         return instance;
     }
 
-    public void registerObserver(ReviewCreatedObserver observer) {
-        observers.add(observer);
+    public void attach(ReviewCreatedObserver observer) {
+        if (observer != null) {
+            observers.add(observer);
+        }
     }
 
-    public void notifyCreated(ReviewCreatedChange change) {
+    public void notify(ReviewCreatedDTO change) {
         for (ReviewCreatedObserver observer : observers) {
             observer.onReviewCreated(change);
         }

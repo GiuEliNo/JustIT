@@ -1,11 +1,11 @@
-package it.dosti.justit.model.booking.observer;
+package it.dosti.justit.dto;
 
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDateTime;
 
-public class BookingStatusChange {
+public class BookingStatusDTO {
     private final Integer bookingId;
     private final String username;
     private final Integer shopId;
@@ -13,7 +13,7 @@ public class BookingStatusChange {
     private final BookingStatus newStatus;
     private final LocalDateTime occurredAt;
 
-    public BookingStatusChange(Booking booking, BookingStatus oldStatus, BookingStatus newStatus) {
+    public BookingStatusDTO(Booking booking, BookingStatus oldStatus, BookingStatus newStatus) {
         this.bookingId = booking.getBookingId();
         this.username = booking.getUsername();
         this.shopId = booking.getShopId();

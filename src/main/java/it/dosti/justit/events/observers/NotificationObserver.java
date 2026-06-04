@@ -1,20 +1,21 @@
-package it.dosti.justit.model.notification;
+package it.dosti.justit.events.observers;
 
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.notification.NotificationDAO;
 import it.dosti.justit.dao.shop.ShopDAO;
-import it.dosti.justit.model.booking.observer.BookingStatusChange;
-import it.dosti.justit.model.booking.observer.BookingStatusObserver;
-import it.dosti.justit.model.review.observer.ReviewCreatedChange;
-import it.dosti.justit.model.review.observer.ReviewCreatedObserver;
+import it.dosti.justit.dto.BookingStatusDTO;
+import it.dosti.justit.model.notification.Notification;
+import it.dosti.justit.model.notification.NotificationMessageBuilder;
+import it.dosti.justit.model.notification.NotificationType;
+import it.dosti.justit.dto.ReviewCreatedDTO;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.utils.JustItLogger;
 
-public class NotificationDbObserver implements BookingStatusObserver, ReviewCreatedObserver {
+public class NotificationObserver implements BookingStatusObserver, ReviewCreatedObserver {
     private final NotificationDAO notificationDAO = DaoFactory.getNotificationDAO();
 
     @Override
-    public void onStatusChanged(BookingStatusChange change) {
+    public void onStatusChanged(BookingStatusDTO change) {
         String shopName = resolveShopName(change.getShopId());
         Notification notification = new Notification.Builder(0)
                 .username(change.getUsername())
@@ -34,7 +35,7 @@ public class NotificationDbObserver implements BookingStatusObserver, ReviewCrea
     }
 
     @Override
-    public void onReviewCreated(ReviewCreatedChange change) {
+    public void onReviewCreated(ReviewCreatedDTO change) {
         String shopName = resolveShopName(change.getShopId());
         Notification notification = new Notification.Builder(0)
                 .username(change.getUsername())

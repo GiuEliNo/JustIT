@@ -26,19 +26,20 @@ module it.dosti.justit {
     exports it.dosti.justit.controller.graphical.gui;
     opens it.dosti.justit.controller.graphical.gui to javafx.fxml;
     exports it.dosti.justit.model.booking;
-    exports it.dosti.justit.model.booking.observer;
     exports it.dosti.justit.model.notification;
     exports it.dosti.justit.model.booking.state;
-    exports it.dosti.justit.model.review.observer;
     exports it.dosti.justit.utils;
     exports it.dosti.justit.exceptions;
-    opens it.dosti.justit.model.booking.observer to javafx.fxml;
     exports it.dosti.justit.model.user;
-    exports it.dosti.justit.model.review;
     exports it.dosti.justit.view.gui;
     opens it.dosti.justit.model to com.fasterxml.jackson.databind;
     opens it.dosti.justit.model.user  to com.fasterxml.jackson.databind;
-    opens it.dosti.justit.model.booking to com.fasterxml.jackson.databind;
     opens it.dosti.justit.model.notification to com.fasterxml.jackson.databind;
-    opens it.dosti.justit.dto to  com.fasterxml.jackson.databind;
+    opens it.dosti.justit.model.booking to com.fasterxml.jackson.databind, javafx.fxml;
+    exports it.dosti.justit.events.observers;
+    exports it.dosti.justit.events.subjects;
+    opens it.dosti.justit.events.subjects to javafx.fxml;
+    opens it.dosti.justit.events.observers to com.fasterxml.jackson.databind, javafx.fxml;
+    exports it.dosti.justit.dto;
+    opens it.dosti.justit.dto to com.fasterxml.jackson.databind, javafx.fxml;
 }

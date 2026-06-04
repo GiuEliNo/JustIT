@@ -1,14 +1,14 @@
-package it.dosti.justit.model.review.observer;
+package it.dosti.justit.dto;
 
 import java.time.LocalDateTime;
 
-public class ReviewCreatedChange {
+public class ReviewCreatedDTO {
     private final String username;
     private final Integer shopId;
     private final Integer reviewId;
     private final LocalDateTime occurredAt;
 
-    public ReviewCreatedChange(String username, Integer shopId, Integer reviewId) {
+    public ReviewCreatedDTO(String username, Integer shopId, Integer reviewId) {
         this.username = username;
         this.shopId = shopId;
         this.reviewId = reviewId;

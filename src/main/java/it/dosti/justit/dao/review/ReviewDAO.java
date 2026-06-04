@@ -1,7 +1,7 @@
 package it.dosti.justit.dao.review;
 
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
-import it.dosti.justit.model.review.Review;
+import it.dosti.justit.model.Review;
 
 import java.util.List;
 

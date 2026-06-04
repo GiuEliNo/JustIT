@@ -11,8 +11,8 @@ import it.dosti.justit.exceptions.BookingAlreadyExistsException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.booking.observer.BookingStatusChange;
-import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
+import it.dosti.justit.dto.BookingStatusDTO;
+import it.dosti.justit.events.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
@@ -115,7 +115,7 @@ public class BookingController {
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
-                    .notifyChange(new BookingStatusChange(booking, oldStatus, booking.getStatus()));
+                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
         }
     }
 

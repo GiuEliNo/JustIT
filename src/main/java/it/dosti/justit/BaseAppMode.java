@@ -2,9 +2,9 @@ package it.dosti.justit;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.DatabaseInitializationException;
-import it.dosti.justit.model.booking.observer.BookingStatusPublisher;
-import it.dosti.justit.model.notification.NotificationDbObserver;
-import it.dosti.justit.model.review.observer.ReviewCreatedPublisher;
+import it.dosti.justit.events.subjects.BookingStatusPublisher;
+import it.dosti.justit.events.observers.NotificationObserver;
+import it.dosti.justit.events.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
@@ -42,9 +42,9 @@ public abstract class BaseAppMode implements AppMode {
             JustItLogger.getInstance().info("Demo mode is running");
         }
 
-        NotificationDbObserver notificationObserver = new NotificationDbObserver();
-        BookingStatusPublisher.getInstance().registerObserver(notificationObserver);
-        ReviewCreatedPublisher.getInstance().registerObserver(notificationObserver);
+        NotificationObserver notificationObserver = new NotificationObserver();
+        BookingStatusPublisher.getInstance().attach(notificationObserver);
+        ReviewCreatedPublisher.getInstance().attach(notificationObserver);
 
     }
 

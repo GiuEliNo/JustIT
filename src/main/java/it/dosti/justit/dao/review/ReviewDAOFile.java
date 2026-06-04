@@ -3,7 +3,7 @@ package it.dosti.justit.dao.review;
 import com.fasterxml.jackson.core.type.TypeReference;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.review.Review;
+import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 

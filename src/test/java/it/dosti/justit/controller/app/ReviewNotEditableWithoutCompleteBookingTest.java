@@ -4,7 +4,7 @@ import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.dao.review.ReviewDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
-import it.dosti.justit.model.review.Review;
+import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.BeforeEach;
