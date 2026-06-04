@@ -1,9 +1,8 @@
 package it.dosti.justit.model.notification;
 
+import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.notification.NotificationDAO;
-import it.dosti.justit.dao.notification.NotificationDAOJDBC;
 import it.dosti.justit.dao.shop.ShopDAO;
-import it.dosti.justit.dao.shop.ShopDAOJDBC;
 import it.dosti.justit.model.booking.observer.BookingStatusChange;
 import it.dosti.justit.model.booking.observer.BookingStatusObserver;
 import it.dosti.justit.model.review.observer.ReviewCreatedChange;
@@ -12,7 +11,7 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.utils.JustItLogger;
 
 public class NotificationDbObserver implements BookingStatusObserver, ReviewCreatedObserver {
-    private final NotificationDAO notificationDAO = new NotificationDAOJDBC();
+    private final NotificationDAO notificationDAO = DaoFactory.getNotificationDAO();
 
     @Override
     public void onStatusChanged(BookingStatusChange change) {
@@ -54,7 +53,7 @@ public class NotificationDbObserver implements BookingStatusObserver, ReviewCrea
     }
 
     private String resolveShopName(Integer shopId) {
-        ShopDAO shopDAO = new ShopDAOJDBC();
+        ShopDAO shopDAO = DaoFactory.getShopDAO();
         try {
             return shopDAO.retrieveShopById(shopId).getName();
         } catch (ShopNotFoundException e) {

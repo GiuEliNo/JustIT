@@ -30,9 +30,6 @@ public abstract class BaseAppMode implements AppMode {
             if(SessionManager.getInstance().getPersistencyType().equals(PersistencyType.DATABASE)) {
                 this.initDBRealMode();
                 this.testingConnectToDb();
-                NotificationDbObserver notificationObserver = new NotificationDbObserver();
-                BookingStatusPublisher.getInstance().registerObserver(notificationObserver);
-                ReviewCreatedPublisher.getInstance().registerObserver(notificationObserver);
             }
             else{
                 this.initJsonFilesystem();
@@ -45,8 +42,9 @@ public abstract class BaseAppMode implements AppMode {
             JustItLogger.getInstance().info("Demo mode is running");
         }
 
-
-
+        NotificationDbObserver notificationObserver = new NotificationDbObserver();
+        BookingStatusPublisher.getInstance().registerObserver(notificationObserver);
+        ReviewCreatedPublisher.getInstance().registerObserver(notificationObserver);
 
     }
 
