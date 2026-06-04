@@ -35,13 +35,13 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 String username = rs.getString("username");
                 Integer bookingId = rs.getInt("booking_id");
 
-                Review review = new Review(title,
-                        star,
-                        text,
-                        shopId,
-                        username,
-                        bookingId
-                );
+                Review review = new Review.Builder(title)
+                        .star(star)
+                        .review(text)
+                        .shop(shopId)
+                        .username(username)
+                        .bookingId(bookingId)
+                        .build();
 
                 reviews.add(review);
             }

@@ -1,8 +1,9 @@
 package it.dosti.justit.model;
 
-import it.dosti.justit.dto.ReviewCreatedDTO;
-import it.dosti.justit.events.subjects.ReviewCreatedPublisher;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+@JsonDeserialize(builder = Review.Builder.class)
 public class Review {
     private Integer id;
     private String title;
@@ -13,27 +14,71 @@ public class Review {
     private Integer bookingId;
 
     public Review() {}
-    public Review(String title, Integer star, String review, Integer shop, String username,  Integer bookingId) {
-        this.title = title;
-        this.star = star;
-        this.reviewText = review;
-        this.shop = shop;
-        this.username = username;
-        this.bookingId = bookingId;
+
+    private Review(Builder builder) {
+        this.id = builder.id;
+        this.title = builder.title;
+        this.star = builder.star;
+        this.reviewText = builder.reviewText;
+        this.shop = builder.shop;
+        this.username = builder.username;
+        this.bookingId = builder.bookingId;
     }
 
-    public Review(Integer id, String title, Integer star, String reviewText, Integer shop, String username,  Integer bookingId) {
-        this.id = id;
-        this.title = title;
-        this.star = star;
-        this.reviewText = reviewText;
-        this.shop = shop;
-        this.username = username;
-        this.bookingId = bookingId;
-    }
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private Integer id;
+        private String title;
+        private Integer star;
+        private String reviewText;
+        private Integer shop;
+        private String username;
+        private Integer bookingId;
 
-    public void notifyCreated() {
+        public Builder() {}
 
+        public Builder(String title) {
+            this.title = title;
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder star(Integer star) {
+            this.star = star;
+            return this;
+        }
+
+        public Builder review(String review) {
+            this.reviewText = review;
+            return this;
+        }
+
+        public Builder shop(Integer shop) {
+            this.shop = shop;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder bookingId(Integer bookingId) {
+            this.bookingId = bookingId;
+            return this;
+        }
+
+        public Review build() {
+            return new Review(this);
+        }
     }
 
     public Integer getId() {
@@ -59,9 +104,7 @@ public class Review {
     public Integer getStar() {
         return star;
     }
-    public void setStar(Integer star) {
-        this.star = star;
-    }
+
     public String getReview() {
         return reviewText;
     }

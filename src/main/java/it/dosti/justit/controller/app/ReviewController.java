@@ -21,14 +21,13 @@ public class ReviewController {
 
         reviewBean.setUsername(username);
         Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
-        Review review = new Review(
-                reviewBean.getTitle(),
-                reviewBean.getStars(),
-                reviewBean.getReview(),
-                shopId,
-                reviewBean.getUsername(),
-                reviewBean.getBookingId()
-        );
+        Review review = new Review.Builder(reviewBean.getTitle())
+                .star(reviewBean.getStars())
+                .review(reviewBean.getReview())
+                .shop(shopId)
+                .username(reviewBean.getUsername())
+                .bookingId(reviewBean.getBookingId())
+                .build();
             Integer reviewId = reviewDao.addReviewToShop(review);
             if (reviewId != null) {
                 review.setId(reviewId);

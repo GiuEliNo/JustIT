@@ -22,7 +22,7 @@ public class BookingsListUserGController extends BaseGController {
     }
 
     @FXML
-    public void updateBookingsList(){
+    private void updateBookingsList(){
         bookingListView.getItems().setAll(bookingController.getBookingsByUser());
     }
 

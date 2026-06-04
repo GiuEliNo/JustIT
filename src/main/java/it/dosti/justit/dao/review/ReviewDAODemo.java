@@ -12,15 +12,14 @@ public class ReviewDAODemo implements ReviewDAO {
     private int nextId = 5002;
 
     public ReviewDAODemo() {
-        Review review = new Review(
-                "Riparazione ottima",
-                5,
-                "Consegna veloce e tecnico super disponibile.",
-                1,
-                "demo_client",
-                1002
-        );
-        review.setId(5001);
+        Review review = new Review.Builder("Riparazione ottima")
+                .id(5001)
+                .star(5)
+                .review("Consegna veloce e tecnico super disponibile.")
+                .shop(1)
+                .username("demo_client")
+                .bookingId(1002)
+                .build();
         reviews.add(review);
     }
 

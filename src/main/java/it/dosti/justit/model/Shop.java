@@ -1,6 +1,5 @@
 package it.dosti.justit.model;
 
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -20,8 +19,6 @@ public class Shop {
     public Shop(String name) {
         this.name = name;
     }
-
-
 
     private Shop(Builder builder) {
         this.id = builder.id;

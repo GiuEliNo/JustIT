@@ -33,6 +33,12 @@ class ReviewNotEditableWithoutCompleteBookingTest {
 
 
     private Review createReview() {
-        return  new Review("Recensione", 4, "questa è una recensione", 8, "demo", 1);
+        return new Review.Builder("Recensione")
+                .star(4)
+                .review("questa è una recensione")
+                .shop(8)
+                .username("demo")
+                .bookingId(1)
+                .build();
     }
 }
