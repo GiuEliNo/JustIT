@@ -98,8 +98,10 @@ public abstract class BaseAppMode implements AppMode {
         Path baseDir = Paths.get(System.getProperty("user.dir"));
         dataDir = baseDir.resolve("data/json");
         dbPath = dataDir.resolve("jsons.zip");
-        ZipExtractor zipExtractor = new ZipExtractor();
-        zipExtractor.extractZip(dataDir, "/jsons.zip");
+        if(!Files.exists(dataDir)) {
+            ZipExtractor zipExtractor = new ZipExtractor();
+            zipExtractor.extractZip(dataDir, "/jsons.zip");
+        }
     }
 
 
