@@ -33,8 +33,7 @@ public class Review {
     }
 
     public void notifyCreated() {
-        ReviewCreatedPublisher.getInstance()
-                .notify(new ReviewCreatedDTO(username, shop, id));
+
     }
 
     public Integer getId() {

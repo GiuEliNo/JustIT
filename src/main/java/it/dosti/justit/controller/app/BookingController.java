@@ -45,7 +45,7 @@ public class BookingController {
             }
             Integer bookingId = dao.addBooking(newBooking);
             newBooking.setBookingId(bookingId);
-            newBooking.notifyStatusChange(newBooking, null);
+            this.notifyStatusChange(newBooking, null);
             JustItLogger.getInstance().info("Booking added successfully");
             return true;
 

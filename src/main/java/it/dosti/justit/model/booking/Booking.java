@@ -2,9 +2,7 @@ package it.dosti.justit.model.booking;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.model.TimeSlot;
-import it.dosti.justit.events.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
 
@@ -161,13 +159,6 @@ public class Booking {
         this.status = newStatus;
         this.currentState = BookingStateFactory.fromStatus(newStatus);
         this.currentState.entry(this);
-    }
-
-    public void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
-        if (oldStatus != booking.getStatus()) {
-            BookingStatusPublisher.getInstance()
-                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
-        }
     }
 }
 

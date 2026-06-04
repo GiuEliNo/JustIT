@@ -3,6 +3,8 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.review.ReviewDAO;
+import it.dosti.justit.dto.ReviewCreatedDTO;
+import it.dosti.justit.events.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.SessionManager;
@@ -30,7 +32,7 @@ public class ReviewController {
             Integer reviewId = reviewDao.addReviewToShop(review);
             if (reviewId != null) {
                 review.setId(reviewId);
-                review.notifyCreated();
+                this.notifyReviewCreated(reviewBean.getUsername(), shopId, reviewId);
             }
     }
 
@@ -48,5 +50,10 @@ public class ReviewController {
         }
 
         return reviewBeans;
+    }
+
+    private void notifyReviewCreated(String username, Integer shopId, Integer id){
+        ReviewCreatedPublisher.getInstance()
+                .notify(new ReviewCreatedDTO(username, shopId, id));
     }
 }
