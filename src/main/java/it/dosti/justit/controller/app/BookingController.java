@@ -13,7 +13,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.subjects.BookingStatusPublisher;
-import it.dosti.justit.model.booking.state.BookingEvent;
+import it.dosti.justit.events.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 

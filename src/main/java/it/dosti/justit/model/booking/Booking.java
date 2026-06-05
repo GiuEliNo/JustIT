@@ -3,10 +3,10 @@ package it.dosti.justit.model.booking;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.model.TimeSlot;
-import it.dosti.justit.model.booking.state.BookingEvent;
-import it.dosti.justit.model.booking.state.BookingState;
-import it.dosti.justit.model.booking.state.BookingStateFactory;
-import it.dosti.justit.model.booking.state.BookingStateMachine;
+import it.dosti.justit.events.state.BookingEvent;
+import it.dosti.justit.events.state.BookingState;
+import it.dosti.justit.events.state.BookingStateFactory;
+import it.dosti.justit.events.state.BookingStateMachine;
 
 import java.time.LocalDate;
 

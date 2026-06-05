@@ -27,7 +27,7 @@ module it.dosti.justit {
     opens it.dosti.justit.controller.graphical.gui to javafx.fxml;
     exports it.dosti.justit.model.booking;
     exports it.dosti.justit.model.notification;
-    exports it.dosti.justit.model.booking.state;
+    exports it.dosti.justit.events.state;
     exports it.dosti.justit.utils;
     exports it.dosti.justit.exceptions;
     exports it.dosti.justit.model.user;
@@ -42,5 +42,5 @@ module it.dosti.justit {
     opens it.dosti.justit.events.observers to com.fasterxml.jackson.databind, javafx.fxml;
     exports it.dosti.justit.dto;
     opens it.dosti.justit.dto to com.fasterxml.jackson.databind, javafx.fxml;
-    opens it.dosti.justit.model.booking.state to com.fasterxml.jackson.databind, javafx.fxml;
+    opens it.dosti.justit.events.state to com.fasterxml.jackson.databind, javafx.fxml;
 }

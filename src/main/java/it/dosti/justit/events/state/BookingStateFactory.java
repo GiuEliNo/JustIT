@@ -1,4 +1,4 @@
-package it.dosti.justit.model.booking.state;
+package it.dosti.justit.events.state;
 
 import it.dosti.justit.model.booking.BookingStatus;
 

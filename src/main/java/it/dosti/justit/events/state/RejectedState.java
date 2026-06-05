@@ -1,11 +1,10 @@
-package it.dosti.justit.model.booking.state;
+package it.dosti.justit.events.state;
 
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
-public class ConfirmedState extends BookingState {
-
+public class RejectedState extends BookingState {
     @Override
     public void confirm(Booking booking) {
         throw new InvalidBookingStateException(
@@ -21,12 +20,13 @@ public class ConfirmedState extends BookingState {
     }
 
     @Override
-    public void complete(Booking booking) {
-        booking.changeToState(new CompletedState());
+    public void complete(Booking booking){
+        throw new InvalidBookingStateException(
+                "Completed not allowed in " + booking.getStatus()
+        );
     }
-
     @Override
     public BookingStatus getStatus() {
-        return BookingStatus.CONFIRMED;
+        return BookingStatus.REJECTED;
     }
 }
