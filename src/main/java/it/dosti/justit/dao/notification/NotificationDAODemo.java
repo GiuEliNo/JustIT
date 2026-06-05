@@ -4,6 +4,7 @@ import it.dosti.justit.model.notification.Notification;
 import it.dosti.justit.model.notification.NotificationType;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class NotificationDAODemo implements NotificationDAO {
                 .type(NotificationType.BOOKING_STATUS)
                 .bookingStatus("CONFIRMED")
                 .message("Il tuo booking #1002 è stato confermato")
-                .createdAt(LocalDateTime.now().minusDays(2))
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(2))
                 .read(true)
                 .build());
 
@@ -34,7 +35,7 @@ public class NotificationDAODemo implements NotificationDAO {
                 .type(NotificationType.BOOKING_STATUS)
                 .bookingStatus("PENDING")
                 .message("Il tuo booking #1003 è in attesa di conferma")
-                .createdAt(LocalDateTime.now().minusHours(10))
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(10))
                 .read(false)
                 .build());
 
@@ -44,7 +45,7 @@ public class NotificationDAODemo implements NotificationDAO {
                 .reviewId(5001)
                 .type(NotificationType.REVIEW_CREATED)
                 .message("Grazie! La tua review è stata pubblicata")
-                .createdAt(LocalDateTime.now().minusHours(1))
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(1))
                 .read(false)
                 .build());
     }

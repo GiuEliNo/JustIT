@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -29,7 +30,7 @@ class BookingAlreadyExistsTest {
     private static final String USERNAME = "sammello";
     private static final int SHOP_ID = 1;
     private static final TimeSlot TIME_SLOT = TimeSlot.MORNING;
-    private static final LocalDate bookingDate = LocalDate.now().plusDays(7);
+    private static final LocalDate bookingDate = LocalDate.of(2050, Month.JANUARY, 1);
 
     @BeforeEach
     void setupInsertBooking() throws SQLException {

@@ -4,6 +4,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class BookingStatusDTO {
     private final Integer bookingId;
@@ -19,7 +20,7 @@ public class BookingStatusDTO {
         this.shopId = booking.getShopId();
         this.oldStatus = oldStatus;
         this.newStatus = newStatus;
-        this.occurredAt = LocalDateTime.now();
+        this.occurredAt = LocalDateTime.now(ZoneId.systemDefault());
     }
 
     public Integer getBookingId() {

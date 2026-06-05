@@ -5,6 +5,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class BookingDAODemo implements BookingDAO {
                 .bookingId(1001)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
-                .date(LocalDate.now().minusDays(12))
+                .date(LocalDate.now(ZoneId.systemDefault()).minusDays(12))
                 .timeSlot(TimeSlot.MORNING)
                 .description("Sostituzione batteria Stonex One")
                 .status(BookingStatus.COMPLETED)
@@ -32,7 +33,7 @@ public class BookingDAODemo implements BookingDAO {
                 .bookingId(1002)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
-                .date(LocalDate.now().minusDays(2))
+                .date(LocalDate.now(ZoneId.systemDefault()).minusDays(2))
                 .timeSlot(TimeSlot.AFTERNOON)
                 .description("Installazione sailfish os")
                 .status(BookingStatus.CONFIRMED)
@@ -43,7 +44,7 @@ public class BookingDAODemo implements BookingDAO {
                 .bookingId(1003)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
-                .date(LocalDate.now().plusDays(3))
+                .date(LocalDate.now(ZoneId.systemDefault()).plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
                 .description("Pulizia steam controller")
                 .status(BookingStatus.PENDING)
@@ -54,7 +55,7 @@ public class BookingDAODemo implements BookingDAO {
                 .bookingId(2001)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
-                .date(LocalDate.now().minusDays(5))
+                .date(LocalDate.now(ZoneId.systemDefault()).minusDays(5))
                 .timeSlot(TimeSlot.MORNING)
                 .description("Aggiornamento Gentoo")
                 .status(BookingStatus.REJECTED)

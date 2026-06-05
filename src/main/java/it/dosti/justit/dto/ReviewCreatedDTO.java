@@ -1,6 +1,7 @@
 package it.dosti.justit.dto;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class ReviewCreatedDTO {
     private final String username;
@@ -12,7 +13,7 @@ public class ReviewCreatedDTO {
         this.username = username;
         this.shopId = shopId;
         this.reviewId = reviewId;
-        this.occurredAt = LocalDateTime.now();
+        this.occurredAt = LocalDateTime.now(ZoneId.systemDefault());
     }
 
     public String getUsername() {

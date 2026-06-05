@@ -9,6 +9,7 @@ import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CBookingPageUserView;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class BookingPageUserGCliController extends BaseCliController {
@@ -56,7 +57,7 @@ public class BookingPageUserGCliController extends BaseCliController {
                 continue;
             }
 
-            if (date.isBefore(LocalDate.now())) {
+            if (date.isBefore(LocalDate.now(ZoneId.systemDefault()))) {
                 bookingView.showInvalidDate();
             } else if (!appController.hasAvailableSlots(shopId, date)) {
                 bookingView.showNoAvailableSlots(date);

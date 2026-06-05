@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class BookingPageGController extends BaseGController {
 
@@ -41,7 +42,7 @@ public class BookingPageGController extends BaseGController {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-                if (empty || date.isBefore(LocalDate.now())) {
+                if (empty || date.isBefore(LocalDate.now(ZoneId.systemDefault()))) {
                     setDisable(true);
                     return;
                 }

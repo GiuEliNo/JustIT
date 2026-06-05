@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -38,7 +39,7 @@ class BookingCompletePendingTest {
         SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
         BookingDAO dao = new BookingDAOJDBC();
 
-        LocalDate date = LocalDate.now().plusDays(7);
+        LocalDate date = LocalDate.of(2050, Month.JANUARY, 1);
 
         Booking booking = new Booking.Builder(USERNAME)
                 .shopId(SHOP_ID)
