@@ -1,7 +1,7 @@
-package it.dosti.justit.events.subjects;
+package it.dosti.justit.events.publisher.observers.subjects;
 
 import it.dosti.justit.dto.BookingStatusDTO;
-import it.dosti.justit.events.observers.BookingStatusObserver;
+import it.dosti.justit.events.publisher.observers.BookingStatusObserver;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

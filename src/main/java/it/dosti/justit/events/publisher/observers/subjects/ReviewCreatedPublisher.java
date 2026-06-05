@@ -1,7 +1,7 @@
-package it.dosti.justit.events.subjects;
+package it.dosti.justit.events.publisher.observers.subjects;
 
 import it.dosti.justit.dto.ReviewCreatedDTO;
-import it.dosti.justit.events.observers.ReviewCreatedObserver;
+import it.dosti.justit.events.publisher.observers.ReviewCreatedObserver;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

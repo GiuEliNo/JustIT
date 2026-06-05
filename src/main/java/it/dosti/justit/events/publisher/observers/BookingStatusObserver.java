@@ -1,4 +1,4 @@
-package it.dosti.justit.events.observers;
+package it.dosti.justit.events.publisher.observers;
 
 import it.dosti.justit.dto.BookingStatusDTO;
 
