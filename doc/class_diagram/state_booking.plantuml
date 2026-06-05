@@ -1,0 +1,34 @@
+@startuml
+
+object Booking <<context>> {
+    - currentState: BookingState
+    + goNext(event: BookingEvent)
+    + changeToState(state: BookingState)
+}
+
+abstract class BookingState {
+    + entry(booking: Booking)
+    + exit(booking: Booking)
+    + confirm(booking: Booking)
+    + reject(booking: Booking)
+    + complete(booking: Booking)
+}
+
+enum BookingEvent <<enumeration>> {
+    CONFIRM,
+    REJECT,
+    COMPLETE
+}
+
+class PendingState
+class ConfirmedState
+class RejectedState
+class CompletedState
+
+Booking --> BookingState
+BookingState <|-- PendingState
+BookingState <|-- ConfirmedState
+BookingState <|-- RejectedState
+BookingState <|-- CompletedState
+
+@enduml

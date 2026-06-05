@@ -104,13 +104,13 @@ public class BookingDAOFile implements BookingDAO {
     }
 
     @Override
-    public void updateStatus(Integer bookingId, BookingStatus status){
+    public void updateStatus(Booking updatedBooking){
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
-                    if(booking.getBookingId().compareTo(bookingId)==0){
-                        booking.changeStatus( status);
+                    if(booking.getBookingId().compareTo(updatedBooking.getBookingId())==0){
+                        booking.changeStatus(updatedBooking.getStatus());
                         }
                     }
             }

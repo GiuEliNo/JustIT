@@ -1,19 +1,30 @@
 package it.dosti.justit.model.booking.state;
 
 import it.dosti.justit.exceptions.InvalidBookingStateException;
-import it.dosti.justit.model.booking.*;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
 
 public class PendingState extends BookingState {
 
     @Override
-    public void handleEvent(Booking booking, BookingEvent event) {
-        switch (event) {
-            case CONFIRM -> booking.changeStatus(BookingStatus.CONFIRMED);
-            case REJECT  -> booking.changeStatus(BookingStatus.REJECTED);
-            default -> throw new InvalidBookingStateException(
-                    "Event " + event + " not allowed in PENDING"
+    public void confirm(Booking booking) {
+        booking.changeToState(new ConfirmedState());
+    }
+
+    @Override
+    public void reject(Booking booking) {
+        booking.changeToState(new RejectedState());
+    }
+
+    @Override
+    public void complete(Booking booking){
+        throw new InvalidBookingStateException(
+                "Completed not allowed in " + booking.getStatus()
             );
-        }
+    }
+
+    @Override
+    public BookingStatus getStatus() {
+        return BookingStatus.PENDING;
     }
 }
-

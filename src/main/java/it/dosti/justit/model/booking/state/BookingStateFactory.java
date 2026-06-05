@@ -1,6 +1,6 @@
-package it.dosti.justit.model.booking;
+package it.dosti.justit.model.booking.state;
 
-import it.dosti.justit.model.booking.state.*;
+import it.dosti.justit.model.booking.BookingStatus;
 
 public final class BookingStateFactory {
 

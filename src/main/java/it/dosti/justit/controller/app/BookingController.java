@@ -92,7 +92,7 @@ public class BookingController {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.CONFIRM);
-        dao.updateStatus(booking.getBookingId(),booking.getStatus());
+        dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }
 
@@ -100,7 +100,7 @@ public class BookingController {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.REJECT);
-        dao.updateStatus(booking.getBookingId(), booking.getStatus());
+        dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }
 
@@ -108,7 +108,7 @@ public class BookingController {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
         booking.goNext(BookingEvent.COMPLETE);
-        dao.updateStatus(booking.getBookingId(), booking.getStatus());
+        dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }
 

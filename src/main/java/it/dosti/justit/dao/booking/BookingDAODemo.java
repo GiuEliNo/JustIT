@@ -114,10 +114,10 @@ public class BookingDAODemo implements BookingDAO {
     }
 
     @Override
-    public void updateStatus(Integer bookingId, BookingStatus status) {
+    public void updateStatus(Booking booking) {
         for (int i = 0; i < bookings.size(); i++) {
             Booking current = bookings.get(i);
-            if (current.getBookingId().equals(bookingId)) {
+            if (current.getBookingId().equals(booking.getBookingId())) {
                 Booking updated = new Booking.Builder(current.getUsername())
                         .bookingId(current.getBookingId())
                         .shopId(current.getShopId())
@@ -125,7 +125,7 @@ public class BookingDAODemo implements BookingDAO {
                         .date(current.getDate())
                         .timeSlot(current.getTimeSlot())
                         .description(current.getDescription())
-                        .status(status)
+                        .status(booking.getStatus())
                         .homeAssistance(current.getHomeAssistance())
                         .build();
                 bookings.set(i, updated);

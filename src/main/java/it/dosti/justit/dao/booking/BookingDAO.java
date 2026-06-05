@@ -2,7 +2,6 @@ package it.dosti.justit.dao.booking;
 
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.booking.BookingStatus;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ public interface BookingDAO {
 
     List<Booking> getBookingsByShop(Integer shopId);
 
-    void updateStatus(Integer bookingId, BookingStatus status);
+    void updateStatus(Booking booking);
 
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
 

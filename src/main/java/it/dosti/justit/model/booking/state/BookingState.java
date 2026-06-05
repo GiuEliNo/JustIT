@@ -1,9 +1,16 @@
 package it.dosti.justit.model.booking.state;
 
 import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
 
 public abstract class BookingState {
-    public void entry(Booking booking) {}
-    public void exit(Booking booking) {}
-    public abstract void handleEvent(Booking booking, BookingEvent event);
+    public void confirm(Booking booking) {}
+
+    public void reject(Booking booking) {}
+
+    public void complete(Booking booking) {}
+
+    public BookingStatus getStatus() {
+        return null;
+    }
 }

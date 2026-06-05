@@ -170,15 +170,15 @@ public class BookingDAOJDBC implements BookingDAO {
     }
 
     @Override
-    public void updateStatus(Integer bookingId, BookingStatus status) {
+    public void updateStatus(Booking booking) {
         String sql = BookingQuery.UPDATE_STATUS;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 ) {
 
-            pstmt.setString(1, status.name());
-            pstmt.setInt(2, bookingId);
+            pstmt.setString(1, booking.getStatus().name());
+            pstmt.setInt(2, booking.getBookingId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);

@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
+import it.dosti.justit.model.booking.state.BookingStateFactory;
+import it.dosti.justit.model.booking.state.BookingStateMachine;
 
 import java.time.LocalDate;
 
 @JsonDeserialize(builder = Booking.Builder.class)
-public class Booking {
+public class Booking implements BookingStateMachine {
     private Integer bookingId;
     private Integer shopId;
     private String username;
@@ -21,11 +23,6 @@ public class Booking {
 
     private BookingState currentState;
     private BookingStatus status;
-
-    public Booking(String username) {
-        this.username = username;
-    }
-
     private Booking(Builder builder) {
 
         this.bookingId = builder.bookingId;
@@ -146,19 +143,24 @@ public class Booking {
     public void setShopName(String shopName) {
         this.shopName = shopName;
     }
-
     public boolean getHomeAssistance() {
         return homeAssistance;
     }
-
-    public void goNext(BookingEvent event) {
-        currentState.handleEvent(this, event);
+    public void changeStatus(BookingStatus newStatus) {
+        changeToState(BookingStateFactory.fromStatus(newStatus));
     }
 
-    public void changeStatus(BookingStatus newStatus) {
-        this.status = newStatus;
-        this.currentState = BookingStateFactory.fromStatus(newStatus);
-        this.currentState.entry(this);
+    @Override
+    public void goNext(BookingEvent event) {
+        switch (event) {
+            case CONFIRM -> this.currentState.confirm(this);
+            case REJECT -> this.currentState.reject(this);
+            case COMPLETE -> this.currentState.complete(this);
+        }
+    }
+    @Override
+    public void changeToState(BookingState newState) {
+        this.currentState = newState;
+        this.status = newState.getStatus();
     }
 }
-
