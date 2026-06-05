@@ -2,9 +2,9 @@ package it.dosti.justit;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.DatabaseInitializationException;
-import it.dosti.justit.events.publisher.observers.subjects.BookingStatusPublisher;
+import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.events.publisher.observers.NotificationObserver;
-import it.dosti.justit.events.publisher.observers.subjects.ReviewCreatedPublisher;
+import it.dosti.justit.events.publisher.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;

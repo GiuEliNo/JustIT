@@ -1,4 +1,4 @@
-package it.dosti.justit.events.publisher.observers.subjects;
+package it.dosti.justit.events.publisher.subjects;
 
 import it.dosti.justit.dto.ReviewCreatedDTO;
 import it.dosti.justit.events.publisher.observers.ReviewCreatedObserver;

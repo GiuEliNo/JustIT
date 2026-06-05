@@ -37,8 +37,8 @@ module it.dosti.justit {
     opens it.dosti.justit.model.notification to com.fasterxml.jackson.databind;
     opens it.dosti.justit.model.booking to com.fasterxml.jackson.databind, javafx.fxml;
     exports it.dosti.justit.events.publisher.observers;
-    exports it.dosti.justit.events.publisher.observers.subjects;
-    opens it.dosti.justit.events.publisher.observers.subjects to javafx.fxml;
+    exports it.dosti.justit.events.publisher.subjects;
+    opens it.dosti.justit.events.publisher.subjects to javafx.fxml;
     opens it.dosti.justit.events.publisher.observers to com.fasterxml.jackson.databind, javafx.fxml;
     exports it.dosti.justit.dto;
     opens it.dosti.justit.dto to com.fasterxml.jackson.databind, javafx.fxml;
