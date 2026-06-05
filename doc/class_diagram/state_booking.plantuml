@@ -1,17 +1,22 @@
 @startuml
 
-object Booking <<context>> {
-    - currentState: BookingState
+class Booking <<state machine>> {
+    - status: BookingState
+    - currentState: BookingStatus
     + goNext(event: BookingEvent)
     + changeToState(state: BookingState)
 }
 
-abstract class BookingState {
-    + entry(booking: Booking)
-    + exit(booking: Booking)
+interface BookingStateMachine <<interface state machine>> {
+    + goNext(event: BookingEvent)
+    + changeToState(state: BookingState)
+}
+
+abstract class BookingState <<abstract state>>{
     + confirm(booking: Booking)
     + reject(booking: Booking)
     + complete(booking: Booking)
+    + getStatus(): BookingStatus
 }
 
 enum BookingEvent <<enumeration>> {
@@ -20,15 +25,52 @@ enum BookingEvent <<enumeration>> {
     COMPLETE
 }
 
-class PendingState
-class ConfirmedState
-class RejectedState
-class CompletedState
+enum BookingStatus <<enumeration>> {
+    PENDING,
+    CONFIRMED,
+    REJECTED,
+    COMPLETED
+}
 
+class PendingState <<concrete state>> {
+    +confirm(booking: Booking)
+    +reject(booking: Booking)
+    +complete(booking: Booking)
+    +getStatus(): BookingStatus
+}
+class ConfirmedState <<concrete state>> {
+    +confirm(booking: Booking)
+    +reject(booking: Booking)
+    +complete(booking: Booking)
+    +getStatus(): BookingStatus
+}
+class RejectedState <<concrete state>> {
+    +confirm(booking: Booking)
+    +reject(booking: Booking)
+    +complete(booking: Booking)
+    +getStatus(): BookingStatus
+}
+class CompletedState <<concrete state>> {
+    +confirm(booking: Booking)
+    +reject(booking: Booking)
+    +complete(booking: Booking)
+    +getStatus(): BookingStatus
+}
+
+class BookingStateFactory {
+    +{static} fromStatus(status: BookingStatus): BookingState
+}
+
+Booking -- BookingEvent
+Booking -- BookingStatus
+Booking --> BookingStateFactory
 Booking --> BookingState
+
 BookingState <|-- PendingState
 BookingState <|-- ConfirmedState
 BookingState <|-- RejectedState
 BookingState <|-- CompletedState
+
+BookingStateMachine <|-- Booking
 
 @enduml
