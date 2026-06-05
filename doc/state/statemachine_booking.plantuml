@@ -1,0 +1,28 @@
+@startuml
+
+[*] --> PENDING
+
+state PENDING : confirm / changeToState(CONFIRMED)
+
+state PENDING : reject / changeToState(REJECTED)
+
+state CONFIRMED : complete / changeToState(COMPLETED)
+
+state REJECTED
+
+state COMPLETED
+
+PENDING --> CONFIRMED : CONFIRM
+PENDING --> REJECTED : REJECT
+
+CONFIRMED --> COMPLETED : COMPLETE
+
+PENDING --> PENDING : COMPLETE\nInvalidBookingStateException
+
+CONFIRMED --> CONFIRMED : CONFIRM / REJECT\nInvalidBookingStateException
+
+REJECTED --> REJECTED : CONFIRM / REJECT / COMPLETE\nInvalidBookingStateException
+
+COMPLETED --> COMPLETED : CONFIRM / REJECT / COMPLETE\nInvalidBookingStateException
+
+@enduml
