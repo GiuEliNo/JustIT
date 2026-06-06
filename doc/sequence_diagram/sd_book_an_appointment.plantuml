@@ -21,7 +21,7 @@ ShopPageGUI -> ShopController ++ :  initialize ShopController
 
 ShopController -->> ShopPageGUI --:
 ShopPageGUI -->> LoginGUI --:
-deactivate LoginGUI
+LoginGUI -->> User --:
 
 User -> ShopPageGUI ++: select shop
 ShopPageGUI -> ShopController ++: get shop info
@@ -31,10 +31,17 @@ deactivate Shop
 ShopController ->> DB ++: getShopDB
 DB -->> ShopController --
 ShopController -->> ShopPageGUI --: show shop details
-deactivate ShopPageGUI
+ShopPageGUI -->> User --:
 
-User -> BookingGUI ++: select add Booking
+User -> ShopPageGUI ++: select book now
 
+ShopPageGUI -> BookingGUI ++: initialize BookingGUI
+BookingGUI -> BookingController++: initialize BookingController
+BookingController -->> BookingGUI --:
+BookingGUI -->> ShopPageGUI --:
+ShopPageGUI -->> User --:
+
+User -> BookingGUI ++: insert booking data
 BookingGUI -> BookingController ++: add booking
 
 BookingController ->> Booking ++: <<create>>
@@ -45,11 +52,10 @@ Shop -->> BookingController --
 BookingController -> Booking ++: setup booking
 deactivate Booking
 
-BookingController -> DB ++: commit data to DB
-deactivate DB
-
 BookingController -> PaymentServiceProvider ++: pay with card
 deactivate PaymentServiceProvider
+BookingController ->> DB ++: commit data to DB
+DB -->> BookingController --:
 
 BookingController -->> BookingGUI
 
