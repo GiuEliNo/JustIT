@@ -17,6 +17,7 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+//Giulio Rustia
 class UniqueUsernameOnRegisterTest {
 
     @BeforeEach
