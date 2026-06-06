@@ -13,8 +13,8 @@ usecase "View notifications*" as UC3
 usecase "Manage shop page*" as UC4
 usecase "View booking list*" as UC5
 usecase "Export booking" as UC6
-usecase "Change booking status" as UC7
-usecase "Process Payment" as UC8
+usecase "Manage booking status" as UC7
+usecase "Process payment" as UC8
 usecase "Manage review*" as UC9
 }
 
