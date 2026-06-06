@@ -16,7 +16,7 @@ else ([no])
         :fill field address;
     fork again
         :provide a maximum range;
-    end merge
+    end fork
 
     :select type of technician;
 
@@ -40,11 +40,11 @@ fork again
             :provide home's address;
         fork again
             :select available date for home's service;
-        end merge
+        end fork
     else ([no])
         :select available date;
     endif
-end merge
+end fork
 
 fork
 
@@ -58,7 +58,7 @@ fork again
 
 :\t\t\t timer 5m; <<timeEvent>>
 
-end merge
+end fork
 
 repeat while (session timer expired?) is ([yes]) not ([no])
 
