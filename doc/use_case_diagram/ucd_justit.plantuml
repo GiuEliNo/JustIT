@@ -13,7 +13,7 @@ usecase "View notifications*" as UC3
 usecase "Manage shop page*" as UC4
 usecase "View booking list*" as UC5
 usecase "Export booking" as UC6
-usecase "Change booking status*" as UC7
+usecase "Change booking status" as UC7
 usecase "Process Payment" as UC8
 usecase "Reply notification" as UC9
 
@@ -21,7 +21,7 @@ usecase "Reply notification" as UC9
 }
 
 note bottom of JustIT
-* includes login
+"* includes login"
   end note
 
 c --> UC1
@@ -30,12 +30,12 @@ c --> UC3
 t --> UC3
 t --> UC4
 t --> UC5
-t --> UC7
 UC2 -.> UC8: <<include>>
 UC8 --> p
 UC2 ---> n
 UC7 --> n
 UC5 <.d. UC6 : <<extends>>
 UC9 -l.> UC3:  <<extends>>
+UC7 .u.> UC5:  <<extends>>
 
 @enduml
