@@ -25,7 +25,8 @@ DB -->> BookingController --: return Bookings data
 
 
 BookingController -->> BookingPageGUI --: return bookings data
-deactivate HomePageGUI
+BookingPageGUI  -->> HomePageGUI -- :
+HomePageGUI -->> Technician --:
 
 
 deactivate BookingPageGUI
@@ -43,19 +44,17 @@ Client -->> BookingController --:
 
 
 BookingController-->> BookingPageGUI --: shows data
-
-deactivate BookingPageGUI
-
+BookingPageGUI -->> Technician --:
 
 Technician -> BookingPageGUI: change booking status
 activate BookingPageGUI
 
 BookingPageGUI -> BookingController ++: update Booking
 BookingController ->> DB ++: save on db
-deactivate DB
+DB -->> BookingController --:
 BookingController ->> NotificationService ++: send notification to client
-deactivate NotificationService
-deactivate BookingController
-deactivate BookingPageGUI
+NotificationService  -->> BookingController --:
+BookingController -->> BookingPageGUI --:
+BookingPageGUI -->> Technician --:
 
 @enduml
