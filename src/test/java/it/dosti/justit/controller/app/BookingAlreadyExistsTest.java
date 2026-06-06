@@ -25,6 +25,7 @@ import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+//Valerio Mazza
 class BookingAlreadyExistsTest {
 
     private static final String USERNAME = "sammello";
