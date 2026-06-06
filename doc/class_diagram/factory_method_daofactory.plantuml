@@ -1,0 +1,47 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+class DaoFactory <<factory>> {
+    {static} + getBookingDAO() : BookingDAO
+    {static} + getClientUserDAO() : ClientUserDAO
+    {static} + getNotificationDAO() : NotificationDAO
+    {static} + getReviewDAO() : ReviewDAO
+    {static} + getShopDAO() : ShopDAO
+    {static} + getTechnicianDAO() : TechnicianDAO
+}
+
+class SessionManager <<singleton>>{
+    + getPersistencyType(): PersistencyType
+}
+
+class BookingController <<controller>>{
++ addBooking(BookingBean: bookingBean): Boolean
+}
+
+interface BookingDAO {
++ addBooking(Booking: booking): Integer
+}
+
+class BookingDAOJDBC
+class BookingDAOFile
+class BookingDAODemo
+
+BookingDAOJDBC ..|> BookingDAO
+BookingDAOFile ..|> BookingDAO
+BookingDAODemo ..|> BookingDAO
+
+BookingController -> DaoFactory: asks for object
+BookingController -> BookingDAO: uses
+
+DaoFactory -u-> SessionManager : reads persistence type
+
+DaoFactory ..> BookingDAOJDBC : creates
+DaoFactory ..> BookingDAOFile : creates
+DaoFactory ..> BookingDAODemo : creates
+
+
+note right of DaoFactory
+To make the diagram clearer, only the usage of the BookingDAO is shown.
+end note
+@enduml
