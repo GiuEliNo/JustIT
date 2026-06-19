@@ -1,12 +1,11 @@
 package it.dosti.justit.bean;
 
-import it.dosti.justit.model.user.RoleType;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class LoginBean {
     private String username;
     private String password;
-    private RoleType roleType;
+    private String roleType;
 
     public String getUsername(){
         return this.username;
@@ -24,15 +23,11 @@ public class LoginBean {
         this.password = DigestUtils.sha256Hex(password);
     }
 
-    public void setRoleType(RoleType roleType) {
+    public void setRoleType(String roleType) {
         this.roleType = roleType;
     }
 
-    public RoleType getRoleType() {
+    public String getRoleType() {
         return roleType;
-    }
-
-    public void setRoleTypeStringed(String roleTypeField) {
-        this.setRoleType(roleTypeField.toUpperCase().startsWith("T") ? RoleType.TECHNICIAN : RoleType.CLIENT);
     }
 }

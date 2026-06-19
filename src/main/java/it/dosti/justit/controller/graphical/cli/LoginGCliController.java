@@ -5,10 +5,11 @@ import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CLoginView;
+
+import java.util.Objects;
 
 public class LoginGCliController extends BaseCliController {
 
@@ -25,13 +26,13 @@ public class LoginGCliController extends BaseCliController {
 
         loginBean.setUsername(username);
         loginBean.setPassword(password);
-        loginBean.setRoleTypeStringed(role);
+        loginBean.setRoleType(role);
 
         try {
             if (appController.checkLogin(loginBean)) {
-                if (loginBean.getRoleType() == RoleType.CLIENT) {
+                if (Objects.equals(loginBean.getRoleType(), "CLIENT")) {
                     navigation.navigate(Screen.MAIN_USER);
-                } else if(loginBean.getRoleType() == RoleType.TECHNICIAN){
+                } else if(Objects.equals(loginBean.getRoleType(), "TECHNICIAN")){
                     navigation.navigate(Screen.MAIN_TECH);
                 }
             } else {

@@ -14,7 +14,7 @@ import it.dosti.justit.utils.SessionManager;
 public class LoginController {
     public boolean checkLogin(LoginBean loginBean) throws IllegalArgumentException, LoginFromBackEndException, ShopNotFoundException {
         switch (loginBean.getRoleType()) {
-            case CLIENT -> {
+            case "CLIENT" -> {
                 ClientUserDAO dao = DaoFactory.getClientUserDAO();
 
                 if (dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
@@ -23,7 +23,7 @@ public class LoginController {
                 }
                 return false;
             }
-            case TECHNICIAN -> {
+            case "TECHNICIAN" -> {
                 TechnicianDAO dao = DaoFactory.getTechnicianDAO();
                 if(dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
                     SessionManager session = SessionManager.getInstance();

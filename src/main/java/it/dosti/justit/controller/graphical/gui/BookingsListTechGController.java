@@ -110,17 +110,22 @@ public class BookingsListTechGController extends BaseGController {
         descriptionArea.setText(booking.getDescription());
 
         switch (booking.getStatus()) {
-            case PENDING -> {
+            case "PENDING" -> {
                 approveButton.setVisible(true);
                 rejectButton.setVisible(true);
                 completedButton.setVisible(false);
             }
-            case CONFIRMED -> {
+            case "CONFIRMED" -> {
                 approveButton.setVisible(false);
                 rejectButton.setVisible(false);
                 completedButton.setVisible(true);
             }
-            case COMPLETED, REJECTED -> {
+            case "COMPLETED", "REJECTED" -> {
+                approveButton.setVisible(false);
+                rejectButton.setVisible(false);
+                completedButton.setVisible(false);
+            }
+            default -> {
                 approveButton.setVisible(false);
                 rejectButton.setVisible(false);
                 completedButton.setVisible(false);

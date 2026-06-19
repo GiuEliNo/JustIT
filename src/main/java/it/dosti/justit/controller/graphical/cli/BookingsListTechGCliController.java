@@ -61,11 +61,11 @@ public class BookingsListTechGCliController extends BaseCliController{
 
 
         switch(appController.getBookingById(bookId).getStatus()){
-            case PENDING:
+            case "PENDING":
                 this.confirmationManager(bookId);
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;
-            case CONFIRMED:
+            case "CONFIRMED":
                 this.completedManager(bookId);
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH);
                 break;

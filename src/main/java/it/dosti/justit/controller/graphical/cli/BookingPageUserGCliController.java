@@ -3,7 +3,6 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CBookingPageUserView;
@@ -25,10 +24,10 @@ public class BookingPageUserGCliController extends BaseCliController {
         String username = SessionManager.getInstance().getLoggedUser().getUsername();
 
         LocalDate date = askValidDate(shopId);
-        List<TimeSlot> availableSlots = appController.getAvailableSlots(shopId, date);
+        List<String> availableSlots = appController.getAvailableSlots(shopId, date).getTimeSlots();
         bookingView.showAvailableSlots(date, availableSlots);
 
-        TimeSlot timeSlot = askValidTimeSlot(availableSlots);
+        String timeSlot = askValidTimeSlot(availableSlots);
 
         BookingBean bookingBean = new BookingBean();
         bookingBean.setShopId(shopId);
@@ -68,11 +67,11 @@ public class BookingPageUserGCliController extends BaseCliController {
     }
 
 
-    private TimeSlot askValidTimeSlot(List<TimeSlot> availableSlots) {
+    private String askValidTimeSlot(List<String> availableSlots) {
         while (true) {
             String input = bookingView.askTimeSlot();
             try {
-                TimeSlot timeSlot = TimeSlot.valueOf(input.trim().toUpperCase());
+                String timeSlot = input.trim().toUpperCase();
                 if (availableSlots.contains(timeSlot)) {
                     return timeSlot;
                 }

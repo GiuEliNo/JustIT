@@ -1,4 +1,3 @@
-```plantuml
 @startuml
 class   ClientCallIntervent             <<(B,#FF7F7F)boundary>>{
 bookIntervent()
@@ -143,4 +142,3 @@ InterventionCalendar  <-r-  TechnicianPage
 CallIntervent -u-> TechnicianPage
 
 @enduml
-```

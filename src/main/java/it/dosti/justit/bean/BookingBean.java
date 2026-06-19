@@ -1,32 +1,19 @@
 package it.dosti.justit.bean;
-
-import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.TimeSlot;
-import it.dosti.justit.model.booking.BookingStatus;
-
 import java.time.LocalDate;
 
 public class BookingBean {
     private Integer bookingID;
-    private Shop shop;
     private Integer shopId;
     private String username;
     private LocalDate date;
-    private TimeSlot timeSlot;
+    private String timeSlot;
     private String description;
-    private BookingStatus status;
+    private String status;
     private String shopName;
     private Boolean homeAssistance;
     private String userAddress;
 
 
-
-    public Shop getShop() {
-        return shop;
-    }
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
     public String getUsername() {
         return username;
     }
@@ -39,10 +26,10 @@ public class BookingBean {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public TimeSlot getTimeSlot() {
+    public String getTimeSlot() {
         return timeSlot;
     }
-    public void setTimeSlot(TimeSlot timeSlot) {
+    public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
     }
     public String getDescription() {
@@ -57,10 +44,10 @@ public class BookingBean {
     public void setBookingID(Integer bookingID) {
         this.bookingID = bookingID;
     }
-    public BookingStatus getStatus() {
+    public String getStatus() {
         return this.status;
     }
-    public void setStatus(BookingStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     public String getShopName() {

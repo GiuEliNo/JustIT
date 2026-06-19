@@ -5,7 +5,6 @@ import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -36,7 +35,7 @@ public class LoginGController extends BaseGController {
     @FXML
     private void onLogin() {
 
-        RoleType roleType = clientRadio.isSelected() ? RoleType.CLIENT : RoleType.TECHNICIAN;
+        String roleType = clientRadio.isSelected() ? "CLIENT" : "TECHNICIAN";
         LoginBean loginBean = new LoginBean();
 
         loginBean.setUsername(user.getText());

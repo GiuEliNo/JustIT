@@ -2,6 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.BookingCSVBean;
+import it.dosti.justit.bean.TimeSlotBean;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
@@ -33,7 +34,7 @@ public class BookingController {
         Booking newBooking = new Booking.Builder(bookingBean.getUsername())
                 .shopId(bookingBean.getShopId())
                 .date(bookingBean.getDate())
-                .timeSlot(bookingBean.getTimeSlot())
+                .timeSlot((TimeSlot.valueOf(bookingBean.getTimeSlot())))
                 .description(bookingBean.getDescription())
                 .status(BookingStatus.PENDING)
                 .homeAssistance(bookingBean.getHomeAssistance())
@@ -119,21 +120,23 @@ public class BookingController {
         }
     }
 
-    public List<TimeSlot> getAvailableSlots(Integer shopId, LocalDate date) {
+    public TimeSlotBean getAvailableSlots(Integer shopId, LocalDate date) {
 
         List<TimeSlot> occupied = dao.getOccupiedSlots(shopId, date);
-        List<TimeSlot> available = new ArrayList<>();
+        List<String> available = new ArrayList<>();
 
         for (TimeSlot slot : TimeSlot.values()) {
             if (!occupied.contains(slot)) {
-                available.add(slot);
+                available.add(slot.toString());
             }
         }
-        return available;
+        TimeSlotBean bean = new TimeSlotBean();
+        bean.setTimeSlots(available);
+        return bean;
     }
 
     public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
-        return !getAvailableSlots(shopId, date).isEmpty();
+        return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
     }
 
     public void exportBookingsListTech(File file) {
@@ -172,9 +175,9 @@ public class BookingController {
         bean.setBookingID(booking.getBookingId());
         bean.setUsername(booking.getUsername());
         bean.setDate(booking.getDate());
-        bean.setTimeSlot(booking.getTimeSlot());
+        bean.setTimeSlot(booking.getTimeSlot().toString());
         bean.setDescription(booking.getDescription());
-        bean.setStatus(booking.getStatus());
+        bean.setStatus(booking.getStatus().toString());
         bean.setShopName(booking.getShopName());
         bean.setHomeAssistance(booking.getHomeAssistance());
         bean.setUserAddress(booking.getHomeAssistance() ? this.addressUserBooking(booking.getUsername()) : null);

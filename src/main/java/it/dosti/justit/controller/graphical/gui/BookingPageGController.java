@@ -4,7 +4,6 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.utils.SessionManager;
-import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -19,7 +18,7 @@ public class BookingPageGController extends BaseGController {
     private TextArea descriptionArea;
 
     @FXML
-    private ChoiceBox<TimeSlot> timeSlotChoiceBox;
+    private ChoiceBox<String> timeSlotChoiceBox;
 
     @FXML
     private DatePicker datePicker;
@@ -69,7 +68,7 @@ public class BookingPageGController extends BaseGController {
 
         timeSlotChoiceBox.getItems().clear();
 
-        timeSlotChoiceBox.getItems().addAll(appController.getAvailableSlots(shopId, date));
+        timeSlotChoiceBox.getItems().addAll(appController.getAvailableSlots(shopId, date).getTimeSlots());
 
         if (!timeSlotChoiceBox.getItems().isEmpty()) {
             timeSlotChoiceBox.getSelectionModel().selectFirst();

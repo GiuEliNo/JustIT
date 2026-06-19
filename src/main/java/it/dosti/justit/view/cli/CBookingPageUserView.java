@@ -1,7 +1,5 @@
 package it.dosti.justit.view.cli;
 
-import it.dosti.justit.model.TimeSlot;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,9 +16,9 @@ public class CBookingPageUserView extends BaseCliView {
         return scanner.nextLine();
     }
 
-    public void showAvailableSlots(LocalDate date, List<TimeSlot> slots) {
+    public void showAvailableSlots(LocalDate date, List<String> slots) {
         System.out.println("Available slots for " + date + ":");
-        for (TimeSlot slot : slots) {
+        for (String slot : slots) {
             System.out.println("- " + slot);
         }
     }
