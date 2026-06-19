@@ -5,6 +5,7 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.BookingAlreadyExistsException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 //Valerio Mazza
 class BookingAlreadyExistsTest {
@@ -34,7 +36,7 @@ class BookingAlreadyExistsTest {
     private static final LocalDate bookingDate = LocalDate.of(2050, Month.JANUARY, 1);
 
     @BeforeEach
-    void setupInsertBooking() throws SQLException {
+    void setupInsertBooking(){
         //aggiunta di una prenotazione per l'account di test allo shop id 1. DB già popolato preso dalle resources. Questa prenotaione ancora non esiste
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
         SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
@@ -51,7 +53,11 @@ class BookingAlreadyExistsTest {
                 .build();
 
         if (!dao.existsBooking(SHOP_ID, bookingDate, TIME_SLOT)) {
-            dao.addBooking(booking);
+            try {
+                dao.addBooking(booking);
+            }catch(RegisterOnBackEndException e) {
+                fail("Setup fallito: impossibile inserire la prenotazione: " + e.getMessage());
+            }
         }
     }
 
@@ -63,7 +69,7 @@ class BookingAlreadyExistsTest {
         bookingBean.setShopId(SHOP_ID);
         bookingBean.setUsername(USERNAME);
         bookingBean.setDate(bookingDate);
-        bookingBean.setTimeSlot(TIME_SLOT);
+        bookingBean.setTimeSlot(TIME_SLOT.toString());
         bookingBean.setDescription("Booking test duplicated");
         bookingBean.setHomeAssistance(false);
 

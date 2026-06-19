@@ -2,6 +2,7 @@ package it.dosti.justit.dao.booking;
 
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.BookingQuery;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -26,7 +27,7 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String ISHOMEASSISTANCE = "isHomeAssistance";
 
     @Override
-    public int addBooking(Booking booking) throws SQLException {
+    public int addBooking(Booking booking) throws RegisterOnBackEndException {
         String sql = BookingQuery.INSERT_BOOKING;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -49,13 +50,13 @@ public class BookingDAOJDBC implements BookingDAO {
 
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
-            throw e;
+            throw new RegisterOnBackEndException("Errore nell'aggiunta della prenotazione");
         }
         return -1;
     }
 
     @Override
-    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) throws SQLException {
+    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot){
         String sql = BookingQuery.EXIST_BOOKING;
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -69,7 +70,7 @@ public class BookingDAOJDBC implements BookingDAO {
             }
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
-            throw e;
+            return false;
         }
     }
 

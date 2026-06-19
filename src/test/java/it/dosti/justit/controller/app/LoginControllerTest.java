@@ -31,7 +31,7 @@ class LoginControllerTest {
         LoginBean loginBean = new LoginBean();
         loginBean.setUsername("demo");
         loginBean.setPassword("password");
-        loginBean.setRoleType(RoleType.CLIENT);
+        loginBean.setRoleType(String.valueOf(RoleType.CLIENT));
         try {
             loginController.checkLogin(loginBean);
 
@@ -51,7 +51,7 @@ class LoginControllerTest {
         LoginBean loginBean = new LoginBean();
         loginBean.setUsername("tec.demo");
         loginBean.setPassword("password");
-        loginBean.setRoleType(RoleType.CLIENT);
+        loginBean.setRoleType(String.valueOf(RoleType.CLIENT));
         try {
             flag  = loginController.checkLogin(loginBean);
         } catch (Exception e) {

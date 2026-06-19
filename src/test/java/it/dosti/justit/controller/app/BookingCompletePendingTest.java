@@ -5,6 +5,7 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 // Valerio Mazza
 class BookingCompletePendingTest {
@@ -35,7 +37,7 @@ class BookingCompletePendingTest {
     private Integer bookingId;
 
     @BeforeEach
-    void setupBooking() throws SQLException {
+    void setupBooking() {
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
         SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
         BookingDAO dao = new BookingDAOJDBC();
@@ -51,7 +53,13 @@ class BookingCompletePendingTest {
                 .homeAssistance(false)
                 .build();
 
-        bookingId = dao.addBooking(booking);
+        try{
+            bookingId = dao.addBooking(booking);
+        }
+        catch(RegisterOnBackEndException e){
+            fail("Setup fallito: " + e.getMessage());
+        }
+
     }
 
     @Test

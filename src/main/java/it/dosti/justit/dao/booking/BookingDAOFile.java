@@ -1,6 +1,7 @@
 package it.dosti.justit.dao.booking;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
@@ -22,7 +23,7 @@ public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_SHOPS = "shops";
 
     @Override
-    public int addBooking(Booking booking) {
+    public int addBooking(Booking booking) throws RegisterOnBackEndException {
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
@@ -37,7 +38,7 @@ public class BookingDAOFile implements BookingDAO {
             return 1;
         }catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
-            return 0;
+            throw new RegisterOnBackEndException(e.getMessage());
         }
     }
 

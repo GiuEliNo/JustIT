@@ -9,6 +9,7 @@ import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAOCSV;
 import it.dosti.justit.dao.clientuser.ClientUserDAO;
 import it.dosti.justit.exceptions.BookingAlreadyExistsException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -19,7 +20,6 @@ import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class BookingController {
             JustItLogger.getInstance().info("Booking added successfully");
             return true;
 
-        } catch (SQLException e) {
+        } catch (RegisterOnBackEndException e) {
             JustItLogger.getInstance().error("Error adding booking");
             return false;
         }

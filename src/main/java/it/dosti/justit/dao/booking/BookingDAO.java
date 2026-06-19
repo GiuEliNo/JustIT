@@ -1,17 +1,17 @@
 package it.dosti.justit.dao.booking;
 
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 
 public interface BookingDAO {
-    int addBooking(Booking booking) throws SQLException;
+    int addBooking(Booking booking) throws RegisterOnBackEndException;
 
-    boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) throws SQLException;
+    boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot);
 
     List<Booking> getBookingsByUser(String username);
 
