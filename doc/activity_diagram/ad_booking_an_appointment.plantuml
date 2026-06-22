@@ -21,7 +21,7 @@ else ([no])
     :select type of technician;
 
     :list based on filter;
-    
+
     else ([no])
 
 
@@ -58,7 +58,7 @@ fork again
 
 :\t\t\t timer 5m; <<timeEvent>>
 
-end fork
+end merge
 
 repeat while (session timer expired?) is ([yes]) not ([no])
 

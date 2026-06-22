@@ -16,20 +16,20 @@ if (request acceptable?) then ([yes])
         :propose alternative date;
         fork
             :wait for customer response;
-            
+
         fork again
-        
+
             :\t\t\t timer 48h; <<timeEvent>>
-            
-        end fork
-        
+
+        end merge
+
         if (customer responds?) then ([yes])
                 :accept new date;
             else ([timeout OR no])
                 :cancel request;
-        
+
         endif
-        
+
     endif
 
 
