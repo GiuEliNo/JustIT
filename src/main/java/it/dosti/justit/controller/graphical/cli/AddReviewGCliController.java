@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.controller.app.BrowseShopController;
@@ -29,11 +30,13 @@ public class AddReviewGCliController extends BaseCliController {
 
     private void showCompletedBookingToReview() throws NavigationException {
         BookingController bookAppController =  new BookingController();
-        List<BookingBean> bookingCompleted = bookAppController.getCompletedBookingsWithoutReviewUser();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        List<BookingBean> bookingCompleted = bookAppController.getCompletedBookingsWithoutReviewUser(session);
 
         if (bookingCompleted.isEmpty()) {
             addReviewView.noCompletedBookings();
-            navigation.navigate(Screen.MAIN_USER);
+            navigation.navigate(Screen.MAIN_USER, sessionId);
         }
 
         for(BookingBean b : bookingCompleted){
@@ -44,14 +47,14 @@ public class AddReviewGCliController extends BaseCliController {
 
         switch(choice) {
             case "0":
-                navigation.navigate(Screen.MAIN_USER);
+                navigation.navigate(Screen.MAIN_USER,  sessionId);
                 break;
             case "1":
                 this.addReview(bookingCompleted);
-                navigation.navigate(Screen.ADD_REVIEW);
+                navigation.navigate(Screen.ADD_REVIEW, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.ADD_REVIEW);
+                navigation.navigate(Screen.ADD_REVIEW, sessionId);
                 break;
         }
 
@@ -72,11 +75,13 @@ public class AddReviewGCliController extends BaseCliController {
         } while (selectedBooking == null);
 
         ShopBean shopBean = new ShopBean();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         shopBean.setId(selectedBooking.getShopId());
         String shopName = selectedBooking.getShopName();
 
         shopBean.setName(shopName != null ? shopName : "Shop #" + selectedBooking.getShopId());
-        browseShopController.pageSelected(shopBean);
+        browseShopController.pageSelected(session, shopBean);
 
         reviewBean.setTitle(addReviewView.askTitle());
         reviewBean.setReview(addReviewView.askDescription());
@@ -90,7 +95,7 @@ public class AddReviewGCliController extends BaseCliController {
         reviewBean.setBookingId(selectedBooking.getBookingID());
 
         try{
-            reviewController.addReview(reviewBean);
+            reviewController.addReview(session, reviewBean);
         }catch(ReviewWithoutBookingException e){
             JustItLogger.getInstance().error(e.getMessage(),e);
         }

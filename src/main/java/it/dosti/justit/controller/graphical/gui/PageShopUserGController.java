@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.NavigationException;
@@ -14,8 +15,20 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class PageShopUserGController extends BaseGController {
+
+
+    @FXML
+    private VBox reviewSection;
+
+    @FXML
+    private ReviewsShopUserGController reviewSectionController;
+
+    @FXML
+    private VBox shopSection;
+
     @FXML
     private Label shopName;
 
@@ -46,14 +59,22 @@ public class PageShopUserGController extends BaseGController {
     @FXML
     private StackPane mapContainer;
 
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
         ShopController appControllerPageShop = new ShopController();
+
+        if(reviewSectionController!=null) {
+            reviewSectionController.setSessionId(this.sessionId);
+        }
 
         MapView mapView = new MapView();
         mapView.setMouseTransparent(true);
 
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
 
-        ShopBean shopBean = appControllerPageShop.getShopBean();
+
+        ShopBean shopBean = appControllerPageShop.getShopBean(session);
 
         if (shopBean != null) {
             shopName.setText(shopBean.getName());
@@ -64,7 +85,7 @@ public class PageShopUserGController extends BaseGController {
             openingHours.setText(shopBean.getOpeningHours());
             try{
 
-                Image image = appControllerPageShop.getShopImage();
+                Image image = appControllerPageShop.getShopImage(session);
                 shopImage.setImage(image);
 
             }
@@ -112,6 +133,6 @@ public class PageShopUserGController extends BaseGController {
 
     @FXML
     public void onBookingClicked() throws NavigationException {
-        navigation.navigate(Screen.BOOKING_PAGE_USER);
+        navigation.navigate(Screen.BOOKING_PAGE_USER, sessionId);
     }
 }

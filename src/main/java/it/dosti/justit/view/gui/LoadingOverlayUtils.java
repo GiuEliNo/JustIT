@@ -29,14 +29,14 @@ public class LoadingOverlayUtils {
     }
 
 
-    public static void animateTransition(StackPane root, VBox overlay, GUINavigationService navigation, Screen screen) {
+    public static void animateTransition(StackPane root, VBox overlay, GUINavigationService navigation, Screen screen, String sessionId) {
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), root);
         fadeTransition.setFromValue(1.0);
         fadeTransition.setToValue(0.0);
 
         fadeTransition.setOnFinished(event ->{ root.getChildren().remove(overlay);
             try {
-                navigation.navigate(screen);
+                navigation.navigate(screen, sessionId);
             }catch(NavigationException e){
                 JustItLogger.getInstance().error(e.getMessage());
             }

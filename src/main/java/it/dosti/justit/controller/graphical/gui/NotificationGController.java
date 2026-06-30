@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.NotificationBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.NotificationController;
 import it.dosti.justit.view.gui.NotificationListCell;
 import javafx.fxml.FXML;
@@ -14,8 +15,8 @@ public class NotificationGController extends BaseGController {
 
     private NotificationController appController;
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
 
         appController = new NotificationController();
 
@@ -33,6 +34,8 @@ public class NotificationGController extends BaseGController {
 
     @FXML
     private void updateMessages() {
-        messageListView.getItems().setAll(appController.getNotification());
+        SessionBean session= new SessionBean();
+        session.setSessionId(sessionId);
+        messageListView.getItems().setAll(appController.getNotification(session));
     }
 }

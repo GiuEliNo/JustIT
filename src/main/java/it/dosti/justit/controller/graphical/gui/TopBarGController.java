@@ -1,5 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
+import it.dosti.justit.bean.SessionBean;
+import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.ui.navigation.Screen;
@@ -12,12 +14,16 @@ public class TopBarGController extends BaseGController {
     private Label usernameLabel;
 
     @FXML
-    public void initialize() {
-        this.usernameLabel.setText(SessionManager.getInstance().getLoggedUser().getUsername());
-    }
-    @FXML
     public void onLogout() throws NavigationException {
-        SessionManager.getInstance().logout();
-        navigation.navigate(Screen.LAUNCHER);
+        SessionManager.getInstance().logout(sessionId);
+        navigation.navigate(Screen.LAUNCHER, null);
+    }
+
+    @Override
+    protected void onSessionReady(){
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        AccountController appController = new AccountController();
+        this.usernameLabel.setText(appController.getLoggedUserUsername(session));
     }
 }

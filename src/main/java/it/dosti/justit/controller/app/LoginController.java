@@ -9,34 +9,41 @@ import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Credentials;
 import it.dosti.justit.model.user.TechnicianUser;
+import it.dosti.justit.utils.Session;
 import it.dosti.justit.utils.SessionManager;
 
 public class LoginController {
-    public boolean checkLogin(LoginBean loginBean) throws IllegalArgumentException, LoginFromBackEndException, ShopNotFoundException {
+    public String checkLogin(LoginBean loginBean) throws IllegalArgumentException, LoginFromBackEndException, ShopNotFoundException {
+        String sessionId = SessionManager.getInstance().createSession();
         switch (loginBean.getRoleType()) {
             case "CLIENT" -> {
                 ClientUserDAO dao = DaoFactory.getClientUserDAO();
 
                 if (dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
-                    SessionManager.getInstance().setLoggedUser(dao.findByUsername(loginBean.getUsername()));
-                    return true;
+                    SessionManager.getInstance().getActiveSession(sessionId).setLoggedUser(dao.findByUsername(loginBean.getUsername()));
+                    return sessionId;
                 }
-                return false;
+                SessionManager.getInstance().logout(sessionId);
+                throw new LoginFromBackEndException("Invalid username or password");
             }
             case "TECHNICIAN" -> {
                 TechnicianDAO dao = DaoFactory.getTechnicianDAO();
                 if(dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
-                    SessionManager session = SessionManager.getInstance();
+                    Session session = SessionManager.getInstance().getActiveSession(sessionId);
                     session.setLoggedUser(dao.findByUsername(loginBean.getUsername()));
                     TechnicianUser technicianUser = (TechnicianUser) session.getLoggedUser();
                     ShopDAO shopDao = DaoFactory.getShopDAO();
                     session.setCurrentShop(shopDao.retrieveShopById(technicianUser.getShopId()));
-                    return true;
+                    return sessionId;
                 }
-                return false;
+                SessionManager.getInstance().logout(sessionId);
+                throw new LoginFromBackEndException("Invalid username or password");
             }
 
-            default -> { return false; }
+            default -> {
+                SessionManager.getInstance().logout(sessionId);
+                throw new LoginFromBackEndException("Invalid username or password");
+            }
         }
     }
 }

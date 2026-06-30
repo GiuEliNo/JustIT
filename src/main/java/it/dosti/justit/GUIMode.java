@@ -43,7 +43,7 @@ public class GUIMode extends BaseAppMode implements AppMode{
             stage.show();
             Platform.runLater(stage::centerOnScreen);
 
-            navigation.navigate(Screen.LAUNCHER);
+            navigation.navigate(Screen.LAUNCHER, null);
 
         }
     }

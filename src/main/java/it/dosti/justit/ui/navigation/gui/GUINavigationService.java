@@ -37,22 +37,22 @@ public class GUINavigationService implements NavigationService {
     }
 
     @Override
-    public void navigate(Screen screen) throws NavigationException {
+    public void navigate(Screen screen, String sessionId) throws NavigationException {
         switch (screen) {
             case LAUNCHER, REGISTER_USER, REGISTER_TECH, REGISTER_SHOP:
-                showStandaloneView(loadView(screen));
+                showStandaloneView(loadView(screen, null));
                 return;
             case MAIN:
-                buildMainViews();
-                showMainLayout();
-                if (isTechnician()) {
-                    setContent(techMainView.getTopPane(), loadView(Screen.TOPBAR));
+                buildMainViews(sessionId);
+                showMainLayout(sessionId);
+                if (isTechnician(sessionId)) {
+                    setContent(techMainView.getTopPane(), loadView(Screen.TOPBAR, sessionId));
                     selectTechTab(techMainView.getShopTab());
-                    setContent(techMainView.getShopPane(), loadView(Screen.PAGE_SHOP_TECH));
+                    setContent(techMainView.getShopPane(), loadView(Screen.PAGE_SHOP_TECH, sessionId));
                 } else {
-                    setContent(userMainView.getTopPane(), loadView(Screen.TOPBAR));
+                    setContent(userMainView.getTopPane(), loadView(Screen.TOPBAR, sessionId));
                     selectUserTab(userMainView.getSearchTab());
-                    setContent(userMainView.getSearchLeftPane(), loadView(Screen.SEARCH_LIST_SHOP));
+                    setContent(userMainView.getSearchLeftPane(), loadView(Screen.SEARCH_LIST_SHOP, sessionId));
                 }
                 return;
             default:
@@ -60,63 +60,63 @@ public class GUINavigationService implements NavigationService {
         }
         switch (screen) {
             case TOPBAR:
-                setContent(getActiveTopPane(), loadView(screen));
+                setContent(getActiveTopPane(sessionId), loadView(screen, sessionId));
                 return;
             case TAB_PANE_USER_PROFILE, ACCOUNT_PAGE_USER:
                 selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.ACCOUNT_PAGE_USER);
+                showProfileUserView(Screen.ACCOUNT_PAGE_USER, sessionId);
                 return;
             case ACCOUNT_PAGE_TECH:
                 selectTechTab(techMainView.getProfileTab());
-                setContent(techMainView.getProfilePane(), loadView(screen));
+                setContent(techMainView.getProfilePane(), loadView(screen, sessionId));
                 return;
             case REVIEWS_LIST_TECH:
                 selectTechTab(techMainView.getReviewTab());
-                setContent(techMainView.getReviewPane(), loadView(screen));
+                setContent(techMainView.getReviewPane(), loadView(screen, sessionId));
                 return;
             case PAYMENTS:
                 selectUserTab(userMainView.getProfileTab());
-                showProfileUserView(Screen.PAYMENTS);
+                showProfileUserView(Screen.PAYMENTS, sessionId);
                 return;
             case SEARCH_LIST_SHOP:
                 selectUserTab(userMainView.getSearchTab());
-                setContent(userMainView.getSearchLeftPane(), loadView(screen));
+                setContent(userMainView.getSearchLeftPane(), loadView(screen, sessionId));
                 return;
             case PAGE_SHOP_USER, BOOKING_PAGE_USER, REVIEWS_BOX:
                 selectUserTab(userMainView.getSearchTab());
-                setContent(userMainView.getSearchRightPane(), loadView(screen));
+                setContent(userMainView.getSearchRightPane(), loadView(screen, sessionId));
                 return;
             case PAGE_SHOP_TECH:
                 selectTechTab(techMainView.getShopTab());
-                setContent(techMainView.getShopPane(), loadView(screen));
+                setContent(techMainView.getShopPane(), loadView(screen, sessionId));
                 return;
             case NOTIFICATION_CENTER_USER:
                 selectUserTab(userMainView.getNotificationsTab());
-                setContent(userMainView.getNotificationsPane(), loadView(screen));
+                setContent(userMainView.getNotificationsPane(), loadView(screen, sessionId));
                 return;
             case NOTIFICATION_CENTER_TECH:
                 selectTechTab(techMainView.getNotificationsTab());
-                setContent(techMainView.getNotificationsPane(), loadView(screen));
+                setContent(techMainView.getNotificationsPane(), loadView(screen, sessionId));
                 return;
             case BOOKINGS_LIST_USER:
                 selectUserTab(userMainView.getBookingsTab());
-                setContent(userMainView.getBookingsPane(), loadView(screen));
+                setContent(userMainView.getBookingsPane(), loadView(screen, sessionId));
                 return;
             case BOOKINGS_LIST_TECH:
                 selectTechTab(techMainView.getBookingsTab());
-                setContent(techMainView.getBookingsPane(), loadView(screen));
+                setContent(techMainView.getBookingsPane(), loadView(screen, sessionId));
                 return;
             default:
-                if (isTechnician()) {
-                    setContent(techMainView.getShopPane(), loadView(screen));
+                if (isTechnician(sessionId)) {
+                    setContent(techMainView.getShopPane(), loadView(screen, sessionId));
                 } else {
-                    setContent(userMainView.getSearchRightPane(), loadView(screen));
+                    setContent(userMainView.getSearchRightPane(), loadView(screen, sessionId));
                 }
         }
     }
 
     @Override
-    public Parent loadView(Screen screen) throws NavigationException {
+    public Parent loadView(Screen screen, String sessionId) throws NavigationException {
         GUIScreen guiScreen = mapToGuiScreen(screen);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(guiScreen.getFxmlPath()));
 
@@ -126,6 +126,9 @@ public class GUINavigationService implements NavigationService {
 
             if (controller != null) {
                 controller.setNavigation(this);
+                if(sessionId != null) {
+                    controller.setSessionId(sessionId);
+                }
             }
 
             return rootParent;
@@ -158,9 +161,9 @@ public class GUINavigationService implements NavigationService {
         };
     }
 
-    private void showMainLayout() {
-        TabPane activeTabPane = getActiveMainTabPane();
-        StackPane activeTopPane = getActiveTopPane();
+    private void showMainLayout(String sessionId) {
+        TabPane activeTabPane = getActiveMainTabPane(sessionId);
+        StackPane activeTopPane = getActiveTopPane(sessionId);
         if (root.getCenter() != activeTabPane) {
             root.setCenter(activeTabPane);
         }
@@ -202,19 +205,19 @@ public class GUINavigationService implements NavigationService {
         }
     }
 
-    private void showProfileUserView(Screen initialScreen) throws NavigationException {
+    private void showProfileUserView(Screen initialScreen, String sessionId) throws NavigationException {
         ProfileUserView profileView = new ProfileUserView();
         profileView.setOnTabChange(
                 () -> {
                     try {
-                        navigate(Screen.ACCOUNT_PAGE_USER);
+                        navigate(Screen.ACCOUNT_PAGE_USER, sessionId);
                     } catch (NavigationException e) {
                         JustItLogger.getInstance().error(e.getMessage(), e);
                     }
                 },
                 () -> {
                     try {
-                        navigate(Screen.PAYMENTS);
+                        navigate(Screen.PAYMENTS, sessionId);
                     } catch (NavigationException e) {
                         JustItLogger.getInstance().error(e.getMessage(), e);
                     }
@@ -222,15 +225,15 @@ public class GUINavigationService implements NavigationService {
         );
         if (initialScreen == Screen.PAYMENTS) {
             profileView.selectPaymentTab();
-            profileView.setPaymentContent(loadView(Screen.PAYMENTS));
+            profileView.setPaymentContent(loadView(Screen.PAYMENTS, sessionId));
         } else {
             profileView.selectAccountTab();
-            profileView.setAccountContent(loadView(Screen.ACCOUNT_PAGE_USER));
+            profileView.setAccountContent(loadView(Screen.ACCOUNT_PAGE_USER, sessionId));
         }
         setContent(userMainView.getProfilePane(), profileView.getRoot());
     }
 
-    private void configureUserTabSelection() {
+    private void configureUserTabSelection(String sessionId) {
         if (userMainView == null) {
             return;
         }
@@ -238,14 +241,14 @@ public class GUINavigationService implements NavigationService {
             if (ignoreUserTabSelection || newTab == null) {
                 return;
             }try{
-                handleUserTabChange(newTab);
+                handleUserTabChange(newTab, sessionId);
             }catch(NavigationException e){
                 JustItLogger.getInstance().error("Error navigating fxml + "+ e.getMessage(), e);
             }
         });
     }
 
-    private void configureTechTabSelection() {
+    private void configureTechTabSelection(String sessionId) {
             if (techMainView == null) {
                 return;
             }
@@ -254,7 +257,7 @@ public class GUINavigationService implements NavigationService {
                         return;
                     }
                     try {
-                        handleTechTabChange(newTab);
+                        handleTechTabChange(newTab, sessionId);
 
                             } catch (NavigationException e) {
                                 JustItLogger.getInstance().error(e.getMessage(), e);
@@ -262,47 +265,47 @@ public class GUINavigationService implements NavigationService {
             });
     }
 
-    private boolean isTechnician() {
-        return sessionManager.isTechnician();
+    private boolean isTechnician(String sessionId) {
+        return sessionManager.getActiveSession(sessionId).isTechnician();
     }
 
-    private TabPane getActiveMainTabPane() {
-        return isTechnician() ? techMainView.getMainTabPane() : userMainView.getMainTabPane();
+    private TabPane getActiveMainTabPane(String sessionId) {
+        return isTechnician(sessionId) ? techMainView.getMainTabPane() : userMainView.getMainTabPane();
     }
 
-    private StackPane getActiveTopPane() {
-        return isTechnician() ? techMainView.getTopPane() : userMainView.getTopPane();
+    private StackPane getActiveTopPane(String sessionId) {
+        return isTechnician(sessionId) ? techMainView.getTopPane() : userMainView.getTopPane();
     }
 
-    private void buildMainViews() {
-        if (isTechnician()) {
-            techMainView = (MainViewTech) mainViewFactory.getMainView(sessionManager);
-            configureTechTabSelection();
+    private void buildMainViews(String sessionId) {
+        if (isTechnician(sessionId)) {
+            techMainView = (MainViewTech) mainViewFactory.getMainView(sessionManager, sessionId);
+            configureTechTabSelection(sessionId);
         } else {
-            userMainView = (MainViewUser) mainViewFactory.getMainView(sessionManager);
-            configureUserTabSelection();
+            userMainView = (MainViewUser) mainViewFactory.getMainView(sessionManager, sessionId);
+            configureUserTabSelection(sessionId);
         }
     }
 
-    private void handleTechTabChange(Tab newTab) throws NavigationException {
-        if (changeAndNavigate(newTab, techMainView.getShopTab(), techMainView.getShopPane(), Screen.PAGE_SHOP_TECH)) return;
-        if (changeAndNavigate(newTab, techMainView.getBookingsTab(), techMainView.getBookingsPane(), Screen.BOOKINGS_LIST_TECH )) return;
-        if (changeAndNavigate(newTab, techMainView.getNotificationsTab(), techMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_TECH)) return;
-        if(changeAndNavigate(newTab, techMainView.getProfileTab(), techMainView.getProfilePane(), Screen.ACCOUNT_PAGE_TECH)) return;
-        changeAndNavigate(newTab, techMainView.getReviewTab(), techMainView.getReviewPane(), Screen.REVIEWS_LIST_TECH);
+    private void handleTechTabChange(Tab newTab, String sessionId) throws NavigationException {
+        if (changeAndNavigate(newTab, techMainView.getShopTab(), techMainView.getShopPane(), Screen.PAGE_SHOP_TECH, sessionId)) return;
+        if (changeAndNavigate(newTab, techMainView.getBookingsTab(), techMainView.getBookingsPane(), Screen.BOOKINGS_LIST_TECH, sessionId )) return;
+        if (changeAndNavigate(newTab, techMainView.getNotificationsTab(), techMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_TECH, sessionId)) return;
+        if(changeAndNavigate(newTab, techMainView.getProfileTab(), techMainView.getProfilePane(), Screen.ACCOUNT_PAGE_TECH, sessionId)) return;
+        changeAndNavigate(newTab, techMainView.getReviewTab(), techMainView.getReviewPane(), Screen.REVIEWS_LIST_TECH, sessionId);
     }
 
-    private void handleUserTabChange(Tab newTab) throws NavigationException {
-        if (changeAndNavigate(newTab, userMainView.getProfileTab(), userMainView.getProfilePane(), Screen.TAB_PANE_USER_PROFILE)) return;
-        if (changeAndNavigate(newTab, userMainView.getNotificationsTab(), userMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_USER )) return;
-        if (changeAndNavigate(newTab, userMainView.getBookingsTab(), userMainView.getBookingsPane(), Screen.BOOKINGS_LIST_USER)) return;
-        changeAndNavigate(newTab, userMainView.getSearchTab(), userMainView.getSearchLeftPane(), Screen.SEARCH_LIST_SHOP);
+    private void handleUserTabChange(Tab newTab, String sessionId) throws NavigationException {
+        if (changeAndNavigate(newTab, userMainView.getProfileTab(), userMainView.getProfilePane(), Screen.TAB_PANE_USER_PROFILE, sessionId)) return;
+        if (changeAndNavigate(newTab, userMainView.getNotificationsTab(), userMainView.getNotificationsPane(), Screen.NOTIFICATION_CENTER_USER, sessionId)) return;
+        if (changeAndNavigate(newTab, userMainView.getBookingsTab(), userMainView.getBookingsPane(), Screen.BOOKINGS_LIST_USER, sessionId)) return;
+        changeAndNavigate(newTab, userMainView.getSearchTab(), userMainView.getSearchLeftPane(), Screen.SEARCH_LIST_SHOP, sessionId);
 
     }
 
-    private boolean changeAndNavigate(Tab newTab, Tab targetTab, Pane targetPane, Screen targetScreen) throws NavigationException {
+    private boolean changeAndNavigate(Tab newTab, Tab targetTab, Pane targetPane, Screen targetScreen, String sessionId) throws NavigationException {
         if(newTab == targetTab && targetPane.getChildren().isEmpty()) {
-            navigate(targetScreen);
+            navigate(targetScreen, sessionId);
             return true;
         }
         return false;

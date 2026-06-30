@@ -2,6 +2,7 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
@@ -23,8 +24,8 @@ public class ReviewsShopUserGController extends BaseGController{
     private BookingController appControllerBooking;
 
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void onSessionReady() {
         appControllerReviewPageShop = new ReviewController();
         appControllerBooking = new BookingController();
         listReview.setCellFactory(lr -> new ReviewListCell());
@@ -33,7 +34,9 @@ public class ReviewsShopUserGController extends BaseGController{
 
     public void addReview() {
         ReviewBean reviewBean = new ReviewBean();
-        List<BookingBean> availableBookings = appControllerBooking.getCompletedBookingsWithoutReviewUserPerShop();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        List<BookingBean> availableBookings = appControllerBooking.getCompletedBookingsWithoutReviewUserPerShop(session);
 
         if (availableBookings.isEmpty()) {
             Notifications.create()
@@ -60,7 +63,7 @@ public class ReviewsShopUserGController extends BaseGController{
                 reviewBean.setStars((int) dialog.getRatingStars());
                 reviewBean.setBookingId(selectedBooking.getBookingID());
                 try {
-                    appControllerReviewPageShop.addReview(reviewBean);
+                    appControllerReviewPageShop.addReview(session,reviewBean);
                 }catch(ReviewWithoutBookingException e){
                     JustItLogger.getInstance().error(e.getMessage(),e);
                 }
@@ -71,7 +74,9 @@ public class ReviewsShopUserGController extends BaseGController{
     }
 
     public void updateReviewList() {
-            listReview.getItems().setAll(appControllerReviewPageShop.getReviews());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        listReview.getItems().setAll(appControllerReviewPageShop.getReviews(session));
     }
 
 }

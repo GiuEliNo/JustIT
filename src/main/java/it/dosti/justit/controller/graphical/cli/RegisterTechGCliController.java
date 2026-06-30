@@ -25,10 +25,10 @@ public class RegisterTechGCliController extends BaseCliController {
 
         try {
             if (appController.registerNewTechnician(registerBean)) {
-                navigation.navigate(Screen.LAUNCHER);
+                navigation.navigate(Screen.LAUNCHER, null);
             } else {
                 signInTechView.errorSignInTech();
-                navigation.navigate(Screen.REGISTER_TECH);
+                navigation.navigate(Screen.REGISTER_TECH, null);
             }
         } catch (RegisterOnBackEndException | ShopNotFoundException | NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);

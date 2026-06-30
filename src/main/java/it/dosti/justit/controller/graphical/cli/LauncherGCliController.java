@@ -14,16 +14,16 @@ public class LauncherGCliController extends BaseCliController {
 
         switch (choice){
             case "1":
-                navigation.navigate(Screen.LOGIN);
+                navigation.navigate(Screen.LOGIN, null);
                 break;
             case "2":
-                navigation.navigate(Screen.REGISTER_USER);
+                navigation.navigate(Screen.REGISTER_USER, null);
                 break;
             case "3":
-                navigation.navigate(Screen.REGISTER_TECH);
+                navigation.navigate(Screen.REGISTER_TECH, null);
                 break;
             default:
-                navigation.navigate(Screen.LAUNCHER);
+                navigation.navigate(Screen.LAUNCHER, null);
         }
     }
 }

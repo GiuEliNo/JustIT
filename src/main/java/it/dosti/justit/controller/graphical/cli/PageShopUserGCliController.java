@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.graphical.cli;
 
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.NavigationException;
@@ -13,23 +14,25 @@ public class PageShopUserGCliController extends BaseCliController{
         ShopController appController = new ShopController();
         CPageShopCliView pageShopCliView = (CPageShopCliView) view;
 
-        ShopBean shopBean = appController.getShopBean();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        ShopBean shopBean = appController.getShopBean(session);
         pageShopCliView.renderShop(shopBean);
 
         String choice = pageShopCliView.askChoice();
 
         switch (choice){
             case "1":
-                navigation.navigate(Screen.BOOKING_PAGE_USER);
+                navigation.navigate(Screen.BOOKING_PAGE_USER, sessionId);
                 break;
             case "2":
-                navigation.navigate(Screen.REVIEWS_BOX);
+                navigation.navigate(Screen.REVIEWS_BOX, sessionId);
                 break;
             case "0":
-                navigation.navigate(Screen.SEARCH_LIST_SHOP);
+                navigation.navigate(Screen.SEARCH_LIST_SHOP, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.PAGE_SHOP_USER);
+                navigation.navigate(Screen.PAGE_SHOP_USER, sessionId);
                 break;
         }
     }

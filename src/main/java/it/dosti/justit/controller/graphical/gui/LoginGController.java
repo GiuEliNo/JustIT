@@ -43,23 +43,25 @@ public class LoginGController extends BaseGController {
         loginBean.setRoleType(roleType);
 
         try {
-            if (appController.checkLogin(loginBean)) {
-                navigation.navigate(Screen.MAIN);
-            }
-            else {
-                outputLabel.setText("Incorrect username or password");
-            }
+
+            String sessionId = appController.checkLogin(loginBean);
+            navigation.navigate(Screen.MAIN, sessionId);
         }
-            catch(LoginFromBackEndException | ShopNotFoundException | NavigationException e){
-                JustItLogger.getInstance().error(e.getMessage());
+            catch(LoginFromBackEndException e ){
+                outputLabel.setText("Incorrect username or password");
+                JustItLogger.getInstance().info("Login failed for : " + loginBean.getUsername());
+        }
+            catch(ShopNotFoundException | NavigationException e) {
+            JustItLogger.getInstance().error(e.getMessage());
+            outputLabel.setText("System error, try again later");
         }
     }
 
     @FXML
     public void onSignIn() throws NavigationException {
 
-        if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_USER);
+        if (clientRadio.isSelected()) navigation.navigate(Screen.REGISTER_USER, null);
 
-        else navigation.navigate(Screen.REGISTER_TECH);
+        else navigation.navigate(Screen.REGISTER_TECH, null);
     }
 }

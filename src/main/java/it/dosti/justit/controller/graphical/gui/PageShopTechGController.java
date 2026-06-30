@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.graphical.gui;
 
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
@@ -63,7 +64,9 @@ public class PageShopTechGController extends BaseGController{
     private static final String SUCCESS = "Success";
 
 
-    public void initialize() {
+
+    @Override
+    protected void onSessionReady(){
         this.updatePageInfo();
     }
 
@@ -76,8 +79,10 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setName(dialog.getNewValue());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopName(shopBean)){
+                    if(!appController.editShopName(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_NAME)
                                 .text("Error address not changed!")
@@ -144,8 +149,11 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setAddress(result.get().toString());
+
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopAddress(shopBean)){
+                    if(!appController.editShopAddress(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_ADDRESS)
                                 .text("Error address not changed!")
@@ -181,8 +189,10 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setDescription(dialog.getNewValue());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopDescription(shopBean)){
+                    if(!appController.editShopDescription(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_DESCRIPTION)
                                 .text("Error description not changed!")
@@ -209,8 +219,10 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setEmail(dialog.getNewValue());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopEmail(shopBean)){
+                    if(!appController.editShopEmail(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_EMAIL)
                                 .text("Error email not changed!")
@@ -237,8 +249,10 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setPhone(dialog.getNewValue());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopPhone(shopBean)){
+                    if(!appController.editShopPhone(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_PHONE)
                                 .text("Error phone not changed!")
@@ -265,8 +279,10 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
 
                 shopBean.setOpeningHours(dialog.getNewValue());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.editShopOpeningHours(shopBean)){
+                    if(!appController.editShopOpeningHours(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_OPENING_HOURS)
                                 .text("Error Opening hours not changed!")
@@ -294,7 +310,10 @@ public class PageShopTechGController extends BaseGController{
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
         CheckBox checkBox = new CheckBox("Home Assistance?");
-        if(appController.isHomeAssistance()){
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+
+        if(appController.isHomeAssistance(session)){
             checkBox.setSelected(true);
         }
         VBox content = new VBox(checkBox);
@@ -314,7 +333,7 @@ public class PageShopTechGController extends BaseGController{
                 ShopBean shopBean = new ShopBean();
                 shopBean.setHomeAssistance(response);
                 try {
-                    if(!appController.editShopHomeAssistance(shopBean)){
+                    if(!appController.editShopHomeAssistance(session, shopBean)){
                         Notifications.create()
                                 .title(EDIT_SHOP_NAME)
                                 .text("Error changing home assistance preference!")
@@ -348,7 +367,9 @@ public class PageShopTechGController extends BaseGController{
                 try{
                     ShopBean shopBean = new ShopBean();
                     shopBean.setImage(blobDb);
-                    if(!appController.editShopImage(shopBean)) {
+                    SessionBean session = new SessionBean();
+                    session.setSessionId(sessionId);
+                    if(!appController.editShopImage(session, shopBean)) {
                         Notifications.create()
                                 .title(EDIT_SHOP_IMAGE)
                                 .text("Error image not changed!")
@@ -371,7 +392,9 @@ public class PageShopTechGController extends BaseGController{
 
     private void updatePageInfo() {
         appController = new ShopController();
-        ShopBean shopBean = appController.getShopBean();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        ShopBean shopBean = appController.getShopBean(session);
 
         if (shopBean != null) {
             nameLabel.setText(shopBean.getName());
@@ -383,7 +406,7 @@ public class PageShopTechGController extends BaseGController{
             homeAssistanceLabel.setText(shopBean.getHomeAssistanceMessage());
         }
         try {
-            previewImage.setImage(appController.getShopImage());
+            previewImage.setImage(appController.getShopImage(session));
         } catch (ShopNotFoundException e) {
             JustItLogger.getInstance().warn("Shop image not found");
         }

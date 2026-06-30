@@ -26,10 +26,10 @@ public class RegisterUserGCliController extends BaseCliController {
 
         try {
             if (appController.registerNewUser(registerBean)) {
-                navigation.navigate(Screen.LAUNCHER);
+                navigation.navigate(Screen.LAUNCHER, null);
             } else {
                 signInClientView.errorSignInUser();
-                navigation.navigate(Screen.REGISTER_USER);
+                navigation.navigate(Screen.REGISTER_USER, null);
             }
         } catch (RegisterOnBackEndException | NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage());

@@ -1,9 +1,9 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -28,11 +28,14 @@ public class BookingPageGController extends BaseGController {
 
     private BookingController appController;
 
-    @FXML
-    void initialize() {
+
+    @Override
+    protected void onSessionReady() {
         appController = new BookingController();
-        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
-        if(!SessionManager.getInstance().getCurrentShop().isHomeAssistance()) {
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        Integer shopId = appController.getShopId(session);
+        if(Boolean.FALSE.equals(appController.isHomeAssistance(session))) {
             homeAssistanceCheck.setDisable(true);
         }
 
@@ -64,7 +67,9 @@ public class BookingPageGController extends BaseGController {
     }
 
     private void updateTimeSlots(LocalDate date) {
-        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        Integer shopId = appController.getShopId(session);
 
         timeSlotChoiceBox.getItems().clear();
 
@@ -79,9 +84,11 @@ public class BookingPageGController extends BaseGController {
     void bookButtonPressed() throws NavigationException {
 
         BookingBean bookingBean = new BookingBean();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
 
-        bookingBean.setShopId(SessionManager.getInstance().getCurrentShop().getId());
-        bookingBean.setUsername(SessionManager.getInstance().getLoggedUser().getUsername());
+        bookingBean.setShopId(appController.getShopId(session));
+        bookingBean.setUsername(appController.getUsername(session));
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());
@@ -91,7 +98,7 @@ public class BookingPageGController extends BaseGController {
 
 
         if (appController.addBooking(bookingBean)) {
-            navigation.navigate(Screen.MAIN);
+            navigation.navigate(Screen.MAIN, sessionId);
         }
     }
 }

@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.PasswordBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
 import it.dosti.justit.exceptions.ShopNotFoundException;
@@ -8,7 +9,6 @@ import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.view.gui.AddressDialog;
-import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogChangePassword;
 import it.dosti.justit.view.gui.DialogEditUser;
@@ -47,11 +47,13 @@ public class AccountPageGController extends BaseGController {
     public static final String EDIT_ADDRESS = "Edit Address";
 
 
-    public void initialize(){
+    @Override
+    public void onSessionReady(){
 
         appController = new AccountController();
-
-        if(appController.isTechnician()){
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        if(appController.isTechnician(session)){
             int row = 4;
             gridPaneAccount.getChildren().forEach(node -> {
                 Integer rowIndex = GridPane.getRowIndex(node);
@@ -66,8 +68,10 @@ public class AccountPageGController extends BaseGController {
 
     }
 
-    private void getPageInfo(){
-        UserBean userBean = appController.getUserBean();
+    private void getPageInfo() {
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        UserBean userBean = appController.getUserBean(session);
 
         nameLabel.setText(userBean.getName());
         usernameLabel.setText(userBean.getUsername());
@@ -87,8 +91,10 @@ public class AccountPageGController extends BaseGController {
 
                 passwordBean.setNewPassword(dialog.getNewPassword());
                 passwordBean.setOldPassword(dialog.getOldPassword());
+                SessionBean session = new SessionBean();
+                session.setSessionId(sessionId);
                 try {
-                    if(!appController.changePassword(passwordBean)){
+                    if(!appController.changePassword(session, passwordBean)){
                         Notifications.create()
                                 .title("Password change")
                                 .text("Old password not correct!")
@@ -110,7 +116,9 @@ public class AccountPageGController extends BaseGController {
 
     @FXML
     public void onEditName() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_NAME, SessionManager.getInstance().getLoggedUser().getName());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        DialogEditUser dialog = new DialogEditUser(EDIT_NAME, appController.getLoggedUserName(session));
 
         dialog.showAndWait().ifPresent(response -> {
             if(response == ButtonType.OK){
@@ -118,7 +126,7 @@ public class AccountPageGController extends BaseGController {
 
                 userBean.setName(dialog.getNewValue());
                 try {
-                    if(!appController.editName(userBean)){
+                    if(!appController.editName(session, userBean)){
                         Notifications.create()
                                 .title(EDIT_EMAIL)
                                 .text("Error name not changed!")
@@ -139,7 +147,9 @@ public class AccountPageGController extends BaseGController {
     }
 
     public void onEditEmail() {
-        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, SessionManager.getInstance().getLoggedUser().getEmail());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        DialogEditUser dialog = new DialogEditUser(EDIT_EMAIL, appController.getLoggedUserEmail(session));
 
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -147,7 +157,7 @@ public class AccountPageGController extends BaseGController {
 
                 userBean.setEmail(dialog.getNewValue());
                 try {
-                    if (!appController.editEmail(userBean)) {
+                    if (!appController.editEmail(session, userBean)) {
                         Notifications.create()
                                 .title("Edit Email")
                                 .text("Error Email not changed!")
@@ -217,8 +227,10 @@ public class AccountPageGController extends BaseGController {
         if(result.isPresent()){
             UserBean userBean = new UserBean();
             userBean.setAddress(result.get().toString());
+            SessionBean session= new SessionBean();
+            session.setSessionId(sessionId);
             try {
-                if(!appController.editAddress(userBean)){
+                if(!appController.editAddress(session, userBean)){
                     Notifications.create()
                             .title(EDIT_ADDRESS)
                             .text("Error address not changed!")

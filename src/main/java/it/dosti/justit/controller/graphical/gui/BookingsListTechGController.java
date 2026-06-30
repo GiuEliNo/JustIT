@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.collections.FXCollections;
@@ -60,8 +61,8 @@ public class BookingsListTechGController extends BaseGController {
     private final BookingController appController = new BookingController();
     private final ObservableList<BookingBean> bookings = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
 
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -85,7 +86,9 @@ public class BookingsListTechGController extends BaseGController {
     }
 
     private void reloadTable() {
-        bookings.setAll(appController.getBookingsByShop());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        bookings.setAll(appController.getBookingsByShop(session));
     }
 
     private void showDetail(BookingBean booking) {
@@ -178,7 +181,9 @@ public class BookingsListTechGController extends BaseGController {
         );
 
         if (file != null) {
-            appController.exportBookingsListTech(file);
+            SessionBean session = new SessionBean();
+            session.setSessionId(sessionId);
+            appController.exportBookingsListTech(session, file);
         }
     }
 }

@@ -1,10 +1,10 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
-import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.view.cli.CBookingPageUserView;
 
 import java.time.LocalDate;
@@ -20,8 +20,10 @@ public class BookingPageUserGCliController extends BaseCliController {
         appController = new BookingController();
         bookingView = (CBookingPageUserView) view;
 
-        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        SessionBean session= new SessionBean();
+        session.setSessionId(sessionId);
+        Integer shopId = appController.getShopId(session);
+        String username = appController.getUsername(session);
 
         LocalDate date = askValidDate(shopId);
         List<String> availableSlots = appController.getAvailableSlots(shopId, date).getTimeSlots();
@@ -38,9 +40,9 @@ public class BookingPageUserGCliController extends BaseCliController {
         bookingBean.setHomeAssistance(false);
 
         if (appController.addBooking(bookingBean)) {
-            navigation.navigate(Screen.MAIN_USER);
+            navigation.navigate(Screen.MAIN_USER, sessionId);
         } else {
-            navigation.navigate(Screen.BOOKING_PAGE_USER);
+            navigation.navigate(Screen.BOOKING_PAGE_USER, sessionId);
         }
     }
 

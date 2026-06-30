@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.NotificationBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.NotificationController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
@@ -19,7 +20,9 @@ public class NotificationUserGCliController extends BaseCliController{
     public void initialize() throws NavigationException {
         appController = new NotificationController();
         notificationView = (CNotificationView) view;
-        notificationBeanList = appController.getUnreadNotifications();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        notificationBeanList = appController.getUnreadNotifications(session);
 
         showNotification();
 
@@ -28,10 +31,13 @@ public class NotificationUserGCliController extends BaseCliController{
     private void showNotification() throws NavigationException {
         if(notificationBeanList.isEmpty()){
             notificationView.noNotification();
-            navigation.navigate(Screen.MAIN_USER);
+            navigation.navigate(Screen.MAIN_USER, sessionId);
         }
 
-        for(NotificationBean n :appController.getUnreadNotifications()){
+        SessionBean session= new SessionBean();
+        session.setSessionId(sessionId);
+
+        for(NotificationBean n :appController.getUnreadNotifications(session)){
             notificationView.renderNotifications(n);
             notificationId.add(n.getId());
         }
@@ -39,14 +45,14 @@ public class NotificationUserGCliController extends BaseCliController{
         String choice = notificationView.askChoice();
         switch (choice){
             case "0":
-                navigation.navigate(Screen.MAIN_USER);
+                navigation.navigate(Screen.MAIN_USER, sessionId);
                 break;
             case "1":
                 this.markAsRead();
-                navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_USER, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.NOTIFICATION_CENTER_USER);
+                navigation.navigate(Screen.NOTIFICATION_CENTER_USER, sessionId);
                 break;
 
         }

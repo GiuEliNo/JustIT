@@ -22,6 +22,13 @@ public class LoginGCliController extends BaseCliController {
         String password = loginView.askPassword();
         String role = loginView.askRole();
 
+        if(Objects.equals(role, "") || Objects.equals(role, "C")) {
+            role = "CLIENT";
+        }
+        else if(Objects.equals(role, "T")){
+            role = "TECHNICIAN";
+        }
+
         LoginBean loginBean = new LoginBean();
 
         loginBean.setUsername(username);
@@ -29,15 +36,17 @@ public class LoginGCliController extends BaseCliController {
         loginBean.setRoleType(role);
 
         try {
-            if (appController.checkLogin(loginBean)) {
-                if (Objects.equals(loginBean.getRoleType(), "CLIENT")) {
-                    navigation.navigate(Screen.MAIN_USER);
-                } else if(Objects.equals(loginBean.getRoleType(), "TECHNICIAN")){
-                    navigation.navigate(Screen.MAIN_TECH);
+                String sessionId = appController.checkLogin(loginBean);
+                if(Objects.nonNull(sessionId)) {
+                    if (Objects.equals(loginBean.getRoleType(), "CLIENT")) {
+                        navigation.navigate(Screen.MAIN_USER, sessionId);
+                    } else if (Objects.equals(loginBean.getRoleType(), "TECHNICIAN")) {
+                        navigation.navigate(Screen.MAIN_TECH, sessionId);
+                    }
                 }
-            } else {
-                navigation.navigate(Screen.LOGIN);
-            }
+                else{
+                    navigation.navigate(Screen.LOGIN, null);
+                }
         } catch (LoginFromBackEndException | ShopNotFoundException | NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage());
         }

@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.graphical.cli;
 
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.NavigationException;
@@ -11,17 +12,19 @@ public class PageShopTechGCliController extends BaseCliController{
     @Override
     public void initialize() throws NavigationException {
         ShopController appController = new ShopController();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         CPageShopTechView pageShopTechCliView = (CPageShopTechView) view;
 
-        ShopBean shopBean = appController.getShopBean();
+        ShopBean shopBean = appController.getShopBean(session);
         pageShopTechCliView.renderShop(shopBean);
 
         String choice = pageShopTechCliView.askChoice();
 
         if(choice.equals("0")) {
-            navigation.navigate(Screen.MAIN_TECH);
+            navigation.navigate(Screen.MAIN_TECH, sessionId);
         } else {
-            navigation.navigate(Screen.PAGE_SHOP_TECH);
+            navigation.navigate(Screen.PAGE_SHOP_TECH, sessionId);
         }
 
     }

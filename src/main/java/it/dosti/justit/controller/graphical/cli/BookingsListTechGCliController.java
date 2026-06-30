@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
@@ -18,7 +19,9 @@ public class BookingsListTechGCliController extends BaseCliController{
     public void initialize() throws NavigationException {
         appController = new BookingController();
         bookingListTechView = (CBookingListTechView) view;
-        bookingList = appController.getBookingsByShop();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        bookingList = appController.getBookingsByShop(session);
 
         showBooking();
 
@@ -27,7 +30,7 @@ public class BookingsListTechGCliController extends BaseCliController{
     private void showBooking() throws NavigationException {
         if (bookingList.isEmpty()) {
             bookingListTechView.noBookings();
-            navigation.navigate(Screen.MAIN_TECH);
+            navigation.navigate(Screen.MAIN_TECH, sessionId);
         }
 
         for(BookingBean b : bookingList){
@@ -38,14 +41,14 @@ public class BookingsListTechGCliController extends BaseCliController{
 
         switch(choice) {
             case "0":
-                navigation.navigate(Screen.MAIN_TECH);
+                navigation.navigate(Screen.MAIN_TECH, sessionId);
                 break;
             case "1":
                 this.bookingManager();
-                navigation.navigate(Screen.ADD_REVIEW);
+                navigation.navigate(Screen.ADD_REVIEW, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.ADD_REVIEW);
+                navigation.navigate(Screen.ADD_REVIEW, sessionId);
                 break;
         }
 
@@ -63,11 +66,11 @@ public class BookingsListTechGCliController extends BaseCliController{
         switch(appController.getBookingById(bookId).getStatus()){
             case "PENDING":
                 this.confirmationManager(bookId);
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
             case "CONFIRMED":
                 this.completedManager(bookId);
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
             default:
                 break;
@@ -83,10 +86,10 @@ public class BookingsListTechGCliController extends BaseCliController{
                 appController.approveBooking(appController.getBookingById(bookId));
                 break;
             case 0:
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
         }
     }
@@ -97,10 +100,10 @@ public class BookingsListTechGCliController extends BaseCliController{
                 appController.completeBooking(appController.getBookingById(bookId));
                 break;
             case 0:
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
             default:
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH);
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
         }
     }

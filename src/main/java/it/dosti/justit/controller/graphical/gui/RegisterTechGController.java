@@ -52,7 +52,7 @@ public class RegisterTechGController extends BaseGController{
 
     @FXML
     void backButtonPressed() throws NavigationException {
-        navigation.navigate(Screen.LAUNCHER);
+        navigation.navigate(Screen.LAUNCHER, null);
     }
 
     @FXML
@@ -94,7 +94,7 @@ public class RegisterTechGController extends BaseGController{
         }).thenAccept(result -> Platform.runLater(() -> {
             if (Boolean.TRUE.equals(result)) {
                 JustItLogger.getInstance().info("Technician successfully registered");
-                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER );
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER, sessionId );
             }
             else{
                 warningLabel.setText("Shop not found, register it first");
@@ -108,7 +108,7 @@ public class RegisterTechGController extends BaseGController{
 
     @FXML
     void onSignShopButtonClicked() throws NavigationException {
-        navigation.navigate(Screen.REGISTER_SHOP);
+        navigation.navigate(Screen.REGISTER_SHOP, null);
     }
 
 }

@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.ReviewBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.view.gui.ReviewListCell;
 import javafx.fxml.FXML;
@@ -17,14 +18,16 @@ public class ReviewsShopTechGController extends BaseGController {
 
     private ReviewController appController;
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
        appController = new ReviewController();
         listReview.setCellFactory(lr -> new ReviewListCell());
         this.updateReviewList();
     }
 
     public void updateReviewList() {
-        listReview.getItems().setAll(appController.getReviews());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        listReview.getItems().setAll(appController.getReviews(session));
     }
 }

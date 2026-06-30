@@ -10,27 +10,28 @@ import it.dosti.justit.controller.graphical.cli.*;
 public class CLINavigationService implements NavigationService {
 
     @Override
-    public void navigate(Screen screen) throws NavigationException {
-        BaseCliView view = loadView(screen);
-        BaseCliController controller = createController(screen);
+    public void navigate(Screen screen, String sessionId) throws NavigationException {
+        BaseCliView view = loadView(screen, sessionId);
+        BaseCliController controller = createController(screen, sessionId);
         
         view.clear();
         view.render();
 
         controller.setNavigation(this);
         controller.setView(view);
+        controller.setSessionId(sessionId);
         controller.initialize();
     }
 
     @Override
-    public BaseCliView loadView(Screen screen) {
+    public BaseCliView loadView(Screen screen, String sessionId) throws NavigationException {
         switch(screen) {
             case LAUNCHER:
                 return new CLauncherView();
             case LOGIN:
                 return new CLoginView();
             case MAIN:
-                return SessionManager.getInstance().isTechnician() ? new CMainTechView() : new CMainUserView();
+                return SessionManager.getInstance().getActiveSession(sessionId).isTechnician() ? new CMainTechView() : new CMainUserView();
             case MAIN_USER:
                 return new CMainUserView();
             case SEARCH_LIST_SHOP:
@@ -66,14 +67,14 @@ public class CLINavigationService implements NavigationService {
         }
     }
 
-    public BaseCliController createController(Screen screen) {
+    public BaseCliController createController(Screen screen, String sessionId) {
         switch (screen) {
             case LAUNCHER:
                 return new LauncherGCliController();
             case LOGIN:
                 return new LoginGCliController();
             case MAIN:
-                return SessionManager.getInstance().isTechnician() ? new MainTechGCliController() : new MainUserGCliController();
+                return SessionManager.getInstance().getActiveSession(sessionId).isTechnician() ? new MainTechGCliController() : new MainUserGCliController();
             case MAIN_USER:
                 return new MainUserGCliController();
             case SEARCH_LIST_SHOP:

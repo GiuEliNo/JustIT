@@ -107,7 +107,7 @@ public class RegisterShopGController extends BaseGController {
         }).thenAccept(result -> Platform.runLater(() -> {
             if(Boolean.TRUE.equals(result)) {
                 JustItLogger.getInstance().info("Register shop successful");
-                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.REGISTER_TECH);
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.REGISTER_TECH, sessionId);
             }
             else{
                 JustItLogger.getInstance().info("Register shop failed.\nTry again.");
@@ -138,7 +138,7 @@ public class RegisterShopGController extends BaseGController {
 
     @FXML
     void backButtonPressed() throws NavigationException {
-        navigation.navigate(Screen.REGISTER_TECH);
+        navigation.navigate(Screen.REGISTER_TECH, null);
     }
 
 }

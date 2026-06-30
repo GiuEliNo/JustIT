@@ -1,5 +1,6 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.clientuser.ClientUserDAO;
 import it.dosti.justit.dao.coordinates.CoordinatesDAO;
@@ -21,43 +22,43 @@ import it.dosti.justit.model.user.TechnicianUser;
 
 public class UpdateController {
 
-    public boolean updateName(String newName) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateName(SessionBean session, String newName) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient());
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         if(dao.updateName(username, newName)){
             if(dao instanceof ClientUserDAO) {
-                updateSessionUser(username);
+                updateSessionUser(session, username);
             }
             else{
-                updateSessionTechnician(username);
+                updateSessionTechnician(session, username);
             }
             return true;
         }
         return false;
     }
 
-    public boolean updatePassword(String newPassword, String oldPassword) throws UpdateOnBackEndException {
+    public boolean updatePassword(SessionBean session, String newPassword, String oldPassword) throws UpdateOnBackEndException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient());
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         boolean updated = dao.updatePassword(username, newPassword, oldPassword);
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    public boolean updateEmail(String email) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateEmail(SessionBean session, String email) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
-        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().isClient());
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+        UserDAO dao = factory.createUserDAO(SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient());
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         if(dao.updateEmail(username, email)){
             if(dao instanceof ClientUserDAO) {
-                updateSessionUser(username);
+                updateSessionUser(session, username);
             }
             else{
-                if(updateSessionTechnician(username)){
+                if(updateSessionTechnician(session, username)){
                     return true;
                 }
             }
@@ -66,7 +67,7 @@ public class UpdateController {
         else return false;
     }
 
-    public boolean updateAddress(String address) throws UpdateOnBackEndException, InvalidAddressException {
+    public boolean updateAddress(SessionBean session, String address) throws UpdateOnBackEndException, InvalidAddressException {
         Coordinates coord;
         try {
             CoordinatesDAO coordDao = new CoordinatesDAOAPI();
@@ -78,19 +79,19 @@ public class UpdateController {
             throw new InvalidAddressException("Invalid address");
         }
 
-        if (SessionManager.getInstance().isClient()) {
+        if (SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient()) {
             ClientUserDAO dao = DaoFactory.getClientUserDAO();
-            String username = SessionManager.getInstance().getLoggedUser().getUsername();
+            String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
             ClientUser user = new ClientUser(username, address, coord);
             boolean updated = dao.updateAddress(user);
             if (updated) {
-                refreshSession();
+                refreshSession(session);
             }
             return updated;
         } else {
 
             ShopDAO dao = DaoFactory.getShopDAO();
-            Shop shop = SessionManager.getInstance().getCurrentShop();
+            Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
             Shop updateShop = new Shop.Builder(shop.getName())
                     .id(shop.getId())
                     .address(address)
@@ -98,137 +99,137 @@ public class UpdateController {
                     .build();
             boolean updated = dao.updateAddressCoordinates(updateShop);
             if (updated) {
-                refreshSession();
+                refreshSession(session);
             }
             return updated;
         }
     }
 
 
-    private void updateSessionUser(String username) throws UserNotFoundException {
+    private void updateSessionUser(SessionBean session, String username) throws UserNotFoundException {
         ClientUserDAO dao = DaoFactory.getClientUserDAO();
-        SessionManager.getInstance().setLoggedUser(dao.findByUsername(username));
+        SessionManager.getInstance().getActiveSession(session.getSessionId()).setLoggedUser(dao.findByUsername(username));
     }
 
 
-    private boolean updateSessionTechnician(String username) throws UserNotFoundException, ShopNotFoundException {
+    private boolean updateSessionTechnician(SessionBean session,String username) throws UserNotFoundException, ShopNotFoundException {
         TechnicianDAO dao = DaoFactory.getTechnicianDAO();
         ShopDAO shopDao = DaoFactory.getShopDAO();
-        SessionManager.getInstance().setLoggedUser(dao.findByUsername(username));
-        if(SessionManager.getInstance().getLoggedUser() != null) {
-            TechnicianUser technicianUser = (TechnicianUser) SessionManager.getInstance().getLoggedUser();
-            SessionManager.getInstance().setCurrentShop(shopDao.retrieveShopById(technicianUser.getShopId()));
+        SessionManager.getInstance().getActiveSession(session.getSessionId()).setLoggedUser(dao.findByUsername(username));
+        if(SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser() != null) {
+            TechnicianUser technicianUser = (TechnicianUser) SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser();
+            SessionManager.getInstance().getActiveSession(session.getSessionId()).setCurrentShop(shopDao.retrieveShopById(technicianUser.getShopId()));
             return true;
         }
         return false;
     }
 
-    public boolean updateNameShop(String name) throws UpdateOnBackEndException {
+    public boolean updateNameShop(SessionBean session, String name) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateNameShop(new Shop
                 .Builder(name)
                 .id(shop.getId())
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    public boolean updateDescriptionShop(String description) throws UpdateOnBackEndException {
+    public boolean updateDescriptionShop(SessionBean session, String description) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateDescriptionShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .description(description)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    public boolean updatePhoneNumberShop(String phoneNumber) throws UpdateOnBackEndException {
+    public boolean updatePhoneNumberShop(SessionBean session, String phoneNumber) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updatePhoneShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .phone(phoneNumber)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
 
-    public boolean updateEmailShop(String email) throws UpdateOnBackEndException {
+    public boolean updateEmailShop(SessionBean session, String email) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateEmailShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .email(email)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
 
     }
 
-    public boolean updateOpeningHourShop(String openingHour) throws UpdateOnBackEndException {
+    public boolean updateOpeningHourShop(SessionBean session, String openingHour) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateOpeningHoursShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .openingHours(openingHour)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    public boolean updateHomeAssistanceShop(boolean isHomeAssistance) throws UpdateOnBackEndException {
+    public boolean updateHomeAssistanceShop(SessionBean session, boolean isHomeAssistance) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateHomeAssistanceShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .homeAssistance(isHomeAssistance)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    public boolean updateImageShop(byte[] newImage) throws UpdateOnBackEndException {
+    public boolean updateImageShop(SessionBean session, byte[] newImage) throws UpdateOnBackEndException {
         ShopDAO dao = DaoFactory.getShopDAO();
-        Shop shop = SessionManager.getInstance().getCurrentShop();
+        Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         boolean updated = dao.updateImageShop(new Shop
                 .Builder(shop.getName())
                 .id(shop.getId())
                 .image(newImage)
                 .build());
         if (updated) {
-            refreshSession();
+            refreshSession(session);
         }
         return updated;
     }
 
-    private void refreshSession() {
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+    private void refreshSession(SessionBean session) {
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         try {
-            if (SessionManager.getInstance().isClient()) {
-                updateSessionUser(username);
+            if (SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient()) {
+                updateSessionUser(session, username);
             } else {
-                updateSessionTechnician(username);
+                updateSessionTechnician(session, username);
             }
         } catch (UserNotFoundException | ShopNotFoundException e) {
             JustItLogger.getInstance().error("Failed to refresh session", e);

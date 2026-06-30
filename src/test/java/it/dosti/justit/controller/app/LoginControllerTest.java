@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 //Giulio Rustia
 class LoginControllerTest {
@@ -27,19 +26,19 @@ class LoginControllerTest {
     @Test
     void loginTestUser() {
         LoginController loginController = new LoginController();
-        int flag = 0;
+        String flag;
         LoginBean loginBean = new LoginBean();
         loginBean.setUsername("demo");
         loginBean.setPassword("password");
         loginBean.setRoleType(String.valueOf(RoleType.CLIENT));
         try {
-            loginController.checkLogin(loginBean);
+            flag = loginController.checkLogin(loginBean);
 
         } catch (Exception e) {
-            flag = 1;
+            flag = null;
 
         }
-        assertEquals(0, flag);
+        assertNotNull( flag);
 
     }
 
@@ -47,7 +46,7 @@ class LoginControllerTest {
     void loginTestTechUser() {
         LoginController loginController = new LoginController();
 
-        boolean flag;
+        String flag;
         LoginBean loginBean = new LoginBean();
         loginBean.setUsername("tec.demo");
         loginBean.setPassword("password");
@@ -55,9 +54,9 @@ class LoginControllerTest {
         try {
             flag  = loginController.checkLogin(loginBean);
         } catch (Exception e) {
-            flag = true;
+            flag = null;
         }
 
-        assertFalse(flag);
+        assertNull(flag);
     }
 }

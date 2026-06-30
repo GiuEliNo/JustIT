@@ -1,21 +1,18 @@
 package it.dosti.justit.utils;
 
-import it.dosti.justit.model.user.ClientUser;
-import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.user.TechnicianUser;
-import it.dosti.justit.model.user.User;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class SessionManager {
 
     private static SessionManager instance;
-
-    private User loggedUser;
-    private Shop selectedShop;
-    private Shop ownedShop;
-
+    private Map<String, Session > activeSessions;
     private PersistencyType persistencyType;
 
-    private SessionManager() {}
+    private SessionManager() {
+        this.activeSessions = new ConcurrentHashMap<>();
+    }
 
     public static SessionManager getInstance() {
         if (instance == null) {
@@ -24,38 +21,16 @@ public final class SessionManager {
         return instance;
     }
 
-    public User getLoggedUser() {
-        return loggedUser;
+    public Session getActiveSession(String sessionId) {
+        return activeSessions.get(sessionId);
     }
 
-    public void setLoggedUser(User user) {
-        this.loggedUser = user;
+    public String createSession() {
+        String sessionId = UUID.randomUUID().toString();
+        activeSessions.put(sessionId, new Session(sessionId));
+        return sessionId;
     }
 
-    public boolean isClient() {
-        return loggedUser instanceof ClientUser;
-    }
-
-    public boolean isTechnician() {
-        return loggedUser instanceof TechnicianUser;
-    }
-
-    public void setCurrentShop(Shop shop) {
-        if (isClient()) this.selectedShop = shop;
-        if (isTechnician()) this.ownedShop = shop;
-    }
-
-    public Shop getCurrentShop() {
-        if (isClient()) return selectedShop;
-        if (isTechnician()) return ownedShop;
-        return null;
-    }
-
-    public void logout() {
-        loggedUser = null;
-        selectedShop = null;
-        ownedShop = null;
-    }
 
     public void setPersistencyType(PersistencyType persistencyType) {
         this.persistencyType = persistencyType;
@@ -64,4 +39,9 @@ public final class SessionManager {
     public PersistencyType getPersistencyType() {
         return persistencyType;
     }
+
+    public void logout(String sessionId) {
+        activeSessions.remove(sessionId);
+    }
+
 }

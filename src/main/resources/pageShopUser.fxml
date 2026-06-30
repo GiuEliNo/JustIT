@@ -106,7 +106,7 @@
 
             <Label styleClass="field-label" text="REVIEWS" />
 
-            <fx:include source="reviewsBox.fxml" />
+            <fx:include fx:id="reviewSection" source="reviewsBox.fxml" />
          </VBox>
 
       </VBox>

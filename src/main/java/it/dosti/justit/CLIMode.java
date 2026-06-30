@@ -19,7 +19,7 @@ public class CLIMode extends BaseAppMode {
 
         NavigationService navigation = new CLINavigationService();
 
-        navigation.navigate(Screen.LAUNCHER);
+        navigation.navigate(Screen.LAUNCHER, null);
 
 
     }

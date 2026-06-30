@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.exceptions.NavigationException;
@@ -35,17 +36,19 @@ public class SearchListShopGController extends BaseGController{
     private BrowseShopController appController;
 
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
         radiusSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             int radius = newValue.intValue();
             radiusLabel.setText("KM: " + radius);
         });
         appController = new BrowseShopController();
 
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         listView.setCellFactory(ls -> new ShopListCell(){});
         float defaultRadius = (float) radiusSlider.getMin();
-        List<ShopBean> shopList = appController.filterByRadius(defaultRadius);
+        List<ShopBean> shopList = appController.filterByRadius(session, defaultRadius);
         listView.getItems().addAll(shopList);
         searchField.textProperty().addListener((observable, oldValue, newValue) ->
             updateListView(newValue));
@@ -62,15 +65,19 @@ public class SearchListShopGController extends BaseGController{
     public void onSelectPage() throws NavigationException {
 
         ShopBean selected = listView.getSelectionModel().getSelectedItem();
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         if (selected != null) {
-            appController.pageSelected(selected);
-            navigation.navigate(Screen.PAGE_SHOP_USER);
+            appController.pageSelected(session, selected);
+            navigation.navigate(Screen.PAGE_SHOP_USER, sessionId);
         }
     }
 
     public void filterRadiusButtonClicked() {
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         listView.getItems().clear();
-        List<ShopBean> shopList = appController.filterByRadius(radiusSlider.valueProperty().getValue().floatValue());
+        List<ShopBean> shopList = appController.filterByRadius(session, radiusSlider.valueProperty().getValue().floatValue());
         listView.getItems().addAll(shopList);
     }
 }

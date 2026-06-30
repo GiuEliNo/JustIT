@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.shop.ShopDAO;
@@ -25,7 +26,7 @@ public class BrowseShopController {
         return toBeans(dao.retrieveAllShops());
     }
 
-    public void pageSelected(ShopBean bean) {
+    public void pageSelected(SessionBean session, ShopBean bean) {
         if (bean != null) {
             Shop selectedItem = new Shop.Builder(bean.getName())
                     .id(bean.getId())
@@ -39,7 +40,7 @@ public class BrowseShopController {
                     .coordinates(bean.getCoordinates())
                     .build();
 
-            SessionManager.getInstance().setCurrentShop(selectedItem);
+            SessionManager.getInstance().getActiveSession(session.getSessionId()).setCurrentShop(selectedItem);
         }
     }
 
@@ -57,9 +58,9 @@ public class BrowseShopController {
                 .collect(Collectors.toList());
     }
 
-    public List<ShopBean> filterByRadius(Float radius) {
+    public List<ShopBean> filterByRadius(SessionBean session, Float radius) {
         List<Shop> shops = dao.retrieveAllShops();
-        ClientUser clientUser = (ClientUser) SessionManager.getInstance().getLoggedUser();
+        ClientUser clientUser = (ClientUser) SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser();
 
         List<ShopBean> filtered = new ArrayList<>();
         for (Shop shop : shops) {
@@ -75,10 +76,10 @@ public class BrowseShopController {
         return filtered;
     }
 
-    public void randomShop() {
+    public void randomShop(SessionBean session) {
         List<ShopBean> shops = getAllShops();
         if (!shops.isEmpty()) {
-            pageSelected(shops.get(RANDOM.nextInt(shops.size())));
+            pageSelected(session, shops.get(RANDOM.nextInt(shops.size())));
         }
     }
 

@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.clientuser.ClientUserDAOJDBC;
 import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.dao.shop.ShopDAOJDBC;
@@ -24,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 //Valerio Mazza
 class UpdateFakeAddressTest {
 
+    private static String sessionId;
+
     private static final String USERNAME = "demo";
     private static final String CITY = "Melly Town";
     private static final String ADDRESS_STREET = "Via Lorem Ipsum 42";
@@ -36,7 +39,7 @@ class UpdateFakeAddressTest {
     void setUp() {
 
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
-        SessionManager.getInstance().logout();
+        sessionId = SessionManager.getInstance().createSession();
 
     }
 
@@ -46,32 +49,41 @@ class UpdateFakeAddressTest {
 
         UserDAO dao = new ClientUserDAOJDBC();
 
-        SessionManager.getInstance().setLoggedUser(dao.findByUsername(USERNAME));
+
+        SessionManager.getInstance().getActiveSession(sessionId).setLoggedUser(dao.findByUsername(USERNAME));
 
         String newAddress = String.format("%s,%s,%s", ADDRESS_STREET, CITY, COUNTRY);
 
-        assertThrows(InvalidAddressException.class, () -> appController.updateAddress(newAddress));
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+
+        assertThrows(InvalidAddressException.class, () -> appController.updateAddress(session, newAddress));
     }
 
     @Test
     void testAddressShop() throws UserNotFoundException, ShopNotFoundException {
+
+
         UpdateController appController = new UpdateController();
 
         TechnicianDAO techDao = new TechnicianDAOJDBC();
         ShopDAO shopDao = new ShopDAOJDBC();
 
         User tech = techDao.findByUsername(TECH_USERNAME);
-        SessionManager.getInstance().setLoggedUser(tech);
-        SessionManager.getInstance().setCurrentShop(shopDao.retrieveShopById(TECH_SHOP));
+        SessionManager.getInstance().getActiveSession(sessionId).setLoggedUser(tech);
+        SessionManager.getInstance().getActiveSession(sessionId).setCurrentShop(shopDao.retrieveShopById(TECH_SHOP));
 
 
         String newAddress = String.format("%s,%s,%s", ADDRESS_STREET, CITY, COUNTRY);
 
-        assertThrows(InvalidAddressException.class, () -> appController.updateAddress(newAddress));
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+
+        assertThrows(InvalidAddressException.class, () -> appController.updateAddress(session, newAddress));
     }
 
     @AfterEach
     void logout() {
-        SessionManager.getInstance().logout();
+        SessionManager.getInstance().logout(sessionId);
     }
 }

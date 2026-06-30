@@ -53,7 +53,7 @@ public class RegisterUserGController extends BaseGController{
 
     @FXML
     private void backButtonPressed() throws NavigationException {
-        navigation.navigate(Screen.LAUNCHER);
+        navigation.navigate(Screen.LAUNCHER, null);
     }
 
 
@@ -97,7 +97,7 @@ public class RegisterUserGController extends BaseGController{
 
         }).thenAccept(result -> Platform.runLater(() -> {
             if (Boolean.TRUE.equals(result)) {
-                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER);
+                LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.LAUNCHER, sessionId);
             }
             else{
                 JustItLogger.getInstance().info("User register failed");

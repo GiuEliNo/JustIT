@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.BookingController;
 import it.dosti.justit.view.gui.BookingListCell;
 import javafx.fxml.FXML;
@@ -13,8 +14,8 @@ public class BookingsListUserGController extends BaseGController {
     @FXML
     private ListView<BookingBean> bookingListView;
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void onSessionReady() {
 
         bookingController = new BookingController();
         bookingListView.setCellFactory(lb -> new BookingListCell());
@@ -23,7 +24,9 @@ public class BookingsListUserGController extends BaseGController {
 
     @FXML
     private void updateBookingsList(){
-        bookingListView.getItems().setAll(bookingController.getBookingsByUser());
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
+        bookingListView.getItems().setAll(bookingController.getBookingsByUser(session));
     }
 
 }

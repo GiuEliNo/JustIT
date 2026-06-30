@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.SearchBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.exceptions.NavigationException;
@@ -23,39 +24,43 @@ public class SearchListShopGCliController extends BaseCliController{
         switch (choice) {
             case "1":
                 this.askShop(this.allShop());
-                navigation.navigate(Screen.PAGE_SHOP_USER);
+                navigation.navigate(Screen.PAGE_SHOP_USER, sessionId);
                 break;
             case "2":
                 this.askShop(this.searchShop());
-                navigation.navigate(Screen.PAGE_SHOP_USER);
+                navigation.navigate(Screen.PAGE_SHOP_USER, sessionId);
                 break;
             case "3":
                 if(this.randomShop()){
-                    navigation.navigate(Screen.PAGE_SHOP_USER);
+                    navigation.navigate(Screen.PAGE_SHOP_USER, sessionId);
                     break;
                 } else {
-                    navigation.navigate(Screen.SEARCH_LIST_SHOP);
+                    navigation.navigate(Screen.SEARCH_LIST_SHOP, sessionId);
                     break;
                 }
             default:
-                navigation.navigate(Screen.SEARCH_LIST_SHOP);
+                navigation.navigate(Screen.SEARCH_LIST_SHOP, sessionId);
                 break;
         }
 
     }
 
     private boolean randomShop(){
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         if(this.allShop().isEmpty()) {
             browseShopView.noShopList();
             return false;
         } else {
-            appController.randomShop();
+            appController.randomShop(session);
             return true;
         }
 
     }
 
     private void askShop(List<ShopBean> shops) {
+        SessionBean session = new SessionBean();
+        session.setSessionId(sessionId);
         Integer shopIdSelected;
 
         do {
@@ -66,7 +71,7 @@ public class SearchListShopGCliController extends BaseCliController{
         } while (shopIdSelected < 1 || shopIdSelected > shops.size());
 
 
-        appController.pageSelected(shops.get(shopIdSelected - 1));
+        appController.pageSelected(session, shops.get(shopIdSelected - 1));
     }
 
     private List<ShopBean> searchShop() {

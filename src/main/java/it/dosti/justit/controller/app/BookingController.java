@@ -2,6 +2,7 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.BookingCSVBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.TimeSlotBean;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
@@ -61,13 +62,13 @@ public class BookingController {
         return userDao.getAddress(username);
     }
 
-    public List<BookingBean> getBookingsByShop() {
-        List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
+    public List<BookingBean> getBookingsByShop(SessionBean session) {
+        List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
         return toBeans(bookings);
     }
 
-    public List<BookingBean> getBookingsByUser() {
-        List<Booking> bookings = dao.getBookingsByUser(SessionManager.getInstance().getLoggedUser().getUsername());
+    public List<BookingBean> getBookingsByUser(SessionBean session) {
+        List<Booking> bookings = dao.getBookingsByUser(SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername());
         return toBeans(bookings);
     }
 
@@ -76,15 +77,15 @@ public class BookingController {
         return toBean(booking);
     }
 
-    public List<BookingBean> getCompletedBookingsWithoutReviewUserPerShop() {
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
-        Integer shopId = SessionManager.getInstance().getCurrentShop().getId();
+    public List<BookingBean> getCompletedBookingsWithoutReviewUserPerShop(SessionBean session) {
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
+        Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
         List<Booking> bookings = dao.getCompletedBookingsWithoutReviewPerShop(username, shopId);
         return toBeans(bookings);
     }
 
-    public List<BookingBean> getCompletedBookingsWithoutReviewUser() {
-        String username = SessionManager.getInstance().getLoggedUser().getUsername();
+    public List<BookingBean> getCompletedBookingsWithoutReviewUser(SessionBean session) {
+        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         List<Booking> bookings = dao.getCompletedBookingsWithoutReview(username);
         return toBeans(bookings);
     }
@@ -139,8 +140,8 @@ public class BookingController {
         return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
     }
 
-    public void exportBookingsListTech(File file) {
-        List<Booking> bookingsList = dao.getBookingsByShop(SessionManager.getInstance().getCurrentShop().getId());
+    public void exportBookingsListTech(SessionBean session, File file) {
+        List<Booking> bookingsList = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
         List<BookingCSVBean> csvBeanList = new ArrayList<>();
 
         for(Booking b : bookingsList) {
@@ -183,5 +184,17 @@ public class BookingController {
         bean.setUserAddress(booking.getHomeAssistance() ? this.addressUserBooking(booking.getUsername()) : null);
 
         return bean;
+    }
+
+    public String getUsername(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
+    }
+
+    public Integer getShopId(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
+    }
+
+    public Boolean isHomeAssistance(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().isHomeAssistance();
     }
 }
