@@ -10,6 +10,8 @@ import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,7 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String USERNAME = "username";
     private static final String IDSHOP = "idShop";
     private static final String ISHOMEASSISTANCE = "isHomeAssistance";
+    private static final String CREATEDAT = "createdAt";
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -40,6 +43,7 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setString(4, booking.getTimeSlot().toString());
             pstmt.setString(5, booking.getDescription());
             pstmt.setBoolean(6, booking.getHomeAssistance());
+            pstmt.setString(7, booking.getCreatedAt().toString());
 
             pstmt.executeUpdate();
 
@@ -100,6 +104,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATEDAT));
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -110,8 +115,8 @@ public class BookingDAOJDBC implements BookingDAO {
                         .description(description)
                         .status(status)
                         .homeAssistance(homeAssistance)
+                        .createdAt(createdAt)
                         .build();
-
 
 
                 bookings.add(booking);
@@ -237,6 +242,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .description(rs.getString(DESCRIPTION))
                         .status(BookingStatus.valueOf(rs.getString(STATE)))
                         .homeAssistance(rs.getBoolean(ISHOMEASSISTANCE))
+                        .createdAt(LocalDateTime.parse(rs.getString(CREATEDAT)))
                         .build();
             }
 
@@ -330,5 +336,29 @@ public class BookingDAOJDBC implements BookingDAO {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public boolean deleteReservedBookingSlot(Integer bookingId) {
+        String sql = BookingQuery.DELETE_BOOKING_RESERVATION;
+
+
+        try(
+                Connection conn= ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+                ){
+            pstmt.setInt(1, bookingId);
+            int i = pstmt.executeUpdate();
+
+            if(i>0) {
+                return true;
+            }
+
+        }
+        catch (SQLException e) {
+            JustItLogger.getInstance().error("Errore durante l'eliminazione del record", e);
+            return false;
+        }
+        return false;
     }
 }

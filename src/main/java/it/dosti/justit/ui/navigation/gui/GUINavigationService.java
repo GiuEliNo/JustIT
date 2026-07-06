@@ -37,7 +37,13 @@ public class GUINavigationService implements NavigationService {
     }
 
     @Override
-    public void navigate(Screen screen, String sessionId) throws NavigationException {
+    public void navigate(Screen screen, String sessionId ) throws NavigationException {
+        this.navigate(screen, sessionId, null);
+    }
+
+
+    @Override
+    public void navigate(Screen screen, String sessionId, Object data) throws NavigationException {
         switch (screen) {
             case LAUNCHER, REGISTER_USER, REGISTER_TECH, REGISTER_SHOP:
                 showStandaloneView(loadView(screen, null));
@@ -86,6 +92,10 @@ public class GUINavigationService implements NavigationService {
                 selectUserTab(userMainView.getSearchTab());
                 setContent(userMainView.getSearchRightPane(), loadView(screen, sessionId));
                 return;
+            case PAYMENTS_PAGE_BOOKING:
+                selectUserTab(userMainView.getSearchTab());
+                setContent(userMainView.getSearchRightPane(), loadView(screen, sessionId, data));
+                return;
             case PAGE_SHOP_TECH:
                 selectTechTab(techMainView.getShopTab());
                 setContent(techMainView.getShopPane(), loadView(screen, sessionId));
@@ -115,8 +125,9 @@ public class GUINavigationService implements NavigationService {
         }
     }
 
+
     @Override
-    public Parent loadView(Screen screen, String sessionId) throws NavigationException {
+    public Parent loadView(Screen screen, String sessionId, Object data) throws NavigationException{
         GUIScreen guiScreen = mapToGuiScreen(screen);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(guiScreen.getFxmlPath()));
 
@@ -129,6 +140,9 @@ public class GUINavigationService implements NavigationService {
                 if(sessionId != null) {
                     controller.setSessionId(sessionId);
                 }
+                if(data != null) {
+                    controller.setInitData(data);
+                }
             }
 
             return rootParent;
@@ -136,6 +150,11 @@ public class GUINavigationService implements NavigationService {
         } catch (IOException e) {
             throw new NavigationException("Impossible navigate to fxml path " + e.getMessage(), e);
         }
+
+    }
+    @Override
+    public Parent loadView(Screen screen, String sessionId) throws NavigationException {
+        return this.loadView(screen, sessionId, null);
     }
 
     private GUIScreen mapToGuiScreen(Screen screen) throws NavigationException {
@@ -157,6 +176,7 @@ public class GUINavigationService implements NavigationService {
             case NOTIFICATION_CENTER_TECH -> GUIScreen.NOTIFICATION_CENTER_TECH;
             case ACCOUNT_PAGE_TECH -> GUIScreen.ACCOUNT_PAGE_TECH;
             case REVIEWS_LIST_TECH -> GUIScreen.REVIEWS_LIST_TECH;
+            case PAYMENTS_PAGE_BOOKING ->  GUIScreen.PAYMENTS_PAGE_BOOKING;
             default -> throw new NavigationException("Screen non mappato: " + screen);
         };
     }

@@ -26,4 +26,6 @@ public interface BookingDAO {
     List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId);
 
     List<Booking> getCompletedBookingsWithoutReview(String username);
+
+    boolean deleteReservedBookingSlot(Integer bookingId);
 }

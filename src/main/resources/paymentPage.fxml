@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="rootPane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PaymentPageGController">
+   <children>
+      <VBox alignment="TOP_CENTER" spacing="30">
+         <padding>
+            <Insets bottom="40" left="40" right="40" top="40" />
+         </padding>
+
+         <Label styleClass="page-title" text="Book Appointment" />
+
+         <VBox alignment="CENTER_LEFT" maxWidth="450" spacing="20" styleClass="card">
+            <padding>
+               <Insets bottom="30" left="30" right="30" top="30" />
+            </padding>
+
+            <VBox spacing="5">
+               <Label text="Card Number" />
+               <TextField fx:id="cardNumberTextfield" promptText="0000 0000 0000 0000" />
+            </VBox>
+
+
+            <VBox spacing="5">
+               <Label text="Card Holder's Name" />
+               <TextField fx:id="cardHolderTextfield" promptText="John Doe" />
+            </VBox>
+
+
+            <HBox spacing="15">
+               <children>
+
+
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Expire Date" />
+                        <TextField fx:id="expireTextfield" promptText="MM/YY" />
+                     </children>
+                  </VBox>
+
+
+                  <VBox spacing="5" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="CVC/CVV" />
+                        <TextField fx:id="cvvTextfield" promptText="123" />
+                     </children>
+                  </VBox>
+
+               </children>
+            </HBox>
+            <Label fx:id="labelAmount" text="Total amount: " />
+
+
+            <Button fx:id="payButton" maxWidth="Infinity" onAction="#payButtonPressed" styleClass="button" text="PAY">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Button>
+
+         </VBox>
+      </VBox>
+   </children>
+</StackPane>

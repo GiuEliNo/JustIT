@@ -1,9 +1,11 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.PaymentQuoteBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.exceptions.NavigationException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -26,12 +28,12 @@ public class BookingPageGController extends BaseGController {
     @FXML
     private CheckBox homeAssistanceCheck;
 
-    private BookingController appController;
+    private BookAppointmentController appController;
 
 
     @Override
     protected void onSessionReady() {
-        appController = new BookingController();
+        appController = new BookAppointmentController();
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
         Integer shopId = appController.getShopId(session);
@@ -97,8 +99,13 @@ public class BookingPageGController extends BaseGController {
         JustItLogger.getInstance().info("bookingBean = " + bookingBean);
 
 
-        if (appController.addBooking(bookingBean)) {
-            navigation.navigate(Screen.MAIN, sessionId);
+        try{
+
+            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean);
+            navigation.navigate(Screen.PAYMENTS_PAGE_BOOKING, sessionId, bean);
+        }
+        catch (RegisterOnBackEndException e){
+            JustItLogger.getInstance().error(e.getMessage());
         }
     }
 }

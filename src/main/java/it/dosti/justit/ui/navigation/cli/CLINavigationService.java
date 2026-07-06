@@ -11,20 +11,38 @@ public class CLINavigationService implements NavigationService {
 
     @Override
     public void navigate(Screen screen, String sessionId) throws NavigationException {
+        this.navigate(screen, sessionId, null);
+    }
+
+    @Override
+    public void navigate(Screen screen, String sessionId, Object data) throws NavigationException {
         BaseCliView view = loadView(screen, sessionId);
         BaseCliController controller = createController(screen, sessionId);
         
         view.clear();
-        view.render();
+
 
         controller.setNavigation(this);
         controller.setView(view);
         controller.setSessionId(sessionId);
+        if(data != null) {
+            controller.setData(data);
+        }
+        view.render();
         controller.initialize();
     }
 
+
     @Override
     public BaseCliView loadView(Screen screen, String sessionId) throws NavigationException {
+
+        return this.loadView(screen, sessionId, null);
+
+    }
+
+
+    @Override
+    public BaseCliView loadView(Screen screen, String sessionId, Object data) throws NavigationException {
         switch(screen) {
             case LAUNCHER:
                 return new CLauncherView();

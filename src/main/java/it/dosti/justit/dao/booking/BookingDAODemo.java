@@ -5,6 +5,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class BookingDAODemo implements BookingDAO {
                 .description("Sostituzione batteria Stonex One")
                 .status(BookingStatus.COMPLETED)
                 .homeAssistance(false)
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(15))
                 .build());
 
         bookings.add(new Booking.Builder(USER_DEMO)
@@ -38,6 +40,7 @@ public class BookingDAODemo implements BookingDAO {
                 .description("Installazione sailfish os")
                 .status(BookingStatus.CONFIRMED)
                 .homeAssistance(true)
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(10))
                 .build());
 
         bookings.add(new Booking.Builder(USER_DEMO)
@@ -47,8 +50,9 @@ public class BookingDAODemo implements BookingDAO {
                 .date(LocalDate.now(ZoneId.systemDefault()).plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
                 .description("Pulizia steam controller")
-                .status(BookingStatus.PENDING)
+                .status(BookingStatus.PENDING_CONFIRM)
                 .homeAssistance(false)
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()))
                 .build());
 
         bookings.add(new Booking.Builder("demo_client_2")
@@ -60,13 +64,14 @@ public class BookingDAODemo implements BookingDAO {
                 .description("Aggiornamento Gentoo")
                 .status(BookingStatus.REJECTED)
                 .homeAssistance(false)
+                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(8))
                 .build());
     }
 
     @Override
     public int addBooking(Booking booking) {
         int generatedId = nextId++;
-        BookingStatus status = booking.getStatus() == null ? BookingStatus.PENDING : booking.getStatus();
+        BookingStatus status = booking.getStatus() == null ? BookingStatus.PENDING_CONFIRM : booking.getStatus();
 
         Booking newBooking = new Booking.Builder(booking.getUsername())
                 .bookingId(generatedId)
@@ -77,6 +82,7 @@ public class BookingDAODemo implements BookingDAO {
                 .description(booking.getDescription())
                 .status(status)
                 .homeAssistance(booking.getHomeAssistance())
+                .createdAt(booking.getCreatedAt())
                 .build();
 
         bookings.add(newBooking);
@@ -127,6 +133,7 @@ public class BookingDAODemo implements BookingDAO {
                         .description(current.getDescription())
                         .status(booking.getStatus())
                         .homeAssistance(current.getHomeAssistance())
+                        .createdAt(current.getCreatedAt())
                         .build();
                 bookings.set(i, updated);
                 return;
@@ -178,5 +185,16 @@ public class BookingDAODemo implements BookingDAO {
             }
         }
         return completedWithoutReview;
+    }
+
+    @Override
+    public boolean deleteReservedBookingSlot(Integer bookingId) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId().equals(bookingId)) {
+                bookings.remove(booking);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -218,4 +218,23 @@ public class BookingDAOFile implements BookingDAO {
         return "";
     }
 
+    @Override
+    public boolean deleteReservedBookingSlot(Integer bookingId) {
+        try{
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+            if(!bookings.isEmpty()){
+                for(Booking booking : bookings){
+                    if(booking.getBookingId().equals(bookingId)){
+                        bookings.remove(booking);
+                        return true;
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
+            return false;
+        }
+        return false;
+    }
 }

@@ -49,7 +49,7 @@ class BookingCompletePendingTest {
                 .date(date)
                 .timeSlot(TIME_SLOT)
                 .description("Booking pending test")
-                .status(BookingStatus.PENDING)
+                .status(BookingStatus.PENDING_CONFIRM)
                 .homeAssistance(false)
                 .build();
 
@@ -64,7 +64,7 @@ class BookingCompletePendingTest {
 
     @Test
     void testCompleteFromPendingThrows() {
-        BookingController controller = new BookingController();
+        BookAppointmentController controller = new BookAppointmentController();
         BookingBean bookingBean = new BookingBean();
         bookingBean.setBookingID(bookingId);
 

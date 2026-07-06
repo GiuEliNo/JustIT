@@ -31,7 +31,7 @@ public class NotificationDAOFile implements NotificationDAO{
                 item.setUsername(username);
                 item.setShopId(shopId);
                 item.setBookingId(bookingId);
-                item.setBookingStatus(BookingStatus.PENDING.name());
+                item.setBookingStatus(BookingStatus.PENDING_CONFIRM.name());
                 item.setType(NotificationType.BOOKING_STATUS);
                 item.setMessage(message);
                 item.setCreatedTime(createdTime);
@@ -45,7 +45,7 @@ public class NotificationDAOFile implements NotificationDAO{
                 item.setShopId(shopId);
                 item.setUsername(username);
                 item.setBookingId(bookingId);
-                item.setBookingStatus(BookingStatus.PENDING.name());
+                item.setBookingStatus(BookingStatus.PENDING_CONFIRM.name());
                 item.setType(NotificationType.BOOKING_STATUS);
                 item.setMessage(message);
                 item.setCreatedTime(createdTime);

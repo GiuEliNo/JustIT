@@ -3,7 +3,8 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.BookAppointmentController;
+import it.dosti.justit.controller.app.ManageBookingController;
 import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.utils.JustItLogger;
@@ -21,13 +22,13 @@ public class ReviewsShopUserGController extends BaseGController{
     private ListView<ReviewBean> listReview;
 
     private ReviewController appControllerReviewPageShop;
-    private BookingController appControllerBooking;
+    private ManageBookingController appControllerBooking;
 
 
     @Override
     public void onSessionReady() {
         appControllerReviewPageShop = new ReviewController();
-        appControllerBooking = new BookingController();
+        appControllerBooking = new ManageBookingController();
         listReview.setCellFactory(lr -> new ReviewListCell());
         this.updateReviewList();
     }

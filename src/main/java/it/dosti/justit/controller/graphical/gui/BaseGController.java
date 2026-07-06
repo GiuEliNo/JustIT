@@ -7,6 +7,8 @@ public abstract class BaseGController {
 
     protected String sessionId;
 
+    protected Object initData;
+
     public void setNavigation(GUINavigationService navigation) {
         this.navigation = navigation;
     }
@@ -16,7 +18,18 @@ public abstract class BaseGController {
         onSessionReady();
     }
 
+    public void setInitData(Object initData) {
+        this.initData = initData;
+        onInitDataReady();
+    }
+
     protected void onSessionReady(){
      //Here just for the overrides
     }
+
+    protected void onInitDataReady(){
+        //here for the overrides too
+    }
+
+
 }

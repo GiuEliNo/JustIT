@@ -1,0 +1,128 @@
+package it.dosti.justit.controller.app;
+
+import it.dosti.justit.api.PaymentService;
+import it.dosti.justit.api.PaymentServiceStub;
+import it.dosti.justit.bean.*;
+import it.dosti.justit.dao.*;
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dto.BookingStatusDTO;
+import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
+import it.dosti.justit.exceptions.BookingAlreadyExistsException;
+import it.dosti.justit.exceptions.PaymentException;
+import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.exceptions.BookingExpiredException;
+import it.dosti.justit.model.*;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingFactory;
+import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.utils.SessionManager;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class BookAppointmentController {
+    private final BookingDAO dao = DaoFactory.getBookingDAO();
+
+
+
+    public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean) throws RegisterOnBackEndException {
+
+        Booking newBooking = BookingFactory.createBooking(bookingBean);
+
+        try {
+            if (dao.existsBooking(newBooking.getShopId(), newBooking.getDate(), newBooking.getTimeSlot())) {
+                throw new BookingAlreadyExistsException("Booking already active for shop/date/timeslot");
+            }
+            Integer bookingId = dao.addBooking(newBooking);
+            newBooking.setBookingId(bookingId);
+            this.notifyStatusChange(newBooking, null);
+            JustItLogger.getInstance().info("Booking reservation added successfully");
+            return new PaymentQuoteBean(bookingId, newBooking.calculateTotalReservationPrice());
+
+        } catch (RegisterOnBackEndException e) {
+            JustItLogger.getInstance().error("Error reserving the slot booking");
+            throw new RegisterOnBackEndException(e.getMessage());
+        }
+    }
+
+    public TimeSlotBean getAvailableSlots(Integer shopId, LocalDate date) {
+
+        List<TimeSlot> occupied = dao.getOccupiedSlots(shopId, date);
+        List<String> available = new ArrayList<>();
+
+        for (TimeSlot slot : TimeSlot.values()) {
+            if (!occupied.contains(slot)) {
+                available.add(slot.toString());
+            }
+        }
+        TimeSlotBean bean = new TimeSlotBean();
+        bean.setTimeSlots(available);
+        return bean;
+    }
+
+    public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
+        return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
+    }
+
+    public String getUsername(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
+    }
+
+    public Integer getShopId(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
+    }
+
+    public Boolean isHomeAssistance(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().isHomeAssistance();
+    }
+
+    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+        if (oldStatus != booking.getStatus()) {
+            BookingStatusPublisher.getInstance()
+                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
+        }
+    }
+
+    public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws RegisterOnBackEndException {
+        Booking booking = dao.getBookingById(paymentQuoteBean.getBookingId());
+
+        try{
+            if( booking.isExpired()){
+                throw new BookingExpiredException("The payment timer is expired");
+            }
+            BookingStatus oldStatus = booking.getStatus();
+            PaymentService pay = new PaymentServiceStub();
+            if(pay.processPayment(paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote())){
+
+                booking.pay();
+                notifyStatusChange(booking, oldStatus);
+
+            }
+            else{
+                throw new PaymentException("Payment failed");
+            }
+
+        }
+        catch(BookingExpiredException | PaymentException e){
+            abortBooking(booking);
+            JustItLogger.getInstance().error(e.getMessage());
+            throw new RegisterOnBackEndException("Error finalyzing the payment. Booking aborted.");
+        }
+
+    }
+
+
+    private void abortBooking(Booking booking) {
+
+        booking.reject();
+        if(dao.deleteReservedBookingSlot(booking.getBookingId())){
+            JustItLogger.getInstance().info("Booking aborted successfully");
+        }
+        else{
+            JustItLogger.getInstance().error("Booking aborted failed");
+        }
+    }
+}

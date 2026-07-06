@@ -2,7 +2,8 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.BookAppointmentController;
+import it.dosti.justit.controller.app.ManageBookingController;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,7 +59,7 @@ public class BookingsListTechGController extends BaseGController {
     @FXML
     private VBox detailsVBox;
 
-    private final BookingController appController = new BookingController();
+    private final ManageBookingController appController = new ManageBookingController();
     private final ObservableList<BookingBean> bookings = FXCollections.observableArrayList();
 
     @Override

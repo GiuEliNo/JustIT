@@ -24,6 +24,6 @@ public enum Screen {
     REVIEWS_LIST_TECH,
     SEARCH_LIST_SHOP,
     TAB_PANE_USER_PROFILE,
-    TOPBAR
-
+    TOPBAR,
+    PAYMENTS_PAGE_BOOKING
 }

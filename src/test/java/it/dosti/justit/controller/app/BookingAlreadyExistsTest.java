@@ -48,8 +48,9 @@ class BookingAlreadyExistsTest {
                 .date(bookingDate)
                 .timeSlot(TIME_SLOT)
                 .description("Booking test")
-                .status(BookingStatus.PENDING)
+                .status(BookingStatus.PENDING_CONFIRM)
                 .homeAssistance(false)
+                .createdAt()
                 .build();
 
         if (!dao.existsBooking(SHOP_ID, bookingDate, TIME_SLOT)) {
@@ -63,7 +64,7 @@ class BookingAlreadyExistsTest {
 
     @Test
     void testDuplicationBooking() {
-        BookingController appController = new BookingController();
+        BookAppointmentController appController = new BookAppointmentController();
 
         BookingBean bookingBean = new BookingBean();
         bookingBean.setShopId(SHOP_ID);
@@ -73,7 +74,7 @@ class BookingAlreadyExistsTest {
         bookingBean.setDescription("Booking test duplicated");
         bookingBean.setHomeAssistance(false);
 
-        assertThrows(BookingAlreadyExistsException.class, () -> appController.addBooking(bookingBean));
+        assertThrows(BookingAlreadyExistsException.class, () -> appController.reserveSlotBooking(bookingBean));
     }
 
     @AfterEach

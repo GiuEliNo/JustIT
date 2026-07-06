@@ -1,10 +1,12 @@
 package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.PaymentQuoteBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookingController;
+import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CBookingPageUserView;
 
 import java.time.LocalDate;
@@ -12,12 +14,12 @@ import java.time.ZoneId;
 import java.util.List;
 
 public class BookingPageUserGCliController extends BaseCliController {
-    private BookingController appController = new BookingController();
+    private BookAppointmentController appController;
     private CBookingPageUserView bookingView = new CBookingPageUserView();
 
     @Override
     public void initialize() throws NavigationException {
-        appController = new BookingController();
+        appController = new BookAppointmentController();
         bookingView = (CBookingPageUserView) view;
 
         SessionBean session= new SessionBean();
@@ -38,10 +40,11 @@ public class BookingPageUserGCliController extends BaseCliController {
         bookingBean.setTimeSlot(timeSlot);
         bookingBean.setDescription(bookingView.askDescription());
         bookingBean.setHomeAssistance(false);
-
-        if (appController.addBooking(bookingBean)) {
-            navigation.navigate(Screen.MAIN_USER, sessionId);
-        } else {
+        try{
+            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean);
+            navigation.navigate(Screen.PAYMENTS_PAGE_BOOKING, sessionId, bean);
+        }catch (Exception e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
             navigation.navigate(Screen.BOOKING_PAGE_USER, sessionId);
         }
     }
