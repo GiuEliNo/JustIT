@@ -19,7 +19,7 @@ public class CLINavigationService implements NavigationService {
         BaseCliView view = loadView(screen, sessionId);
         BaseCliController controller = createController(screen, sessionId);
         
-        view.clear();
+
 
 
         controller.setNavigation(this);
@@ -28,6 +28,7 @@ public class CLINavigationService implements NavigationService {
         if(data != null) {
             controller.setData(data);
         }
+        view.clear();
         view.render();
         controller.initialize();
     }
@@ -80,6 +81,8 @@ public class CLINavigationService implements NavigationService {
                 return new CSignInClient();
             case REGISTER_TECH:
                 return new CSignInTech();
+            case PAYMENTS_PAGE_BOOKING:
+                return new CBookingPaymentPageView();
             default:
                 return null;
         }
@@ -127,6 +130,8 @@ public class CLINavigationService implements NavigationService {
                 return new RegisterUserGCliController();
             case REGISTER_TECH:
                 return new RegisterTechGCliController();
+            case PAYMENTS_PAGE_BOOKING:
+                return new BookingPaymentPageGCliController();
             default:
                 return null;
         }

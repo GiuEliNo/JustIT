@@ -2,7 +2,6 @@ package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.controller.app.ManageBookingController;
 import it.dosti.justit.model.booking.BookingStatus;
 import javafx.collections.FXCollections;
@@ -114,7 +113,7 @@ public class BookingsListTechGController extends BaseGController {
         descriptionArea.setText(booking.getDescription());
 
         switch (booking.getStatus()) {
-            case "PENDING" -> {
+            case "PENDING_CONFIRM" -> {
                 approveButton.setVisible(true);
                 rejectButton.setVisible(true);
                 completedButton.setVisible(false);

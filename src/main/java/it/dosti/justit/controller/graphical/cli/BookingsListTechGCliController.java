@@ -2,7 +2,6 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.controller.app.ManageBookingController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
@@ -65,7 +64,7 @@ public class BookingsListTechGCliController extends BaseCliController{
 
 
         switch(appController.getBookingById(bookId).getStatus()){
-            case "PENDING":
+            case "PENDING_CONFIRM":
                 this.confirmationManager(bookId);
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
