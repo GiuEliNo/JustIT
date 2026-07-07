@@ -30,7 +30,7 @@ public class LoadingOverlayUtils {
 
 
     public static void animateTransition(StackPane root, VBox overlay, GUINavigationService navigation, Screen screen, String sessionId) {
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), root);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), root);
         fadeTransition.setFromValue(1.0);
         fadeTransition.setToValue(0.0);
 

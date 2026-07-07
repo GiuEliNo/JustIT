@@ -7,10 +7,14 @@ import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.view.gui.LoadingOverlayUtils;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class PaymentPageGController extends BaseGController {
 
@@ -21,6 +25,9 @@ public class PaymentPageGController extends BaseGController {
     private Label labelAmount;
 
     @FXML
+    private Label warningLabel;
+
+    @FXML
     private TextField cardNumberTextfield;
     @FXML
     private TextField cardHolderTextfield;
@@ -29,19 +36,29 @@ public class PaymentPageGController extends BaseGController {
     @FXML
     private TextField expireTextfield;
 
+    PauseTransition timeoutTimer;
+
     @Override
     protected void onInitDataReady(){
 
         if (initData instanceof PaymentQuoteBean) {
             double quote = ((PaymentQuoteBean) initData).getQuote();
-            labelAmount.setText("Total amount to pay: " + quote +"€");
+            labelAmount.setText( quote +"€");
             JustItLogger.getInstance().info("quote: " + quote);
+            startTimerUI();
         }
     }
 
 
     @FXML
     void payButtonPressed() {
+
+
+
+
+        if(timeoutTimer != null){
+            timeoutTimer.stop();
+        }
         BookAppointmentController appController= new BookAppointmentController();
         PaymentDataBean bean = new PaymentDataBean();
 
@@ -53,18 +70,31 @@ public class PaymentPageGController extends BaseGController {
 
         try{
             appController.finalizePayment(bean, (PaymentQuoteBean) initData);
-            navigation.navigate(Screen.MAIN, sessionId);
+            VBox loadingOverlay = LoadingOverlayUtils.buildLoadingOverlay("Payment Completed, you will be redirected");
+            LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.BOOKINGS_LIST_USER, sessionId);
+            navigation.navigate(Screen.BOOKINGS_LIST_USER, sessionId);
         }
         catch(RegisterOnBackEndException e){
             JustItLogger.getInstance().error(e.getMessage());
-            try{
-            navigation.navigate(Screen.MAIN, sessionId);
-        }
-            catch(NavigationException n){
-                JustItLogger.getInstance().error(e.getMessage());
-            }
+            VBox loadingOverlayError = LoadingOverlayUtils.buildLoadingOverlay("Payment Failed, you will be redirected");
+            rootPane.getChildren().add(loadingOverlayError);
+            warningLabel.setText("Errore nel pagamento, torno alla schermata principale.");
+            LoadingOverlayUtils.animateTransition(rootPane, loadingOverlayError, navigation, Screen.MAIN, sessionId);
         } catch (NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage());
         }
+    }
+
+    private void startTimerUI(){
+        timeoutTimer = new PauseTransition(Duration.minutes(5));
+        timeoutTimer.setOnFinished(event -> {
+            warningLabel.setText("Time for booking reservation expired.");
+            BookAppointmentController appController= new BookAppointmentController();
+            appController.cancelBookingByBoundary((PaymentQuoteBean) initData);
+            VBox loadingOverlayTimer = LoadingOverlayUtils.buildLoadingOverlay("Timer expired, you will be redirected to the main screen");
+            LoadingOverlayUtils.animateTransition(rootPane, loadingOverlayTimer, navigation, Screen.MAIN, sessionId);
+
+        });
+        timeoutTimer.play();
     }
 }

@@ -5,66 +5,81 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="rootPane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.dosti.justit.controller.graphical.gui.PaymentPageGController">
-   <children>
-      <VBox alignment="TOP_CENTER" spacing="30">
-         <padding>
-            <Insets bottom="40" left="40" right="40" top="40" />
-         </padding>
-
-         <Label styleClass="page-title" text="Book Appointment" />
-
-         <VBox alignment="CENTER_LEFT" maxWidth="450" spacing="20" styleClass="card">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="30">
             <padding>
-               <Insets bottom="30" left="30" right="30" top="30" />
+                <Insets bottom="40" left="40" right="40" top="40" />
             </padding>
 
-            <VBox spacing="5">
-               <Label text="Card Number" />
-               <TextField fx:id="cardNumberTextfield" promptText="0000 0000 0000 0000" />
+            <Label styleClass="page-title" text="Book Appointment" />
+
+            <VBox alignment="CENTER_LEFT" maxWidth="450" spacing="20" styleClass="card">
+                <padding>
+                    <Insets bottom="30" left="30" right="30" top="30" />
+                </padding>
+
+                <VBox spacing="5">
+                    <Label text="Card Number" />
+                    <TextField fx:id="cardNumberTextfield" promptText="0000 0000 0000 0000" />
+                </VBox>
+
+
+                <VBox spacing="5">
+                    <Label text="Card Holder's Name" />
+                    <TextField fx:id="cardHolderTextfield" promptText="John Doe" />
+                </VBox>
+
+
+                <HBox spacing="15">
+                    <children>
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Expire Date" />
+                                <TextField fx:id="expireTextfield" promptText="MM/YY" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="CVC/CVV" />
+                                <TextField fx:id="cvvTextfield" promptText="123" />
+                            </children>
+                        </VBox>
+
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" style="-fx-border-color: transparent transparent #e0e0e0 transparent; -fx-border-width: 0 0 1 0; -fx-padding: 10 0 5 0;">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                    <children>
+                        <Label text="Total Amount:" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #555555;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="labelAmount" text="€ 0.00" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                    </children>
+                </HBox>
+
+
+                <Label fx:id="warningLabel" wrapText="true" visible="false" managed="false" styleClass="error-label">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Button fx:id="payButton" maxWidth="Infinity" onAction="#payButtonPressed" styleClass="button" text="PAY">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Button>
+
             </VBox>
-
-
-            <VBox spacing="5">
-               <Label text="Card Holder's Name" />
-               <TextField fx:id="cardHolderTextfield" promptText="John Doe" />
-            </VBox>
-
-
-            <HBox spacing="15">
-               <children>
-
-
-                  <VBox spacing="5" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label text="Expire Date" />
-                        <TextField fx:id="expireTextfield" promptText="MM/YY" />
-                     </children>
-                  </VBox>
-
-
-                  <VBox spacing="5" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label text="CVC/CVV" />
-                        <TextField fx:id="cvvTextfield" promptText="123" />
-                     </children>
-                  </VBox>
-
-               </children>
-            </HBox>
-            <Label fx:id="labelAmount" text="Total amount: " />
-
-
-            <Button fx:id="payButton" maxWidth="Infinity" onAction="#payButtonPressed" styleClass="button" text="PAY">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Button>
-
-         </VBox>
-      </VBox>
-   </children>
+        </VBox>
+    </children>
 </StackPane>

@@ -125,4 +125,10 @@ public class BookAppointmentController {
             JustItLogger.getInstance().error("Booking aborted failed");
         }
     }
+
+
+    public void cancelBookingByBoundary(PaymentQuoteBean bean) {
+        Booking booking = dao.getBookingById(bean.getBookingId());
+        abortBooking(booking);
+    }
 }
