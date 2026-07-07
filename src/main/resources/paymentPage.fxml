@@ -60,14 +60,14 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                     <children>
-                        <Label text="Total Amount:" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #555555;" />
+                        <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #555555;" text="Total Amount:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="labelAmount" text="€ 0.00" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        <Label fx:id="labelAmount" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="€ 0.00" />
                     </children>
                 </HBox>
 
 
-                <Label fx:id="warningLabel" wrapText="true" visible="false" managed="false" styleClass="error-label">
+                <Label fx:id="warningLabel" managed="false" prefWidth="0.0" styleClass="error-label" visible="false" wrapText="true">
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin>
@@ -78,6 +78,11 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelButtonPressed" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-underline: true;" text="Cancel and go back" />
+               </children>
+            </HBox>
 
             </VBox>
         </VBox>

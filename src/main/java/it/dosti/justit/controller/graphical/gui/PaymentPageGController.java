@@ -36,6 +36,8 @@ public class PaymentPageGController extends BaseGController {
     @FXML
     private TextField expireTextfield;
 
+
+
     PauseTransition timeoutTimer;
 
     @Override
@@ -96,5 +98,17 @@ public class PaymentPageGController extends BaseGController {
 
         });
         timeoutTimer.play();
+    }
+
+    @FXML
+    private void cancelButtonPressed() {
+        BookAppointmentController appController= new BookAppointmentController();
+        appController.cancelBookingByBoundary((PaymentQuoteBean) initData);
+        try {
+            navigation.navigate(Screen.MAIN, sessionId);
+        }
+        catch(NavigationException e){
+            JustItLogger.getInstance().error(e.getMessage());
+        }
     }
 }

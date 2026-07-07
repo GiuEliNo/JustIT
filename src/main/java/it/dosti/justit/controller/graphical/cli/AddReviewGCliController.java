@@ -4,7 +4,6 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
-import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.controller.app.ManageBookingController;
 import it.dosti.justit.controller.app.ReviewController;
