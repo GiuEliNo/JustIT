@@ -1,16 +1,15 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.api.EmailGatewayService;
 import it.dosti.justit.api.PaymentService;
 import it.dosti.justit.api.PaymentServiceStub;
 import it.dosti.justit.bean.*;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
-import it.dosti.justit.exceptions.BookingAlreadyExistsException;
-import it.dosti.justit.exceptions.PaymentException;
-import it.dosti.justit.exceptions.RegisterOnBackEndException;
-import it.dosti.justit.exceptions.BookingExpiredException;
+import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingFactory;
@@ -63,28 +62,6 @@ public class BookAppointmentController {
         return bean;
     }
 
-    public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
-        return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
-    }
-
-    public String getUsername(SessionBean session) {
-        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-    }
-
-    public Integer getShopId(SessionBean session) {
-        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
-    }
-
-    public Boolean isHomeAssistance(SessionBean session) {
-        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().isHomeAssistance();
-    }
-
-    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
-        if (oldStatus != booking.getStatus()) {
-            BookingStatusPublisher.getInstance()
-                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
-        }
-    }
 
     public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws RegisterOnBackEndException {
         Booking booking = dao.getBookingById(paymentQuoteBean.getBookingId());
@@ -98,7 +75,9 @@ public class BookAppointmentController {
             if(pay.processPayment(paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote())){
 
                 booking.pay();
+                dao.updateStatus(booking);
                 notifyStatusChange(booking, oldStatus);
+                sendEmailAlert(booking);
 
             }
             else{
@@ -130,5 +109,40 @@ public class BookAppointmentController {
     public void cancelBookingByBoundary(PaymentQuoteBean bean) {
         Booking booking = dao.getBookingById(bean.getBookingId());
         abortBooking(booking);
+    }
+
+    private void sendEmailAlert(Booking booking) {
+
+        ShopDAO shopDAO = DaoFactory.getShopDAO();
+        try{
+            Shop shop = shopDAO.retrieveShopById(booking.getShopId());
+            EmailGatewayService.sendEMailInvoice(shop.getEmail());
+        } catch (ShopNotFoundException e) {
+            JustItLogger.getInstance().error("Shop not found");
+        }
+
+    }
+
+    public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
+        return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
+    }
+
+    public String getUsername(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
+    }
+
+    public Integer getShopId(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
+    }
+
+    public Boolean isHomeAssistance(SessionBean session) {
+        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().isHomeAssistance();
+    }
+
+    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+        if (oldStatus != booking.getStatus()) {
+            BookingStatusPublisher.getInstance()
+                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
+        }
     }
 }
