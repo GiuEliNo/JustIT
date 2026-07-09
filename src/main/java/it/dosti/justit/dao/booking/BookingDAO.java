@@ -28,4 +28,6 @@ public interface BookingDAO {
     List<Booking> getCompletedBookingsWithoutReview(String username);
 
     boolean deleteReservedBookingSlot(Integer bookingId);
+
+    void saveRepairReport(Booking booking);
 }

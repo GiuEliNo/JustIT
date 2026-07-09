@@ -188,6 +188,16 @@ public class BookingDAODemo implements BookingDAO {
     }
 
     @Override
+    public void saveRepairReport(Booking updatedBooking) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+                booking.setRepairReport(updatedBooking.getRepairReport());
+                return;
+            }
+        }
+    }
+
+    @Override
     public boolean deleteReservedBookingSlot(Integer bookingId) {
         for (Booking booking : bookings) {
             if (booking.getBookingId().equals(bookingId)) {

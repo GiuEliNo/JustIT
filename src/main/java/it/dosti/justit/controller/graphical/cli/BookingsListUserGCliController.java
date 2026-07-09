@@ -2,7 +2,8 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ManageBookingController;
+import it.dosti.justit.controller.app.ListBookingController;
+import it.dosti.justit.controller.app.ManageBookingStatusController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListView;
@@ -10,7 +11,7 @@ import it.dosti.justit.view.cli.CBookingListView;
 public class BookingsListUserGCliController extends BaseCliController{
     @Override
     public void initialize() throws NavigationException {
-        ManageBookingController appController = new ManageBookingController();
+        ListBookingController appController = new ListBookingController();
         CBookingListView bookingListView = (CBookingListView) view;
 
         SessionBean session = new SessionBean();

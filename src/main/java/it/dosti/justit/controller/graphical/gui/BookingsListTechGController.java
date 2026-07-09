@@ -1,9 +1,12 @@
 package it.dosti.justit.controller.graphical.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ManageBookingController;
+import it.dosti.justit.controller.app.ListBookingController;
+import it.dosti.justit.controller.app.ManageBookingStatusController;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.view.gui.DialogRepairReport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,7 +61,8 @@ public class BookingsListTechGController extends BaseGController {
     @FXML
     private VBox detailsVBox;
 
-    private final ManageBookingController appController = new ManageBookingController();
+    private final ManageBookingStatusController manageBookingStatusController = new ManageBookingStatusController();
+    private final ListBookingController listBookingController = new ListBookingController();
     private final ObservableList<BookingBean> bookings = FXCollections.observableArrayList();
 
     @Override
@@ -88,7 +92,7 @@ public class BookingsListTechGController extends BaseGController {
     private void reloadTable() {
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        bookings.setAll(appController.getBookingsByShop(session));
+        bookings.setAll(listBookingController.getBookingsByShop(session));
     }
 
     private void showDetail(BookingBean booking) {
@@ -147,7 +151,7 @@ public class BookingsListTechGController extends BaseGController {
         BookingBean selected = getSelectedBooking();
         if (selected == null) return;
 
-        appController.approveBooking(selected);
+        manageBookingStatusController.approveBooking(selected);
         reloadTable();
     }
 
@@ -156,7 +160,10 @@ public class BookingsListTechGController extends BaseGController {
         BookingBean selected = getSelectedBooking();
         if (selected == null) return;
 
-        appController.rejectBooking(selected);
+        RepairReportBean repairReportBean = showDialogRepairReport();
+
+        manageBookingStatusController.rejectBooking(selected, repairReportBean);
+
         reloadTable();
     }
 
@@ -165,7 +172,7 @@ public class BookingsListTechGController extends BaseGController {
         BookingBean selected = getSelectedBooking();
         if (selected == null) return;
 
-        appController.completeBooking(selected);
+        manageBookingStatusController.completeBooking(selected, null);
         reloadTable();
     }
 
@@ -183,7 +190,22 @@ public class BookingsListTechGController extends BaseGController {
         if (file != null) {
             SessionBean session = new SessionBean();
             session.setSessionId(sessionId);
-            appController.exportBookingsListTech(session, file);
+            listBookingController.exportBookingsListTech(session, file);
         }
+    }
+
+    private RepairReportBean showDialogRepairReport() {
+        DialogRepairReport dialog = new DialogRepairReport();
+        RepairReportBean repairReportBean = new RepairReportBean();
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                repairReportBean.setTechNotes(dialog.getTechNotes());
+                repairReportBean.setLaborHours(dialog.getLaborHours());
+                repairReportBean.setPartCosts(dialog.getPartCosts());
+            }
+        });
+
+        return repairReportBean;
     }
 }

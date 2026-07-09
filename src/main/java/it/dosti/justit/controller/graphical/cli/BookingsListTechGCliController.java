@@ -2,7 +2,8 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ManageBookingController;
+import it.dosti.justit.controller.app.ListBookingController;
+import it.dosti.justit.controller.app.ManageBookingStatusController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListTechView;
@@ -12,16 +13,18 @@ import java.util.List;
 
 public class BookingsListTechGCliController extends BaseCliController{
     private CBookingListTechView bookingListTechView;
-    private ManageBookingController appController;
+    private ListBookingController lichController;
+    private ManageBookingStatusController manageController;
     private List<BookingBean> bookingList = new ArrayList<>();
 
     @Override
     public void initialize() throws NavigationException {
-        appController = new ManageBookingController();
+        lichController = new ListBookingController();
+        manageController = new ManageBookingStatusController();
         bookingListTechView = (CBookingListTechView) view;
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        bookingList = appController.getBookingsByShop(session);
+        bookingList = lichController.getBookingsByShop(session);
 
         showBooking();
 
@@ -60,10 +63,10 @@ public class BookingsListTechGCliController extends BaseCliController{
 
         do {
             bookId = bookingListTechView.askBooking();
-        } while (appController.getBookingById(bookId) == null);
+        } while (lichController.getBookingById(bookId) == null);
 
 
-        switch(appController.getBookingById(bookId).getStatus()){
+        switch(lichController.getBookingById(bookId).getStatus()){
             case "PENDING_CONFIRM":
                 this.confirmationManager(bookId);
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
@@ -78,12 +81,12 @@ public class BookingsListTechGCliController extends BaseCliController{
     }
 
     private void confirmationManager(Integer bookId) throws NavigationException {
-        switch (bookingListTechView.askConfirmation(appController.getBookingById(bookId))){
+        switch (bookingListTechView.askConfirmation(lichController.getBookingById(bookId))){
             case 1:
-                appController.rejectBooking(appController.getBookingById(bookId));
+                manageController.rejectBooking(lichController.getBookingById(bookId), null);
                 break;
             case 2:
-                appController.approveBooking(appController.getBookingById(bookId));
+                manageController.approveBooking(lichController.getBookingById(bookId));
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
@@ -95,9 +98,9 @@ public class BookingsListTechGCliController extends BaseCliController{
     }
 
     private void completedManager(Integer bookId) throws NavigationException {
-        switch (bookingListTechView.askCompleted(appController.getBookingById(bookId))){
+        switch (bookingListTechView.askCompleted(lichController.getBookingById(bookId))){
             case 1:
-                appController.completeBooking(appController.getBookingById(bookId));
+                manageController.completeBooking(lichController.getBookingById(bookId), null);
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);

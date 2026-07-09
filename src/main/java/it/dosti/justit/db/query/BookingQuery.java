@@ -22,4 +22,7 @@ public class BookingQuery {
 
     public static final String EXIST_BOOKING = "SELECT 1 FROM Booking WHERE idShop = ? AND date = ? AND timeSlot = ? " + "AND state IN ('PENDING_CONFIRM', 'CONFIRMED') LIMIT 1";
     public static final String DELETE_BOOKING_RESERVATION= "DELETE FROM Booking WHERE id = ?";
+
+    public static final String INSERT_REPAIR_REPORT =
+            "INSERT INTO repair_report (booking_id, tech_notes, labor_hours, cost_hours, part_costs) VALUES (?,?,?,?,?)";
 }

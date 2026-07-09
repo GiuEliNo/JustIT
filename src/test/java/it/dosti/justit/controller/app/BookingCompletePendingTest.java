@@ -64,11 +64,11 @@ class BookingCompletePendingTest {
 
     @Test
     void testCompleteFromPendingThrows() {
-        BookAppointmentController controller = new BookAppointmentController();
+        ManageBookingStatusController controller = new ManageBookingStatusController();
         BookingBean bookingBean = new BookingBean();
         bookingBean.setBookingID(bookingId);
 
-        assertThrows(InvalidBookingStateException.class, () -> controller.completeBooking(bookingBean));
+        assertThrows(InvalidBookingStateException.class, () -> controller.completeBooking(bookingBean, null));
     }
 
     @AfterEach

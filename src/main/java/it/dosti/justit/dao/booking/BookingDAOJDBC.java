@@ -4,6 +4,7 @@ import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.BookingQuery;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.*;
+import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.utils.JustItLogger;
@@ -334,6 +335,26 @@ public class BookingDAOJDBC implements BookingDAO {
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void saveRepairReport(Booking booking) {
+        if (booking.getRepairReport() == null) return;
+        RepairReport report = booking.getRepairReport();
+        String sql = BookingQuery.INSERT_REPAIR_REPORT;
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setInt(1, booking.getBookingId());
+            pstmt.setString(2, report.getTechNotes());
+            pstmt.setDouble(3, report.getLaborHours());
+            pstmt.setDouble(4, report.getCostHours());
+            pstmt.setDouble(5, report.getPartCosts());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 

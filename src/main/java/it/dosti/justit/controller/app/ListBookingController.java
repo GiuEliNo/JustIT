@@ -8,23 +8,16 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAOCSV;
 import it.dosti.justit.dao.clientuser.ClientUserDAO;
-import it.dosti.justit.dto.BookingStatusDTO;
-import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageBookingController {
-
+public class ListBookingController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
     private final BookingExportFileDAO daoFile = new BookingExportFileDAOCSV();
-
-
     public void exportBookingsListTech(SessionBean session, File file) {
         List<Booking> bookingsList = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
         List<BookingCSVBean> csvBeanList = new ArrayList<>();
@@ -44,46 +37,6 @@ public class ManageBookingController {
         }
         daoFile.exportToFile(csvBeanList, file);
     }
-
-
-    public List<BookingBean> getCompletedBookingsWithoutReviewUserPerShop(SessionBean session) {
-        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-        Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
-        List<Booking> bookings = dao.getCompletedBookingsWithoutReviewPerShop(username, shopId);
-        return toBeans(bookings);
-    }
-
-    public List<BookingBean> getCompletedBookingsWithoutReviewUser(SessionBean session) {
-        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-        List<Booking> bookings = dao.getCompletedBookingsWithoutReview(username);
-        return toBeans(bookings);
-    }
-
-    public void approveBooking(BookingBean bookingBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
-        BookingStatus oldStatus = booking.getStatus();
-        booking.goNext(BookingEvent.CONFIRM);
-        dao.updateStatus(booking);
-        notifyStatusChange(booking, oldStatus);
-    }
-
-    public void rejectBooking(BookingBean bookingBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
-        BookingStatus oldStatus = booking.getStatus();
-        booking.goNext(BookingEvent.REJECT);
-        dao.updateStatus(booking);
-        notifyStatusChange(booking, oldStatus);
-    }
-
-    public void completeBooking(BookingBean bookingBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
-        BookingStatus oldStatus = booking.getStatus();
-        booking.goNext(BookingEvent.COMPLETED);
-        dao.updateStatus(booking);
-        notifyStatusChange(booking, oldStatus);
-    }
-
-
     private List<BookingBean> toBeans(List<Booking> bookings) {
         List<BookingBean> beans = new ArrayList<>();
         for (Booking b : bookings) {
@@ -127,12 +80,5 @@ public class ManageBookingController {
     public BookingBean getBookingById(Integer bookingId) {
         Booking booking = dao.getBookingById(bookingId);
         return toBean(booking);
-    }
-
-    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
-        if (oldStatus != booking.getStatus()) {
-            BookingStatusPublisher.getInstance()
-                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
-        }
     }
 }

@@ -2,6 +2,8 @@ package it.dosti.justit.model.booking;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import it.dosti.justit.exceptions.InvalidBookingStateException;
+import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
@@ -28,6 +30,7 @@ public class Booking {
 
     private BookingState currentState;
     private BookingStatus status;
+    private RepairReport repairReport;
     private Booking(Builder builder) {
 
         this.bookingId = builder.bookingId;
@@ -179,6 +182,14 @@ public class Booking {
 
     }
 
+
+    public void setRepairReport(RepairReport repairReport) {
+        this.repairReport = repairReport;
+    }
+
+    public RepairReport getRepairReport() {
+        return repairReport;
+    }
 
     public void changeStatus(BookingStatus newStatus) {
         this.currentState= BookingStateFactory.fromStatus(newStatus);

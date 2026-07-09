@@ -1,0 +1,123 @@
+package it.dosti.justit.controller.app;
+
+import it.dosti.justit.api.EmailGatewayService;
+import it.dosti.justit.api.PaymentService;
+import it.dosti.justit.api.PaymentServiceStub;
+import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.RepairReportBean;
+import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dto.BookingStatusDTO;
+import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
+import it.dosti.justit.exceptions.PaymentException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.model.RepairReport;
+import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.state.BookingEvent;
+import it.dosti.justit.utils.SessionManager;
+import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.exceptions.InvalidBookingStateException;
+
+
+public class ManageBookingStatusController {
+
+    private final BookingDAO dao = DaoFactory.getBookingDAO();
+    public void approveBooking(BookingBean bookingBean) {
+        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        BookingStatus oldStatus = booking.getStatus();
+
+        try {
+            booking.goNext(BookingEvent.CONFIRM);
+            dao.updateStatus(booking);
+            notifyStatusChange(booking, oldStatus);
+        } catch (InvalidBookingStateException e) {
+            JustItLogger.getInstance().error("Error approving booking", e);
+        }
+    }
+
+    public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
+        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        BookingStatus oldStatus = booking.getStatus();
+
+        this.addRepairReportToBooking(booking, repairReportBean);
+
+        try {
+            booking.goNext(BookingEvent.REJECT);
+            this.refundPayment(booking);
+            dao.updateStatus(booking);
+            dao.saveRepairReport(booking);
+            this.notifyStatusChange(booking, oldStatus);
+            this.sendEmailAlert(booking);
+        } catch (InvalidBookingStateException e) {
+            JustItLogger.getInstance().error("Error rejecting booking", e);
+        } catch (PaymentException e) {
+            JustItLogger.getInstance().error("Error refunding payment", e);
+        }
+    }
+
+    public void completeBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
+        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        BookingStatus oldStatus = booking.getStatus();
+
+        this.addRepairReportToBooking(booking, repairReportBean);
+
+        try {
+            booking.goNext(BookingEvent.COMPLETED);
+            dao.updateStatus(booking);
+            this.sendInvoice(booking.getRepairReport());
+            notifyStatusChange(booking, oldStatus);
+            sendEmailAlert(booking);
+        } catch (InvalidBookingStateException e) {
+            JustItLogger.getInstance().error("Error completing booking", e);
+        }
+    }
+
+    private void addRepairReportToBooking(Booking booking, RepairReportBean repairReportBean) {
+        RepairReport report = new RepairReport(
+                repairReportBean.getTechNotes(),
+                repairReportBean.getLaborHours(),
+                repairReportBean.getCostHours(),
+                repairReportBean.getPartCosts()
+        );
+        booking.setRepairReport(report);
+    }
+
+    private void refundPayment(Booking booking){
+        PaymentService pay = new PaymentServiceStub();
+
+        String shopName = booking.getShopName();
+        String clientUsername = booking.getUsername();
+        double totalRefund = booking.calculateTotalReservationPrice();
+
+        if(pay.refundPayment(shopName, clientUsername, totalRefund)){
+            JustItLogger.getInstance().info("Payment refunded");
+        } else {
+            JustItLogger.getInstance().error("Payment refund failed");
+            throw new PaymentException("Payment refund failed");
+        }
+    }
+
+    private void sendInvoice(RepairReport report){
+        Double totalCost = report.calculateTotalCost();
+    }
+    private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
+        if (oldStatus != booking.getStatus()) {
+            BookingStatusPublisher.getInstance()
+                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
+        }
+    }
+    private void sendEmailAlert(Booking booking) {
+
+        ShopDAO shopDAO = DaoFactory.getShopDAO();
+        try{
+            Shop shop = shopDAO.retrieveShopById(booking.getShopId());
+            EmailGatewayService.sendEMailInvoice(shop.getEmail());
+        } catch (ShopNotFoundException e) {
+            JustItLogger.getInstance().error("Shop not found");
+        }
+
+    }
+}

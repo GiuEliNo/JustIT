@@ -17,12 +17,13 @@ public class RepairReport {
         this.partCosts = partCosts;
     }
 
-
+    public String getTechNotes() { return techNotes; }
+    public double getLaborHours() { return laborHours; }
+    public double getCostHours() { return costHours; }
+    public double getPartCosts() { return partCosts; }
 
     public double calculateTotalCost() {
-
-        return  partCosts + laborHours * costHours;
-
+        return partCosts + laborHours * costHours;
     }
 
 }
