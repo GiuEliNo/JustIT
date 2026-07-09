@@ -12,6 +12,7 @@ import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public class ManageBookingController {
     public void approveBooking(BookingBean bookingBean) {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
-        booking.confirm();
+        booking.goNext(BookingEvent.CONFIRM);
         dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }
@@ -69,7 +70,7 @@ public class ManageBookingController {
     public void rejectBooking(BookingBean bookingBean) {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
-        booking.reject();
+        booking.goNext(BookingEvent.REJECT);
         dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }
@@ -77,7 +78,7 @@ public class ManageBookingController {
     public void completeBooking(BookingBean bookingBean) {
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
-        booking.complete();
+        booking.goNext(BookingEvent.COMPLETED);
         dao.updateStatus(booking);
         notifyStatusChange(booking, oldStatus);
     }

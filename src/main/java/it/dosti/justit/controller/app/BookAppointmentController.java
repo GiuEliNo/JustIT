@@ -14,6 +14,7 @@ import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingFactory;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
@@ -74,7 +75,7 @@ public class BookAppointmentController {
             PaymentService pay = new PaymentServiceStub();
             if(pay.processPayment(paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote())){
 
-                booking.pay();
+                booking.goNext(BookingEvent.PAYMENT_RECEIVED);
                 dao.updateStatus(booking);
                 notifyStatusChange(booking, oldStatus);
                 sendEmailAlert(booking);
@@ -96,7 +97,7 @@ public class BookAppointmentController {
 
     private void abortBooking(Booking booking) {
 
-        booking.reject();
+        booking.goNext(BookingEvent.REJECT);
         if(dao.deleteReservedBookingSlot(booking.getBookingId())){
             JustItLogger.getInstance().info("Booking aborted successfully");
         }

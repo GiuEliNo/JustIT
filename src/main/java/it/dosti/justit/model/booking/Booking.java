@@ -3,8 +3,9 @@ package it.dosti.justit.model.booking;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.model.TimeSlot;
-import it.dosti.justit.events.state.BookingState;
-import it.dosti.justit.events.state.BookingStateFactory;
+import it.dosti.justit.model.booking.state.BookingEvent;
+import it.dosti.justit.model.booking.state.BookingState;
+import it.dosti.justit.model.booking.state.BookingStateFactory;
 
 
 import java.time.DayOfWeek;
@@ -167,25 +168,20 @@ public class Booking {
     }
 
 
+    public void goNext(BookingEvent event){
+
+        switch(event){
+            case PAYMENT_RECEIVED -> this.currentState.pay(this);
+            case CONFIRM -> this.currentState.confirm(this);
+            case REJECT -> this.currentState.reject(this);
+            case COMPLETED -> this.currentState.complete(this);
+        }
+
+    }
+
+
     public void changeStatus(BookingStatus newStatus) {
         this.currentState= BookingStateFactory.fromStatus(newStatus);
-    }
-
-
-    public void pay() {
-        this.currentState.pay(this);
-    }
-
-    public void confirm() {
-        this.currentState.confirm(this);
-    }
-
-    public void reject() {
-        this.currentState.reject(this);
-    }
-
-    public void complete() {
-        this.currentState.complete(this);
     }
 
 
