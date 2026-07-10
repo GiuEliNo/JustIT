@@ -1,7 +1,7 @@
 package it.dosti.justit.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 public class RepairReport {
 
@@ -13,12 +13,7 @@ public class RepairReport {
 
 
 
-    @JsonCreator
-    public RepairReport(
-            @JsonProperty("techNotes") String techNotes,
-            @JsonProperty("laborHours") double laborHours,
-            @JsonProperty("costHours") double costHours,
-            @JsonProperty("partCosts") double partCosts) {
+    public RepairReport( String techNotes, double laborHours, double costHours, double partCosts) {
         this.techNotes = techNotes;
         this.laborHours = laborHours;
         this.costHours = costHours;
