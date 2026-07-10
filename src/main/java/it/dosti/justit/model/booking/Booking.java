@@ -3,6 +3,7 @@ package it.dosti.justit.model.booking;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
+import it.dosti.justit.model.Invoice;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.state.BookingEvent;
@@ -31,6 +32,7 @@ public class Booking {
     private BookingState currentState;
     private BookingStatus status;
     private RepairReport repairReport;
+    private Invoice invoice;
     private Booking(Builder builder) {
 
         this.bookingId = builder.bookingId;
@@ -43,6 +45,8 @@ public class Booking {
         this.status = builder.status;
         this.homeAssistance = builder.homeAssistance;
         this.createdAt = builder.createdAt;
+        this.repairReport = builder.repairReport;
+        this.invoice = builder.invoice;
 
         this.currentState = BookingStateFactory.fromStatus(builder.status);
     }
@@ -59,6 +63,8 @@ public class Booking {
         private BookingStatus status;
         private boolean homeAssistance;
         private LocalDateTime createdAt;
+        private RepairReport repairReport;
+        private Invoice invoice;
 
 
         public Builder(){
@@ -120,6 +126,16 @@ public class Booking {
 
         public Builder createdAt(LocalDateTime createdAt){
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder repairReport(RepairReport repairReport) {
+            this.repairReport = repairReport;
+            return this;
+        }
+
+        public Builder invoice(Invoice invoice) {
+            this.invoice = invoice;
             return this;
         }
 
@@ -189,6 +205,27 @@ public class Booking {
 
     public RepairReport getRepairReport() {
         return repairReport;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void issueInvoice() {
+        if (status != BookingStatus.COMPLETED) {
+            throw new InvalidBookingStateException("Invoice can be issued only for completed bookings");
+        }
+        if (repairReport == null) {
+            throw new InvalidBookingStateException("Invoice cannot be issued without a repair report");
+        }
+        if (invoice != null) {
+            return;
+        }
+        this.invoice = new Invoice(repairReport.calculateTotalCost(), false);
     }
 
     public void changeStatus(BookingStatus newStatus) {

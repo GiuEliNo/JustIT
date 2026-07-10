@@ -13,6 +13,7 @@ public class BookingBean {
     private Boolean homeAssistance;
     private String userAddress;
     private RepairReportBean repairReport;
+    private InvoiceBean invoice;
 
 
     public String getUsername() {
@@ -81,6 +82,12 @@ public class BookingBean {
     public RepairReportBean getRepairReport() {
         return repairReport;
     }
+    public void setInvoice(InvoiceBean invoice) {
+        this.invoice = invoice;
+    }
+    public InvoiceBean getInvoice() {
+        return invoice;
+    }
 
     public String getHomeAssistanceLabel() {
         if (homeAssistance == null) {
@@ -92,5 +99,15 @@ public class BookingBean {
     public boolean hasRepairReport() {
         return repairReport != null;
     }
-}
 
+    public boolean canPayInvoice() {
+        return "COMPLETED".equals(status) && invoice != null && invoice.canBePaid();
+    }
+
+    public String getInvoiceTotalLabel() {
+        if (invoice == null) {
+            return "";
+        }
+        return String.format("€ %.2f", invoice.getTotalCost());
+    }
+}

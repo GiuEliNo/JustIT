@@ -30,4 +30,6 @@ public interface BookingDAO {
     boolean deleteReservedBookingSlot(Integer bookingId);
 
     void saveRepairReport(Booking booking);
+
+    void saveInvoice(Booking booking);
 }

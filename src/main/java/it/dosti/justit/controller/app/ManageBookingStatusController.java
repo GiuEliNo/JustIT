@@ -23,14 +23,14 @@ import it.dosti.justit.exceptions.InvalidBookingStateException;
 
 public class ManageBookingStatusController {
 
-    private final BookingDAO dao = DaoFactory.getBookingDAO();
+    private final BookingDAO bookingDao = DaoFactory.getBookingDAO();
     public void approveBooking(BookingBean bookingBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
 
         try {
             booking.goNext(BookingEvent.CONFIRM);
-            dao.updateStatus(booking);
+            bookingDao.updateStatus(booking);
             notifyStatusChange(booking, oldStatus);
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error approving booking", e);
@@ -38,7 +38,7 @@ public class ManageBookingStatusController {
     }
 
     public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
 
         this.addRepairReportToBooking(booking, repairReportBean);
@@ -46,8 +46,8 @@ public class ManageBookingStatusController {
         try {
             booking.goNext(BookingEvent.REJECT);
             this.refundPayment(booking);
-            dao.updateStatus(booking);
-            dao.saveRepairReport(booking);
+            bookingDao.updateStatus(booking);
+            bookingDao.saveRepairReport(booking);
             this.notifyStatusChange(booking, oldStatus);
             this.sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {
@@ -58,17 +58,17 @@ public class ManageBookingStatusController {
     }
 
     public void completeBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
 
         this.addRepairReportToBooking(booking, repairReportBean);
 
         try {
             booking.goNext(BookingEvent.COMPLETED);
-            dao.updateStatus(booking);
-            dao.saveRepairReport(booking);
-            this.sendInvoice(booking.getRepairReport());
-            notifyStatusChange(booking, oldStatus);
+            bookingDao.updateStatus(booking);
+            bookingDao.saveRepairReport(booking);
+            this.sendInvoice(booking);
+            this.notifyStatusChange(booking, oldStatus);
             sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error completing booking", e);
@@ -88,7 +88,7 @@ public class ManageBookingStatusController {
         booking.setRepairReport(report);
     }
 
-    private void refundPayment(Booking booking){
+    private void refundPayment(Booking booking) throws PaymentException {
         PaymentService pay = new PaymentServiceStub();
 
         String shopName = booking.getShopName();
@@ -98,13 +98,16 @@ public class ManageBookingStatusController {
         if(pay.refundPayment(shopName, clientUsername, totalRefund)){
             JustItLogger.getInstance().info("Payment refunded");
         } else {
-            JustItLogger.getInstance().error("Payment refund failed");
             throw new PaymentException("Payment refund failed");
         }
     }
-
-    private void sendInvoice(RepairReport report){
-        Double totalCost = report.calculateTotalCost();
+    private void sendInvoice(Booking booking) {
+        booking.issueInvoice();
+        bookingDao.saveInvoice(booking);
+        JustItLogger.getInstance().info(
+                "Invoice issued for booking #" + booking.getBookingId()
+                        + " total " + booking.getInvoice().getTotalCost()
+        );
     }
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {

@@ -32,6 +32,8 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String LABORHOURS = "labor_hours";
     private static final String COSTHOURS = "cost_hours";
     private static final String PARTCOSTS = "part_costs";
+    private static final String TOTALCOST = "total_cost";
+    private static final String PAID = "paid";
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -123,6 +125,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .build();
 
                 booking.setRepairReport(getRepairReport(bookingId));
+                booking.setInvoice(getInvoice(bookingId));
 
                 bookings.add(booking);
             }
@@ -170,6 +173,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .build();
 
                 booking.setRepairReport(getRepairReport(bookingId));
+                booking.setInvoice(getInvoice(bookingId));
 
                 bookings.add(booking);
 
@@ -251,6 +255,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .createdAt(LocalDateTime.parse(rs.getString(CREATEDAT)))
                         .build();
                 booking.setRepairReport(getRepairReport(bookingId));
+                booking.setInvoice(getInvoice(bookingId));
                 return booking;
             }
 
@@ -380,6 +385,41 @@ public class BookingDAOJDBC implements BookingDAO {
                         rs.getDouble(LABORHOURS),
                         rs.getDouble(COSTHOURS),
                         rs.getDouble(PARTCOSTS)
+                );
+            }
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
+    public void saveInvoice(Booking booking) {
+        if (booking.getInvoice() == null) return;
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(BookingQuery.INSERT_INVOICE)
+        ) {
+            pstmt.setInt(1, booking.getBookingId());
+            pstmt.setDouble(2, booking.getInvoice().getTotalCost());
+            pstmt.setBoolean(3, booking.getInvoice().isPaid());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+    }
+
+    private Invoice getInvoice(Integer bookingId) {
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(BookingQuery.SELECT_INVOICE)
+        ) {
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Invoice(
+                        rs.getDouble(TOTALCOST),
+                        rs.getBoolean(PAID)
                 );
             }
         } catch (SQLException e) {

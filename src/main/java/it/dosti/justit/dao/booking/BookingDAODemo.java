@@ -32,6 +32,7 @@ public class BookingDAODemo implements BookingDAO {
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(15))
                 .build();
         completed.setRepairReport(new RepairReport("Batteria sostituita con componente originale. Dispositivo funzionante.", 1.5, 30.0, 25.0));
+        completed.issueInvoice();
         bookings.add(completed);
 
         bookings.add(new Booking.Builder(USER_DEMO)
@@ -139,6 +140,8 @@ public class BookingDAODemo implements BookingDAO {
                         .status(booking.getStatus())
                         .homeAssistance(current.getHomeAssistance())
                         .createdAt(current.getCreatedAt())
+                        .repairReport(current.getRepairReport())
+                        .invoice(current.getInvoice())
                         .build();
                 bookings.set(i, updated);
                 return;
@@ -197,6 +200,16 @@ public class BookingDAODemo implements BookingDAO {
         for (Booking booking : bookings) {
             if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
                 booking.setRepairReport(updatedBooking.getRepairReport());
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void saveInvoice(Booking updatedBooking) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+                booking.setInvoice(updatedBooking.getInvoice());
                 return;
             }
         }

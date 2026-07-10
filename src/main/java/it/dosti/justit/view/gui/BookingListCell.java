@@ -89,6 +89,12 @@ public class BookingListCell extends ListCell<BookingBean> {
             });
             actionRow.getChildren().add(reportButton);
         }
+        if (booking.canPayInvoice()) {
+            Button payInvoiceButton = new Button("Pay " + booking.getInvoiceTotalLabel());
+            payInvoiceButton.getStyleClass().add("button-success");
+            payInvoiceButton.setOnAction(event -> event.consume());
+            actionRow.getChildren().add(payInvoiceButton);
+        }
 
         container.getChildren().addAll(
                 firstRow,
