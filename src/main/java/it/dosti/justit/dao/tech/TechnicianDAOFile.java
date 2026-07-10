@@ -20,13 +20,13 @@ public class TechnicianDAOFile implements TechnicianDAO{
     private static final String FILENAME_USER = "users";
 
     @Override
-    public Integer getShopIDbyName(String shopName) {
+    public Shop getShopbyName(String shopName) {
         try{
             List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
             if (!shops.isEmpty()){
                 for(Shop shop : shops){
                     if(shop.getName().equals(shopName)){
-                        return shop.getId();
+                        return shop;
                     }
                 }
             }
@@ -34,7 +34,7 @@ public class TechnicianDAOFile implements TechnicianDAO{
         catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-        return 0;
+        return null;
     }
 
     @Override

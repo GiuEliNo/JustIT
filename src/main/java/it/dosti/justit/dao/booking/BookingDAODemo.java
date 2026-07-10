@@ -1,9 +1,13 @@
 package it.dosti.justit.dao.booking;
 
+import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.RepairReport;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,14 +21,25 @@ public class BookingDAODemo implements BookingDAO {
     private int nextId = 1004;
 
     private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
-    private static final String USER_DEMO = "demo_client";
+    private static final User user1 = new ClientUser("Francesco pandini");
+    private static final User user2 = new ClientUser("Valentino mastrota");
+    private static final Shop shop = new Shop.Builder(SHOP_NAME_DEMO)
+            .id(1)
+            .address("Via di Tor Pignattara 38")
+            .phone("+39 06 2456789")
+            .email("arindale.riparazione@demo.justit.it")
+            .description("Centro assistenza")
+            .image(new byte[]{1})
+            .openingHours("09:00 - 18:00")
+            .homeAssistance(true)
+            .coordinates(new Coordinates(41.87, 12.54))
+            .build();
 
     public BookingDAODemo() {
 
-        Booking completed = new Booking.Builder(USER_DEMO)
+        Booking completed = new Booking.Builder(user1)
                 .bookingId(1001)
-                .shopId(1)
-                .shopName(SHOP_NAME_DEMO)
+                .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(12))
                 .timeSlot(TimeSlot.MORNING)
                 .description("Sostituzione batteria Stonex One")
@@ -46,10 +61,9 @@ public class BookingDAODemo implements BookingDAO {
         bookings.add(completed);
 
 
-        bookings.add(new Booking.Builder(USER_DEMO)
+        bookings.add(new Booking.Builder(user1)
                 .bookingId(1002)
-                .shopId(1)
-                .shopName(SHOP_NAME_DEMO)
+                .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(2))
                 .timeSlot(TimeSlot.AFTERNOON)
                 .description("Installazione sailfish os")
@@ -59,10 +73,9 @@ public class BookingDAODemo implements BookingDAO {
                 .build());
 
 
-        bookings.add(new Booking.Builder(USER_DEMO)
+        bookings.add(new Booking.Builder(user1)
                 .bookingId(1003)
-                .shopId(1)
-                .shopName(SHOP_NAME_DEMO)
+                .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
                 .description("Pulizia steam controller")
@@ -72,10 +85,9 @@ public class BookingDAODemo implements BookingDAO {
                 .build());
 
 
-        Booking rejected = new Booking.Builder("demo_client_2")
+        Booking rejected = new Booking.Builder(user2)
                 .bookingId(2001)
-                .shopId(1)
-                .shopName(SHOP_NAME_DEMO)
+                .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(5))
                 .timeSlot(TimeSlot.MORNING)
                 .description("Aggiornamento Gentoo")
@@ -102,10 +114,9 @@ public class BookingDAODemo implements BookingDAO {
 
         int generatedId = nextId++;
 
-        Booking newBooking = new Booking.Builder(booking.getUsername())
+        Booking newBooking = new Booking.Builder(booking.getUser())
                 .bookingId(generatedId)
-                .shopId(booking.getShopId())
-                .shopName(booking.getShopName())
+                .shopEntity(booking.getShop())
                 .date(booking.getDate())
                 .timeSlot(booking.getTimeSlot())
                 .description(booking.getDescription())
@@ -128,8 +139,8 @@ public class BookingDAODemo implements BookingDAO {
     @Override
     public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) {
         return bookings.stream()
-                .anyMatch(b ->
-                        b.getShopId().equals(shopId)
+                .anyMatch(
+                        b -> b.getShop().getId().equals(shopId)
                                 && b.getDate().equals(date)
                                 && b.getTimeSlot() == timeSlot
                 );
@@ -139,30 +150,30 @@ public class BookingDAODemo implements BookingDAO {
     @Override
     public List<Booking> getBookingsByUser(String username) {
 
-        List<Booking> result = new ArrayList<>();
+        List<Booking> userBookings = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getUsername().equals(username)) {
-                result.add(booking);
+            if (booking.getUser().getUsername().equals(username)) {
+                userBookings.add(booking);
             }
         }
 
-        return result;
+        return userBookings;
     }
 
 
     @Override
     public List<Booking> getBookingsByShop(Integer shopId) {
 
-        List<Booking> result = new ArrayList<>();
+        List<Booking> shopBookings = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getShopId().equals(shopId)) {
-                result.add(booking);
+            if (booking.getShop().getId().equals(shopId)) {
+                shopBookings.add(booking);
             }
         }
 
-        return result;
+        return shopBookings;
     }
 
 
@@ -175,10 +186,9 @@ public class BookingDAODemo implements BookingDAO {
 
             if (current.getBookingId().equals(booking.getBookingId())) {
 
-                Booking updated = new Booking.Builder(current.getUsername())
+                Booking updated = new Booking.Builder(current.getUser())
                         .bookingId(current.getBookingId())
-                        .shopId(current.getShopId())
-                        .shopName(current.getShopName())
+                        .shopEntity(current.getShop())
                         .date(current.getDate())
                         .timeSlot(current.getTimeSlot())
                         .description(current.getDescription())
@@ -202,16 +212,15 @@ public class BookingDAODemo implements BookingDAO {
     @Override
     public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date) {
 
-        List<TimeSlot> result = new ArrayList<>();
+        List<TimeSlot> occupiedSlots = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getShopId().equals(shopId)
-                    && booking.getDate().equals(date)) {
-                result.add(booking.getTimeSlot());
+            if (booking.getShop().getId().equals(shopId) && booking.getDate().equals(date)) {
+                occupiedSlots.add(booking.getTimeSlot());
             }
         }
 
-        return result;
+        return occupiedSlots;
     }
 
 
@@ -231,8 +240,8 @@ public class BookingDAODemo implements BookingDAO {
         List<Booking> result = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getUsername().equals(username)
-                    && booking.getShopId().equals(shopId)
+            if (booking.getUser().getUsername().equals(username)
+                    && booking.getShop().getId().equals(shopId)
                     && booking.getStatus() == BookingStatus.COMPLETED
                     && booking.getBookingId().equals(1001)) {
 
@@ -250,7 +259,7 @@ public class BookingDAODemo implements BookingDAO {
         List<Booking> result = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getUsername().equals(username)
+            if (booking.getUser().getUsername().equals(username)
                     && booking.getStatus() == BookingStatus.COMPLETED
                     && booking.getBookingId().equals(1001)) {
 

@@ -8,7 +8,7 @@ public class BookingQuery {
             " VALUES (?,?,?,?,?,?,?)";
 
     public static final String UPDATE_STATUS = "UPDATE Booking SET state = ? WHERE id = ?";
-    public static final String SELECT_BOOKING_USER = "SELECT B.idShop, B.id, S.name,B.date,B.timeSlot,B.description, B.state, B.isHomeAssistance, B.createdAt FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
+    public static final String SELECT_BOOKING_USER = "SELECT B.idShop, B.id, S.name,B.date,B.timeSlot,B.description, B.state, B.isHomeAssistance, B.createdAt, B.transaction_id FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
     public static final String SELECT_COMPLETED_WITHOUT_REVIEW_USER = "SELECT B.idShop, B.id, S.name, B.date, B.timeSlot, " +
             "B.description, B.state, B.isHomeAssistance FROM Booking B join Shop S ON B.idShop = S.id " +
             "LEFT JOIN reviews R ON R.booking_id = B.id WHERE B.username = ? AND B.state IN ('COMPLETED') " +

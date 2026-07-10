@@ -12,7 +12,7 @@ public class CAddReviewView extends BaseCliView{
 
     public void renderBookingsCompleted(BookingBean bookingBean) {
         System.out.println("Booking ID: " + bookingBean.getBookingID());
-        System.out.println("Shop: " + bookingBean.getShopName() + " (ID " + bookingBean.getShopId() + ")");
+        System.out.println("Shop: " + bookingBean.getShopName());
         System.out.println("Date: " + bookingBean.getDate() + " - " + bookingBean.getTimeSlot());
         System.out.println("------------------------------------------------");
         }

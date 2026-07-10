@@ -1,15 +1,19 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.BookingAlreadyExistsException;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.model.Coordinates;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
@@ -30,21 +34,35 @@ import static org.junit.jupiter.api.Assertions.fail;
 //Valerio Mazza
 class BookingAlreadyExistsTest {
 
-    private static final String USERNAME = "sammello";
-    private static final int SHOP_ID = 1;
+    private static final ClientUser user = new ClientUser("Sammello", "samele", "samele@mail.com", "Via Roma 17", new Coordinates( 41.960,  12.550) );
+    private static final Shop shop = new Shop.Builder("Arindale Riparazione")
+            .id(1290)
+            .address("Via di Tor Pignattara 38")
+            .phone("+39 06 2456789")
+            .email("arindale.riparazione@demo.justit.it")
+            .description("Centro assistenza")
+            .image(new byte[]{1})
+            .openingHours("09:00 - 18:00")
+            .homeAssistance(true)
+            .coordinates(new Coordinates(41.87, 12.54))
+            .build();
+
     private static final TimeSlot TIME_SLOT = TimeSlot.MORNING;
     private static final LocalDate bookingDate = LocalDate.of(2050, Month.JANUARY, 1);
+    private static final String SESSION_ID = SessionManager.getInstance().createSession();
 
     @BeforeEach
     void setupInsertBooking(){
         //aggiunta di una prenotazione per l'account di test allo shop id 1. DB già popolato preso dalle resources. Questa prenotaione ancora non esiste
+        SessionManager.getInstance().getActiveSession(SESSION_ID).setLoggedUser(user);
+        SessionManager.getInstance().getActiveSession(SESSION_ID).setCurrentShop(shop);
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
         SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
 
         BookingDAO dao = new BookingDAOJDBC();
 
-        Booking booking = new Booking.Builder(USERNAME)
-                .shopId(SHOP_ID)
+        Booking booking = new Booking.Builder(user)
+                .shopEntity(shop)
                 .date(bookingDate)
                 .timeSlot(TIME_SLOT)
                 .description("Booking test")
@@ -53,7 +71,7 @@ class BookingAlreadyExistsTest {
                 .createdAt()
                 .build();
 
-        if (!dao.existsBooking(SHOP_ID, bookingDate, TIME_SLOT)) {
+        if (!dao.existsBooking(shop.getId(), bookingDate, TIME_SLOT)) {
             try {
                 dao.addBooking(booking);
             }catch(RegisterOnBackEndException e) {
@@ -67,14 +85,14 @@ class BookingAlreadyExistsTest {
         BookAppointmentController appController = new BookAppointmentController();
 
         BookingBean bookingBean = new BookingBean();
-        bookingBean.setShopId(SHOP_ID);
-        bookingBean.setUsername(USERNAME);
         bookingBean.setDate(bookingDate);
         bookingBean.setTimeSlot(TIME_SLOT.toString());
         bookingBean.setDescription("Booking test duplicated");
         bookingBean.setHomeAssistance(false);
+        SessionBean sessionBean = new SessionBean();
+        sessionBean.setSessionId(SESSION_ID);
 
-        assertThrows(BookingAlreadyExistsException.class, () -> appController.reserveSlotBooking(bookingBean));
+        assertThrows(BookingAlreadyExistsException.class, () -> appController.reserveSlotBooking(bookingBean, sessionBean ));
     }
 
     @AfterEach
@@ -83,8 +101,8 @@ class BookingAlreadyExistsTest {
         String sql = "DELETE FROM Booking WHERE idShop = ? AND username = ? AND date = ? AND timeSlot = ?";
         try (Connection conn = ConnectionDB.getInstance().connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, SHOP_ID);
-            stmt.setString(2, USERNAME);
+            stmt.setInt(1, shop.getId());
+            stmt.setString(2, user.getUsername());
             stmt.setObject(3, bookingDate);
             stmt.setString(4, TIME_SLOT.name());
             stmt.executeUpdate();

@@ -75,10 +75,9 @@ public class AddReviewGCliController extends BaseCliController {
         ShopBean shopBean = new ShopBean();
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        shopBean.setId(selectedBooking.getShopId());
         String shopName = selectedBooking.getShopName();
 
-        shopBean.setName(shopName != null ? shopName : "Shop #" + selectedBooking.getShopId());
+        shopBean.setName(shopName != null ? shopName : "Shop #" + selectedBooking.getShopName());
         browseShopController.pageSelected(session, shopBean);
 
         reviewBean.setTitle(addReviewView.askTitle());

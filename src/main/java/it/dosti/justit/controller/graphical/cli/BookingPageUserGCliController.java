@@ -24,24 +24,20 @@ public class BookingPageUserGCliController extends BaseCliController {
 
         SessionBean session= new SessionBean();
         session.setSessionId(sessionId);
-        Integer shopId = appController.getShopId(session);
-        String username = appController.getUsername(session);
 
-        LocalDate date = askValidDate(shopId);
-        List<String> availableSlots = appController.getAvailableSlots(shopId, date).getTimeSlots();
+        LocalDate date = askValidDate(session);
+        List<String> availableSlots = appController.getAvailableSlots(session, date).getTimeSlots();
         bookingView.showAvailableSlots(date, availableSlots);
 
         String timeSlot = askValidTimeSlot(availableSlots);
 
         BookingBean bookingBean = new BookingBean();
-        bookingBean.setShopId(shopId);
-        bookingBean.setUsername(username);
         bookingBean.setDate(date);
         bookingBean.setTimeSlot(timeSlot);
         bookingBean.setDescription(bookingView.askDescription());
         bookingBean.setHomeAssistance(false);
         try{
-            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean);
+            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean, session);
             navigation.navigate(Screen.PAYMENTS_PAGE_BOOKING, sessionId, bean);
         }catch (Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -49,7 +45,7 @@ public class BookingPageUserGCliController extends BaseCliController {
         }
     }
 
-    private LocalDate askValidDate(Integer shopId) {
+    private LocalDate askValidDate(SessionBean session) {
         while (true) {
             String dateInput = bookingView.askDate();
             LocalDate date;
@@ -63,7 +59,7 @@ public class BookingPageUserGCliController extends BaseCliController {
 
             if (date.isBefore(LocalDate.now(ZoneId.systemDefault()))) {
                 bookingView.showInvalidDate();
-            } else if (!appController.hasAvailableSlots(shopId, date)) {
+            } else if (!appController.hasAvailableSlots(session, date)) {
                 bookingView.showNoAvailableSlots(date);
             } else {
                 return date;

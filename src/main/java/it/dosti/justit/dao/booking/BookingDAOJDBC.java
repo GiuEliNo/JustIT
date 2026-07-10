@@ -1,12 +1,18 @@
 package it.dosti.justit.dao.booking;
 
+import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.dao.user.UserDAO;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.BookingQuery;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.exceptions.ShopNotFoundException;
+import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.sql.*;
@@ -45,8 +51,8 @@ public class BookingDAOJDBC implements BookingDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
                 ) {
 
-            pstmt.setInt(1, booking.getShopId());
-            pstmt.setString(2, booking.getUsername());
+            pstmt.setInt(1, booking.getShop().getId());
+            pstmt.setString(2, booking.getUser().getUsername());
             pstmt.setString(3, booking.getDate().toString());
             pstmt.setString(4, booking.getTimeSlot().toString());
             pstmt.setString(5, booking.getDescription());
@@ -105,21 +111,24 @@ public class BookingDAOJDBC implements BookingDAO {
 
                 Integer shopId = rs.getInt(IDSHOP);
                 Integer bookingId = rs.getInt(ID);
-                String shopName = rs.getString(NAME);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATEDAT));
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                Booking booking = new Booking.Builder(username)
+                ShopDAO shopDAO = DaoFactory.getShopDAO();
+                UserDAO userDao = DaoFactory.getClientUserDAO();
+                Shop shop = shopDAO.retrieveShopById(shopId);
+                User user = userDao.findByUsername(username);
+
+                Booking booking = new Booking.Builder(user)
                         .bookingId(bookingId)
-                        .shopId(shopId)
-                        .shopName(shopName)
+                        .shopEntity(shop)
                         .date(date)
                         .timeSlot(timeSlot)
                         .description(description)
@@ -135,7 +144,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 bookings.add(booking);
             }
             return bookings;
-        } catch (SQLException e) {
+        } catch (SQLException | ShopNotFoundException |UserNotFoundException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
@@ -165,12 +174,18 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
-                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+
+                ShopDAO shopDAO = DaoFactory.getShopDAO();
+                UserDAO userDao = DaoFactory.getClientUserDAO();
+                Shop shop = shopDAO.retrieveShopById(shopId);
+                User user = userDao.findByUsername(username);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                Booking booking = new Booking.Builder(username)
+
+                Booking booking = new Booking.Builder(user)
                         .bookingId(bookingId)
-                        .shopId(shopId)
+                        .shopEntity(shop)
                         .date(date)
                         .timeSlot(timeSlot)
                         .description(description)
@@ -186,7 +201,7 @@ public class BookingDAOJDBC implements BookingDAO {
 
             }
             return bookings;
-        } catch (SQLException e) {
+        } catch (SQLException | ShopNotFoundException | UserNotFoundException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
@@ -252,9 +267,15 @@ public class BookingDAOJDBC implements BookingDAO {
 
             if (rs.next()) {
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
-                Booking booking = new Booking.Builder(rs.getString(USERNAME))
+
+                ShopDAO shopDAO = DaoFactory.getShopDAO();
+                UserDAO userDao = DaoFactory.getClientUserDAO();
+                Shop shop = shopDAO.retrieveShopById(rs.getInt(IDSHOP));
+                User user = userDao.findByUsername(rs.getString(USERNAME));
+
+                Booking booking = new Booking.Builder(user)
                         .bookingId(bookingId)
-                        .shopId(rs.getInt(IDSHOP))
+                        .shopEntity(shop)
                         .date(LocalDate.parse(rs.getString(DATE)))
                         .timeSlot(TimeSlot.valueOf(rs.getString(TIMESLOT)))
                         .description(rs.getString(DESCRIPTION))
@@ -268,7 +289,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 return booking;
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ShopNotFoundException | UserNotFoundException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return null;
@@ -295,12 +316,17 @@ public class BookingDAOJDBC implements BookingDAO {
                 BookingStatus status = BookingStatus.valueOf(rs.getString(STATE));
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
-                Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                Booking booking = new Booking.Builder(username)
+                ShopDAO shopDAO = DaoFactory.getShopDAO();
+                UserDAO userDao = DaoFactory.getClientUserDAO();
+                Shop shop = shopDAO.retrieveShopById(shopId);
+                User user = userDao.findByUsername(username);
+
+                Booking booking = new Booking.Builder(user)
                         .bookingId(bookingId)
-                        .shopId(shopId)
+                        .shopEntity(shop)
                         .date(date)
                         .timeSlot(timeSlot)
                         .description(description)
@@ -309,10 +335,13 @@ public class BookingDAOJDBC implements BookingDAO {
                         .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
+                booking.setRepairReport(getRepairReport(bookingId));
+                booking.setInvoice(getInvoice(bookingId));
+
                 bookings.add(booking);
             }
             return bookings;
-        } catch (SQLException e) {
+        } catch (SQLException | UserNotFoundException | ShopNotFoundException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }
@@ -333,7 +362,6 @@ public class BookingDAOJDBC implements BookingDAO {
             while (rs.next()) {
                 Integer shopId = rs.getInt(IDSHOP);
                 Integer bookingId = rs.getInt(ID);
-                String shopName = rs.getString(NAME);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
@@ -343,10 +371,14 @@ public class BookingDAOJDBC implements BookingDAO {
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                Booking booking = new Booking.Builder(username)
+                ShopDAO shopDAO = DaoFactory.getShopDAO();
+                UserDAO userDao = DaoFactory.getClientUserDAO();
+                Shop shop = shopDAO.retrieveShopById(shopId);
+                User user = userDao.findByUsername(username);
+
+                Booking booking = new Booking.Builder(user)
                         .bookingId(bookingId)
-                        .shopId(shopId)
-                        .shopName(shopName)
+                        .shopEntity(shop)
                         .date(date)
                         .timeSlot(timeSlot)
                         .description(description)
@@ -355,10 +387,13 @@ public class BookingDAOJDBC implements BookingDAO {
                         .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
+                booking.setRepairReport(getRepairReport(bookingId));
+                booking.setInvoice(getInvoice(bookingId));
+
                 bookings.add(booking);
             }
             return bookings;
-        } catch (SQLException e) {
+        } catch (SQLException | ShopNotFoundException | UserNotFoundException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             return Collections.emptyList();
         }

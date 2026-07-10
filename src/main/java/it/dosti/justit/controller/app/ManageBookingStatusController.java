@@ -7,12 +7,9 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.RepairReport;
-import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.booking.state.BookingEvent;
@@ -114,14 +111,6 @@ public class ManageBookingStatusController {
         }
     }
     private void sendEmailAlert(Booking booking) {
-
-        ShopDAO shopDAO = DaoFactory.getShopDAO();
-        try{
-            Shop shop = shopDAO.retrieveShopById(booking.getShopId());
-            EmailGatewayService.sendEMailInvoice(shop.getEmail());
-        } catch (ShopNotFoundException e) {
-            JustItLogger.getInstance().error("Shop not found");
-        }
-
+        EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
     }
 }

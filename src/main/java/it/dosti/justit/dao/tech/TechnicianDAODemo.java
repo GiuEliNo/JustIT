@@ -3,7 +3,9 @@ package it.dosti.justit.dao.tech;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
+import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Credentials;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,16 +17,28 @@ public class TechnicianDAODemo implements TechnicianDAO {
 
     private final Map<String, TechnicianUser> usersByUsername = new HashMap<>();
     private final Map<String, String> passwordsByUsername = new HashMap<>();
-    private final Map<String, Integer> shopIdByShopName = new HashMap<>();
+    private final Map<String, Shop> shopByShopName = new HashMap<>();
 
     public TechnicianDAODemo() {
-        TechnicianUser user1 = new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", 1);
+        Shop shop = new Shop.Builder("Arindale Riparazione")
+                .id(1)
+                .address("Via di Tor Pignattara 38")
+                .phone("+39 06 2456789")
+                .email("arindale.riparazione@demo.justit.it")
+                .description("Centro assistenza")
+                .image(new byte[]{1})
+                .openingHours("09:00 - 18:00")
+                .homeAssistance(true)
+                .coordinates(new Coordinates(41.87, 12.54))
+                .build();
+
+        TechnicianUser user1 = new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", shop);
 
         usersByUsername.put(user1.getUsername(), user1);
 
         passwordsByUsername.put(user1.getUsername(), DigestUtils.sha256Hex("password"));
 
-        shopIdByShopName.put("Arindale Riparazione", 1);
+        shopByShopName.put("Arindale Riparazione", shop);
     }
 
     @Override
@@ -37,7 +51,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
 
     public boolean registerTech(TechnicianUser user, Credentials cred) {
 
-        TechnicianUser tec = new TechnicianUser(user.getName(), user.getUsername(), user.getEmail(), user.getShopId());
+        TechnicianUser tec = new TechnicianUser(user.getName(), user.getUsername(), user.getEmail(), user.getShop());
 
         String username = tec.getUsername();
         if (usersByUsername.containsKey(username)) {
@@ -51,12 +65,12 @@ public class TechnicianDAODemo implements TechnicianDAO {
     }
 
     @Override
-    public Integer getShopIDbyName(String shopName) throws ShopNotFoundException {
-        Integer shopId = shopIdByShopName.get(shopName);
-        if (shopId == null) {
+    public Shop getShopbyName(String shopName) throws ShopNotFoundException {
+        Shop shop = shopByShopName.get(shopName);
+        if (shop == null) {
             throw new ShopNotFoundException("Shop not found: " + shopName);
         }
-        return shopId;
+        return shop;
     }
 
     @Override
@@ -79,7 +93,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
                 newName,
                 oldUser.getUsername(),
                 oldUser.getEmail(),
-                oldUser.getShopId()
+                oldUser.getShop()
         );
         usersByUsername.put(username, updated);
         return true;
@@ -96,7 +110,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
                 oldUser.getName(),
                 oldUser.getUsername(),
                 email,
-                oldUser.getShopId()
+                oldUser.getShop()
         );
         usersByUsername.put(username, updated);
         return true;

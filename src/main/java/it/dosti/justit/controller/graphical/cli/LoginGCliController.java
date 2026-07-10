@@ -4,7 +4,6 @@ import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CLoginView;
@@ -47,7 +46,7 @@ public class LoginGCliController extends BaseCliController {
                 else{
                     navigation.navigate(Screen.LOGIN, null);
                 }
-        } catch (LoginFromBackEndException | ShopNotFoundException | NavigationException e) {
+        } catch (LoginFromBackEndException | NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage());
         }
     }

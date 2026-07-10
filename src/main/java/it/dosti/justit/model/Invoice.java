@@ -1,7 +1,5 @@
 package it.dosti.justit.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 
 public class Invoice {
@@ -9,10 +7,8 @@ public class Invoice {
     private final double totalCost;
     private boolean paid;
 
-    @JsonCreator
-    public Invoice(
-            @JsonProperty("totalCost") double totalCost,
-            @JsonProperty("paid") boolean paid) {
+
+    public Invoice( double totalCost, boolean paid) {
         if (totalCost < 0) {
             throw new InvalidBookingStateException("Invoice total cost cannot be negative");
         }

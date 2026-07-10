@@ -4,7 +4,6 @@ import it.dosti.justit.bean.LoginBean;
 import it.dosti.justit.controller.app.LoginController;
 import it.dosti.justit.exceptions.LoginFromBackEndException;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.fxml.FXML;
@@ -51,7 +50,7 @@ public class LoginGController extends BaseGController {
                 outputLabel.setText("Incorrect username or password");
                 JustItLogger.getInstance().info("Login failed for : " + loginBean.getUsername());
         }
-            catch(ShopNotFoundException | NavigationException e) {
+            catch( NavigationException e) {
             JustItLogger.getInstance().error(e.getMessage());
             outputLabel.setText("System error, try again later");
         }

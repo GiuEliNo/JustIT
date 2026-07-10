@@ -5,13 +5,13 @@ import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dao.clientuser.ClientUserDAO;
 import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.dto.ReviewCreatedDTO;
 import it.dosti.justit.events.publisher.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -87,22 +87,16 @@ public class ReviewController {
     private BookingBean toBean(Booking booking) {
         BookingBean bean = new BookingBean();
 
-        bean.setShopId(booking.getShopId());
         bean.setBookingID(booking.getBookingId());
-        bean.setUsername(booking.getUsername());
+        bean.setUsername(booking.getUser().getUsername());
         bean.setDate(booking.getDate());
         bean.setTimeSlot(booking.getTimeSlot().toString());
         bean.setDescription(booking.getDescription());
         bean.setStatus(booking.getStatus().toString());
-        bean.setShopName(booking.getShopName());
+        bean.setShopName(booking.getShop().getName());
         bean.setHomeAssistance(booking.getHomeAssistance());
-        bean.setUserAddress(booking.getHomeAssistance() ? this.addressUserBooking(booking.getUsername()) : null);
+        bean.setUserAddress(booking.getHomeAssistance() ? ((ClientUser)booking.getUser()).getAddress() : null);
 
         return bean;
-    }
-
-    private String addressUserBooking(String username) {
-        ClientUserDAO userDao = DaoFactory.getClientUserDAO();
-        return userDao.getAddress(username);
     }
 }

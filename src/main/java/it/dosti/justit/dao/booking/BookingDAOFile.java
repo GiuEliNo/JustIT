@@ -1,14 +1,14 @@
 package it.dosti.justit.dao.booking;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dto.InvoiceDTO;
 import it.dosti.justit.dto.ReportDTO;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
-import it.dosti.justit.model.RepairReport;
-import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 import java.time.LocalDate;
@@ -23,6 +23,8 @@ public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_REVIEWS = "reviews";
     private static final String FILENAME_SHOPS = "shops";
     private static final String FILENAME_REPORTS = "reports";
+    private static final String FILENAME_USERS = "users";
+    private static final String FILENAME_INVOICES = "invoices";
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -52,7 +54,7 @@ public class BookingDAOFile implements BookingDAO {
             if (!bookings.isEmpty()){
                 boolean found = false;
                 for (Booking booking : bookings) {
-                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().isEqual(date) && booking.getTimeSlot().compareTo(timeSlot)==0){
+                    if(booking.getShop().getId().compareTo(shopId)==0 && booking.getDate().isEqual(date) && booking.getTimeSlot().compareTo(timeSlot)==0){
                         found = true;
                         break;
                     }
@@ -73,10 +75,10 @@ public class BookingDAOFile implements BookingDAO {
             if(!bookingsGeneral.isEmpty()){
                 List<Booking> bookingsUser = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
-                    if(booking.getUsername().equals(username)){
-                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
-                        String shopName = retrieveShopName(booking.getShopId());
-                        booking.setShopName(shopName);
+                    if(booking.getUser().getUsername().equals(username)){
+                        booking.setUser(retrieveUser(booking));
+                        booking.setShop(retrieveShop(booking));
+                        booking.setRepairReport(retrieveReport(booking.getBookingId()));
                         bookingsUser.add(booking);
                     }
                 }
@@ -95,8 +97,11 @@ public class BookingDAOFile implements BookingDAO {
             if(!bookingsGeneral.isEmpty()){
                 List<Booking> bookingsShop = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
-                    if(booking.getShopId().compareTo(shopId)==0){
-                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
+                    if(booking.getShop().getId().compareTo(shopId)==0){
+                        booking.setUser(retrieveUser(booking));
+                        booking.setShop(retrieveShop(booking));
+                        booking.setRepairReport(retrieveReport(booking.getBookingId()));
+                        booking.setInvoice(retrieveInvoice(booking));
                         bookingsShop.add(booking);
                     }
                 }
@@ -133,7 +138,8 @@ public class BookingDAOFile implements BookingDAO {
             if(!bookings.isEmpty()){
                 List<TimeSlot> timeSlots = new ArrayList<>();
                 for(Booking booking : bookings){
-                    if(booking.getShopId().compareTo(shopId)==0 && booking.getDate().isEqual(date)){
+                    booking.setShop(retrieveShop(booking));
+                    if(booking.getShop().getId().compareTo(shopId)==0 && booking.getDate().isEqual(date)){
                         timeSlots.add(booking.getTimeSlot());
                     }
                 }
@@ -153,7 +159,10 @@ public class BookingDAOFile implements BookingDAO {
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
                     if(booking.getBookingId().compareTo(bookingId)==0){
-                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
+                        booking.setUser(retrieveUser(booking));
+                        booking.setShop(retrieveShop(booking));
+                        booking.setRepairReport(retrieveReport(booking.getBookingId()));
+                        booking.setInvoice(retrieveInvoice(booking));
                         return booking;
                     }
                 }
@@ -169,10 +178,16 @@ public class BookingDAOFile implements BookingDAO {
     public List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId){
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+            for(Booking booking : bookings){
+                booking.setUser(retrieveUser(booking));
+                booking.setShop(retrieveShop(booking));
+                booking.setRepairReport(retrieveReport(booking.getBookingId()));
+                booking.setInvoice(retrieveInvoice(booking));
+            }
             List<Booking> filteredBookings;
             List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
                 filteredBookings = bookings.stream()
-                        .filter(booking -> shopId.equals(booking.getShopId()) && booking.getStatus()== BookingStatus.COMPLETED)
+                        .filter(booking -> shopId.equals(booking.getShop().getId()) && booking.getStatus()== BookingStatus.COMPLETED)
                         .filter(a -> reviews.stream()
                                 .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
                         .collect(Collectors.toList());
@@ -189,10 +204,16 @@ public class BookingDAOFile implements BookingDAO {
     public List<Booking> getCompletedBookingsWithoutReview(String username){
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+            for(Booking booking : bookings){
+                booking.setUser(retrieveUser(booking));
+                booking.setShop(retrieveShop(booking));
+                booking.setRepairReport(retrieveReport(booking.getBookingId()));
+                booking.setInvoice(retrieveInvoice(booking));
+            }
             List<Booking> filteredBookings;
             List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
             filteredBookings = bookings.stream()
-                    .filter(booking -> username.equals(booking.getUsername()) && booking.getStatus()== BookingStatus.COMPLETED)
+                    .filter(booking -> username.equals(booking.getUser().getUsername()) && booking.getStatus()== BookingStatus.COMPLETED)
                     .filter(a -> reviews.stream()
                             .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
                     .collect(Collectors.toList());
@@ -205,23 +226,6 @@ public class BookingDAOFile implements BookingDAO {
         return Collections.emptyList();
     }
 
-
-    public String retrieveShopName(Integer shopId){
-        try{
-            List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {
-            });
-            if(!shops.isEmpty()){
-                for(Shop shop : shops){
-                    if (shop.getId().equals(shopId)) {
-                        return shop.getName();
-                    }
-                }
-            }
-        }catch(Exception e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return "";
-    }
 
     @Override
     public void saveRepairReport(Booking updatedBooking) {
@@ -276,8 +280,26 @@ public class BookingDAOFile implements BookingDAO {
         return false;
     }
 
+    private Invoice retrieveInvoice(Booking booking){
+        try{
+            List<InvoiceDTO> invoices = JsonHandler.readCollectionOnJsonFile(FILENAME_INVOICES, new TypeReference<>() {});
+            if(!invoices.isEmpty()){
+                for(InvoiceDTO invoice : invoices){
+                    if(invoice.getBookingId().equals(booking.getBookingId())){
+                        return new Invoice(invoice.getTotalAmount(), invoice.isPaid());
+                    }
+                }
+            }
 
-    private RepairReport getRepairReport(Integer bookingId) {
+        }
+        catch (Exception e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+
+    private RepairReport retrieveReport(Integer bookingId) {
         try{
             List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
             if (!reports.isEmpty()) {
@@ -312,5 +334,40 @@ public class BookingDAOFile implements BookingDAO {
         } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
+    }
+
+
+    private Shop retrieveShop(Booking booking){
+        try{
+            List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {
+            });
+            if(!shops.isEmpty()){
+                for(Shop shop : shops){
+                    if (shop.getId().equals(booking.getShop().getId())) {
+                        return shop;
+                    }
+                }
+            }
+        }catch(Exception e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    private User retrieveUser(Booking booking){
+        try{
+            List<ClientUser> users = JsonHandler.readCollectionOnJsonFile(FILENAME_USERS, new TypeReference<>() {});
+            if(!users.isEmpty()){
+                for(ClientUser user : users){
+                    if(user.getUsername().equals(booking.getUser().getUsername())){
+                        return user;
+                    }
+                }
+            }
+        }
+        catch(Exception e){
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
     }
 }

@@ -5,7 +5,6 @@ import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ListBookingController;
 import it.dosti.justit.controller.app.ManageBookingStatusController;
-import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.view.gui.DialogRepairReport;
 import it.dosti.justit.view.gui.DialogViewRepairReport;
 import javafx.collections.FXCollections;
@@ -32,7 +31,7 @@ public class BookingsListTechGController extends BaseGController {
     @FXML
     private TableColumn<BookingBean, String> timeCol;
     @FXML
-    private TableColumn<BookingBean, BookingStatus> statusCol;
+    private TableColumn<BookingBean, String> statusCol;
     @FXML
     private TableColumn<BookingBean, String> homeAssistanceCol;
 

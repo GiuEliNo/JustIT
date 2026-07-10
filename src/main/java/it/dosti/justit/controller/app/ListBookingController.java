@@ -7,13 +7,10 @@ import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAOCSV;
-import it.dosti.justit.dao.clientuser.ClientUserDAO;
 import it.dosti.justit.model.Invoice;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.booking.state.BookingEvent;
-import it.dosti.justit.utils.JustItLogger;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
@@ -41,7 +38,7 @@ public class ListBookingController {
             csvBean.setDate(b.getDate());
             csvBean.setStatus(b.getStatus().toString());
             csvBean.setTimeSlot(b.getTimeSlot().toString());
-            csvBean.setUsername(b.getUsername());
+            csvBean.setUsername(b.getUser().getUsername());
 
             csvBeanList.add(csvBean);
 
@@ -59,16 +56,15 @@ public class ListBookingController {
     private BookingBean toBean(Booking booking) {
         BookingBean bean = new BookingBean();
 
-        bean.setShopId(booking.getShopId());
+        bean.setUsername(booking.getUser().getUsername());
         bean.setBookingID(booking.getBookingId());
-        bean.setUsername(booking.getUsername());
         bean.setDate(booking.getDate());
         bean.setTimeSlot(booking.getTimeSlot().toString());
         bean.setDescription(booking.getDescription());
         bean.setStatus(booking.getStatus().toString());
-        bean.setShopName(booking.getShopName());
+        bean.setShopName(booking.getShop().getName());
         bean.setHomeAssistance(booking.getHomeAssistance());
-        bean.setUserAddress(booking.getHomeAssistance() ? this.addressUserBooking(booking.getUsername()) : null);
+        bean.setUserAddress(booking.getHomeAssistance() ? ((ClientUser)booking.getUser()).getAddress() : null);
         bean.setRepairReport(toBean(booking.getRepairReport()));
         bean.setInvoice(toBean(booking.getInvoice()));
 
@@ -99,10 +95,6 @@ public class ListBookingController {
         return bean;
     }
 
-    private String addressUserBooking(String username) {
-        ClientUserDAO userDao = DaoFactory.getClientUserDAO();
-        return userDao.getAddress(username);
-    }
 
     public List<BookingBean> getBookingsByShop(SessionBean session) {
         List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());

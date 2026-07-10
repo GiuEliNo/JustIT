@@ -16,8 +16,8 @@ public class BookingStatusDTO {
 
     public BookingStatusDTO(Booking booking, BookingStatus oldStatus, BookingStatus newStatus) {
         this.bookingId = booking.getBookingId();
-        this.username = booking.getUsername();
-        this.shopId = booking.getShopId();
+        this.username = booking.getUser().getUsername();
+        this.shopId = booking.getShop().getId();
         this.oldStatus = oldStatus;
         this.newStatus = newStatus;
         this.occurredAt = LocalDateTime.now(ZoneId.systemDefault());

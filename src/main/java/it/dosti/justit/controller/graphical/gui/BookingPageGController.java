@@ -36,7 +36,6 @@ public class BookingPageGController extends BaseGController {
         appController = new BookAppointmentController();
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        Integer shopId = appController.getShopId(session);
         if(Boolean.FALSE.equals(appController.isHomeAssistance(session))) {
             homeAssistanceCheck.setDisable(true);
         }
@@ -51,7 +50,7 @@ public class BookingPageGController extends BaseGController {
                     return;
                 }
 
-                boolean hasSlots = appController.hasAvailableSlots(shopId, date);
+                boolean hasSlots = appController.hasAvailableSlots(session, date);
 
                 setDisable(!hasSlots);
 
@@ -71,11 +70,11 @@ public class BookingPageGController extends BaseGController {
     private void updateTimeSlots(LocalDate date) {
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        Integer shopId = appController.getShopId(session);
+
 
         timeSlotChoiceBox.getItems().clear();
 
-        timeSlotChoiceBox.getItems().addAll(appController.getAvailableSlots(shopId, date).getTimeSlots());
+        timeSlotChoiceBox.getItems().addAll(appController.getAvailableSlots(session, date).getTimeSlots());
 
         if (!timeSlotChoiceBox.getItems().isEmpty()) {
             timeSlotChoiceBox.getSelectionModel().selectFirst();
@@ -89,8 +88,6 @@ public class BookingPageGController extends BaseGController {
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
 
-        bookingBean.setShopId(appController.getShopId(session));
-        bookingBean.setUsername(appController.getUsername(session));
         bookingBean.setDate(datePicker.getValue());
         bookingBean.setTimeSlot(timeSlotChoiceBox.getValue());
         bookingBean.setDescription(descriptionArea.getText());
@@ -101,7 +98,7 @@ public class BookingPageGController extends BaseGController {
 
         try{
 
-            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean);
+            PaymentQuoteBean bean = appController.reserveSlotBooking(bookingBean, session);
             navigation.navigate(Screen.PAYMENTS_PAGE_BOOKING, sessionId, bean);
         }
         catch (RegisterOnBackEndException e){

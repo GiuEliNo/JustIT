@@ -50,8 +50,8 @@ public class RegisterController {
 
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnBackEndException, ShopNotFoundException {
         TechnicianDAO dao = DaoFactory.getTechnicianDAO();
-        registerBean.setShopId(dao.getShopIDbyName(registerBean.getShopName()));
-        if ( registerBean.getShopId() == 0){
+        registerBean.setShop(dao.getShopbyName(registerBean.getShopName()));
+        if ( registerBean.getShop() == null){
             JustItLogger.getInstance().warn("Shop name not found");
             return false;
         }
@@ -60,7 +60,7 @@ public class RegisterController {
             JustItLogger.getInstance().info("Register successful");
             Credentials cred = new Credentials(registerBean.getUsername(), registerBean.getPassword());
 
-            return dao.registerTech(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShopId()), cred);
+            return dao.registerTech(new TechnicianUser(registerBean.getName(), registerBean.getUsername(), registerBean.getEmail(), registerBean.getShop()), cred);
         }
 
     }

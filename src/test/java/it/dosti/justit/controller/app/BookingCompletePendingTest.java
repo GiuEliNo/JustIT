@@ -6,10 +6,13 @@ import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.model.Coordinates;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
@@ -30,8 +33,19 @@ import static org.junit.jupiter.api.Assertions.fail;
 // Valerio Mazza
 class BookingCompletePendingTest {
 
-    private static final String USERNAME = "demo";
-    private static final int SHOP_ID = 1;
+    private static final ClientUser user = new ClientUser("Sammello", "samele", "samele@mail.com", "Via Roma 17", new Coordinates( 41.960,  12.550) );
+    private static final Shop shop = new Shop.Builder("Arindale Riparazione")
+            .id(1290)
+            .address("Via di Tor Pignattara 38")
+            .phone("+39 06 2456789")
+            .email("arindale.riparazione@demo.justit.it")
+            .description("Centro assistenza")
+            .image(new byte[]{1})
+            .openingHours("09:00 - 18:00")
+            .homeAssistance(true)
+            .coordinates(new Coordinates(41.87, 12.54))
+            .build();
+
     private static final TimeSlot TIME_SLOT = TimeSlot.MORNING;
 
     private Integer bookingId;
@@ -44,8 +58,8 @@ class BookingCompletePendingTest {
 
         LocalDate date = LocalDate.of(2050, Month.JANUARY, 1);
 
-        Booking booking = new Booking.Builder(USERNAME)
-                .shopId(SHOP_ID)
+        Booking booking = new Booking.Builder(user)
+                .shopEntity(shop)
                 .date(date)
                 .timeSlot(TIME_SLOT)
                 .description("Booking pending test")

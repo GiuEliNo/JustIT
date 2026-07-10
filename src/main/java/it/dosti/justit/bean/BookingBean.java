@@ -1,9 +1,9 @@
 package it.dosti.justit.bean;
+
 import java.time.LocalDate;
 
 public class BookingBean {
     private Integer bookingID;
-    private Integer shopId;
     private String username;
     private LocalDate date;
     private String timeSlot;
@@ -19,8 +19,8 @@ public class BookingBean {
     public String getUsername() {
         return username;
     }
-    public void setUsername(String user) {
-        this.username = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public LocalDate getDate() {
         return date;
@@ -57,12 +57,6 @@ public class BookingBean {
     }
     public void setShopName(String shopName) {
         this.shopName = shopName;
-    }
-    public Integer getShopId() {
-        return this.shopId;
-    }
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
     }
     public void setHomeAssistance(Boolean homeAssistance) {
         this.homeAssistance = homeAssistance;

@@ -1,9 +1,13 @@
 package it.dosti.justit.dao.tech;
 
+import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.*;
 import it.dosti.justit.exceptions.*;
+import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Credentials;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
@@ -47,7 +51,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
                     pstmt1.setString(2, cred.getPassword());
                     pstmt1.setString(3, user.getEmail());
                     pstmt1.setString(4, user.getName());
-                    pstmt1.setInt(5, user.getShopId());
+                    pstmt1.setInt(5, user.getShop().getId());
 
                     if (pstmt1.executeUpdate() == 1) {
                         return true;
@@ -59,8 +63,8 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
         return false;
     }
 
-    public Integer getShopIDbyName(String shopName) throws ShopNotFoundException {
-        String sql1 = ShopQuery.SELECT_ID_SHOP;
+    public Shop getShopbyName(String shopName) throws ShopNotFoundException {
+        String sql1 = ShopQuery.SELECT_SHOP_BY_NAME;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt1 = conn.prepareStatement(sql1)
@@ -69,13 +73,24 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             pstmt1.setString(1, shopName);
             ResultSet rs = pstmt1.executeQuery();
             if(rs.next()) {
-                return rs.getInt(1);
+                return new Shop.Builder(
+                        rs.getString("name"))
+                        .id(rs.getInt("id"))
+                        .address(rs.getString("address"))
+                        .phone(rs.getString("phone"))
+                        .email(rs.getString("email"))
+                        .description(rs.getString("description"))
+                        .image(rs.getBytes("image"))
+                        .openingHours(rs.getString("openingHours"))
+                        .homeAssistance(rs.getBoolean("homeAssistance"))
+                        .coordinates( new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude")))
+                        .build();
             }
         }
         catch(SQLException e){
             throw new ShopNotFoundException("Shop not found", e);
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -83,6 +98,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
 
         String sql = TechnicianQuery.SELECT_BY_USERNAME;
+        ShopDAO shopDAO = DaoFactory.getShopDAO();
 
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -94,17 +110,22 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
+
+                Shop shop = shopDAO.retrieveShopById(rs.getInt("shop"));
                 return new TechnicianUser(
                         rs.getString("name"),
                         rs.getString("username"),
                         rs.getString("email"),
-                        rs.getInt("shop")
+                        shop
                 );
             }
 
         } catch (SQLException e) {
 
             throw new UserNotFoundException("User not found", e);
+        }
+        catch (ShopNotFoundException n){
+            JustItLogger.getInstance().error("Shop not found");
         }
 
         return null;

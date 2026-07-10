@@ -4,7 +4,6 @@ import it.dosti.justit.controller.app.RegisterController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
-import it.dosti.justit.model.user.RoleType;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.LoadingOverlayUtils;
@@ -74,7 +73,7 @@ public class RegisterTechGController extends BaseGController{
         technicRegisterBean.setShopName(shopField.getText());
         technicRegisterBean.setUsername(usernameField.getText());
         technicRegisterBean.setName(nameField.getText());
-        technicRegisterBean.setRole(RoleType.TECHNICIAN.toString());
+        technicRegisterBean.setRole("TECHNICIAN");
 
         if(!registerController.isUsernameAvailable(technicRegisterBean)) {
             warningLabel.setText("Username already in use");

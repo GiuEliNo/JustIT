@@ -10,7 +10,6 @@ import it.dosti.justit.dao.tech.TechnicianDAO;
 import it.dosti.justit.dao.user.UserDAO;
 import it.dosti.justit.dao.user.UserDaoFactory;
 import it.dosti.justit.exceptions.InvalidAddressException;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.Coordinates;
@@ -22,7 +21,7 @@ import it.dosti.justit.model.user.TechnicianUser;
 
 public class UpdateController {
 
-    public boolean updateName(SessionBean session, String newName) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateName(SessionBean session, String newName) throws UpdateOnBackEndException, UserNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient());
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
@@ -49,7 +48,7 @@ public class UpdateController {
         return updated;
     }
 
-    public boolean updateEmail(SessionBean session, String email) throws UpdateOnBackEndException, UserNotFoundException, ShopNotFoundException {
+    public boolean updateEmail(SessionBean session, String email) throws UpdateOnBackEndException, UserNotFoundException {
         UserDaoFactory factory = new UserDaoFactory();
         UserDAO dao = factory.createUserDAO(SessionManager.getInstance().getActiveSession(session.getSessionId()).isClient());
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
@@ -112,13 +111,12 @@ public class UpdateController {
     }
 
 
-    private boolean updateSessionTechnician(SessionBean session,String username) throws UserNotFoundException, ShopNotFoundException {
+    private boolean updateSessionTechnician(SessionBean session,String username) throws UserNotFoundException {
         TechnicianDAO dao = DaoFactory.getTechnicianDAO();
-        ShopDAO shopDao = DaoFactory.getShopDAO();
         SessionManager.getInstance().getActiveSession(session.getSessionId()).setLoggedUser(dao.findByUsername(username));
         if(SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser() != null) {
             TechnicianUser technicianUser = (TechnicianUser) SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser();
-            SessionManager.getInstance().getActiveSession(session.getSessionId()).setCurrentShop(shopDao.retrieveShopById(technicianUser.getShopId()));
+            SessionManager.getInstance().getActiveSession(session.getSessionId()).setCurrentShop(technicianUser.getShop());
             return true;
         }
         return false;
@@ -231,7 +229,7 @@ public class UpdateController {
             } else {
                 updateSessionTechnician(session, username);
             }
-        } catch (UserNotFoundException | ShopNotFoundException e) {
+        } catch (UserNotFoundException e) {
             JustItLogger.getInstance().error("Failed to refresh session", e);
         }
     }

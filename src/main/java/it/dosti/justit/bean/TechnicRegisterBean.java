@@ -1,9 +1,11 @@
 package it.dosti.justit.bean;
 
+import it.dosti.justit.model.Shop;
+
 public class TechnicRegisterBean extends RegisterBean {
     private String shopName;
 
-    private Integer shopId;
+    private Shop shop;
 
     public String getShopName() {
         return shopName;
@@ -13,10 +15,10 @@ public class TechnicRegisterBean extends RegisterBean {
     }
 
 
-    public Integer getShopId() {
-        return shopId;
+    public Shop getShop() {
+        return shop;
     }
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 }

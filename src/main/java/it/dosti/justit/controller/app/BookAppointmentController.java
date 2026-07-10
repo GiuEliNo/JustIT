@@ -30,12 +30,12 @@ public class BookAppointmentController {
         this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
     }
 
-    public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean) throws RegisterOnBackEndException {
+    public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean, SessionBean session) throws RegisterOnBackEndException {
 
-        Booking newBooking = BookingFactory.createBooking(bookingBean);
+        Booking newBooking = BookingFactory.createBookingFromBean(bookingBean, SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop(), SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser());
 
         try {
-            if (dao.existsBooking(newBooking.getShopId(), newBooking.getDate(), newBooking.getTimeSlot())) {
+            if (dao.existsBooking(newBooking.getShop().getId(), newBooking.getDate(), newBooking.getTimeSlot())) {
                 throw new BookingAlreadyExistsException("Booking already active for shop/date/timeslot");
             }
             Integer bookingId = dao.addBooking(newBooking);
@@ -50,8 +50,9 @@ public class BookAppointmentController {
         }
     }
 
-    public TimeSlotBean getAvailableSlots(Integer shopId, LocalDate date) {
+    public TimeSlotBean getAvailableSlots(SessionBean session, LocalDate date) {
 
+        Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
         List<TimeSlot> occupied = dao.getOccupiedSlots(shopId, date);
         List<String> available = new ArrayList<>();
 
@@ -113,7 +114,7 @@ public class BookAppointmentController {
 
         ShopDAO shopDAO = DaoFactory.getShopDAO();
         try{
-            Shop shop = shopDAO.retrieveShopById(booking.getShopId());
+            Shop shop = shopDAO.retrieveShopById(booking.getShop().getId());
             EmailGatewayService.sendEMailInvoice(shop.getEmail());
         } catch (ShopNotFoundException e) {
             JustItLogger.getInstance().error("Shop not found");
@@ -121,8 +122,8 @@ public class BookAppointmentController {
 
     }
 
-    public boolean hasAvailableSlots(Integer shopId, LocalDate date) {
-        return !getAvailableSlots(shopId, date).getTimeSlots().isEmpty();
+    public boolean hasAvailableSlots(SessionBean session, LocalDate date) {
+        return !getAvailableSlots(session, date).getTimeSlots().isEmpty();
     }
 
     public String getUsername(SessionBean session) {
