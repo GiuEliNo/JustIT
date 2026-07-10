@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Tecnico Demo", "username": "tec.demo", "email": "tec@techpoint.it", "shopId": 1 },
+  { "id": 2, "name": "Roberto Elettro", "username": "rob.tec", "email": "rob@elettrocasa.it", "shopId": 2 },
+  { "id": 3, "name": "Marco PC", "username": "marco.pc", "email": "marco@pcmaster.it", "shopId": 3 },
+  { "id": 4, "name": "Sara Console", "username": "sara.c", "email": "sara@fastfix.it", "shopId": 4 },
+  { "id": 5, "name": "Fabio Audio", "username": "fabio.a", "email": "fabio@vintage.it", "shopId": 5 },
+  { "id": 6, "name": "Luca Express", "username": "luca.ex", "email": "luca@riparatutto.it", "shopId": 6 },
+  { "id": 7, "name": "Elena Apple", "username": "elena.app", "email": "elena@ifix.it", "shopId": 7 },
+  { "id": 8, "name": "Davide Smart", "username": "davide.s", "email": "davide@domotica.it", "shopId": 8 }
+]

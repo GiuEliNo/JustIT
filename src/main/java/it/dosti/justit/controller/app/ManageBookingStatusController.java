@@ -17,7 +17,6 @@ import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.booking.state.BookingEvent;
-import it.dosti.justit.utils.SessionManager;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 
@@ -67,6 +66,7 @@ public class ManageBookingStatusController {
         try {
             booking.goNext(BookingEvent.COMPLETED);
             dao.updateStatus(booking);
+            dao.saveRepairReport(booking);
             this.sendInvoice(booking.getRepairReport());
             notifyStatusChange(booking, oldStatus);
             sendEmailAlert(booking);
@@ -76,6 +76,9 @@ public class ManageBookingStatusController {
     }
 
     private void addRepairReportToBooking(Booking booking, RepairReportBean repairReportBean) {
+        if (repairReportBean == null) {
+            return;
+        }
         RepairReport report = new RepairReport(
                 repairReportBean.getTechNotes(),
                 repairReportBean.getLaborHours(),

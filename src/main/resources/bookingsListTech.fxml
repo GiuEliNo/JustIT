@@ -96,6 +96,7 @@
             </VBox>
 
             <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                <Button fx:id="viewReportButton" onAction="#onViewReport" styleClass="button-secondary" text="VIEW REPORT" />
                 <Button fx:id="rejectButton" onAction="#onReject" styleClass="button-danger" text="REJECT" />
                 <Button fx:id="completedButton" onAction="#onCompleted" styleClass="button-secondary" text="MARK COMPLETED" />
                 <Button fx:id="approveButton" onAction="#onApprove" styleClass="button-success" text="APPROVE REQUEST" />

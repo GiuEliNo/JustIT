@@ -12,6 +12,7 @@ public class BookingBean {
     private String shopName;
     private Boolean homeAssistance;
     private String userAddress;
+    private RepairReportBean repairReport;
 
 
     public String getUsername() {
@@ -74,6 +75,12 @@ public class BookingBean {
     public String getUserAddress() {
         return userAddress;
     }
+    public void setRepairReport(RepairReportBean repairReport) {
+        this.repairReport = repairReport;
+    }
+    public RepairReportBean getRepairReport() {
+        return repairReport;
+    }
 
     public String getHomeAssistanceLabel() {
         if (homeAssistance == null) {
@@ -81,6 +88,9 @@ public class BookingBean {
         }
         return homeAssistance.booleanValue() ? "Yes" : "No";
     }
-}
 
+    public boolean hasRepairReport() {
+        return repairReport != null;
+    }
+}
 

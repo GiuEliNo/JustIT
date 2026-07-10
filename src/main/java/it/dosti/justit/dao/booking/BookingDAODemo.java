@@ -1,5 +1,6 @@
 package it.dosti.justit.dao.booking;
 
+import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -19,7 +20,7 @@ public class BookingDAODemo implements BookingDAO {
     private static final String USER_DEMO = "demo_client";
 
     public BookingDAODemo() {
-        bookings.add(new Booking.Builder(USER_DEMO)
+        Booking completed = new Booking.Builder(USER_DEMO)
                 .bookingId(1001)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
@@ -29,7 +30,9 @@ public class BookingDAODemo implements BookingDAO {
                 .status(BookingStatus.COMPLETED)
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(15))
-                .build());
+                .build();
+        completed.setRepairReport(new RepairReport("Batteria sostituita con componente originale. Dispositivo funzionante.", 1.5, 30.0, 25.0));
+        bookings.add(completed);
 
         bookings.add(new Booking.Builder(USER_DEMO)
                 .bookingId(1002)
@@ -55,7 +58,7 @@ public class BookingDAODemo implements BookingDAO {
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()))
                 .build());
 
-        bookings.add(new Booking.Builder("demo_client_2")
+        Booking rejected = new Booking.Builder("demo_client_2")
                 .bookingId(2001)
                 .shopId(1)
                 .shopName(SHOP_NAME_DEMO)
@@ -65,7 +68,9 @@ public class BookingDAODemo implements BookingDAO {
                 .status(BookingStatus.REJECTED)
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(8))
-                .build());
+                .build();
+        rejected.setRepairReport(new RepairReport("Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale.", 0.5, 30.0, 0.0));
+        bookings.add(rejected);
     }
 
     @Override

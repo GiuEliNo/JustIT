@@ -2,6 +2,7 @@ package it.dosti.justit.view.gui;
 
 import it.dosti.justit.bean.BookingBean;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -78,10 +79,22 @@ public class BookingListCell extends ListCell<BookingBean> {
 
         thirdRow.getChildren().addAll(homeLabel, homeValue);
 
+        HBox actionRow = new HBox(5);
+        if (booking.hasRepairReport()) {
+            Button reportButton = new Button("View report");
+            reportButton.getStyleClass().add("button-secondary");
+            reportButton.setOnAction(event -> {
+                event.consume();
+                new DialogViewRepairReport(booking.getRepairReport()).showAndWait();
+            });
+            actionRow.getChildren().add(reportButton);
+        }
+
         container.getChildren().addAll(
                 firstRow,
                 secondRow,
-                thirdRow
+                thirdRow,
+                actionRow
         );
 
         setGraphic(container);

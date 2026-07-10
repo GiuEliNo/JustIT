@@ -7,6 +7,7 @@ import it.dosti.justit.controller.app.ListBookingController;
 import it.dosti.justit.controller.app.ManageBookingStatusController;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.view.gui.DialogRepairReport;
+import it.dosti.justit.view.gui.DialogViewRepairReport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,6 +58,8 @@ public class BookingsListTechGController extends BaseGController {
     private Button rejectButton;
     @FXML
     private Button completedButton;
+    @FXML
+    private Button viewReportButton;
 
     @FXML
     private VBox detailsVBox;
@@ -139,6 +142,8 @@ public class BookingsListTechGController extends BaseGController {
             }
         }
 
+        viewReportButton.setVisible(booking.hasRepairReport());
+
         detailsVBox.setVisible(true);
     }
 
@@ -172,8 +177,18 @@ public class BookingsListTechGController extends BaseGController {
         BookingBean selected = getSelectedBooking();
         if (selected == null) return;
 
-        manageBookingStatusController.completeBooking(selected, null);
+        RepairReportBean repairReportBean = showDialogRepairReport();
+
+        manageBookingStatusController.completeBooking(selected, repairReportBean);
         reloadTable();
+    }
+
+    @FXML
+    public void onViewReport() {
+        BookingBean selected = getSelectedBooking();
+        if (selected == null || !selected.hasRepairReport()) return;
+
+        new DialogViewRepairReport(selected.getRepairReport()).showAndWait();
     }
 
     @FXML

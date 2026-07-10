@@ -28,6 +28,10 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String IDSHOP = "idShop";
     private static final String ISHOMEASSISTANCE = "isHomeAssistance";
     private static final String CREATEDAT = "createdAt";
+    private static final String TECHNOTES = "tech_notes";
+    private static final String LABORHOURS = "labor_hours";
+    private static final String COSTHOURS = "cost_hours";
+    private static final String PARTCOSTS = "part_costs";
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -118,6 +122,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .createdAt(createdAt)
                         .build();
 
+                booking.setRepairReport(getRepairReport(bookingId));
 
                 bookings.add(booking);
             }
@@ -164,6 +169,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .homeAssistance(homeAssistance)
                         .build();
 
+                booking.setRepairReport(getRepairReport(bookingId));
 
                 bookings.add(booking);
 
@@ -234,7 +240,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return new Booking.Builder(rs.getString(USERNAME))
+                Booking booking = new Booking.Builder(rs.getString(USERNAME))
                         .bookingId(bookingId)
                         .shopId(rs.getInt(IDSHOP))
                         .date(LocalDate.parse(rs.getString(DATE)))
@@ -244,6 +250,8 @@ public class BookingDAOJDBC implements BookingDAO {
                         .homeAssistance(rs.getBoolean(ISHOMEASSISTANCE))
                         .createdAt(LocalDateTime.parse(rs.getString(CREATEDAT)))
                         .build();
+                booking.setRepairReport(getRepairReport(bookingId));
+                return booking;
             }
 
         } catch (SQLException e) {
@@ -356,6 +364,28 @@ public class BookingDAOJDBC implements BookingDAO {
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
+    }
+
+    private RepairReport getRepairReport(Integer bookingId) {
+        String sql = BookingQuery.SELECT_REPAIR_REPORT;
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new RepairReport(
+                        rs.getString(TECHNOTES),
+                        rs.getDouble(LABORHOURS),
+                        rs.getDouble(COSTHOURS),
+                        rs.getDouble(PARTCOSTS)
+                );
+            }
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
     }
 
     @Override

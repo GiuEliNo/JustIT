@@ -25,4 +25,7 @@ public class BookingQuery {
 
     public static final String INSERT_REPAIR_REPORT =
             "INSERT INTO repair_report (booking_id, tech_notes, labor_hours, cost_hours, part_costs) VALUES (?,?,?,?,?)";
+
+    public static final String SELECT_REPAIR_REPORT =
+            "SELECT tech_notes, labor_hours, cost_hours, part_costs FROM repair_report WHERE booking_id = ?";
 }
