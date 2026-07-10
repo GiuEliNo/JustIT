@@ -1,17 +1,10 @@
 package it.dosti.justit.model.user;
 
 public abstract class User {
-    private Integer id;
     private String username;
     private String email;
     private String name;
 
-    Integer getId() {
-        return id;
-    }
-    void setId(Integer id) {
-        this.id = id;
-    }
     public String getUsername() {
         return username;
     }

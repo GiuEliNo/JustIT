@@ -9,14 +9,6 @@ public class ClientUser extends User {
 
     public ClientUser() {}
 
-    public ClientUser(Integer id, String name, String username, String email, String address, Coordinates coordinates) {
-        this.setId(id);
-        this.setName(name);
-        this.setUsername(username);
-        this.setEmail(email);
-        this.setAddress(address);
-        this.coordinates = coordinates;
-    }
 
     public ClientUser(String name, String username, String email, String address, Coordinates coordinates) {
         this.setName(name);

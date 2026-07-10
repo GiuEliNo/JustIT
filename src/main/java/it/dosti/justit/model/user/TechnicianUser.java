@@ -5,23 +5,12 @@ public class TechnicianUser extends User {
 
     public TechnicianUser() {}
 
-    public TechnicianUser(Integer id, String name, String username, String email, Integer shopId) {
-        this.setId(id);
-        this.setName(name);
-        this.setUsername(username);
-        this.setEmail(email);
-        this.setShopId(shopId);
-    }
 
     public TechnicianUser(String name, String username, String email, Integer shopId) {
         this.setName(name);
         this.setUsername(username);
         this.setEmail(email);
         this.setShopId(shopId);
-    }
-
-    public TechnicianUser(String username) {
-        this.setUsername(username);
     }
 
     public Integer getShopId() {

@@ -95,7 +95,6 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
             if (rs.next()) {
                 return new TechnicianUser(
-                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("username"),
                         rs.getString("email"),
