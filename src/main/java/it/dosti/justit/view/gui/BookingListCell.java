@@ -1,6 +1,8 @@
 package it.dosti.justit.view.gui;
 
 import it.dosti.justit.bean.BookingBean;
+import it.dosti.justit.bean.PaymentDataBean;
+import it.dosti.justit.controller.graphical.gui.BookingsListUserGController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,12 +15,13 @@ public class BookingListCell extends ListCell<BookingBean> {
     private static final String BOLD_LABEL = "label-bold";
 
     private final VBox container = new VBox();
+    private final BookingsListUserGController controller;
 
-    public BookingListCell() {
+    public BookingListCell(BookingsListUserGController controller) {
+        this.controller = controller;
+
         container.setSpacing(6);
         container.setPadding(new Insets(8));
-
-
     }
 
     @Override
@@ -54,10 +57,14 @@ public class BookingListCell extends ListCell<BookingBean> {
         );
 
         firstRow.getChildren().addAll(
-                shopLabel, shopValue,
-                dateLabel, dateValue,
-                statusLabel, statusValue
+                shopLabel,
+                shopValue,
+                dateLabel,
+                dateValue,
+                statusLabel,
+                statusValue
         );
+
 
         HBox secondRow = new HBox(5);
 
@@ -66,7 +73,11 @@ public class BookingListCell extends ListCell<BookingBean> {
 
         Label descValue = new Label(booking.getDescription());
 
-        secondRow.getChildren().addAll(descLabel, descValue);
+        secondRow.getChildren().addAll(
+                descLabel,
+                descValue
+        );
+
 
         HBox thirdRow = new HBox(5);
 
@@ -77,24 +88,56 @@ public class BookingListCell extends ListCell<BookingBean> {
                 booking.getHomeAssistanceLabel()
         );
 
-        thirdRow.getChildren().addAll(homeLabel, homeValue);
+        thirdRow.getChildren().addAll(
+                homeLabel,
+                homeValue
+        );
+
 
         HBox actionRow = new HBox(5);
+
         if (booking.hasRepairReport()) {
+
             Button reportButton = new Button("View report");
             reportButton.getStyleClass().add("button-secondary");
+
             reportButton.setOnAction(event -> {
                 event.consume();
-                new DialogViewRepairReport(booking.getRepairReport()).showAndWait();
+
+                new DialogViewRepairReport(
+                        booking.getRepairReport()
+                ).showAndWait();
             });
+
             actionRow.getChildren().add(reportButton);
         }
+
+
         if (booking.canPayInvoice()) {
-            Button payInvoiceButton = new Button("Pay " + booking.getInvoiceTotalLabel());
+
+            Button payInvoiceButton = new Button(
+                    "Pay " + booking.getInvoiceTotalLabel()
+            );
+
             payInvoiceButton.getStyleClass().add("button-success");
-            payInvoiceButton.setOnAction(event -> event.consume());
+
+            payInvoiceButton.setOnAction(event -> {
+
+                event.consume();
+
+                DialogPayInvoice dialog =
+                        new DialogPayInvoice(booking);
+
+                dialog.showAndWait().ifPresent(paymentData -> controller.payInvoice(
+                        booking,
+                        paymentData
+                ));
+
+            });
+
             actionRow.getChildren().add(payInvoiceButton);
         }
+
 
         container.getChildren().addAll(
                 firstRow,

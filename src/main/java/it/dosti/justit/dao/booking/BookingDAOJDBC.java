@@ -34,6 +34,8 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String PARTCOSTS = "part_costs";
     private static final String TOTALCOST = "total_cost";
     private static final String PAID = "paid";
+    private static final String RESERVATION_PAYMENT_TRANSACTION_ID = "transaction_id";
+
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -50,6 +52,7 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setString(5, booking.getDescription());
             pstmt.setBoolean(6, booking.getHomeAssistance());
             pstmt.setString(7, booking.getCreatedAt().toString());
+            pstmt.setString(8, booking.getReservationPaymentTransactionId());
 
             pstmt.executeUpdate();
 
@@ -111,6 +114,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATEDAT));
+                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -122,6 +126,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .status(status)
                         .homeAssistance(homeAssistance)
                         .createdAt(createdAt)
+                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
                 booking.setRepairReport(getRepairReport(bookingId));
@@ -161,6 +166,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
 
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -170,6 +176,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .description(description)
                         .status(status)
                         .homeAssistance(homeAssistance)
+                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
                 booking.setRepairReport(getRepairReport(bookingId));
@@ -244,6 +251,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
+                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
                 Booking booking = new Booking.Builder(rs.getString(USERNAME))
                         .bookingId(bookingId)
                         .shopId(rs.getInt(IDSHOP))
@@ -253,6 +261,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .status(BookingStatus.valueOf(rs.getString(STATE)))
                         .homeAssistance(rs.getBoolean(ISHOMEASSISTANCE))
                         .createdAt(LocalDateTime.parse(rs.getString(CREATEDAT)))
+                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
                 booking.setRepairReport(getRepairReport(bookingId));
                 booking.setInvoice(getInvoice(bookingId));
@@ -287,6 +296,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -296,6 +306,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .description(description)
                         .status(status)
                         .homeAssistance(homeAssistance)
+                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
                 bookings.add(booking);
@@ -330,6 +341,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDate date = LocalDate.parse(dateString);
                 TimeSlot timeSlot = TimeSlot.valueOf(timeSlotString);
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
+                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
                 Booking booking = new Booking.Builder(username)
                         .bookingId(bookingId)
@@ -340,6 +352,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .description(description)
                         .status(status)
                         .homeAssistance(homeAssistance)
+                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
                         .build();
 
                 bookings.add(booking);
@@ -450,5 +463,32 @@ public class BookingDAOJDBC implements BookingDAO {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public void updateInvoice(Booking booking) {
+
+        String sql = BookingQuery.UPDATE_INVOICE_PAID;
+
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+
+            pstmt.setBoolean(
+                    1,
+                    booking.getInvoice().isPaid()
+            );
+
+            pstmt.setInt(
+                    2,
+                    booking.getBookingId()
+            );
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
     }
 }

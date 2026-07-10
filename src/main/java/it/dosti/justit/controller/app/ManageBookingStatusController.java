@@ -1,8 +1,8 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
-import it.dosti.justit.api.PaymentService;
-import it.dosti.justit.api.PaymentServiceStub;
+import it.dosti.justit.api.VisaPaymentGatewayStub;
+import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.dao.DaoFactory;
@@ -10,7 +10,6 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
-import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.Shop;
@@ -24,6 +23,12 @@ import it.dosti.justit.exceptions.InvalidBookingStateException;
 public class ManageBookingStatusController {
 
     private final BookingDAO bookingDao = DaoFactory.getBookingDAO();
+    private final ProcessPaymentController processPaymentController;
+
+    public ManageBookingStatusController() {
+        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+    }
+
     public void approveBooking(BookingBean bookingBean) {
         Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
@@ -89,18 +94,11 @@ public class ManageBookingStatusController {
     }
 
     private void refundPayment(Booking booking) throws PaymentException {
-        PaymentService pay = new PaymentServiceStub();
-
-        String shopName = booking.getShopName();
-        String clientUsername = booking.getUsername();
         double totalRefund = booking.calculateTotalReservationPrice();
-
-        if(pay.refundPayment(shopName, clientUsername, totalRefund)){
-            JustItLogger.getInstance().info("Payment refunded");
-        } else {
-            throw new PaymentException("Payment refund failed");
-        }
+        processPaymentController.refundReservationPayment(booking, totalRefund);
+        JustItLogger.getInstance().info("Payment refunded");
     }
+
     private void sendInvoice(Booking booking) {
         booking.issueInvoice();
         bookingDao.saveInvoice(booking);

@@ -1,8 +1,8 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
-import it.dosti.justit.api.PaymentService;
-import it.dosti.justit.api.PaymentServiceStub;
+import it.dosti.justit.api.VisaPaymentGatewayStub;
+import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.bean.*;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
@@ -25,8 +25,10 @@ import java.util.List;
 
 public class BookAppointmentController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
-
-
+    private final ProcessPaymentController processPaymentController;
+    public BookAppointmentController() {
+        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+    }
 
     public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean) throws RegisterOnBackEndException {
 
@@ -72,21 +74,16 @@ public class BookAppointmentController {
                 throw new BookingExpiredException("The payment timer is expired");
             }
             BookingStatus oldStatus = booking.getStatus();
-            PaymentService pay = new PaymentServiceStub();
-            if(pay.processPayment(paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote())){
 
-                booking.goNext(BookingEvent.PAYMENT_RECEIVED);
-                dao.updateStatus(booking);
-                notifyStatusChange(booking, oldStatus);
-                sendEmailAlert(booking);
+            processPaymentController.processReservationPayment(booking, paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote());
 
-            }
-            else{
-                throw new PaymentException("Payment failed");
-            }
+            booking.goNext(BookingEvent.PAYMENT_RECEIVED);
+            dao.updateStatus(booking);
+            notifyStatusChange(booking, oldStatus);
+            sendEmailAlert(booking);
 
         }
-        catch(BookingExpiredException | PaymentException e){
+        catch(BookingExpiredException | PaymentException e) {
             abortBooking(booking);
             JustItLogger.getInstance().error(e.getMessage());
             throw new RegisterOnBackEndException("Error finalyzing the payment. Booking aborted.");

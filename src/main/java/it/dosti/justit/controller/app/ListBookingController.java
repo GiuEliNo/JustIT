@@ -1,10 +1,8 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.bean.BookingCSVBean;
-import it.dosti.justit.bean.InvoiceBean;
-import it.dosti.justit.bean.RepairReportBean;
-import it.dosti.justit.bean.SessionBean;
+import it.dosti.justit.api.VisaPaymentGatewayStub;
+import it.dosti.justit.bean.*;
+import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
@@ -13,6 +11,9 @@ import it.dosti.justit.dao.clientuser.ClientUserDAO;
 import it.dosti.justit.model.Invoice;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.state.BookingEvent;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
@@ -22,6 +23,12 @@ import java.util.List;
 public class ListBookingController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
     private final BookingExportFileDAO daoFile = new BookingExportFileDAOCSV();
+    private final ProcessPaymentController processPaymentController;
+
+    public ListBookingController() {
+        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+    }
+
     public void exportBookingsListTech(SessionBean session, File file) {
         List<Booking> bookingsList = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
         List<BookingCSVBean> csvBeanList = new ArrayList<>();
@@ -110,5 +117,24 @@ public class ListBookingController {
     public BookingBean getBookingById(Integer bookingId) {
         Booking booking = dao.getBookingById(bookingId);
         return toBean(booking);
+    }
+
+    public void payInvoice(BookingBean bookingBean, PaymentDataBean paymentData) throws PaymentException {
+
+        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+
+        if (booking == null) {
+            throw new PaymentException("Booking not found");
+        }
+
+        if (booking.getInvoice() == null) {
+            throw new PaymentException("Invoice not found");
+        }
+
+        processPaymentController.processPayment(booking, paymentData.getCardNumber(), booking.getInvoice().getTotalCost());
+
+        booking.getInvoice().markPaid();
+
+        dao.updateInvoice(booking);
     }
 }

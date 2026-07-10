@@ -292,4 +292,25 @@ public class BookingDAOFile implements BookingDAO {
         }
         return null;
     }
+
+    @Override
+    public void updateInvoice(Booking updatedBooking) {
+        try {
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
+
+            for (Booking booking : bookings) {
+                if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+                    if (booking.getInvoice() != null) {
+                        booking.getInvoice().markPaid();
+                    }
+                    break;
+                }
+            }
+
+            JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
+
+        } catch (Exception e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+    }
 }

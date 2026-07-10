@@ -20,6 +20,7 @@ public class BookingDAODemo implements BookingDAO {
     private static final String USER_DEMO = "demo_client";
 
     public BookingDAODemo() {
+
         Booking completed = new Booking.Builder(USER_DEMO)
                 .bookingId(1001)
                 .shopId(1)
@@ -31,9 +32,19 @@ public class BookingDAODemo implements BookingDAO {
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(15))
                 .build();
-        completed.setRepairReport(new RepairReport("Batteria sostituita con componente originale. Dispositivo funzionante.", 1.5, 30.0, 25.0));
+
+        completed.setRepairReport(
+                new RepairReport(
+                        "Batteria sostituita con componente originale. Dispositivo funzionante.",
+                        1.5,
+                        30.0,
+                        25.0
+                )
+        );
+
         completed.issueInvoice();
         bookings.add(completed);
+
 
         bookings.add(new Booking.Builder(USER_DEMO)
                 .bookingId(1002)
@@ -47,6 +58,7 @@ public class BookingDAODemo implements BookingDAO {
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(10))
                 .build());
 
+
         bookings.add(new Booking.Builder(USER_DEMO)
                 .bookingId(1003)
                 .shopId(1)
@@ -59,6 +71,7 @@ public class BookingDAODemo implements BookingDAO {
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()))
                 .build());
 
+
         Booking rejected = new Booking.Builder("demo_client_2")
                 .bookingId(2001)
                 .shopId(1)
@@ -70,14 +83,24 @@ public class BookingDAODemo implements BookingDAO {
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(8))
                 .build();
-        rejected.setRepairReport(new RepairReport("Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale.", 0.5, 30.0, 0.0));
+
+        rejected.setRepairReport(
+                new RepairReport(
+                        "Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale.",
+                        0.5,
+                        30.0,
+                        0.0
+                )
+        );
+
         bookings.add(rejected);
     }
 
+
     @Override
     public int addBooking(Booking booking) {
+
         int generatedId = nextId++;
-        BookingStatus status = booking.getStatus() == null ? BookingStatus.PENDING_CONFIRM : booking.getStatus();
 
         Booking newBooking = new Booking.Builder(booking.getUsername())
                 .bookingId(generatedId)
@@ -86,50 +109,72 @@ public class BookingDAODemo implements BookingDAO {
                 .date(booking.getDate())
                 .timeSlot(booking.getTimeSlot())
                 .description(booking.getDescription())
-                .status(status)
+                .status(booking.getStatus())
                 .homeAssistance(booking.getHomeAssistance())
                 .createdAt(booking.getCreatedAt())
+                .repairReport(booking.getRepairReport())
+                .invoice(booking.getInvoice())
+                .reservationPaymentTransactionId(
+                        booking.getReservationPaymentTransactionId()
+                )
                 .build();
 
         bookings.add(newBooking);
+
         return generatedId;
     }
+
 
     @Override
     public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) {
         return bookings.stream()
-                .anyMatch(b -> b.getShopId().equals(shopId)
-                        && b.getDate().equals(date)
-                        && b.getTimeSlot() == timeSlot);
+                .anyMatch(b ->
+                        b.getShopId().equals(shopId)
+                                && b.getDate().equals(date)
+                                && b.getTimeSlot() == timeSlot
+                );
     }
+
 
     @Override
     public List<Booking> getBookingsByUser(String username) {
-        List<Booking> userBookings = new ArrayList<>();
+
+        List<Booking> result = new ArrayList<>();
+
         for (Booking booking : bookings) {
             if (booking.getUsername().equals(username)) {
-                userBookings.add(booking);
+                result.add(booking);
             }
         }
-        return userBookings;
+
+        return result;
     }
+
 
     @Override
     public List<Booking> getBookingsByShop(Integer shopId) {
-        List<Booking> shopBookings = new ArrayList<>();
+
+        List<Booking> result = new ArrayList<>();
+
         for (Booking booking : bookings) {
             if (booking.getShopId().equals(shopId)) {
-                shopBookings.add(booking);
+                result.add(booking);
             }
         }
-        return shopBookings;
+
+        return result;
     }
+
 
     @Override
     public void updateStatus(Booking booking) {
+
         for (int i = 0; i < bookings.size(); i++) {
+
             Booking current = bookings.get(i);
+
             if (current.getBookingId().equals(booking.getBookingId())) {
+
                 Booking updated = new Booking.Builder(current.getUsername())
                         .bookingId(current.getBookingId())
                         .shopId(current.getShopId())
@@ -142,87 +187,139 @@ public class BookingDAODemo implements BookingDAO {
                         .createdAt(current.getCreatedAt())
                         .repairReport(current.getRepairReport())
                         .invoice(current.getInvoice())
+                        .reservationPaymentTransactionId(
+                                current.getReservationPaymentTransactionId()
+                        )
                         .build();
+
                 bookings.set(i, updated);
                 return;
             }
         }
     }
 
+
     @Override
     public List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date) {
-        List<TimeSlot> occupiedSlots = new ArrayList<>();
+
+        List<TimeSlot> result = new ArrayList<>();
+
         for (Booking booking : bookings) {
-            if (booking.getShopId().equals(shopId) && booking.getDate().equals(date)) {
-                occupiedSlots.add(booking.getTimeSlot());
+            if (booking.getShopId().equals(shopId)
+                    && booking.getDate().equals(date)) {
+                result.add(booking.getTimeSlot());
             }
         }
-        return occupiedSlots;
+
+        return result;
     }
+
 
     @Override
     public Booking getBookingById(Integer bookingId) {
+
         return bookings.stream()
                 .filter(b -> b.getBookingId().equals(bookingId))
                 .findFirst()
                 .orElse(null);
     }
 
+
     @Override
     public List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId) {
-        List<Booking> completedWithoutReview = new ArrayList<>();
+
+        List<Booking> result = new ArrayList<>();
+
         for (Booking booking : bookings) {
             if (booking.getUsername().equals(username)
                     && booking.getShopId().equals(shopId)
                     && booking.getStatus() == BookingStatus.COMPLETED
                     && booking.getBookingId().equals(1001)) {
-                completedWithoutReview.add(booking);
+
+                result.add(booking);
             }
         }
-        return completedWithoutReview;
+
+        return result;
     }
+
 
     @Override
     public List<Booking> getCompletedBookingsWithoutReview(String username) {
-        List<Booking> completedWithoutReview = new ArrayList<>();
+
+        List<Booking> result = new ArrayList<>();
+
         for (Booking booking : bookings) {
             if (booking.getUsername().equals(username)
                     && booking.getStatus() == BookingStatus.COMPLETED
                     && booking.getBookingId().equals(1001)) {
-                completedWithoutReview.add(booking);
+
+                result.add(booking);
             }
         }
-        return completedWithoutReview;
+
+        return result;
     }
+
 
     @Override
     public void saveRepairReport(Booking updatedBooking) {
+
         for (Booking booking : bookings) {
+
             if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+
                 booking.setRepairReport(updatedBooking.getRepairReport());
                 return;
             }
         }
     }
 
+
     @Override
     public void saveInvoice(Booking updatedBooking) {
+
         for (Booking booking : bookings) {
+
             if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+
                 booking.setInvoice(updatedBooking.getInvoice());
                 return;
             }
         }
     }
 
+
+    @Override
+    public void updateInvoice(Booking updatedBooking) {
+
+        for (Booking booking : bookings) {
+
+            if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+
+                booking.setInvoice(updatedBooking.getInvoice());
+                booking.setReservationPaymentTransactionId(
+                        updatedBooking.getReservationPaymentTransactionId()
+                );
+
+                return;
+            }
+        }
+    }
+
+
     @Override
     public boolean deleteReservedBookingSlot(Integer bookingId) {
+
         for (Booking booking : bookings) {
+
             if (booking.getBookingId().equals(bookingId)) {
+
                 bookings.remove(booking);
                 return true;
             }
         }
+
         return false;
     }
 }

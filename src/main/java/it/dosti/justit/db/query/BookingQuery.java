@@ -29,12 +29,12 @@ public class BookingQuery {
     public static final String SELECT_REPAIR_REPORT =
             "SELECT tech_notes, labor_hours, cost_hours, part_costs FROM repair_report WHERE booking_id = ?";
 
-    public static final String CREATE_INVOICE_TABLE =
-            "CREATE TABLE IF NOT EXISTS invoice (booking_id INTEGER PRIMARY KEY, total_cost REAL NOT NULL, paid INTEGER NOT NULL DEFAULT 0)";
-
     public static final String INSERT_INVOICE =
             "INSERT OR REPLACE INTO invoice (booking_id, total_cost, paid) VALUES (?,?,?)";
 
     public static final String SELECT_INVOICE =
             "SELECT total_cost, paid FROM invoice WHERE booking_id = ?";
+
+    public static final String UPDATE_INVOICE_PAID =
+            "UPDATE invoice SET paid = ? WHERE booking_id = ?";
 }

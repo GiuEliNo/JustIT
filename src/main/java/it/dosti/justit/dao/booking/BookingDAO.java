@@ -32,4 +32,6 @@ public interface BookingDAO {
     void saveRepairReport(Booking booking);
 
     void saveInvoice(Booking booking);
+
+    void updateInvoice(Booking booking);
 }
