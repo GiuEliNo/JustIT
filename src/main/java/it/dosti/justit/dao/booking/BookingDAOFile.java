@@ -1,7 +1,9 @@
 package it.dosti.justit.dao.booking;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dto.ReportDTO;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
@@ -9,7 +11,6 @@ import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_BOOKINGS = "bookings";
     private static final String FILENAME_REVIEWS = "reviews";
     private static final String FILENAME_SHOPS = "shops";
+    private static final String FILENAME_REPORTS = "reports";
 
     @Override
     public int addBooking(Booking booking) throws RegisterOnBackEndException {
@@ -72,6 +74,7 @@ public class BookingDAOFile implements BookingDAO {
                 List<Booking> bookingsUser = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
                     if(booking.getUsername().equals(username)){
+                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
                         String shopName = retrieveShopName(booking.getShopId());
                         booking.setShopName(shopName);
                         bookingsUser.add(booking);
@@ -93,6 +96,7 @@ public class BookingDAOFile implements BookingDAO {
                 List<Booking> bookingsShop = new ArrayList<>();
                 for(Booking booking : bookingsGeneral){
                     if(booking.getShopId().compareTo(shopId)==0){
+                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
                         bookingsShop.add(booking);
                     }
                 }
@@ -149,6 +153,7 @@ public class BookingDAOFile implements BookingDAO {
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
                     if(booking.getBookingId().compareTo(bookingId)==0){
+                        booking.setRepairReport(getRepairReport(booking.getBookingId()));
                         return booking;
                     }
                 }
@@ -221,18 +226,19 @@ public class BookingDAOFile implements BookingDAO {
     @Override
     public void saveRepairReport(Booking updatedBooking) {
         try {
-            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
-            for (Booking booking : bookings) {
-                if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
-                    booking.setRepairReport(updatedBooking.getRepairReport());
-                    break;
-                }
-            }
-            JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
+            List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
+            ReportDTO report = new ReportDTO();
+            report.setBookingId(updatedBooking.getBookingId());
+            report.setTechNotes(updatedBooking.getRepairReport().getTechNotes());
+            report.setCostHours(updatedBooking.getRepairReport().getCostHours());
+            report.setLaborHours(updatedBooking.getRepairReport().getLaborHours());
+            reports.add(report);
+            JsonHandler.writeJsonFile(reports, FILENAME_REPORTS);
         } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
+
 
     @Override
     public void saveInvoice(Booking updatedBooking) {
@@ -268,5 +274,22 @@ public class BookingDAOFile implements BookingDAO {
             return false;
         }
         return false;
+    }
+
+
+    private RepairReport getRepairReport(Integer bookingId) {
+        try{
+            List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
+            if (!reports.isEmpty()) {
+                for(ReportDTO report : reports){
+                    if (report.getBookingId().equals(bookingId)) {
+                        return new RepairReport(report.getTechNotes(), report.getLaborHours(), report.getCostHours(), report.getBookingId());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+        return null;
     }
 }
