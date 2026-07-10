@@ -1,6 +1,5 @@
 package it.dosti.justit.view.gui;
 
-import it.dosti.justit.bean.RepairReportBean;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 

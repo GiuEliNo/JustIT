@@ -1,9 +1,6 @@
 package it.dosti.justit.dao.booking;
 
-import it.dosti.justit.model.Coordinates;
-import it.dosti.justit.model.RepairReport;
-import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.TimeSlot;
+import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.user.ClientUser;
@@ -21,7 +18,7 @@ public class BookingDAODemo implements BookingDAO {
     private int nextId = 1004;
 
     private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
-    private static final User user1 = new ClientUser("Francesco pandini");
+    private static final User user1 = new ClientUser("demo_client");
     private static final User user2 = new ClientUser("Valentino mastrota");
     private static final Shop shop = new Shop.Builder(SHOP_NAME_DEMO)
             .id(1)
@@ -49,7 +46,7 @@ public class BookingDAODemo implements BookingDAO {
                 .build();
 
         completed.setRepairReport(
-                new RepairReport(
+                new RepairReportCompleted(
                         "Batteria sostituita con componente originale. Dispositivo funzionante.",
                         1.5,
                         30.0,
@@ -97,11 +94,8 @@ public class BookingDAODemo implements BookingDAO {
                 .build();
 
         rejected.setRepairReport(
-                new RepairReport(
-                        "Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale.",
-                        0.5,
-                        30.0,
-                        0.0
+                new RepairReportRejected(
+                        "Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale."
                 )
         );
 
@@ -123,8 +117,6 @@ public class BookingDAODemo implements BookingDAO {
                 .status(booking.getStatus())
                 .homeAssistance(booking.getHomeAssistance())
                 .createdAt(booking.getCreatedAt())
-                .repairReport(booking.getRepairReport())
-                .invoice(booking.getInvoice())
                 .reservationPaymentTransactionId(
                         booking.getReservationPaymentTransactionId()
                 )

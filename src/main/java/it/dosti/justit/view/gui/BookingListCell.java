@@ -1,7 +1,6 @@
 package it.dosti.justit.view.gui;
 
 import it.dosti.justit.bean.BookingBean;
-import it.dosti.justit.bean.PaymentDataBean;
 import it.dosti.justit.controller.graphical.gui.BookingsListUserGController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

@@ -9,6 +9,7 @@ import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAOCSV;
 import it.dosti.justit.model.Invoice;
 import it.dosti.justit.model.RepairReport;
+import it.dosti.justit.model.RepairReportCompleted;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.SessionManager;
@@ -82,16 +83,24 @@ public class ListBookingController {
         return bean;
     }
 
-    private RepairReportBean toBean(RepairReport report) {
-        if (report == null) {
+    private RepairReportBean toBean(RepairReport repairReport) {
+        if (repairReport == null) {
             return null;
         }
 
         RepairReportBean bean = new RepairReportBean();
-        bean.setTechNotes(report.getTechNotes());
-        bean.setLaborHours(report.getLaborHours());
-        bean.setCostHours(report.getCostHours());
-        bean.setPartCosts(report.getPartCosts());
+
+        bean.setTechNotes(repairReport.getTechNotes());
+
+        if (repairReport instanceof RepairReportCompleted) {
+            RepairReportCompleted completed =
+                    (RepairReportCompleted) repairReport;
+
+            bean.setLaborHours(completed.getLaborHours());
+            bean.setCostHours(completed.getCostHours());
+            bean.setPartCosts(completed.getPartCosts());
+        }
+
         return bean;
     }
 

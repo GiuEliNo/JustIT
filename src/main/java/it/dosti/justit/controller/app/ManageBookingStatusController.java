@@ -10,6 +10,8 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.RepairReport;
+import it.dosti.justit.model.RepairReportCompleted;
+import it.dosti.justit.model.RepairReportFactory;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.booking.state.BookingEvent;
@@ -81,12 +83,9 @@ public class ManageBookingStatusController {
         if (repairReportBean == null) {
             return;
         }
-        RepairReport report = new RepairReport(
-                repairReportBean.getTechNotes(),
-                repairReportBean.getLaborHours(),
-                repairReportBean.getCostHours(),
-                repairReportBean.getPartCosts()
-        );
+
+        RepairReport report = RepairReportFactory.create(booking.getStatus(), repairReportBean);
+
         booking.setRepairReport(report);
     }
 

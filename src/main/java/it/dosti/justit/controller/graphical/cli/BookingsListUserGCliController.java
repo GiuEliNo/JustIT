@@ -3,7 +3,6 @@ package it.dosti.justit.controller.graphical.cli;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ListBookingController;
-import it.dosti.justit.controller.app.ManageBookingStatusController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CBookingListView;

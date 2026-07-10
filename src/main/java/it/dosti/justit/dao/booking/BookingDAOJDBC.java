@@ -9,7 +9,7 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.*;
-import it.dosti.justit.model.RepairReport;
+import it.dosti.justit.model.RepairReportCompleted;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.user.User;
@@ -27,7 +27,6 @@ public class BookingDAOJDBC implements BookingDAO {
     private static final String TIMESLOT = "timeSlot";
     private static final String ID = "id";
     private static final String DATE = "date";
-    private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
     private static final String STATE = "state";
     private static final String USERNAME = "username";
@@ -401,25 +400,42 @@ public class BookingDAOJDBC implements BookingDAO {
 
     @Override
     public void saveRepairReport(Booking booking) {
-        if (booking.getRepairReport() == null) return;
         RepairReport report = booking.getRepairReport();
+
+        if (report == null) {
+            return;
+        }
+
         String sql = BookingQuery.INSERT_REPAIR_REPORT;
+
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             pstmt.setInt(1, booking.getBookingId());
             pstmt.setString(2, report.getTechNotes());
-            pstmt.setDouble(3, report.getLaborHours());
-            pstmt.setDouble(4, report.getCostHours());
-            pstmt.setDouble(5, report.getPartCosts());
+
+            if (report instanceof RepairReportCompleted) {
+                RepairReportCompleted completedReport = (RepairReportCompleted) report;
+
+                pstmt.setDouble(3, completedReport.getLaborHours());
+                pstmt.setDouble(4, completedReport.getCostHours());
+                pstmt.setDouble(5, completedReport.getPartCosts());
+
+            } else {
+                pstmt.setNull(3, Types.DOUBLE);
+                pstmt.setNull(4, Types.DOUBLE);
+                pstmt.setNull(5, Types.DOUBLE);
+            }
+
             pstmt.executeUpdate();
+
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
-    private RepairReport getRepairReport(Integer bookingId) {
+    private RepairReportCompleted getRepairReport(Integer bookingId) {
         String sql = BookingQuery.SELECT_REPAIR_REPORT;
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
@@ -428,7 +444,7 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setInt(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return new RepairReport(
+                return new RepairReportCompleted(
                         rs.getString(TECHNOTES),
                         rs.getDouble(LABORHOURS),
                         rs.getDouble(COSTHOURS),

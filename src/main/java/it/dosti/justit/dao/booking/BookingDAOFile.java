@@ -229,15 +229,32 @@ public class BookingDAOFile implements BookingDAO {
 
     @Override
     public void saveRepairReport(Booking updatedBooking) {
-        try {
-            List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
+        try { List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
+
+            RepairReport repairReport = updatedBooking.getRepairReport();
+
+            if (repairReport == null) {
+                return;
+            }
+
             ReportDTO report = new ReportDTO();
+
             report.setBookingId(updatedBooking.getBookingId());
-            report.setTechNotes(updatedBooking.getRepairReport().getTechNotes());
-            report.setCostHours(updatedBooking.getRepairReport().getCostHours());
-            report.setLaborHours(updatedBooking.getRepairReport().getLaborHours());
+            report.setTechNotes(repairReport.getTechNotes());
+
+            if (repairReport instanceof RepairReportCompleted) {
+                RepairReportCompleted completedReport =
+                        (RepairReportCompleted) repairReport;
+
+                report.setCostHours(completedReport.getCostHours());
+                report.setLaborHours(completedReport.getLaborHours());
+                report.setPartCosts(completedReport.getPartCosts());
+            }
+
             reports.add(report);
+
             JsonHandler.writeJsonFile(reports, FILENAME_REPORTS);
+
         } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
@@ -299,13 +316,13 @@ public class BookingDAOFile implements BookingDAO {
     }
 
 
-    private RepairReport retrieveReport(Integer bookingId) {
+    private RepairReportCompleted retrieveReport(Integer bookingId) {
         try{
             List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
             if (!reports.isEmpty()) {
                 for(ReportDTO report : reports){
                     if (report.getBookingId().equals(bookingId)) {
-                        return new RepairReport(report.getTechNotes(), report.getLaborHours(), report.getCostHours(), report.getBookingId());
+                        return new RepairReportCompleted(report.getTechNotes(), report.getLaborHours(), report.getCostHours(), report.getBookingId());
                     }
                 }
             }
