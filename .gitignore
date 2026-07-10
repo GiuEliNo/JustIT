@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
+.codex
+.agents
+data/json/*
 
 data/justit.db
 out/
