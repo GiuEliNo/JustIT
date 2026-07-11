@@ -131,7 +131,11 @@ public class BookingDAODemo implements BookingDAO {
 
 
     @Override
-    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot) {
+    public boolean existsBooking(Booking booking) {
+        int shopId = booking.getShop().getId();
+        LocalDate date = booking.getDate();
+        TimeSlot timeSlot = booking.getTimeSlot();
+
         return bookings.stream()
                 .anyMatch(
                         b -> b.getShop().getId().equals(shopId)

@@ -1,9 +1,6 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.api.PaymentGateway;
-import it.dosti.justit.api.PaymentRequest;
-import it.dosti.justit.api.PaymentReceipt;
-import it.dosti.justit.api.RefundRequest;
+import it.dosti.justit.api.*;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.model.booking.Booking;
 
@@ -11,8 +8,8 @@ public class ProcessPaymentController {
 
     private final PaymentGateway paymentGateway;
 
-    public ProcessPaymentController(PaymentGateway paymentGateway) {
-        this.paymentGateway = paymentGateway;
+    public ProcessPaymentController() {
+        this.paymentGateway = PaymentGatewayFactory.createPaymentGateway();
     }
     public void processReservationPayment(Booking booking, String cardNumber, double amount) throws PaymentException {
         PaymentRequest request = new PaymentRequest(cardNumber, amount);

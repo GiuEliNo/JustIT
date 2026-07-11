@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookingDAO {
     int addBooking(Booking booking) throws RegisterOnBackEndException;
 
-    boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot);
+    boolean existsBooking(Booking booking);
 
     List<Booking> getBookingsByUser(String username);
 

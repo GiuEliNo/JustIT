@@ -1,12 +1,10 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
-import it.dosti.justit.api.VisaPaymentGatewayStub;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.bean.*;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.*;
@@ -26,7 +24,7 @@ public class BookAppointmentController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
     private final ProcessPaymentController processPaymentController;
     public BookAppointmentController() {
-        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+        this.processPaymentController = new ProcessPaymentController();
     }
 
     public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean, SessionBean session) throws RegisterOnBackEndException {
@@ -34,7 +32,7 @@ public class BookAppointmentController {
         Booking newBooking = BookingFactory.createBookingFromBean(bookingBean, SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop(), SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser());
 
         try {
-            if (dao.existsBooking(newBooking.getShop().getId(), newBooking.getDate(), newBooking.getTimeSlot())) {
+            if (dao.existsBooking(newBooking)) {
                 throw new BookingAlreadyExistsException("Booking already active for shop/date/timeslot");
             }
             Integer bookingId = dao.addBooking(newBooking);
@@ -45,7 +43,7 @@ public class BookAppointmentController {
 
         } catch (RegisterOnBackEndException e) {
             JustItLogger.getInstance().error("Error reserving the slot booking");
-            throw new RegisterOnBackEndException(e.getMessage());
+            throw new RegisterOnBackEndException(e.getMessage(), e);
         }
     }
 
@@ -86,7 +84,7 @@ public class BookAppointmentController {
         catch(BookingExpiredException | PaymentException e) {
             abortBooking(booking);
             JustItLogger.getInstance().error(e.getMessage());
-            throw new RegisterOnBackEndException("Error finalyzing the payment. Booking aborted.");
+            throw new RegisterOnBackEndException("Error finalizing the payment. Booking aborted.");
         }
 
     }
@@ -110,15 +108,7 @@ public class BookAppointmentController {
     }
 
     private void sendEmailAlert(Booking booking) {
-
-        ShopDAO shopDAO = DaoFactory.getShopDAO();
-        try{
-            Shop shop = shopDAO.retrieveShopById(booking.getShop().getId());
-            EmailGatewayService.sendEMailInvoice(shop.getEmail());
-        } catch (ShopNotFoundException e) {
-            JustItLogger.getInstance().error("Shop not found");
-        }
-
+            EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
     }
 
     public boolean hasAvailableSlots(SessionBean session, LocalDate date) {
@@ -127,10 +117,6 @@ public class BookAppointmentController {
 
     public String getUsername(SessionBean session) {
         return SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-    }
-
-    public Integer getShopId(SessionBean session) {
-        return SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
     }
 
     public Boolean isHomeAssistance(SessionBean session) {

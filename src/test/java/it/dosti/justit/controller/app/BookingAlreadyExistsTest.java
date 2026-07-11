@@ -71,7 +71,7 @@ class BookingAlreadyExistsTest {
                 .createdAt()
                 .build();
 
-        if (!dao.existsBooking(shop.getId(), bookingDate, TIME_SLOT)) {
+        if (!dao.existsBooking(booking)) {
             try {
                 dao.addBooking(booking);
             }catch(RegisterOnBackEndException e) {
