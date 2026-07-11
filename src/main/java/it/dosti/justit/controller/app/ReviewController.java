@@ -3,6 +3,8 @@ package it.dosti.justit.controller.app;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
+import it.dosti.justit.bean.mapper.BookingMapper;
+import it.dosti.justit.bean.mapper.ReviewMapper;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.review.ReviewDAO;
@@ -44,59 +46,25 @@ public class ReviewController {
 
     public List<ReviewBean> getReviews(SessionBean session) {
         List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
-        List<ReviewBean> reviewBeans = new ArrayList<>();
 
-        for (Review review : reviews) {
-            ReviewBean reviewBean = new ReviewBean();
-            reviewBean.setTitle(review.getTitle());
-            reviewBean.setReview(review.getReview());
-            reviewBean.setUsername(review.getBooking().getUser().getUsername());
-            reviewBean.setStars(review.getStar());
-            reviewBeans.add(reviewBean);
-        }
-
-        return reviewBeans;
+        return ReviewMapper.toBeans(reviews);
     }
 
     public List<BookingBean> getCompletedBookingsWithoutReviewUserPerShop(SessionBean session) {
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
         List<Booking> bookings = dao.getCompletedBookingsWithoutReviewPerShop(username, shopId);
-        return toBeans(bookings);
+        return BookingMapper.toBeans(bookings);
     }
 
     public List<BookingBean> getCompletedBookingsWithoutReviewUser(SessionBean session) {
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         List<Booking> bookings = dao.getCompletedBookingsWithoutReview(username);
-        return toBeans(bookings);
+        return BookingMapper.toBeans(bookings);
     }
 
     private void notifyReviewCreated(Review review){
         ReviewCreatedPublisher.getInstance()
                 .notify(review);
-    }
-
-    private List<BookingBean> toBeans(List<Booking> bookings) {
-        List<BookingBean> beans = new ArrayList<>();
-        for (Booking b : bookings) {
-            beans.add(toBean(b));
-        }
-        return beans;
-    }
-
-    private BookingBean toBean(Booking booking) {
-        BookingBean bean = new BookingBean();
-
-        bean.setBookingID(booking.getBookingId());
-        bean.setUsername(booking.getUser().getUsername());
-        bean.setDate(booking.getDate());
-        bean.setTimeSlot(booking.getTimeSlot().toString());
-        bean.setDescription(booking.getDescription());
-        bean.setStatus(booking.getStatus().toString());
-        bean.setShopName(booking.getShop().getName());
-        bean.setHomeAssistance(booking.getHomeAssistance());
-        bean.setUserAddress(booking.getHomeAssistance() ? ((ClientUser)booking.getUser()).getAddress() : null);
-
-        return bean;
     }
 }

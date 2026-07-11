@@ -7,6 +7,8 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.repairReport.RepairReport;
+import it.dosti.justit.model.booking.repairReport.RepairReportCompleted;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;

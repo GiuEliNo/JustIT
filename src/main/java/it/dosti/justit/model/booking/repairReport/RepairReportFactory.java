@@ -1,4 +1,4 @@
-package it.dosti.justit.model;
+package it.dosti.justit.model.booking.repairReport;
 
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.model.booking.BookingStatus;

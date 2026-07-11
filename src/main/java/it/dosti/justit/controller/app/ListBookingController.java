@@ -2,16 +2,13 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.VisaPaymentGatewayStub;
 import it.dosti.justit.bean.*;
+import it.dosti.justit.bean.mapper.BookingMapper;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAO;
 import it.dosti.justit.dao.bookingexport.BookingExportFileDAOCSV;
-import it.dosti.justit.model.Invoice;
-import it.dosti.justit.model.RepairReport;
-import it.dosti.justit.model.RepairReportCompleted;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.SessionManager;
 
 import java.io.File;
@@ -46,73 +43,15 @@ public class ListBookingController {
         }
         daoFile.exportToFile(csvBeanList, file);
     }
-    private List<BookingBean> toBeans(List<Booking> bookings) {
-        List<BookingBean> beans = new ArrayList<>();
-        for (Booking b : bookings) {
-            beans.add(toBean(b));
-        }
-        return beans;
-    }
-
-    private BookingBean toBean(Booking booking) {
-        BookingBean bean = new BookingBean();
-
-        bean.setUsername(booking.getUser().getUsername());
-        bean.setBookingID(booking.getBookingId());
-        bean.setDate(booking.getDate());
-        bean.setTimeSlot(booking.getTimeSlot().toString());
-        bean.setDescription(booking.getDescription());
-        bean.setStatus(booking.getStatus().toString());
-        bean.setShopName(booking.getShop().getName());
-        bean.setHomeAssistance(booking.getHomeAssistance());
-        bean.setUserAddress(booking.getHomeAssistance() ? ((ClientUser)booking.getUser()).getAddress() : null);
-        bean.setRepairReport(toBean(booking.getRepairReport()));
-        bean.setInvoice(toBean(booking.getInvoice()));
-
-        return bean;
-    }
-
-    private InvoiceBean toBean(Invoice invoice) {
-        if (invoice == null) {
-            return null;
-        }
-
-        InvoiceBean bean = new InvoiceBean();
-        bean.setTotalCost(invoice.getTotalCost());
-        bean.setPaid(invoice.isPaid());
-        return bean;
-    }
-
-    private RepairReportBean toBean(RepairReport repairReport) {
-        if (repairReport == null) {
-            return null;
-        }
-
-        RepairReportBean bean = new RepairReportBean();
-
-        bean.setTechNotes(repairReport.getTechNotes());
-
-        if (repairReport instanceof RepairReportCompleted) {
-            RepairReportCompleted completed =
-                    (RepairReportCompleted) repairReport;
-
-            bean.setLaborHours(completed.getLaborHours());
-            bean.setCostHours(completed.getCostHours());
-            bean.setPartCosts(completed.getPartCosts());
-        }
-
-        return bean;
-    }
-
-
     public List<BookingBean> getBookingsByShop(SessionBean session) {
         List<Booking> bookings = dao.getBookingsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
-        return toBeans(bookings);
+        return BookingMapper.toBeans(bookings);
     }
 
     public List<BookingBean> getBookingsByUser(SessionBean session) {
         List<Booking> bookings = dao.getBookingsByUser(SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername());
-        return toBeans(bookings);
+
+        return BookingMapper.toBeans(bookings);
     }
 
     public void payInvoice(BookingBean bookingBean, PaymentDataBean paymentData) throws PaymentException {

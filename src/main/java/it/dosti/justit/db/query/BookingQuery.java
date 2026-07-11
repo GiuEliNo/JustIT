@@ -4,7 +4,7 @@ public class BookingQuery {
 
     private BookingQuery() {}
 
-    public static final String INSERT_BOOKING = "INSERT INTO Booking(idShop, username, date, timeSlot, description, isHomeAssistance, createdAt)"+
+    public static final String INSERT_BOOKING = "INSERT INTO Booking(idShop, username, date, timeSlot, description, isHomeAssistance, createdAt, transaction_id)"+
             " VALUES (?,?,?,?,?,?,?)";
 
     public static final String UPDATE_STATUS = "UPDATE Booking SET state = ? WHERE id = ?";

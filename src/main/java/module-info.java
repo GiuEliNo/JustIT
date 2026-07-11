@@ -43,4 +43,6 @@ module it.dosti.justit {
     exports it.dosti.justit.dto;
     opens it.dosti.justit.dto to com.fasterxml.jackson.databind, javafx.fxml;
     opens it.dosti.justit.model.booking.state to com.fasterxml.jackson.databind, javafx.fxml;
+    exports it.dosti.justit.model.booking.repairReport;
+    opens it.dosti.justit.model.booking.repairReport to com.fasterxml.jackson.databind;
 }

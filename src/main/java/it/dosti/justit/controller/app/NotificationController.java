@@ -2,14 +2,12 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.bean.SessionBean;
+import it.dosti.justit.bean.mapper.NotificationMapper;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.notification.NotificationDAO;
-import it.dosti.justit.model.notification.BookingStatusNotification;
 import it.dosti.justit.model.notification.Notification;
-import it.dosti.justit.model.notification.ReviewNotification;
 import it.dosti.justit.utils.SessionManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationController {
@@ -27,44 +25,17 @@ public class NotificationController {
             notifications = dao.getNotificationsByShopId(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
         }
 
-        return toBeans(notifications);
+        return NotificationMapper.toBeans(notifications);
     }
 
     public List<NotificationBean> getUnreadNotifications(SessionBean session) {
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
         List<Notification> notifications = dao.getUnreadNotificationsByUser(username);
-        return toBeans(notifications);
+        return NotificationMapper.toBeans(notifications);
     }
 
     public void markNotificationRead(Integer notificationId) {
         dao.markRead(notificationId);
     }
 
-    private List<NotificationBean> toBeans(List<Notification> notifications) {
-        List<NotificationBean> beans = new ArrayList<>();
-        for (Notification notification : notifications) {
-            beans.add(toBean(notification));
-        }
-        return beans;
-    }
-
-    private NotificationBean toBean(Notification notification) {
-        NotificationBean bean = new NotificationBean();
-
-        if (notification instanceof BookingStatusNotification){
-
-            bean.setShopName(((BookingStatusNotification) notification).getBooking().getShop().getName());
-
-        }
-        else{
-            bean.setShopName(((ReviewNotification)notification).getReview().getShop().getName());
-        }
-        bean.setId(notification.getId());
-        bean.setUsername(notification.getRecipient().getUsername());
-        bean.setCreatedAt(notification.getCreatedAt());
-        bean.setRead(notification.isRead());
-        bean.setNotificationMessage(notification.getMessage());
-
-        return bean;
-    }
 }

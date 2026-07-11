@@ -3,6 +3,8 @@ package it.dosti.justit.dao.booking;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.booking.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.booking.repairReport.RepairReportRejected;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 
