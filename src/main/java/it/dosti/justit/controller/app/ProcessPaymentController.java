@@ -5,35 +5,23 @@ import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.model.booking.Booking;
 
 public class ProcessPaymentController {
-
-    private final PaymentGateway paymentGateway;
-
-    public ProcessPaymentController() {
-        this.paymentGateway = PaymentGatewayFactory.createPaymentGateway();
-    }
-    public void processReservationPayment(Booking booking, String cardNumber, double amount) throws PaymentException {
-        PaymentRequest request = new PaymentRequest(cardNumber, amount);
-        PaymentReceipt receipt = paymentGateway.charge(request);
-
-        if (booking != null) {
-            booking.setReservationPaymentTransactionId(receipt.getTransactionId());
-        }
-    }
     public void refundReservationPayment(Booking booking, double amount) throws PaymentException {
         if (booking == null || booking.getReservationPaymentTransactionId() == null || booking.getReservationPaymentTransactionId().isBlank()) {
             throw new PaymentException("Cannot refund: booking or original transaction ID is missing.");
         }
+        String transactionId = booking.getReservationPaymentTransactionId();
+        PaymentGateway gateway = PaymentGatewayFactory.createFromTransactionId(transactionId);
 
         RefundRequest request = new RefundRequest(booking.getReservationPaymentTransactionId(), amount);
-        paymentGateway.refund(request);
+        gateway.refund(request);
 
     }
 
-    public void processPayment(Booking booking, String cardNumber, double totalCost) throws PaymentException {
+    public void processPayment(Booking booking, String cardNumber, double amount) throws PaymentException {
+        PaymentGateway gateway = PaymentGatewayFactory.createFromCard(cardNumber);
 
-        PaymentRequest request = new PaymentRequest(cardNumber, totalCost);
-
-        PaymentReceipt receipt = paymentGateway.charge(request);
+        PaymentRequest request = new PaymentRequest(cardNumber, amount);
+        PaymentReceipt receipt = gateway.charge(request);
 
         if (booking != null) {
             booking.setReservationPaymentTransactionId(receipt.getTransactionId());

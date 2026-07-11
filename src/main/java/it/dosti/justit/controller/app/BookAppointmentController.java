@@ -73,7 +73,7 @@ public class BookAppointmentController {
             }
             BookingStatus oldStatus = booking.getStatus();
 
-            processPaymentController.processReservationPayment(booking, paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote());
+            processPaymentController.processPayment(booking, paymentDataBean.getCardNumber(), paymentQuoteBean.getQuote());
 
             booking.goNext(BookingEvent.PAYMENT_RECEIVED);
             dao.updateStatus(booking);

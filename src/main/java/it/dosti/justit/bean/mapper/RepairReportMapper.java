@@ -1,8 +1,8 @@
 package it.dosti.justit.bean.mapper;
 
 import it.dosti.justit.bean.RepairReportBean;
-import it.dosti.justit.model.booking.repairReport.RepairReport;
-import it.dosti.justit.model.booking.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.repairReport.RepairReport;
+import it.dosti.justit.model.repairReport.RepairReportCompleted;
 
 public class RepairReportMapper {
 

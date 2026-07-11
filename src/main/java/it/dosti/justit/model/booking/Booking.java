@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.model.*;
-import it.dosti.justit.model.booking.repairReport.RepairReport;
-import it.dosti.justit.model.booking.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.repairReport.RepairReport;
+import it.dosti.justit.model.repairReport.RepairReportCompleted;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
 import it.dosti.justit.model.booking.state.BookingStateFactory;
@@ -249,15 +249,13 @@ public class Booking {
             throw new InvalidBookingStateException("Invoice cannot be issued without a repair report");
         }
 
-        if (!(repairReport instanceof RepairReportCompleted)) {
+        if (!(repairReport instanceof RepairReportCompleted completedReport)) {
             throw new InvalidBookingStateException("Invoice requires a completed repair report");
         }
 
         if (invoice != null) {
             return;
         }
-
-        RepairReportCompleted completedReport = (RepairReportCompleted) repairReport;
 
         this.invoice = new Invoice(completedReport.calculateTotalCost(),false);
     }

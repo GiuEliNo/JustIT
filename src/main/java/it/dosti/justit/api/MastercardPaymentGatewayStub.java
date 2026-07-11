@@ -2,17 +2,16 @@ package it.dosti.justit.api;
 
 import it.dosti.justit.exceptions.PaymentException;
 
-public class VisaPaymentGatewayStub implements PaymentGateway {
+public class MastercardPaymentGatewayStub implements PaymentGateway {
 
     @Override
     public PaymentReceipt charge(PaymentRequest request) throws PaymentException {
-
         if (request.getCardNumber() == null || request.getCardNumber().isBlank()) {
             throw new PaymentException("Invalid card number");
         }
 
-        if (!request.getCardNumber().startsWith("4")) {
-            throw new PaymentException("Not a Visa card");
+        if (!request.getCardNumber().startsWith("5")) {
+            throw new PaymentException("Not a Mastercard card");
         }
 
         if (request.getAmount() <= 0) {
@@ -20,7 +19,7 @@ public class VisaPaymentGatewayStub implements PaymentGateway {
         }
 
         return new PaymentReceipt(
-                "tx-visa-" + System.currentTimeMillis(),
+                "tx-mastercard-" + System.currentTimeMillis(),
                 request.getAmount()
         );
     }

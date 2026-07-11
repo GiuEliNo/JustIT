@@ -1,12 +1,42 @@
 package it.dosti.justit.api;
 
-public class PaymentGatewayFactory {
+public final class PaymentGatewayFactory {
+
     private PaymentGatewayFactory() {
-        /* This utility class should not be instantiated */
+    }
+
+    public static PaymentGateway createFromCard(String cardNumber) {
+
+        if (cardNumber == null || cardNumber.isBlank()) {
+            throw new IllegalArgumentException("Missing card number");
+        }
+
+        if (cardNumber.startsWith("4")) {
+            return new VisaPaymentGatewayStub();
+        }
+
+        if (cardNumber.startsWith("5")) {
+            return new MastercardPaymentGatewayStub();
+        }
+
+        throw new IllegalArgumentException("Unsupported card");
     }
 
 
-    public static PaymentGateway createPaymentGateway() {
-        return new VisaPaymentGatewayStub();
+    public static PaymentGateway createFromTransactionId(String transactionId) {
+
+        if (transactionId == null || transactionId.isBlank()) {
+            throw new IllegalArgumentException("Missing transaction id");
+        }
+
+        if (transactionId.startsWith("tx-visa-")) {
+            return new VisaPaymentGatewayStub();
+        }
+
+        if (transactionId.startsWith("tx-mastercard-")) {
+            return new MastercardPaymentGatewayStub();
+        }
+
+        throw new IllegalArgumentException("Unknown transaction provider");
     }
 }

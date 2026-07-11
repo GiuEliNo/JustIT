@@ -1,4 +1,4 @@
-package it.dosti.justit.model.booking.repairReport;
+package it.dosti.justit.model.repairReport;
 
 public class RepairReportCompleted implements RepairReport {
 
