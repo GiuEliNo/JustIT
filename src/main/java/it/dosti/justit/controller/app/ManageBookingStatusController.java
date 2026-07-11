@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
+import it.dosti.justit.exceptions.BookingNotFoundException;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
@@ -26,8 +27,13 @@ public class ManageBookingStatusController {
     }
 
     public void approveBooking(BookingBean bookingBean) {
-        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
+        Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
+
+        if (booking.getReservationPaymentTransactionId() == null) {
+            this.removeBookingStatusInvalid(booking);
+            return;
+        }
 
         try {
             booking.goNext(BookingEvent.CONFIRM);
@@ -39,14 +45,14 @@ public class ManageBookingStatusController {
     }
 
     public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
-        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
+        Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
         this.addRepairReportToBooking(booking, repairReportBean);
 
         try {
-            booking.goNext(BookingEvent.REJECT);
             this.refundPayment(booking);
+            booking.goNext(BookingEvent.REJECT);
             bookingDao.updateStatus(booking);
             bookingDao.saveRepairReport(booking);
             this.notifyStatusChange(booking, oldStatus);
@@ -59,7 +65,7 @@ public class ManageBookingStatusController {
     }
 
     public void completeBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
-        Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
+        Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
 
@@ -105,5 +111,25 @@ public class ManageBookingStatusController {
     }
     private void sendEmailAlert(Booking booking) {
         EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
+    }
+    private void removeBookingStatusInvalid(Booking booking) {
+
+        booking.goNext(BookingEvent.REJECT);
+        if(bookingDao.deleteReservedBookingSlot(booking.getBookingId())){
+            JustItLogger.getInstance().info("Booking removed, status invalid no payment");
+        }
+        else{
+            JustItLogger.getInstance().error("Booking deletion failed");
+        }
+    }
+
+    private Booking retrieveBookingFromPersistence(BookingBean bean) {
+        Booking booking = bookingDao.getBookingById(bean.getBookingID());
+
+        if (booking == null) {
+            throw new BookingNotFoundException("Booking not found");
+        }
+
+        return booking;
     }
 }
