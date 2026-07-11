@@ -8,8 +8,8 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.model.*;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.repairReport.RepairReport;
-import it.dosti.justit.model.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.repairreport.RepairReport;
+import it.dosti.justit.model.repairreport.RepairReportCompleted;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
@@ -24,7 +24,6 @@ import java.util.Objects;
 public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_BOOKINGS = "bookings";
     private static final String FILENAME_REVIEWS = "reviews";
-    private static final String FILENAME_SHOPS = "shops";
     private static final String FILENAME_REPORTS = "reports";
     private static final String FILENAME_USERS = "users";
     private static final String FILENAME_INVOICES = "invoices";

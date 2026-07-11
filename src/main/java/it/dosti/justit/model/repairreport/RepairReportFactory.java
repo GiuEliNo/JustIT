@@ -1,9 +1,13 @@
-package it.dosti.justit.model.repairReport;
+package it.dosti.justit.model.repairreport;
 
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.model.booking.BookingStatus;
 
 public class RepairReportFactory {
+
+    private RepairReportFactory() {
+    //sonar
+    }
 
     public static RepairReport create(BookingStatus status, RepairReportBean bean) {
 

@@ -10,12 +10,12 @@ import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.CalculateCoordinateRangeDistance;
+import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 // soppresso warning: PRNG usato solo per easter egg, non per sicurezza
 @SuppressWarnings("java:S2245")
@@ -51,7 +51,8 @@ public class BrowseShopController {
             if (shop != null) {
                 return shop;
             }
-        } catch (ShopNotFoundException ignored) {
+        } catch (ShopNotFoundException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
 
         return ShopMapper.toDomain(bean);
@@ -75,7 +76,7 @@ public class BrowseShopController {
                         .toLowerCase()
                         .contains(query.toLowerCase()))
                 .map(ShopMapper::toBean)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.exceptions.InvalidBookingStateException;
 import it.dosti.justit.model.*;
-import it.dosti.justit.model.repairReport.RepairReport;
-import it.dosti.justit.model.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.repairreport.RepairReport;
+import it.dosti.justit.model.repairreport.RepairReportCompleted;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.model.booking.state.BookingState;
 import it.dosti.justit.model.booking.state.BookingStateFactory;
@@ -48,6 +48,7 @@ public class Booking {
         this.createdAt = builder.createdAt;
         this.repairReport = builder.repairReport;
         this.invoice = builder.invoice;
+        this.reservationPaymentTransactionId = builder.reservationPaymentTransactionId;
 
         this.currentState = BookingStateFactory.fromStatus(builder.status);
     }

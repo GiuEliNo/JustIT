@@ -3,6 +3,7 @@ package it.dosti.justit.bean.mapper;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.User;
 
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class BookingMapper {
         bean.setShopName(booking.getShop().getName());
         bean.setHomeAssistance(booking.getHomeAssistance());
 
-        if (booking.getHomeAssistance() && booking.getUser() instanceof ClientUser) {
+        User user = booking.getUser();
 
-            ClientUser client = (ClientUser) booking.getUser();
+        if (booking.getHomeAssistance() && user instanceof ClientUser client) {
             bean.setUserAddress(client.getAddress());
         }
 

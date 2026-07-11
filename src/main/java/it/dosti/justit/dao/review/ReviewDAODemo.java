@@ -1,6 +1,6 @@
 package it.dosti.justit.dao.review;
 
-import it.dosti.justit.exceptions.ReviewWithoutBookingException;
+import it.dosti.justit.exceptions.DaoException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.Shop;
@@ -72,9 +72,9 @@ public class ReviewDAODemo implements ReviewDAO {
     }
 
     @Override
-    public void addReviewToShop(Review instance) throws ReviewWithoutBookingException {
+    public void addReviewToShop(Review instance) throws DaoException {
         if (instance.getBooking().getBookingId() == null) {
-            throw new ReviewWithoutBookingException("Review must be linked to a booking");
+            throw new DaoException("Review must be linked to a booking");
         }else{
             reviews.add(instance);
         }

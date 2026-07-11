@@ -1,8 +1,8 @@
 package it.dosti.justit.bean.mapper;
 
 import it.dosti.justit.bean.RepairReportBean;
-import it.dosti.justit.model.repairReport.RepairReport;
-import it.dosti.justit.model.repairReport.RepairReportCompleted;
+import it.dosti.justit.model.repairreport.RepairReport;
+import it.dosti.justit.model.repairreport.RepairReportCompleted;
 
 public class RepairReportMapper {
 
@@ -19,9 +19,7 @@ public class RepairReportMapper {
         bean.setTechNotes(report.getTechNotes());
 
 
-        if (report instanceof RepairReportCompleted) {
-
-            RepairReportCompleted completed = (RepairReportCompleted) report;
+        if (report instanceof RepairReportCompleted completed) {
 
             bean.setLaborHours(completed.getLaborHours());
             bean.setCostHours(completed.getCostHours());

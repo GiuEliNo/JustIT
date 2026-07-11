@@ -1,4 +1,4 @@
-package it.dosti.justit.model.repairReport;
+package it.dosti.justit.model.repairreport;
 
 public interface RepairReport {
 

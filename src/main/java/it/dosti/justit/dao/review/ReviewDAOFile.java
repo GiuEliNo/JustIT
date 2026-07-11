@@ -2,7 +2,7 @@ package it.dosti.justit.dao.review;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import it.dosti.justit.dao.DaoFactory;
-import it.dosti.justit.exceptions.ReviewWithoutBookingException;
+import it.dosti.justit.exceptions.DaoException;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.Shop;
@@ -39,9 +39,9 @@ public class ReviewDAOFile implements ReviewDAO{
     }
 
     @Override
-    public void addReviewToShop(Review instance) throws ReviewWithoutBookingException{
+    public void addReviewToShop(Review instance) throws DaoException {
         if(!hasBooking(instance)) {
-            throw new ReviewWithoutBookingException("Review without booking");
+            throw new DaoException("Review without booking");
         }
 
         try{

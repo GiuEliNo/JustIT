@@ -14,30 +14,25 @@ public class BookingPaymentPageGCliController extends BaseCliController{
     private CBookingPaymentPageView paymentPageView = new CBookingPaymentPageView();
 
     @Override
-    public void initialize(){
-        if(data instanceof PaymentQuoteBean){
-            double quote = ((PaymentQuoteBean) data).getQuote();
+    public void initialize() {
+        if (data instanceof PaymentQuoteBean quoteBean) {
+            double quote = quoteBean.getQuote();
+
             PaymentDataBean bean = new PaymentDataBean();
             bean.setCardNumber(paymentPageView.askCardNumber(quote));
             bean.setCardHolderName(paymentPageView.askCardHolderName(quote));
             bean.setCardExpiration(paymentPageView.askExpirationDate(quote));
             bean.setCardCVV(paymentPageView.askCvvNumber(quote));
 
-            try{
-                appController.finalizePayment(bean, (PaymentQuoteBean) data);
+            try {
+                appController.finalizePayment(bean, quoteBean);
                 paymentPageView.paymentSuccess();
                 navigation.navigate(Screen.MAIN_USER, sessionId);
-            }
-            catch(RegisterOnBackEndException e){
+            } catch (RegisterOnBackEndException e) {
                 paymentPageView.failedPayment();
-            }
-            catch(NavigationException e){
+            } catch (NavigationException e) {
                 JustItLogger.getInstance().error(e.getMessage(), e);
             }
-
         }
-
-
     }
-
 }

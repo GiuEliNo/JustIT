@@ -6,6 +6,10 @@ import it.dosti.justit.model.Review;
 import java.util.List;
 
 public class ReviewMapper {
+    private ReviewMapper() {
+        //sonar
+    }
+
 
 
     public static List<ReviewBean> toBeans(List<Review> reviews) {

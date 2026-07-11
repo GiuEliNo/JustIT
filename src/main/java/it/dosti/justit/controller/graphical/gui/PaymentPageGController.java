@@ -41,11 +41,11 @@ public class PaymentPageGController extends BaseGController {
     PauseTransition timeoutTimer;
 
     @Override
-    protected void onInitDataReady(){
+    protected void onInitDataReady() {
 
-        if (initData instanceof PaymentQuoteBean) {
-            double quote = ((PaymentQuoteBean) initData).getQuote();
-            labelAmount.setText( quote +"€");
+        if (initData instanceof PaymentQuoteBean quoteBean) {
+            double quote = quoteBean.getQuote();
+            labelAmount.setText(quote + "€");
             JustItLogger.getInstance().info("quote: " + quote);
             startTimerUI();
         }

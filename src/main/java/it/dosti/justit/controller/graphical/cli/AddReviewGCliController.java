@@ -5,7 +5,6 @@ import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
-import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.controller.app.WriteReviewController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
@@ -17,13 +16,10 @@ import java.util.List;
 
 public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
-    private ReviewController reviewController;
-
     private WriteReviewController writeReviewController;
 
     @Override
     public void initialize() throws NavigationException {
-        reviewController = new ReviewController();
         writeReviewController = new WriteReviewController();
         addReviewView = (CAddReviewView) view;
 

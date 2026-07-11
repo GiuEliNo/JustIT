@@ -1,7 +1,5 @@
 package it.dosti.justit.dto;
 
-import it.dosti.justit.model.notification.NotificationType;
-
 import java.time.LocalDateTime;
 
 public class NotificationDTO {

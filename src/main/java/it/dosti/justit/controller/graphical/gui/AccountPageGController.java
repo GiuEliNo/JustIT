@@ -4,7 +4,6 @@ import it.dosti.justit.bean.PasswordBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.UserBean;
 import it.dosti.justit.controller.app.AccountController;
-import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.exceptions.UserNotFoundException;
@@ -137,7 +136,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch (UserNotFoundException | UpdateOnBackEndException | ShopNotFoundException e) {
+                } catch (UserNotFoundException | UpdateOnBackEndException e) {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }
             }
@@ -168,7 +167,7 @@ public class AccountPageGController extends BaseGController {
                                 .text("Success!")
                                 .showConfirm();
                     }
-                } catch (UserNotFoundException | UpdateOnBackEndException | ShopNotFoundException e)
+                } catch (UserNotFoundException | UpdateOnBackEndException e)
                 {
                     JustItLogger.getInstance().error(e.getMessage(), e);
                 }

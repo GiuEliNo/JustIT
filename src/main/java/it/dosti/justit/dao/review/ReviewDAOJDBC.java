@@ -4,7 +4,7 @@ import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.ReviewQuery;
-import it.dosti.justit.exceptions.ReviewWithoutBookingException;
+import it.dosti.justit.exceptions.DaoException;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.utils.JustItLogger;
@@ -52,7 +52,7 @@ public class ReviewDAOJDBC implements ReviewDAO {
         return reviews;
     }
 
-    public void addReviewToShop(Review review) throws Exception {
+    public void addReviewToShop(Review review) throws DaoException {
 
         String sql = ReviewQuery.INSERT_REVIEW;
 
@@ -75,9 +75,9 @@ public class ReviewDAOJDBC implements ReviewDAO {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             if (e.getMessage() != null && e.getMessage().contains("Booking specificato")) {
-                throw new ReviewWithoutBookingException("Review without completed booking");
+                throw new DaoException("Review without completed booking");
             }
-            throw e;
+            throw new DaoException(e.getMessage());
         }
     }
 

@@ -1,6 +1,7 @@
 package it.dosti.justit.dao.shop;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.exceptions.DaoException;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
@@ -10,6 +11,7 @@ import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.scene.image.Image;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -227,7 +229,7 @@ public class ShopDAOFile implements ShopDAO{
         return false;
     }
 
-    private List<Shop> readShops() throws Exception {
+    private List<Shop> readShops() throws DaoException, IOException {
         List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
         if (shops == null) {
             return new ArrayList<>();
@@ -235,7 +237,7 @@ public class ShopDAOFile implements ShopDAO{
         return shops;
     }
 
-    private void populateTechs(List<Shop> shops) throws Exception {
+    private void populateTechs(List<Shop> shops) throws DaoException, IOException {
         List<TechnicianUser> technicians = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
         if (technicians == null) {
             return;
