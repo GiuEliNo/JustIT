@@ -265,7 +265,6 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
                 ShopDAO shopDAO = DaoFactory.getShopDAO();
                 UserDAO userDao = DaoFactory.getClientUserDAO();
@@ -281,7 +280,7 @@ public class BookingDAOJDBC implements BookingDAO {
                         .status(BookingStatus.valueOf(rs.getString(STATE)))
                         .homeAssistance(rs.getBoolean(ISHOMEASSISTANCE))
                         .createdAt(LocalDateTime.parse(rs.getString(CREATEDAT)))
-                        .reservationPaymentTransactionId(reservationPaymentTransactionId)
+                        .reservationPaymentTransactionId(rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID))
                         .build();
                 booking.setRepairReport(getRepairReport(bookingId));
                 booking.setInvoice(getInvoice(bookingId));

@@ -10,21 +10,31 @@ import it.dosti.justit.view.cli.CBookingListTechView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BookingsListTechGCliController extends BaseCliController{
     private CBookingListTechView bookingListTechView;
-    private ListBookingController lichController;
     private ManageBookingStatusController manageController;
     private List<BookingBean> bookingList = new ArrayList<>();
+    private Map<Integer, BookingBean> bookingMap = new HashMap<>();
 
     @Override
     public void initialize() throws NavigationException {
-        lichController = new ListBookingController();
+        ListBookingController bookingListController = new ListBookingController();
         manageController = new ManageBookingStatusController();
         bookingListTechView = (CBookingListTechView) view;
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        bookingList = lichController.getBookingsByShop(session);
+
+        bookingList = bookingListController.getBookingsByShop(session);
+
+        bookingMap = bookingList.stream()
+                .collect(Collectors.toMap(
+                        BookingBean::getBookingID,
+                        b -> b
+                ));
 
         showBooking();
 
@@ -63,44 +73,49 @@ public class BookingsListTechGCliController extends BaseCliController{
 
         do {
             bookId = bookingListTechView.askBooking();
-        } while (lichController.getBookingById(bookId) == null);
+        } while (bookingMap.get(bookId) == null);
 
 
-        switch(lichController.getBookingById(bookId).getStatus()){
+        BookingBean booking = bookingMap.get(bookId);
+
+        switch (booking.getStatus()) {
             case "PENDING_CONFIRM":
-                this.confirmationManager(bookId);
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
+                confirmationManager(booking);
                 break;
+
             case "CONFIRMED":
-                this.completedManager(bookId);
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
+                completedManager(booking);
                 break;
+
             default:
-                break;
+                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
+
         }
     }
 
-    private void confirmationManager(Integer bookId) throws NavigationException {
-        switch (bookingListTechView.askConfirmation(lichController.getBookingById(bookId))){
+    private void confirmationManager(BookingBean booking) throws NavigationException {
+        switch (bookingListTechView.askConfirmation(booking)) {
+
             case 1:
-                manageController.rejectBooking(lichController.getBookingById(bookId), null);
+                manageController.rejectBooking(booking, null);
                 break;
+
             case 2:
-                manageController.approveBooking(lichController.getBookingById(bookId));
+                manageController.approveBooking(booking);
                 break;
+
             case 0:
-                navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
-                break;
             default:
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);
                 break;
         }
     }
 
-    private void completedManager(Integer bookId) throws NavigationException {
-        switch (bookingListTechView.askCompleted(lichController.getBookingById(bookId))){
+    private void completedManager(BookingBean booking) throws NavigationException {
+        switch (bookingListTechView.askConfirmation(booking)) {
+
             case 1:
-                manageController.completeBooking(lichController.getBookingById(bookId), null);
+                manageController.completeBooking(booking, null);
                 break;
             case 0:
                 navigation.navigate(Screen.BOOKINGS_LIST_TECH, sessionId);

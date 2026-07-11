@@ -10,7 +10,6 @@ import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.RepairReport;
-import it.dosti.justit.model.RepairReportCompleted;
 import it.dosti.justit.model.RepairReportFactory;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;

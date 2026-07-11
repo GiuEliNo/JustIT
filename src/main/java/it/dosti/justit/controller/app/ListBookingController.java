@@ -115,11 +115,6 @@ public class ListBookingController {
         return toBeans(bookings);
     }
 
-    public BookingBean getBookingById(Integer bookingId) {
-        Booking booking = dao.getBookingById(bookingId);
-        return toBean(booking);
-    }
-
     public void payInvoice(BookingBean bookingBean, PaymentDataBean paymentData) throws PaymentException {
 
         Booking booking = dao.getBookingById(bookingBean.getBookingID());
