@@ -75,15 +75,15 @@ public class BookingDAOJDBC implements BookingDAO {
     }
 
     @Override
-    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot){
+    public boolean existsBooking(Booking booking){
         String sql = BookingQuery.EXIST_BOOKING;
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1, shopId);
-            pstmt.setString(2, date.toString());
-            pstmt.setString(3, timeSlot.name());
+            pstmt.setInt(1, booking.getShop().getId());
+            pstmt.setString(2, booking.getDate().toString());
+            pstmt.setString(3, booking.getTimeSlot().name());
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next();
             }
@@ -415,8 +415,7 @@ public class BookingDAOJDBC implements BookingDAO {
             pstmt.setInt(1, booking.getBookingId());
             pstmt.setString(2, report.getTechNotes());
 
-            if (report instanceof RepairReportCompleted) {
-                RepairReportCompleted completedReport = (RepairReportCompleted) report;
+            if (report instanceof RepairReportCompleted completedReport) {
 
                 pstmt.setDouble(3, completedReport.getLaborHours());
                 pstmt.setDouble(4, completedReport.getCostHours());

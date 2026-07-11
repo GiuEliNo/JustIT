@@ -8,6 +8,12 @@ import it.dosti.justit.model.notification.ReviewNotification;
 import java.util.List;
 
 public class NotificationMapper {
+    private NotificationMapper() {
+        /* This utility class should not be instantiated */
+    }
+
+
+
 
 
     public static List<NotificationBean> toBeans(List<Notification> notifications) {

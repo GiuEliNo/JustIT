@@ -12,10 +12,8 @@ import it.dosti.justit.events.publisher.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.booking.Booking;
-import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.SessionManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewController {

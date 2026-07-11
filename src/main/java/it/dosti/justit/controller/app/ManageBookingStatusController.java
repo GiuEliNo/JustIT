@@ -1,7 +1,6 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
-import it.dosti.justit.api.VisaPaymentGatewayStub;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
@@ -23,7 +22,7 @@ public class ManageBookingStatusController {
     private final ProcessPaymentController processPaymentController;
 
     public ManageBookingStatusController() {
-        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+        this.processPaymentController = new ProcessPaymentController();
     }
 
     public void approveBooking(BookingBean bookingBean) {

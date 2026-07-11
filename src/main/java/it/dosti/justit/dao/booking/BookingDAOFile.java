@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_BOOKINGS = "bookings";
@@ -49,10 +49,13 @@ public class BookingDAOFile implements BookingDAO {
     }
 
     @Override
-    public boolean existsBooking(Integer shopId, LocalDate date, TimeSlot timeSlot){
+    public boolean existsBooking(Booking checkBooking){
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
+            int shopId = checkBooking.getShop().getId();
+            LocalDate date = checkBooking.getDate();
+            TimeSlot timeSlot = checkBooking.getTimeSlot();
             if (!bookings.isEmpty()){
                 boolean found = false;
                 for (Booking booking : bookings) {
@@ -192,7 +195,7 @@ public class BookingDAOFile implements BookingDAO {
                         .filter(booking -> shopId.equals(booking.getShop().getId()) && booking.getStatus()== BookingStatus.COMPLETED)
                         .filter(a -> reviews.stream()
                                 .noneMatch(b -> Objects.equals(b.getBooking().getBookingId(), a.getBookingId())))
-                        .collect(Collectors.toList());
+                        .toList();
 
                 return filteredBookings;
 
@@ -218,7 +221,7 @@ public class BookingDAOFile implements BookingDAO {
                     .filter(booking -> username.equals(booking.getUser().getUsername()) && booking.getStatus()== BookingStatus.COMPLETED)
                     .filter(a -> reviews.stream()
                             .noneMatch(b -> Objects.equals(b.getBooking().getBookingId(), a.getBookingId())))
-                    .collect(Collectors.toList());
+                    .toList();
 
             return filteredBookings;
 
@@ -244,9 +247,7 @@ public class BookingDAOFile implements BookingDAO {
             report.setBookingId(updatedBooking.getBookingId());
             report.setTechNotes(repairReport.getTechNotes());
 
-            if (repairReport instanceof RepairReportCompleted) {
-                RepairReportCompleted completedReport =
-                        (RepairReportCompleted) repairReport;
+            if (repairReport instanceof RepairReportCompleted completedReport) {
 
                 report.setCostHours(completedReport.getCostHours());
                 report.setLaborHours(completedReport.getLaborHours());

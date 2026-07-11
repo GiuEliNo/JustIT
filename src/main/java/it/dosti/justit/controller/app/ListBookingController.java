@@ -1,6 +1,5 @@
 package it.dosti.justit.controller.app;
 
-import it.dosti.justit.api.VisaPaymentGatewayStub;
 import it.dosti.justit.bean.*;
 import it.dosti.justit.bean.mapper.BookingMapper;
 import it.dosti.justit.exceptions.PaymentException;
@@ -21,7 +20,7 @@ public class ListBookingController {
     private final ProcessPaymentController processPaymentController;
 
     public ListBookingController() {
-        this.processPaymentController = new ProcessPaymentController(new VisaPaymentGatewayStub());
+        this.processPaymentController = new ProcessPaymentController();
     }
 
     public void exportBookingsListTech(SessionBean session, File file) {
