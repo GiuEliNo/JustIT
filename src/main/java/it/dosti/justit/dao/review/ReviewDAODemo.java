@@ -8,6 +8,7 @@ import it.dosti.justit.model.TimeSlot;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 
 import java.time.LocalDate;
@@ -33,6 +34,10 @@ public class ReviewDAODemo implements ReviewDAO {
             .homeAssistance(true)
             .coordinates(new Coordinates(41.87, 12.54))
             .build();
+
+    static {
+        shop.setTech(new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", shop));
+    }
 
     private static final Booking booking = new Booking.Builder(user1)
             .bookingId(1001)

@@ -3,6 +3,8 @@ package it.dosti.justit.dao.shop;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.user.TechnicianUser;
+import it.dosti.justit.model.user.User;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class ShopDAODemo implements ShopDAO {
                 .homeAssistance(true)
                 .coordinates(new Coordinates(41.87, 12.54))
                 .build();
+        User tech = new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", demoShop);
+        this.demoShop.setTech(tech);
     }
 
     @Override

@@ -8,7 +8,6 @@ public class InvoiceMapper {
     private InvoiceMapper() {
     }
 
-
     public static InvoiceBean toBean(Invoice invoice) {
 
         if (invoice == null) {

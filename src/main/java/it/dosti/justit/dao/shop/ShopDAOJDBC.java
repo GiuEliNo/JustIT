@@ -3,11 +3,13 @@ package it.dosti.justit.dao.shop;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.RegisterQuery;
 import it.dosti.justit.db.query.ShopQuery;
+import it.dosti.justit.db.query.TechnicianQuery;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.model.Coordinates;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.scene.image.Image;
 
@@ -30,31 +32,14 @@ public class ShopDAOJDBC implements ShopDAO{
         ){
 
 
-            ResultSet rs = pstmt.executeQuery();
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    shops.add(buildShop(rs));
+                }
+            }
 
-            while(rs.next()){
-                Integer id = rs.getInt("id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                String phone = rs.getString("phone");
-                String email = rs.getString("email");
-                String description = rs.getString("description");
-                String openingHours = rs.getString("openingHours");
-                boolean homeAssistance = rs.getBoolean("homeAssistance");
-                double latitude = rs.getDouble("latitude");
-                double longitude = rs.getDouble("longitude");
-                Shop shop = new Shop.Builder(name)
-                        .id(id)
-                        .address(address)
-                        .phone(phone)
-                        .email(email)
-                        .description(description)
-                        .openingHours(openingHours)
-                        .homeAssistance(homeAssistance)
-                        .coordinates(new Coordinates(latitude, longitude))
-                        .build();
-
-                shops.add(shop);
+            for (Shop shop : shops) {
+                populateTech(conn, shop);
             }
         }catch(SQLException e){
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -105,21 +90,13 @@ public class ShopDAOJDBC implements ShopDAO{
         ){
 
             pstmt.setInt(1, shopId);
-            ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                return new Shop.Builder(
-                        rs.getString("name"))
-                        .id(rs.getInt("id"))
-                        .address(rs.getString("address"))
-                        .phone(rs.getString("phone"))
-                        .email(rs.getString("email"))
-                        .description(rs.getString("description"))
-                        .image(rs.getBytes("image"))
-                        .openingHours(rs.getString("openingHours"))
-                        .homeAssistance(rs.getBoolean("homeAssistance"))
-                        .coordinates( new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude")))
-                        .build();
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Shop shop = buildShop(rs);
+                    populateTech(conn, shop);
+                    return shop;
+                }
             }
 
         }catch(SQLException e){
@@ -154,6 +131,36 @@ public class ShopDAOJDBC implements ShopDAO{
             throw new ShopNotFoundException("Shop not found", e);
         }
         return defaultImage;
+    }
+
+    private Shop buildShop(ResultSet rs) throws SQLException {
+        return new Shop.Builder(rs.getString("name"))
+                .id(rs.getInt("id"))
+                .address(rs.getString("address"))
+                .phone(rs.getString("phone"))
+                .email(rs.getString("email"))
+                .description(rs.getString("description"))
+                .image(rs.getBytes("image"))
+                .openingHours(rs.getString("openingHours"))
+                .homeAssistance(rs.getBoolean("homeAssistance"))
+                .coordinates(new Coordinates(rs.getDouble("latitude"), rs.getDouble("longitude")))
+                .build();
+    }
+
+    private void populateTech(Connection conn, Shop shop) throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement(TechnicianQuery.SELECT_BY_SHOP_ID)) {
+            pstmt.setInt(1, shop.getId());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    shop.setTech(new TechnicianUser(
+                            rs.getString("name"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            shop
+                    ));
+                }
+            }
+        }
     }
 
     @Override

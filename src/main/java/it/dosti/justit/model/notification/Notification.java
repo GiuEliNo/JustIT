@@ -7,25 +7,22 @@ import it.dosti.justit.model.user.User;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-public abstract class Notification {
+public class Notification {
     private  Integer id;
-    private  User recipient;
+    private  User from;
+    private  User to;
     private  LocalDateTime createdAt;
     private  String message;
     private boolean read;
 
 
-    protected Notification(User recipient, String message) {
-        this.recipient = recipient;
+    public Notification(User from, User to, String message) {
+        this.from = from;
+        this.to = to;
         this.message = message;
         this.createdAt = LocalDateTime.now(ZoneId.systemDefault());
         this.read = false;
     }
-
-    public void setRead(boolean b) {
-        this.read = b;
-    }
-
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -35,12 +32,20 @@ public abstract class Notification {
         return read;
     }
 
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
+    public void setFrom(User from) {
+        this.from = from;
     }
 
-    public User getRecipient() {
-        return recipient;
+    public User getFrom() {
+        return from;
+    }
+
+    public User getTo() {
+        return to;
+    }
+
+    public void setTo(User to) {
+        this.to = to;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -63,8 +68,6 @@ public abstract class Notification {
     public void markRead() {
         this.read = true;
     }
-
-
 
     public String getMessage() {
         return message;

@@ -2,6 +2,7 @@ package it.dosti.justit.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import it.dosti.justit.model.user.User;
 
 @JsonDeserialize(builder = Shop.Builder.class)
 public class Shop {
@@ -15,6 +16,8 @@ public class Shop {
     private String openingHours;
     private boolean homeAssistance;
     private Coordinates coordinates;
+
+    private User tech;
 
     public Shop(String name) {
         this.name = name;
@@ -31,6 +34,7 @@ public class Shop {
         this.openingHours = builder.openingHours;
         this.homeAssistance = builder.homeAssistance;
         this.coordinates = builder.coordinates;
+        this.tech = builder.tech;
 
     }
 
@@ -48,6 +52,8 @@ public class Shop {
         private String openingHours;
         private boolean homeAssistance;
         private Coordinates coordinates;
+
+        private User tech;
 
 
         public Builder(){}
@@ -106,6 +112,10 @@ public class Shop {
             this.coordinates = coordinates;
             return this;
         }
+        public Builder tech(User tech) {
+            this.tech = tech;
+            return this;
+        }
 
         public Shop build() {
             return new Shop(this);
@@ -145,6 +155,9 @@ public class Shop {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public void setTech(User tech) {
+        this.tech = tech;
     }
 
 
@@ -186,6 +199,10 @@ public class Shop {
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public User getTech() {
+        return tech;
     }
 
     // javaFX chiama toString per mostrare l'oggetto in una lista

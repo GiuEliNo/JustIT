@@ -8,8 +8,6 @@ public class NotificationMessageBuilder {
     private static final String WITH = " with ";
     private NotificationMessageBuilder(){}
 
-
-
     public static String buildForBooking(Booking booking) {
         String shopLabel = booking.getShop().getName() != null ? booking.getShop().getName() : "the shop";
         String userLabel = booking.getUser().getUsername() != null ? booking.getUser().getUsername() : "the user";

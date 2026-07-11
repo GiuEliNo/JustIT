@@ -5,10 +5,12 @@ import it.dosti.justit.exceptions.RegisterOnBackEndException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
 import it.dosti.justit.model.Shop;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -16,11 +18,14 @@ import java.util.Objects;
 public class ShopDAOFile implements ShopDAO{
 
     private static final String FILENAME_SHOPS = "shops";
+    private static final String FILENAME_TECHNICIANS = "technicians";
 
     @Override
     public List<Shop> retrieveAllShops(){
         try {
-            return JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
+            List<Shop> shops = readShops();
+            populateTechs(shops);
+            return shops;
         }
         catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -31,7 +36,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean registerShop(Shop shop) throws RegisterOnBackEndException {
         try{
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             int shopId;
             if(!shops.isEmpty()){
                 shopId = shops.stream()
@@ -78,7 +83,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateNameShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -98,7 +103,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateEmailShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -118,7 +123,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateAddressCoordinates(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -139,7 +144,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updatePhoneShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -159,7 +164,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateOpeningHoursShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -179,7 +184,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateHomeAssistanceShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -199,7 +204,7 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateDescriptionShop(Shop shop) throws UpdateOnBackEndException {
         try {
-            List<Shop> shops = retrieveAllShops();
+            List<Shop> shops = readShops();
             if(!shops.isEmpty()){
                 for(Shop shop1 : shops){
                     if(shop1.getId().equals(shop.getId())){
@@ -220,6 +225,36 @@ public class ShopDAOFile implements ShopDAO{
     @Override
     public boolean updateImageShop(Shop shop) throws UpdateOnBackEndException {
         return false;
+    }
+
+    private List<Shop> readShops() throws Exception {
+        List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
+        if (shops == null) {
+            return new ArrayList<>();
+        }
+        return shops;
+    }
+
+    private void populateTechs(List<Shop> shops) throws Exception {
+        List<TechnicianUser> technicians = JsonHandler.readCollectionOnJsonFile(FILENAME_TECHNICIANS, new TypeReference<>() {});
+        if (technicians == null) {
+            return;
+        }
+        for (Shop shop : shops) {
+            for (TechnicianUser technician : technicians) {
+                if (technician.getShop() != null
+                        && technician.getShop().getId() != null
+                        && technician.getShop().getId().equals(shop.getId())) {
+                    shop.setTech(new TechnicianUser(
+                            technician.getName(),
+                            technician.getUsername(),
+                            technician.getEmail(),
+                            shop
+                    ));
+                    break;
+                }
+            }
+        }
     }
 
 }

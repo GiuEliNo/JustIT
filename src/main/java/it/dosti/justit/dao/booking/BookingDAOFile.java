@@ -1,6 +1,7 @@
 package it.dosti.justit.dao.booking;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dto.InvoiceDTO;
 import it.dosti.justit.dto.ReportDTO;
 import it.dosti.justit.exceptions.RegisterOnBackEndException;
@@ -359,15 +360,7 @@ public class BookingDAOFile implements BookingDAO {
 
     private Shop retrieveShop(Booking booking){
         try{
-            List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {
-            });
-            if(!shops.isEmpty()){
-                for(Shop shop : shops){
-                    if (shop.getId().equals(booking.getShop().getId())) {
-                        return shop;
-                    }
-                }
-            }
+            return DaoFactory.getShopDAO().retrieveShopById(booking.getShop().getId());
         }catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }

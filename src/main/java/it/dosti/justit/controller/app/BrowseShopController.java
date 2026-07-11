@@ -6,6 +6,7 @@ import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.bean.mapper.ShopMapper;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.shop.ShopDAO;
+import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.utils.CalculateCoordinateRangeDistance;
@@ -34,10 +35,26 @@ public class BrowseShopController {
 
         if (bean != null) {
 
-            Shop selectedItem = ShopMapper.toDomain(bean);
+            Shop selectedItem = retrieveSelectedShop(bean);
 
             SessionManager.getInstance().getActiveSession(session.getSessionId()).setCurrentShop(selectedItem);
         }
+    }
+
+    private Shop retrieveSelectedShop(ShopBean bean) {
+        if (bean.getId() == null) {
+            return ShopMapper.toDomain(bean);
+        }
+
+        try {
+            Shop shop = dao.retrieveShopById(bean.getId());
+            if (shop != null) {
+                return shop;
+            }
+        } catch (ShopNotFoundException ignored) {
+        }
+
+        return ShopMapper.toDomain(bean);
     }
 
 

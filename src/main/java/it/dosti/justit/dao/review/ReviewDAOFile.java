@@ -1,9 +1,11 @@
 package it.dosti.justit.dao.review;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 
@@ -24,6 +26,7 @@ public class ReviewDAOFile implements ReviewDAO{
             if(!reviews.isEmpty()) {
                 for (Review review : reviews) {
                     if (review.getShop().getId().compareTo(shopId) == 0) {
+                        populateShopTech(review);
                         filteredReviews.add(review);
                     }
                 }
@@ -66,5 +69,14 @@ public class ReviewDAOFile implements ReviewDAO{
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
         return false;
+    }
+
+    private void populateShopTech(Review review) {
+        try {
+            Shop shop = DaoFactory.getShopDAO().retrieveShopById(review.getShop().getId());
+            review.setShop(shop);
+        } catch (Exception e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
     }
 }

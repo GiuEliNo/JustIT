@@ -6,6 +6,7 @@ import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.booking.repairReport.RepairReportCompleted;
 import it.dosti.justit.model.booking.repairReport.RepairReportRejected;
 import it.dosti.justit.model.user.ClientUser;
+import it.dosti.justit.model.user.TechnicianUser;
 import it.dosti.justit.model.user.User;
 
 import java.time.LocalDate;
@@ -33,6 +34,10 @@ public class BookingDAODemo implements BookingDAO {
             .homeAssistance(true)
             .coordinates(new Coordinates(41.87, 12.54))
             .build();
+
+    static {
+        shop.setTech(new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", shop));
+    }
 
     public BookingDAODemo() {
 

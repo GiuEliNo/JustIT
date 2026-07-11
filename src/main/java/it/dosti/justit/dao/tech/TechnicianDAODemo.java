@@ -33,6 +33,7 @@ public class TechnicianDAODemo implements TechnicianDAO {
                 .build();
 
         TechnicianUser user1 = new TechnicianUser("Gulio Agricolo", "demo_tech", "demo.tech@mail.com", shop);
+        shop.setTech(user1);
 
         usersByUsername.put(user1.getUsername(), user1);
 

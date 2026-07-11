@@ -36,7 +36,7 @@ public class ReviewCreatedPublisher {
         JustItLogger.getInstance().info(
                 "ReviewCreatedPublisher notifying " + observers.size()
                         + " observers for booking #" + review.getBooking().getBookingId()
-                        + ", shopId=" + review.getShop().getId()
+                        + ", tech=" + review.getShop().getTech().getUsername()
         );
         for (ReviewCreatedObserver observer : observers) {
             JustItLogger.getInstance().info(

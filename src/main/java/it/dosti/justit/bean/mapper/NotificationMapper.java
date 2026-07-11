@@ -1,21 +1,13 @@
 package it.dosti.justit.bean.mapper;
 
 import it.dosti.justit.bean.NotificationBean;
-import it.dosti.justit.model.notification.BookingStatusNotification;
 import it.dosti.justit.model.notification.Notification;
-import it.dosti.justit.model.notification.ReviewNotification;
 
 import java.util.List;
 
 public class NotificationMapper {
     private NotificationMapper() {
-        /* This utility class should not be instantiated */
     }
-
-
-
-
-
     public static List<NotificationBean> toBeans(List<Notification> notifications) {
 
         return notifications.stream()
@@ -29,31 +21,22 @@ public class NotificationMapper {
         NotificationBean bean = new NotificationBean();
 
         bean.setId(notification.getId());
-        bean.setUsername(notification.getRecipient().getUsername());
+        bean.setFrom(notification.getFrom());
+        bean.setTo(notification.getTo());
         bean.setCreatedAt(notification.getCreatedAt());
         bean.setRead(notification.isRead());
         bean.setNotificationMessage(notification.getMessage());
 
-
-        if (notification instanceof BookingStatusNotification bookingNotification) {
-
-            bean.setShopName(
-                    bookingNotification
-                            .getBooking()
-                            .getShop()
-                            .getName()
-            );
-
-        } else if (notification instanceof ReviewNotification reviewNotification) {
-
-            bean.setShopName(
-                    reviewNotification
-                            .getShop()
-                            .getName()
-            );
-        }
-
-
         return bean;
+    }
+
+    public static Notification toDomain(NotificationBean bean) {
+
+        Notification notification = new Notification(bean.getFrom(), bean.getTo(), bean.getNotificationMessage());
+
+        notification.setId(bean.getId());
+        notification.setCreatedAt(bean.getCreatedAt());
+
+        return notification;
     }
 }

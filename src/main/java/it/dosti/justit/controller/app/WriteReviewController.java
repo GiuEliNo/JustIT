@@ -71,7 +71,7 @@ public class WriteReviewController {
             reviewDAO.addReviewToShop(review);
             JustItLogger.getInstance().info(
                     "Review created: booking #" + booking.getBookingId()
-                            + ", shopId=" + review.getShop().getId()
+                            + ", shop=" + review.getShop().getName()
                             + ", username=" + booking.getUser().getUsername()
                             + ", stars=" + review.getStar()
             );
@@ -87,7 +87,7 @@ public class WriteReviewController {
         JustItLogger.getInstance().info(
                 "Publishing review created event: booking #"
                         + review.getBooking().getBookingId()
-                        + ", shopId=" + review.getShop().getId()
+                        + ", shop=" + review.getShop().getName()
         );
         ReviewCreatedPublisher.getInstance()
                 .notify(review);

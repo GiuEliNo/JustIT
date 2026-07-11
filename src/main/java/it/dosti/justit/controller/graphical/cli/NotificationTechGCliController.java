@@ -2,68 +2,76 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.NotificationController;
+import it.dosti.justit.controller.app.ViewNotificationController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CNotificationView;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class NotificationTechGCliController extends BaseCliController{
-    private NotificationController appController;
+public class NotificationTechGCliController extends BaseCliController {
+
+    private ViewNotificationController appController;
     private CNotificationView notificationView;
-    private final List<Integer> notificationId = new ArrayList<>();
-    private List<NotificationBean> notificationBeanList = new ArrayList<>();
+    private List<NotificationBean> notificationBeanList;
+    private final Map<Integer, NotificationBean> notificationMap = new HashMap<>();
 
     @Override
     public void initialize() throws NavigationException {
-        appController = new NotificationController();
+        appController = new ViewNotificationController();
         notificationView = (CNotificationView) view;
+
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
+
         notificationBeanList = appController.getUnreadNotifications(session);
 
         showNotification();
-
     }
 
     private void showNotification() throws NavigationException {
-        if(notificationBeanList.isEmpty()){
+
+        if (notificationBeanList.isEmpty()) {
             notificationView.noNotification();
             navigation.navigate(Screen.MAIN_TECH, sessionId);
+            return;
         }
 
-        SessionBean session = new SessionBean();
-        session.setSessionId(sessionId);
-
-        for(NotificationBean n :appController.getUnreadNotifications(session)){
-            notificationView.renderNotifications(n);
-            notificationId.add(n.getId());
+        for (NotificationBean notification : notificationBeanList) {
+            notificationView.renderNotifications(notification);
+            notificationMap.put(notification.getId(), notification);
         }
 
         String choice = notificationView.askChoice();
-        switch (choice){
+
+        switch (choice) {
             case "0":
                 navigation.navigate(Screen.MAIN_TECH, sessionId);
                 break;
+
             case "1":
-                this.markAsRead();
+                markAsRead();
                 navigation.navigate(Screen.NOTIFICATION_CENTER_TECH, sessionId);
                 break;
+
             default:
                 navigation.navigate(Screen.NOTIFICATION_CENTER_TECH, sessionId);
                 break;
-
         }
     }
 
-    private void markAsRead(){
+    private void markAsRead() {
+
         Integer id;
+
         do {
             id = notificationView.askNotificationToMarkAsRead();
-        } while (!notificationId.contains(id));
+        } while (!notificationMap.containsKey(id));
 
-        appController.markNotificationRead(id);
+        NotificationBean notification = notificationMap.get(id);
+
+        appController.markNotificationRead(notification);
     }
 }

@@ -1,11 +1,14 @@
 package it.dosti.justit.bean;
 
+import it.dosti.justit.model.user.User;
+
 import java.time.LocalDateTime;
 
 public class NotificationBean {
     private Integer id;
     private String shopName;
-    private String username;
+    private User from;
+    private User to;
     private LocalDateTime createdAt;
     private boolean read;
 
@@ -14,10 +17,6 @@ public class NotificationBean {
 
     public Integer getId() {
         return id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -30,10 +29,6 @@ public class NotificationBean {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -62,5 +57,21 @@ public class NotificationBean {
     }
     public void setNotificationMessage(String notificationMessage) {
         this.notificationMessage = notificationMessage;
+    }
+
+    public User getFrom() {
+        return from;
+    }
+
+    public User getTo() {
+        return to;
+    }
+
+    public void setFrom(User from) {
+        this.from = from;
+    }
+
+    public void setTo(User to) {
+        this.to = to;
     }
 }
