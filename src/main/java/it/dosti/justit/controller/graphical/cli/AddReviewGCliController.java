@@ -6,6 +6,7 @@ import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
 import it.dosti.justit.controller.app.BrowseShopController;
 import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.controller.app.WriteReviewController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.ui.navigation.Screen;
@@ -18,9 +19,12 @@ public class AddReviewGCliController extends BaseCliController {
     private CAddReviewView addReviewView;
     private ReviewController reviewController;
 
+    private WriteReviewController writeReviewController;
+
     @Override
     public void initialize() throws NavigationException {
         reviewController = new ReviewController();
+        writeReviewController = new WriteReviewController();
         addReviewView = (CAddReviewView) view;
 
         showCompletedBookingToReview();
@@ -30,7 +34,7 @@ public class AddReviewGCliController extends BaseCliController {
     private void showCompletedBookingToReview() throws NavigationException {
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        List<BookingBean> bookingCompleted = reviewController.getCompletedBookingsWithoutReviewUser(session);
+        List<BookingBean> bookingCompleted = writeReviewController.getAvailableBookingsToReview(session);
 
         if (bookingCompleted.isEmpty()) {
             addReviewView.noCompletedBookings();
@@ -92,7 +96,7 @@ public class AddReviewGCliController extends BaseCliController {
         reviewBean.setBookingId(selectedBooking.getBookingID());
 
         try{
-            reviewController.addReview(session, reviewBean);
+            writeReviewController.addReview(session, reviewBean);
         }catch(ReviewWithoutBookingException e){
             JustItLogger.getInstance().error(e.getMessage(),e);
         }

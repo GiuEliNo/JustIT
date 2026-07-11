@@ -1,17 +1,17 @@
 package it.dosti.justit.model.notification;
 
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.user.User;
 
 public class ReviewNotification extends Notification {
-    private Review review;
+    private Shop shop;
 
-    public ReviewNotification(User recipient, String message, Review review) {
+    public ReviewNotification(User recipient, String message, Shop shop) {
         super(recipient, message);
-        this.review = review;
+        this.shop = shop;
     }
 
-    public Review getReview() {
-        return review;
+    public Shop getShop() {
+        return shop;
     }
 }

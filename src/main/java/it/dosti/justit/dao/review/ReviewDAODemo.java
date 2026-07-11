@@ -21,7 +21,6 @@ public class ReviewDAODemo implements ReviewDAO {
     private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
     private final List<Review> reviews = new ArrayList<>();
     private static final User user1 = new ClientUser("Francesco pandini");
-    private int nextId = 7800;
 
     private static final Shop shop = new Shop.Builder(SHOP_NAME_DEMO)
             .id(1)
@@ -68,18 +67,11 @@ public class ReviewDAODemo implements ReviewDAO {
     }
 
     @Override
-    public Integer addReviewToShop(Review instance) throws ReviewWithoutBookingException {
+    public void addReviewToShop(Review instance) throws ReviewWithoutBookingException {
         if (instance.getBooking().getBookingId() == null) {
             throw new ReviewWithoutBookingException("Review must be linked to a booking");
         }else{
-            instance.setId(nextId++);
             reviews.add(instance);
-            return instance.getId();
         }
-    }
-
-    @Override
-    public Review retrieveReview(Integer reviewId) {
-        return reviews.get(reviewId);
     }
 }

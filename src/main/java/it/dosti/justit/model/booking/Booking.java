@@ -52,6 +52,10 @@ public class Booking {
         this.currentState = BookingStateFactory.fromStatus(builder.status);
     }
 
+    public boolean canBeReviewed() {
+        return status == BookingStatus.COMPLETED;
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Integer bookingId;

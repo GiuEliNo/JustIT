@@ -4,6 +4,7 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.controller.app.WriteReviewController;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogAddReview;
@@ -20,10 +21,12 @@ public class ReviewsShopUserGController extends BaseGController{
     private ListView<ReviewBean> listReview;
 
     private ReviewController appControllerReviewPageShop;
+    private WriteReviewController writeReviewController;
 
     @Override
     public void onSessionReady() {
         appControllerReviewPageShop = new ReviewController();
+        writeReviewController = new WriteReviewController();
         listReview.setCellFactory(lr -> new ReviewListCell());
         this.updateReviewList();
     }
@@ -59,7 +62,7 @@ public class ReviewsShopUserGController extends BaseGController{
                 reviewBean.setStars((int) dialog.getRatingStars());
                 reviewBean.setBookingId(selectedBooking.getBookingID());
                 try {
-                    appControllerReviewPageShop.addReview(session,reviewBean);
+                    writeReviewController.addReview(session,reviewBean);
                 }catch(ReviewWithoutBookingException e){
                     JustItLogger.getInstance().error(e.getMessage(),e);
                 }

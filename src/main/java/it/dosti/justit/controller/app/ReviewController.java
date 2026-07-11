@@ -23,27 +23,6 @@ public class ReviewController {
     private final ReviewDAO reviewDao = DaoFactory.getReviewDAO();
     private final BookingDAO dao = DaoFactory.getBookingDAO();
 
-
-    public void addReview(SessionBean session, ReviewBean reviewBean) throws ReviewWithoutBookingException {
-
-        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-
-        reviewBean.setUsername(username);
-        BookingDAO bookingDao = DaoFactory.getBookingDAO();
-        Booking booking = bookingDao.getBookingById(reviewBean.getBookingId());
-        Review review = new Review.Builder(reviewBean.getTitle())
-                .star(reviewBean.getStars())
-                .review(reviewBean.getReview())
-                .shop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop())
-                .booking(booking)
-                .build();
-            Integer reviewId = reviewDao.addReviewToShop(review);
-            if (reviewId != null) {
-                review.setId(reviewId);
-                this.notifyReviewCreated(review);
-            }
-    }
-
     public List<ReviewBean> getReviews(SessionBean session) {
         List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
 
@@ -55,16 +34,5 @@ public class ReviewController {
         Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
         List<Booking> bookings = dao.getCompletedBookingsWithoutReviewPerShop(username, shopId);
         return BookingMapper.toBeans(bookings);
-    }
-
-    public List<BookingBean> getCompletedBookingsWithoutReviewUser(SessionBean session) {
-        String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
-        List<Booking> bookings = dao.getCompletedBookingsWithoutReview(username);
-        return BookingMapper.toBeans(bookings);
-    }
-
-    private void notifyReviewCreated(Review review){
-        ReviewCreatedPublisher.getInstance()
-                .notify(review);
     }
 }

@@ -25,6 +25,6 @@ public class NotificationMessageBuilder {
     public static String buildForReview(Review review) {
         String shopLabel = review.getShop().getName() != null ? review.getShop().getName() : "the shop";
         String userLabel = review.getBooking().getUser().getUsername() != null ? review.getBooking().getUser().getUsername() : "A user";
-        return userLabel + " left a new review #" + review.getId() + "for " + shopLabel + ".";
+        return userLabel + " left a new review for " + shopLabel + ".";
     }
 }

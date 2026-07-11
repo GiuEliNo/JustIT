@@ -1,12 +1,13 @@
 package it.dosti.justit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.dosti.justit.model.booking.Booking;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(builder = Review.Builder.class)
 public class Review {
-    private Integer id;
     private String title;
     private Integer star;
     private String reviewText;
@@ -16,7 +17,6 @@ public class Review {
     public Review() {}
 
     private Review(Builder builder) {
-        this.id = builder.id;
         this.title = builder.title;
         this.star = builder.star;
         this.reviewText = builder.reviewText;
@@ -26,7 +26,6 @@ public class Review {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
-        private Integer id;
         private String title;
         private Integer star;
         private String reviewText;
@@ -38,12 +37,6 @@ public class Review {
         public Builder(String title) {
             this.title = title;
         }
-
-        public Builder id(Integer id) {
-            this.id = id;
-            return this;
-        }
-
 
         public Builder title(String title) {
             this.title = title;
@@ -106,12 +99,5 @@ public class Review {
 
     public void setBooking(Booking booking) {
         this.booking = booking;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
     }
 }

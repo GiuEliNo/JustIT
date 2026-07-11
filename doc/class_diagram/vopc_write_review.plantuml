@@ -58,7 +58,7 @@ class ReviewBean <<(B) bean>>{
 }
 
 class ReviewDAO <<(D) DAO>>{
-  + addReviewToShop(Review: review): Integer
+  + addReviewToShop(Review: review): void
   + retrieveReviewsByShop(Integer: shopId): List<Review>
 }
 

@@ -1,10 +1,12 @@
 package it.dosti.justit.dao.notification;
 
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.notification.Notification;
 import it.dosti.justit.model.notification.NotificationFactory;
+import it.dosti.justit.model.notification.BookingStatusNotification;
+import it.dosti.justit.model.notification.ReviewNotification;
 import it.dosti.justit.model.user.ClientUser;
 
 import java.time.LocalDateTime;
@@ -20,10 +22,9 @@ public class NotificationDAODemo implements NotificationDAO {
     public NotificationDAODemo() {
 
         ClientUser clientUser = new ClientUser(USER_DEMO);
-        Booking booking1 = new Booking.Builder(clientUser).bookingId(1002).status(BookingStatus.CONFIRMED).build();
-        Booking booking2 = new Booking.Builder(clientUser).bookingId(1003).status(BookingStatus.PENDING_CONFIRM).build();
-
-        Review review = new Review.Builder("Dummy title").review("Dummy review").star(4).build();
+        Shop shop = new Shop.Builder("Arindale Riparazione").id(1).build();
+        Booking booking1 = new Booking.Builder(clientUser).bookingId(1002).shopEntity(shop).status(BookingStatus.CONFIRMED).build();
+        Booking booking2 = new Booking.Builder(clientUser).bookingId(1003).shopEntity(shop).status(BookingStatus.PENDING_CONFIRM).build();
 
         Notification n1 = NotificationFactory.createBookingStatusNotification(clientUser, "Il tuo booking #1002 è stato confermato", booking1 );
         n1.setId(3001);
@@ -34,7 +35,7 @@ public class NotificationDAODemo implements NotificationDAO {
         n2.setId(3002);
         n2.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(10));
         notifications.add(n2);
-        Notification n3 = NotificationFactory.createReviewNotification(clientUser, "Grazie! La tua review è stata pubblicata", review );
+        Notification n3 = NotificationFactory.createReviewNotification(clientUser, "Grazie! La tua review è stata pubblicata", shop );
         n3.setId(3003);
         n3.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(1));
         notifications.add(n3);
@@ -73,7 +74,18 @@ public class NotificationDAODemo implements NotificationDAO {
 
     @Override
     public List<Notification> getNotificationsByShopId(Integer shopId) {
-        return new ArrayList<>(notifications);
+        List<Notification> shopNotifications = new ArrayList<>();
+        for (Notification notification : notifications) {
+            if (notification instanceof ReviewNotification reviewNotification
+                    && reviewNotification.getShop().getId().equals(shopId)) {
+                shopNotifications.add(notification);
+            } else if (notification instanceof BookingStatusNotification bookingStatusNotification
+                    && bookingStatusNotification.getBooking().getShop().getId().equals(shopId)
+                    && bookingStatusNotification.getBooking().getStatus() == BookingStatus.PENDING_CONFIRM) {
+                shopNotifications.add(notification);
+            }
+        }
+        return shopNotifications;
     }
 
     @Override

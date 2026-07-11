@@ -3,11 +3,12 @@ package it.dosti.justit.dao.notification;
 import com.fasterxml.jackson.core.type.TypeReference;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dao.review.ReviewDAO;
+import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.dto.NotificationDTO;
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.notification.*;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
@@ -47,7 +48,7 @@ public class NotificationDAOFile implements NotificationDAO{
                 notificationDTO.setType(NotificationType.BOOKING_STATUS);
             }
             else{
-                notificationDTO.setReviewId(((ReviewNotification)notification).getReview().getId());
+                notificationDTO.setShopId(((ReviewNotification)notification).getShop().getId());
                 notificationDTO.setType(NotificationType.REVIEW_CREATED);
             }
 
@@ -64,12 +65,14 @@ public class NotificationDAOFile implements NotificationDAO{
 
     @Override
     public List<Notification> getNotificationsByUser(String username) {
-        return loadAndFilterNotifications(username, false);
+        List<Notification> notifications = loadAndFilterNotifications(username, false);
+        return notifications;
     }
 
     @Override
     public List<Notification> getUnreadNotificationsByUser(String username) {
-        return loadAndFilterNotifications(username, true);
+        List<Notification> notifications = loadAndFilterNotifications(username, true);
+        return notifications;
     }
 
 
@@ -82,7 +85,7 @@ public class NotificationDAOFile implements NotificationDAO{
             }
 
             BookingDAO bookingDao = DaoFactory.getBookingDAO();
-            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+            ShopDAO shopDao = DaoFactory.getShopDAO();
 
             List<Notification> finalNotifications = new ArrayList<>();
 
@@ -93,7 +96,7 @@ public class NotificationDAOFile implements NotificationDAO{
 
                 // 2. Se passa il filtro, convertiamo il DTO in Entity
                 if (matchesUser && matchesReadStatus) {
-                    Notification notification = convertDtoToEntity(dto, bookingDao, reviewDao);
+                    Notification notification = convertDtoToEntity(dto, bookingDao, shopDao);
 
                     if (notification != null) {
                         finalNotifications.add(notification);
@@ -120,16 +123,16 @@ public class NotificationDAOFile implements NotificationDAO{
             }
 
             BookingDAO bookingDao = DaoFactory.getBookingDAO();
-            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+            ShopDAO shopDao = DaoFactory.getShopDAO();
 
             List<Notification> finalNotifications = new ArrayList<>();
 
             for (NotificationDTO dto : notificationsDto) {
                 if (dto.getShopId() != null && dto.getShopId().equals(shopId)) {
 
-                    Notification notification = convertDtoToEntity(dto, bookingDao, reviewDao);
+                    Notification notification = convertDtoToEntity(dto, bookingDao, shopDao);
 
-                    if (notification != null) {
+                    if (isVisibleToShop(notification)) {
                         finalNotifications.add(notification);
                     }
                 }
@@ -164,7 +167,7 @@ public class NotificationDAOFile implements NotificationDAO{
     }
 
 
-    private Notification convertDtoToEntity(NotificationDTO dto, BookingDAO bookingDao, ReviewDAO reviewDao) {
+    private Notification convertDtoToEntity(NotificationDTO dto, BookingDAO bookingDao, ShopDAO shopDao) {
         Notification notification = null;
 
         try {
@@ -174,11 +177,11 @@ public class NotificationDAOFile implements NotificationDAO{
                     User recipient = booking.getUser();
                     notification = NotificationFactory.createBookingStatusNotification(recipient, dto.getMessage(), booking);
                 }
-            } else if (dto.getReviewId() != null) {
-                Review review = reviewDao.retrieveReview(dto.getReviewId());
-                if (review != null) {
-                    User recipient = review.getBooking().getUser();
-                    notification = NotificationFactory.createReviewNotification(recipient, dto.getMessage(), review);
+            } else if (dto.getType() == NotificationType.REVIEW_CREATED && dto.getShopId() != null) {
+                Shop shop = shopDao.retrieveShopById(dto.getShopId());
+                if (shop != null) {
+                    User recipient = new ClientUser(dto.getUsername());
+                    notification = NotificationFactory.createReviewNotification(recipient, dto.getMessage(), shop);
                 }
             }
 
@@ -193,5 +196,13 @@ public class NotificationDAOFile implements NotificationDAO{
         }
 
         return notification;
+    }
+
+    private boolean isVisibleToShop(Notification notification) {
+        if (notification instanceof ReviewNotification) {
+            return true;
+        }
+        return notification instanceof BookingStatusNotification bookingStatusNotification
+                && bookingStatusNotification.getBooking().getStatus().toString().equals("PENDING_CONFIRM");
     }
 }

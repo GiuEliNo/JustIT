@@ -63,12 +63,11 @@ public class ManageBookingStatusController {
         Booking booking = bookingDao.getBookingById(bookingBean.getBookingID());
         BookingStatus oldStatus = booking.getStatus();
 
-        this.addRepairReportToBooking(booking, repairReportBean);
 
         try {
             booking.goNext(BookingEvent.COMPLETED);
+            this.addRepairReportToBooking(booking, repairReportBean);
             bookingDao.updateStatus(booking);
-            bookingDao.saveRepairReport(booking);
             this.sendInvoice(booking);
             this.notifyStatusChange(booking, oldStatus);
             sendEmailAlert(booking);
@@ -85,21 +84,19 @@ public class ManageBookingStatusController {
         RepairReport report = RepairReportFactory.create(booking.getStatus(), repairReportBean);
 
         booking.setRepairReport(report);
+        bookingDao.saveRepairReport(booking);
     }
 
     private void refundPayment(Booking booking) throws PaymentException {
         double totalRefund = booking.calculateTotalReservationPrice();
         processPaymentController.refundReservationPayment(booking, totalRefund);
+
         JustItLogger.getInstance().info("Payment refunded");
     }
 
     private void sendInvoice(Booking booking) {
         booking.issueInvoice();
         bookingDao.saveInvoice(booking);
-        JustItLogger.getInstance().info(
-                "Invoice issued for booking #" + booking.getBookingId()
-                        + " total " + booking.getInvoice().getTotalCost()
-        );
     }
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {

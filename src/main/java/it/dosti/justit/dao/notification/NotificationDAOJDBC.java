@@ -2,12 +2,12 @@ package it.dosti.justit.dao.notification;
 
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.db.query.NotificationQuery;
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.notification.*;
+import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
 
@@ -24,8 +24,11 @@ import java.util.List;
 public class NotificationDAOJDBC implements NotificationDAO {
 
     private static final String ID = "id";
+    private static final String USERNAME = "username";
+    private static final String SHOP_ID = "shop_id";
+    private static final String SHOP_NAME = "shop_name";
     private static final String BOOKING_ID = "booking_id";
-    private static final String REVIEW_ID = "review_id";
+    private static final String TYPE = "type";
     private static final String MESSAGE = "message";
     private static final String CREATED_TIME = "created_time";
     private static final String READ = "read";
@@ -37,22 +40,22 @@ public class NotificationDAOJDBC implements NotificationDAO {
                 PreparedStatement pstmt = conn.prepareStatement(NotificationQuery.INSERT_NOTIFICATION)
         ) {
             if (notification instanceof BookingStatusNotification) {
+                Booking booking = ((BookingStatusNotification) notification).getBooking();
                 pstmt.setString(1, notification.getRecipient().getUsername());
-                pstmt.setInt(2, ((BookingStatusNotification) notification).getBooking().getShop().getId());
-                pstmt.setInt(3, ((BookingStatusNotification) notification).getBooking().getBookingId());
-                pstmt.setNull(4, Types.INTEGER);
-                pstmt.setString(5, NotificationType.BOOKING_STATUS.name());
-                pstmt.setString(6, notification.getMessage());
-                pstmt.setString(7, notification.getCreatedAt().toString());
+                pstmt.setInt(2, booking.getShop().getId());
+                pstmt.setInt(3, booking.getBookingId());
+                pstmt.setString(4, NotificationType.BOOKING_STATUS.name());
+                pstmt.setString(5, notification.getMessage());
+                pstmt.setString(6, notification.getCreatedAt().toString());
                 pstmt.executeUpdate();
             } else {
+                Shop shop = ((ReviewNotification) notification).getShop();
                 pstmt.setString(1, notification.getRecipient().getUsername());
-                pstmt.setInt(2, ((ReviewNotification) notification).getReview().getShop().getId());
+                pstmt.setInt(2, shop.getId());
                 pstmt.setNull(3, Types.INTEGER);
-                pstmt.setInt(4, ((ReviewNotification) notification).getReview().getId());
-                pstmt.setString(5, NotificationType.REVIEW_CREATED.name());
-                pstmt.setString(6, notification.getMessage());
-                pstmt.setString(7, notification.getCreatedAt().toString());
+                pstmt.setString(4, NotificationType.REVIEW_CREATED.name());
+                pstmt.setString(5, notification.getMessage());
+                pstmt.setString(6, notification.getCreatedAt().toString());
                 pstmt.executeUpdate();
             }
 
@@ -63,12 +66,14 @@ public class NotificationDAOJDBC implements NotificationDAO {
 
     @Override
     public List<Notification> getNotificationsByUser(String username) {
-        return getNotifications(username, NotificationQuery.SELECT_BY_USER);
+        List<Notification> notifications = getNotifications(username, NotificationQuery.SELECT_BY_USER);
+        return notifications;
     }
 
     @Override
     public List<Notification> getUnreadNotificationsByUser(String username) {
-        return getNotifications(username, NotificationQuery.SELECT_UNREAD_BY_USER);
+        List<Notification> notifications = getNotifications(username, NotificationQuery.SELECT_UNREAD_BY_USER);
+        return notifications;
     }
 
     @Override
@@ -82,10 +87,9 @@ public class NotificationDAOJDBC implements NotificationDAO {
             List<Notification> notifications = new ArrayList<>();
 
             BookingDAO bookingDao = DaoFactory.getBookingDAO();
-            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
 
             while (rs.next()) {
-                Notification notification = extractNotificationFromRow(rs, bookingDao, reviewDao);
+                Notification notification = extractNotificationFromRow(rs, bookingDao);
                 if (notification != null) {
                     notifications.add(notification);
                 }
@@ -109,12 +113,11 @@ public class NotificationDAOJDBC implements NotificationDAO {
             List<Notification> notifications = new ArrayList<>();
 
             BookingDAO bookingDao = DaoFactory.getBookingDAO();
-            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
 
 
             while (rs.next()) {
 
-                Notification notification = extractNotificationFromRow(rs, bookingDao, reviewDao);
+                Notification notification = extractNotificationFromRow(rs, bookingDao);
 
                 if (notification != null) {
                     notifications.add(notification);
@@ -141,10 +144,10 @@ public class NotificationDAOJDBC implements NotificationDAO {
     }
 
 
-    private Notification extractNotificationFromRow(ResultSet rs, BookingDAO bookingDao, ReviewDAO reviewDao) throws SQLException {
+    private Notification extractNotificationFromRow(ResultSet rs, BookingDAO bookingDao) throws SQLException {
         String message = rs.getString(MESSAGE);
 
-        Notification notification = createMultiNotification(rs, bookingDao, reviewDao, message);
+        Notification notification = createMultiNotification(rs, bookingDao, message);
 
         if (notification != null) {
             notification.setId(rs.getInt(ID));
@@ -157,22 +160,22 @@ public class NotificationDAOJDBC implements NotificationDAO {
     }
 
 
-    private Notification createMultiNotification(ResultSet rs, BookingDAO bookingDao, ReviewDAO reviewDao, String message) throws SQLException {
+    private Notification createMultiNotification(ResultSet rs, BookingDAO bookingDao, String message) throws SQLException {
+        NotificationType notificationType = NotificationType.valueOf(rs.getString(TYPE));
 
-        Integer bookingId = rs.getInt(BOOKING_ID);
-        if (!rs.wasNull()) {
+        if (notificationType == NotificationType.BOOKING_STATUS) {
+            Integer bookingId = rs.getInt(BOOKING_ID);
             Booking booking = bookingDao.getBookingById(bookingId);
             User recipient = booking.getUser();
             return NotificationFactory.createBookingStatusNotification(recipient, message, booking);
         }
 
-        Integer reviewId = rs.getInt(REVIEW_ID);
-        if (!rs.wasNull()) {
-            Review review = reviewDao.retrieveReview(reviewId);
-            if (review != null) {
-                User recipient = review.getBooking().getUser();
-                return NotificationFactory.createReviewNotification(recipient, message, review);
-            }
+        if (notificationType == NotificationType.REVIEW_CREATED) {
+            User recipient = new ClientUser(rs.getString(USERNAME));
+            Shop shop = new Shop.Builder(rs.getString(SHOP_NAME))
+                    .id(rs.getInt(SHOP_ID))
+                    .build();
+            return NotificationFactory.createReviewNotification(recipient, message, shop);
         }
 
         return null;

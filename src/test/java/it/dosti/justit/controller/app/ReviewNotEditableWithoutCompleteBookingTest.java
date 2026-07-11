@@ -2,9 +2,12 @@ package it.dosti.justit.controller.app;
 
 import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.dao.review.ReviewDAOJDBC;
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.booking.BookingDAOJDBC;
 import it.dosti.justit.db.ConnectionDB;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.Review;
+import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,12 +37,14 @@ class ReviewNotEditableWithoutCompleteBookingTest {
 
 
     private Review createReview() {
+        BookingDAO bookingDAO = new BookingDAOJDBC();
+        Booking booking = bookingDAO.getBookingById(1);
+
         return new Review.Builder("Recensione")
                 .star(4)
                 .review("questa è una recensione")
-                .shop(8)
-                .username("demo")
-                .bookingId(1)
+                .shop(booking.getShop())
+                .booking(booking)
                 .build();
     }
 }

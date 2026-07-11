@@ -42,7 +42,6 @@ public class NotificationMapper {
 
             bean.setShopName(
                     reviewNotification
-                            .getReview()
                             .getShop()
                             .getName()
             );

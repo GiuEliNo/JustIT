@@ -17,10 +17,21 @@ public class NotificationObserver implements BookingStatusObserver, ReviewCreate
     public void onStatusChanged(Booking booking) {
 
         try{
+            JustItLogger.getInstance().info(
+                    "NotificationObserver received booking status event: booking #"
+                            + booking.getBookingId()
+                            + ", status=" + booking.getStatus()
+                            + ", recipient=" + booking.getUser().getUsername()
+            );
             User recipient = booking.getUser();
             String message = NotificationMessageBuilder.buildForBooking(booking);
             Notification notification = NotificationFactory.createBookingStatusNotification(recipient, message, booking );
             notificationDAO.insertNotification(notification);
+            JustItLogger.getInstance().info(
+                    "NotificationObserver created BOOKING_STATUS notification for booking #"
+                            + booking.getBookingId()
+                            + ", recipient=" + recipient.getUsername()
+            );
         }
         catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -30,11 +41,22 @@ public class NotificationObserver implements BookingStatusObserver, ReviewCreate
     @Override
     public void onReviewCreated(Review review) {
         try{
+            JustItLogger.getInstance().info(
+                    "NotificationObserver received review event: booking #"
+                            + review.getBooking().getBookingId()
+                            + ", shopId=" + review.getShop().getId()
+                            + ", reviewer=" + review.getBooking().getUser().getUsername()
+            );
             User recipient = review.getBooking().getUser();
             String message = NotificationMessageBuilder.buildForReview(review);
-            Notification notification = NotificationFactory.createReviewNotification(recipient, message, review);
+            Notification notification = NotificationFactory.createReviewNotification(recipient, message, review.getShop());
 
             notificationDAO.insertNotification(notification);
+            JustItLogger.getInstance().info(
+                    "NotificationObserver created REVIEW_CREATED notification for shopId="
+                            + review.getShop().getId()
+                            + ", reviewer=" + recipient.getUsername()
+            );
         }
         catch (Exception e) {JustItLogger.getInstance().error(e.getMessage(), e);
         }

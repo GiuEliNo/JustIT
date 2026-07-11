@@ -1,6 +1,6 @@
 package it.dosti.justit.model.notification;
 
-import it.dosti.justit.model.Review;
+import it.dosti.justit.model.Shop;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.user.User;
 
@@ -13,7 +13,7 @@ public class NotificationFactory {
 
     }
 
-    public static Notification createReviewNotification(User recipient, String message, Review review) {
-        return new ReviewNotification(recipient, message, review);
+    public static Notification createReviewNotification(User recipient, String message, Shop shop) {
+        return new ReviewNotification(recipient, message, shop);
     }
 }

@@ -8,6 +8,4 @@ public class ReviewQuery {
     public static final String CHECK_BOOKING = "SELECT 1 FROM Booking B LEFT JOIN reviews R ON R.booking_id = B.id " +
             "WHERE B.username = ? AND B.idShop = ? AND B.state IN ('COMPLETED') AND R.booking_id IS NULL LIMIT 1";
     public static final String INSERT_REVIEW = "INSERT INTO reviews (title, stars, review, shop_id, username, booking_id) VALUES (?, ?, ?, ?, ?, ?)";
-
-    public static final String SELECT_REVIEW_BY_ID = "SELECT * FROM reviews WHERE id = ?";
 }

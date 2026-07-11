@@ -36,52 +36,20 @@ public class ReviewDAOFile implements ReviewDAO{
     }
 
     @Override
-    public Integer addReviewToShop(Review instance) throws ReviewWithoutBookingException{
+    public void addReviewToShop(Review instance) throws ReviewWithoutBookingException{
+        if(!hasBooking(instance)) {
+            throw new ReviewWithoutBookingException("Review without booking");
+        }
+
         try{
-            if(!hasBooking(instance)) {
-                throw new ReviewWithoutBookingException("Review without booking");
-            }
-            int reviewID = 1;
             List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {
             });
-            if(!reviews.isEmpty()) {
-                reviewID = reviews.stream()
-                        .mapToInt(Review::getId)
-                        .max()
-                        .getAsInt() + 1;
-
-                instance.setId(reviewID);
-                reviews.add(instance);
-            }
-            else{
-                instance.setId(reviewID);
-                reviews.add(instance);
-            }
+            reviews.add(instance);
             JsonHandler.writeJsonFile(reviews, FILENAME_REVIEWS);
         }catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-        return null;
     }
-
-    @Override
-    public Review retrieveReview(Integer reviewId) {
-        try{
-        List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
-        if(!reviews.isEmpty()) {
-            for (Review review : reviews) {
-                if (review.getId().equals(reviewId)) {
-                    return review;
-                }
-            }
-        }
-        return null;
-    }
-        catch (Exception e){
-        JustItLogger.getInstance().error(e.getMessage(), e);
-        return null;}
-    }
-
 
     public boolean hasBooking(Review review){
         try{
