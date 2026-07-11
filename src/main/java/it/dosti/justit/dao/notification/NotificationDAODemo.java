@@ -1,7 +1,11 @@
 package it.dosti.justit.dao.notification;
 
+import it.dosti.justit.model.Review;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.notification.Notification;
-import it.dosti.justit.model.notification.NotificationType;
+import it.dosti.justit.model.notification.NotificationFactory;
+import it.dosti.justit.model.user.ClientUser;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -11,78 +15,45 @@ import java.util.List;
 public class NotificationDAODemo implements NotificationDAO {
 
     private final List<Notification> notifications = new ArrayList<>();
-    private int nextId = 3004;
-
-    private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
     private static final String USER_DEMO = "demo_client";
 
     public NotificationDAODemo() {
-        notifications.add(new Notification.Builder(3001)
-                .shopName(SHOP_NAME_DEMO)
-                .username(USER_DEMO)
-                .bookingId(1002)
-                .type(NotificationType.BOOKING_STATUS)
-                .bookingStatus("CONFIRMED")
-                .message("Il tuo booking #1002 è stato confermato")
-                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(2))
-                .read(true)
-                .build());
 
-        notifications.add(new Notification.Builder(3002)
-                .shopName(SHOP_NAME_DEMO)
-                .username(USER_DEMO)
-                .bookingId(1003)
-                .type(NotificationType.BOOKING_STATUS)
-                .bookingStatus("PENDING")
-                .message("Il tuo booking #1003 è in attesa di conferma")
-                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(10))
-                .read(false)
-                .build());
+        ClientUser clientUser = new ClientUser(USER_DEMO);
+        Booking booking1 = new Booking.Builder(clientUser).bookingId(1002).status(BookingStatus.CONFIRMED).build();
+        Booking booking2 = new Booking.Builder(clientUser).bookingId(1003).status(BookingStatus.PENDING_CONFIRM).build();
 
-        notifications.add(new Notification.Builder(3003)
-                .shopName(SHOP_NAME_DEMO)
-                .username(USER_DEMO)
-                .reviewId(5001)
-                .type(NotificationType.REVIEW_CREATED)
-                .message("Grazie! La tua review è stata pubblicata")
-                .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(1))
-                .read(false)
-                .build());
+        Review review = new Review.Builder("Dummy title").review("Dummy review").star(4).build();
+
+        Notification n1 = NotificationFactory.createBookingStatusNotification(clientUser, "Il tuo booking #1002 è stato confermato", booking1 );
+        n1.setId(3001);
+        n1.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(2));
+        n1.markRead();
+        notifications.add(n1);
+        Notification n2 = NotificationFactory.createBookingStatusNotification(clientUser, "Il tuo booking #1003 è in attesa di conferma",  booking2 );
+        n2.setId(3002);
+        n2.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(10));
+        notifications.add(n2);
+        Notification n3 = NotificationFactory.createReviewNotification(clientUser, "Grazie! La tua review è stata pubblicata", review );
+        n3.setId(3003);
+        n3.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()).minusHours(1));
+        notifications.add(n3);
+
     }
+
 
     @Override
-    public void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime) {
-        Notification notification = new Notification.Builder(nextId++)
-                .shopName(SHOP_NAME_DEMO)
-                .username(username)
-                .bookingId(bookingId)
-                .type(NotificationType.BOOKING_STATUS)
-                .message(message)
-                .createdAt(createdTime)
-                .read(false)
-                .build();
+    public void insertNotification(Notification notification) {
         notifications.add(notification);
+
     }
 
-    @Override
-    public void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime) {
-        Notification notification = new Notification.Builder(nextId++)
-                .shopName(SHOP_NAME_DEMO)
-                .username(username)
-                .reviewId(reviewId)
-                .type(NotificationType.REVIEW_CREATED)
-                .message(message)
-                .createdAt(createdTime)
-                .read(false)
-                .build();
-        notifications.add(notification);
-    }
 
     @Override
     public List<Notification> getNotificationsByUser(String username) {
         List<Notification> userNotifications = new ArrayList<>();
         for (Notification notification : notifications) {
-            if (notification.getUsername().equals(username)) {
+            if (notification.getRecipient().getUsername().equals(username)) {
                 userNotifications.add(notification);
             }
         }
@@ -93,7 +64,7 @@ public class NotificationDAODemo implements NotificationDAO {
     public List<Notification> getUnreadNotificationsByUser(String username) {
         List<Notification> unreadNotifications = new ArrayList<>();
         for (Notification notification : notifications) {
-            if (notification.getUsername().equals(username) && !notification.isRead()) {
+            if (notification.getRecipient().getUsername().equals(username) && !notification.isRead()) {
                 unreadNotifications.add(notification);
             }
         }
@@ -107,21 +78,9 @@ public class NotificationDAODemo implements NotificationDAO {
 
     @Override
     public void markRead(Integer notificationId) {
-        for (int i = 0; i < notifications.size(); i++) {
-            Notification current = notifications.get(i);
+        for (Notification current : notifications) {
             if (current.getId().equals(notificationId)) {
-                Notification updated = new Notification.Builder(current.getId())
-                        .shopName(current.getShopName())
-                        .username(current.getUsername())
-                        .bookingId(current.getBookingId())
-                        .reviewId(current.getReviewId())
-                        .type(current.getType())
-                        .bookingStatus(current.getBookingStatus())
-                        .message(current.getMessage())
-                        .createdAt(current.getCreatedAt())
-                        .read(true)
-                        .build();
-                notifications.set(i, updated);
+                current.markRead();
                 return;
             }
         }

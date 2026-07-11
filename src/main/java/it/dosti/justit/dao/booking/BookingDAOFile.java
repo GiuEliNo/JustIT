@@ -189,7 +189,7 @@ public class BookingDAOFile implements BookingDAO {
                 filteredBookings = bookings.stream()
                         .filter(booking -> shopId.equals(booking.getShop().getId()) && booking.getStatus()== BookingStatus.COMPLETED)
                         .filter(a -> reviews.stream()
-                                .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
+                                .noneMatch(b -> Objects.equals(b.getBooking().getBookingId(), a.getBookingId())))
                         .collect(Collectors.toList());
 
                 return filteredBookings;
@@ -215,7 +215,7 @@ public class BookingDAOFile implements BookingDAO {
             filteredBookings = bookings.stream()
                     .filter(booking -> username.equals(booking.getUser().getUsername()) && booking.getStatus()== BookingStatus.COMPLETED)
                     .filter(a -> reviews.stream()
-                            .noneMatch(b -> Objects.equals(b.getBookingId(), a.getBookingId())))
+                            .noneMatch(b -> Objects.equals(b.getBooking().getBookingId(), a.getBookingId())))
                     .collect(Collectors.toList());
 
             return filteredBookings;

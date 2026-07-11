@@ -6,7 +6,6 @@ import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.review.ReviewDAO;
-import it.dosti.justit.dto.ReviewCreatedDTO;
 import it.dosti.justit.events.publisher.subjects.ReviewCreatedPublisher;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.model.Review;
@@ -24,21 +23,22 @@ public class ReviewController {
 
 
     public void addReview(SessionBean session, ReviewBean reviewBean) throws ReviewWithoutBookingException {
+
         String username = SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser().getUsername();
 
         reviewBean.setUsername(username);
-        Integer shopId = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId();
+        BookingDAO bookingDao = DaoFactory.getBookingDAO();
+        Booking booking = bookingDao.getBookingById(reviewBean.getBookingId());
         Review review = new Review.Builder(reviewBean.getTitle())
                 .star(reviewBean.getStars())
                 .review(reviewBean.getReview())
-                .shop(shopId)
-                .username(reviewBean.getUsername())
-                .bookingId(reviewBean.getBookingId())
+                .shop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop())
+                .booking(booking)
                 .build();
             Integer reviewId = reviewDao.addReviewToShop(review);
             if (reviewId != null) {
                 review.setId(reviewId);
-                this.notifyReviewCreated(reviewBean.getUsername(), shopId, reviewId);
+                this.notifyReviewCreated(review);
             }
     }
 
@@ -49,8 +49,8 @@ public class ReviewController {
         for (Review review : reviews) {
             ReviewBean reviewBean = new ReviewBean();
             reviewBean.setTitle(review.getTitle());
-            reviewBean.setUsername(review.getUsername());
             reviewBean.setReview(review.getReview());
+            reviewBean.setUsername(review.getBooking().getUser().getUsername());
             reviewBean.setStars(review.getStar());
             reviewBeans.add(reviewBean);
         }
@@ -71,9 +71,9 @@ public class ReviewController {
         return toBeans(bookings);
     }
 
-    private void notifyReviewCreated(String username, Integer shopId, Integer id){
+    private void notifyReviewCreated(Review review){
         ReviewCreatedPublisher.getInstance()
-                .notify(new ReviewCreatedDTO(username, shopId, id));
+                .notify(review);
     }
 
     private List<BookingBean> toBeans(List<Booking> bookings) {

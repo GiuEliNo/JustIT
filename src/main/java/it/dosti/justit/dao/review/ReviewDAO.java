@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReviewDAO {
     List<Review> retrieveReviewsByShop(Integer shopId);
     Integer addReviewToShop(Review instance) throws ReviewWithoutBookingException;
+    Review retrieveReview(Integer reviewId);
 }

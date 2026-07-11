@@ -1,7 +1,7 @@
 package it.dosti.justit.events.publisher.observers;
 
-import it.dosti.justit.dto.BookingStatusDTO;
+import it.dosti.justit.model.booking.Booking;
 
 public interface BookingStatusObserver {
-    void onStatusChanged(BookingStatusDTO change);
+    void onStatusChanged(Booking booking);
 }

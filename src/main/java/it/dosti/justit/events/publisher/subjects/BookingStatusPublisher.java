@@ -1,7 +1,7 @@
 package it.dosti.justit.events.publisher.subjects;
 
-import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.observers.BookingStatusObserver;
+import it.dosti.justit.model.booking.Booking;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,7 +26,7 @@ public class BookingStatusPublisher {
         }
     }
 
-    public void notify(BookingStatusDTO change) {
+    public void notify(Booking change) {
         for (BookingStatusObserver observer : observers) {
             observer.onStatusChanged(change);
         }

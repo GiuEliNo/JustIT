@@ -2,6 +2,7 @@ package it.dosti.justit.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import it.dosti.justit.model.booking.Booking;
 
 @JsonDeserialize(builder = Review.Builder.class)
 public class Review {
@@ -9,9 +10,8 @@ public class Review {
     private String title;
     private Integer star;
     private String reviewText;
-    private Integer shop;
-    private String username;
-    private Integer bookingId;
+    private Shop shop;
+    private Booking booking;
 
     public Review() {}
 
@@ -21,8 +21,7 @@ public class Review {
         this.star = builder.star;
         this.reviewText = builder.reviewText;
         this.shop = builder.shop;
-        this.username = builder.username;
-        this.bookingId = builder.bookingId;
+        this.booking = builder.booking;
     }
 
     @JsonPOJOBuilder(withPrefix = "")
@@ -31,9 +30,8 @@ public class Review {
         private String title;
         private Integer star;
         private String reviewText;
-        private Integer shop;
-        private String username;
-        private Integer bookingId;
+        private Shop shop;
+        private Booking booking;
 
         public Builder() {}
 
@@ -45,6 +43,7 @@ public class Review {
             this.id = id;
             return this;
         }
+
 
         public Builder title(String title) {
             this.title = title;
@@ -61,18 +60,14 @@ public class Review {
             return this;
         }
 
-        public Builder shop(Integer shop) {
+        public Builder shop(Shop shop) {
             this.shop = shop;
             return this;
         }
 
-        public Builder username(String username) {
-            this.username = username;
-            return this;
-        }
 
-        public Builder bookingId(Integer bookingId) {
-            this.bookingId = bookingId;
+        public Builder booking(Booking book) {
+            this.booking = book;
             return this;
         }
 
@@ -81,18 +76,10 @@ public class Review {
         }
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getShop() {
+    public Shop getShop() {
         return shop;
     }
-    public void setShop(Integer shop) {
+    public void setShop(Shop shop) {
         this.shop = shop;
     }
     public String getTitle() {
@@ -112,19 +99,19 @@ public class Review {
         this.reviewText = review;
     }
 
-    public String getUsername() {
-        return this.username;
+
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
-    public Integer getBookingId() {
-        return bookingId;
+    public Integer getId() {
+        return id;
     }
-
-    public void setBookingId(Integer bookingId) {
-        this.bookingId = bookingId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

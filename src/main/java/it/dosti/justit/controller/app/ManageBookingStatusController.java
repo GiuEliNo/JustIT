@@ -7,7 +7,6 @@ import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.booking.BookingDAO;
-import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.model.RepairReport;
 import it.dosti.justit.model.RepairReportFactory;
@@ -105,7 +104,7 @@ public class ManageBookingStatusController {
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
-                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
+                    .notify(booking);
         }
     }
     private void sendEmailAlert(Booking booking) {

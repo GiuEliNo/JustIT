@@ -4,7 +4,9 @@ import it.dosti.justit.bean.NotificationBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.notification.NotificationDAO;
+import it.dosti.justit.model.notification.BookingStatusNotification;
 import it.dosti.justit.model.notification.Notification;
+import it.dosti.justit.model.notification.ReviewNotification;
 import it.dosti.justit.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -49,9 +51,16 @@ public class NotificationController {
     private NotificationBean toBean(Notification notification) {
         NotificationBean bean = new NotificationBean();
 
+        if (notification instanceof BookingStatusNotification){
+
+            bean.setShopName(((BookingStatusNotification) notification).getBooking().getShop().getName());
+
+        }
+        else{
+            bean.setShopName(((ReviewNotification)notification).getReview().getShop().getName());
+        }
         bean.setId(notification.getId());
-        bean.setShopName(notification.getShopName());
-        bean.setUsername(notification.getUsername());
+        bean.setUsername(notification.getRecipient().getUsername());
         bean.setCreatedAt(notification.getCreatedAt());
         bean.setRead(notification.isRead());
         bean.setNotificationMessage(notification.getMessage());

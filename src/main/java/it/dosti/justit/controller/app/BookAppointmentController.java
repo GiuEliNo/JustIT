@@ -7,7 +7,6 @@ import it.dosti.justit.bean.*;
 import it.dosti.justit.dao.*;
 import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.dao.shop.ShopDAO;
-import it.dosti.justit.dto.BookingStatusDTO;
 import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.model.*;
@@ -141,7 +140,7 @@ public class BookAppointmentController {
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
-                    .notify(new BookingStatusDTO(booking, oldStatus, booking.getStatus()));
+                    .notify(booking);
         }
     }
 }

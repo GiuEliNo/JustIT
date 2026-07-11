@@ -2,12 +2,11 @@ package it.dosti.justit.dao.notification;
 
 import it.dosti.justit.model.notification.Notification;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationDAO {
-    void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime);
-    void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime);
+
+    void insertNotification(Notification notification);
 
     List<Notification> getNotificationsByUser(String username);
 

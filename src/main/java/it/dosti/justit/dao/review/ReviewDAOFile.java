@@ -23,7 +23,7 @@ public class ReviewDAOFile implements ReviewDAO{
             List<Review> filteredReviews = new ArrayList<>();
             if(!reviews.isEmpty()) {
                 for (Review review : reviews) {
-                    if (review.getShop().compareTo(shopId) == 0) {
+                    if (review.getShop().getId().compareTo(shopId) == 0) {
                         filteredReviews.add(review);
                     }
                 }
@@ -64,6 +64,23 @@ public class ReviewDAOFile implements ReviewDAO{
         return null;
     }
 
+    @Override
+    public Review retrieveReview(Integer reviewId) {
+        try{
+        List<Review> reviews = JsonHandler.readCollectionOnJsonFile(FILENAME_REVIEWS, new TypeReference<>() {});
+        if(!reviews.isEmpty()) {
+            for (Review review : reviews) {
+                if (review.getId().equals(reviewId)) {
+                    return review;
+                }
+            }
+        }
+        return null;
+    }
+        catch (Exception e){
+        JustItLogger.getInstance().error(e.getMessage(), e);
+        return null;}
+    }
 
 
     public boolean hasBooking(Review review){
@@ -71,7 +88,7 @@ public class ReviewDAOFile implements ReviewDAO{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new  TypeReference<>() {});
             if(!bookings.isEmpty()) {
                 for (Booking booking : bookings) {
-                    if(booking.getBookingId().equals(review.getBookingId())){
+                    if(booking.getBookingId().equals(review.getBooking().getBookingId())){
                         return true;
                     }
                 }

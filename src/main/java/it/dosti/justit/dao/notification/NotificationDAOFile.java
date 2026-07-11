@@ -1,215 +1,146 @@
 package it.dosti.justit.dao.notification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.booking.BookingDAO;
+import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.dto.NotificationDTO;
-import it.dosti.justit.model.Shop;
-import it.dosti.justit.model.booking.BookingStatus;
-import it.dosti.justit.model.notification.Notification;
-import it.dosti.justit.model.notification.NotificationType;
+import it.dosti.justit.model.Review;
+import it.dosti.justit.model.booking.Booking;
+import it.dosti.justit.model.notification.*;
+import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
 import it.dosti.justit.utils.JustItLogger;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class NotificationDAOFile implements NotificationDAO{
     private static final String FILENAME_NOTIFICATION = "notifications";
-    private static final String FILENAME_SHOPS = "shops";
 
-    @Override
-    public void insertBookingNotification(String username, Integer shopId, Integer bookingId, String message, LocalDateTime createdTime){
+
+
+    public void insertNotification(Notification notification) {
         try{
             int notificationId = 1;
             List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            NotificationDTO item = new NotificationDTO();
+            NotificationDTO notificationDTO = new NotificationDTO();
 
             if(notifications.isEmpty()){
-
-                item.setId(notificationId);
-                item.setUsername(username);
-                item.setShopId(shopId);
-                item.setBookingId(bookingId);
-                item.setBookingStatus(BookingStatus.PENDING_CONFIRM.name());
-                item.setType(NotificationType.BOOKING_STATUS);
-                item.setMessage(message);
-                item.setCreatedTime(createdTime);
+                notificationDTO.setId(notificationId);
             }
-            else {
+            else{
                 notificationId = notifications.stream()
                         .mapToInt(NotificationDTO::getId)
                         .max()
                         .getAsInt() + 1;
-                item.setId(notificationId);
-                item.setShopId(shopId);
-                item.setUsername(username);
-                item.setBookingId(bookingId);
-                item.setBookingStatus(BookingStatus.PENDING_CONFIRM.name());
-                item.setType(NotificationType.BOOKING_STATUS);
-                item.setMessage(message);
-                item.setCreatedTime(createdTime);
+                notificationDTO.setId(notificationId);
+            }
+            notificationDTO.setUsername(notification.getRecipient().getUsername());
+            notificationDTO.setMessage(notification.getMessage());
+            notificationDTO.setCreatedTime(notification.getCreatedAt());
+
+            if(notification instanceof BookingStatusNotification){
+                notificationDTO.setBookingId(((BookingStatusNotification) notification).getBooking().getBookingId());
+                notificationDTO.setShopId(((BookingStatusNotification) notification).getBooking().getShop().getId());
+                notificationDTO.setType(NotificationType.BOOKING_STATUS);
+            }
+            else{
+                notificationDTO.setReviewId(((ReviewNotification)notification).getReview().getId());
+                notificationDTO.setType(NotificationType.REVIEW_CREATED);
             }
 
-            notifications.add(item);
+            notifications.add(notificationDTO);
+
+
             JsonHandler.writeJsonFile(notifications, FILENAME_NOTIFICATION);
 
-        }
-        catch(Exception e){
+
+        } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
     @Override
-    public  void insertReviewNotification(String username, Integer shopId, Integer reviewId, String message, LocalDateTime createdTime){
-        try{
-            int notificationId = 1;
-            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            if(notifications.isEmpty()){
-                            NotificationDTO item =new NotificationDTO();
-                                    item.setId(notificationId);
-                                    item.setUsername(username);
-                                    item.setReviewId(reviewId);
-                                    item.setType(NotificationType.REVIEW_CREATED);
-                                    item.setMessage(message);
-                                    item.setCreatedTime(createdTime);
-                                    notifications.add(item);
+    public List<Notification> getNotificationsByUser(String username) {
+        return loadAndFilterNotifications(username, false);
+    }
 
-                }
-                else {
-                notificationId = notifications.stream()
-                        .mapToInt(NotificationDTO::getId)
-                        .max()
-                        .getAsInt() + 1;
-                NotificationDTO item = new NotificationDTO();
-                item.setId(notificationId);
-                item.setUsername(username);
-                item.setReviewId(reviewId);
-                item.setType(NotificationType.REVIEW_CREATED);
-                item.setMessage(message);
-                item.setCreatedTime(createdTime);
-                notifications.add(item);
+    @Override
+    public List<Notification> getUnreadNotificationsByUser(String username) {
+        return loadAndFilterNotifications(username, true);
+    }
+
+
+    private List<Notification> loadAndFilterNotifications(String username, boolean onlyUnread) {
+        try {
+            List<NotificationDTO> notificationsDto = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+
+            if (notificationsDto == null || notificationsDto.isEmpty()) {
+                return Collections.emptyList();
             }
 
-                JsonHandler.writeJsonFile(notifications, FILENAME_NOTIFICATION);
-        }
-        catch(Exception e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-    }
-    @Override
-    public List<Notification> getNotificationsByUser(String username){
+            BookingDAO bookingDao = DaoFactory.getBookingDAO();
+            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
 
-        try{
-            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<NotificationDTO> filteredNotifications = new ArrayList<>();
-            List<Notification> notificationFinal = new ArrayList<>();
-            if(!notifications.isEmpty()){
-                for(NotificationDTO notification : notifications){
-                    if(notification.getUsername().equals(username)){
-                        filteredNotifications.add(notification);
+            List<Notification> finalNotifications = new ArrayList<>();
+
+            for (NotificationDTO dto : notificationsDto) {
+
+                boolean matchesUser = dto.getUsername() != null && dto.getUsername().equals(username);
+                boolean matchesReadStatus = !onlyUnread || !dto.isRead(); // Se onlyUnread è false, questa parte è sempre true!
+
+                // 2. Se passa il filtro, convertiamo il DTO in Entity
+                if (matchesUser && matchesReadStatus) {
+                    Notification notification = convertDtoToEntity(dto, bookingDao, reviewDao);
+
+                    if (notification != null) {
+                        finalNotifications.add(notification);
                     }
                 }
-                for(NotificationDTO notification : filteredNotifications){
-                    notification.setShopName(findShopName(notification.getShopId()));
-                    notificationFinal.add(
-                            new Notification.Builder(notification.getId())
-                            .username(username)
-                            .shopName(notification.getShopName())
-                            .reviewId(notification.getReviewId())
-                            .bookingId(notification.getBookingId())
-                            .type(notification.getType())
-                            .message(notification.getMessage())
-                            .createdAt(notification.getCreatedTime())
-                            .bookingStatus(notification.getBookingStatus())
-                                    .read(notification.isRead())
-                            .build());
-
-                }
-                return notificationFinal;
             }
 
-        }
-        catch(Exception e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return Collections.emptyList();
+            return finalNotifications;
 
+        } catch (Exception e) {
+            JustItLogger.getInstance().error("Errore lettura notifiche JSON: " + e.getMessage(), e);
+            return Collections.emptyList();
+        }
     }
 
-    @Override
-    public List<Notification> getUnreadNotificationsByUser(String username){
-        try{
-            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<NotificationDTO> filteredNotifications = new ArrayList<>();
-            List<Notification> notificationFinal = new ArrayList<>();
-            if(!notifications.isEmpty()){
-                for(NotificationDTO notification : notifications){
-                    if(notification.getUsername().equals(username) && !notification.isRead()){
-                        filteredNotifications.add(notification);
-                    }
-                }
-                for(NotificationDTO notification : filteredNotifications){
-                        notification.setShopName(findShopName(notification.getShopId()));
-                        notificationFinal.add(
-                                new Notification.Builder(notification.getId())
-                                        .username(username)
-                                        .shopName(notification.getShopName())
-                                        .reviewId(notification.getReviewId())
-                                        .bookingId(notification.getBookingId())
-                                        .type(notification.getType())
-                                        .message(notification.getMessage())
-                                        .createdAt(notification.getCreatedTime())
-                                        .bookingStatus(notification.getBookingStatus())
-                                        .read(notification.isRead())
-                                        .build());
-
-                }
-
-                return notificationFinal;
-            }
-
-        }
-        catch(Exception e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return Collections.emptyList();
-    }
 
     @Override
-    public List<Notification> getNotificationsByShopId(Integer shopId){
-        try{
-            String shopName = findShopName(shopId);
-            List<NotificationDTO> notifications = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
-            List<NotificationDTO> filteredNotifications = new ArrayList<>();
-            List<Notification> notificationFinal = new ArrayList<>();
-            if(!notifications.isEmpty()){
-                for(NotificationDTO notification : notifications){
-                    if(notification.getShopId().equals(shopId)){
-                        filteredNotifications.add(notification);
+    public List<Notification> getNotificationsByShopId(Integer shopId) {
+        try {
+            List<NotificationDTO> notificationsDto = JsonHandler.readCollectionOnJsonFile(FILENAME_NOTIFICATION, new TypeReference<>() {});
+
+            if (notificationsDto == null || notificationsDto.isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            BookingDAO bookingDao = DaoFactory.getBookingDAO();
+            ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+
+            List<Notification> finalNotifications = new ArrayList<>();
+
+            for (NotificationDTO dto : notificationsDto) {
+                if (dto.getShopId() != null && dto.getShopId().equals(shopId)) {
+
+                    Notification notification = convertDtoToEntity(dto, bookingDao, reviewDao);
+
+                    if (notification != null) {
+                        finalNotifications.add(notification);
                     }
                 }
-                for(NotificationDTO notification : filteredNotifications){
-                    notificationFinal.add(
-                            new Notification.Builder(notification.getId())
-                                    .username(notification.getUsername())
-                                    .shopName(shopName)
-                                    .reviewId(notification.getReviewId())
-                                    .bookingId(notification.getBookingId())
-                                    .type(notification.getType())
-                                    .message(notification.getMessage())
-                                    .createdAt(notification.getCreatedTime())
-                                    .bookingStatus(notification.getBookingStatus())
-                                    .read(notification.isRead())
-                                    .build());
-                }
             }
-            return notificationFinal;
+
+            return finalNotifications;
+
+        } catch (Exception e) {
+            JustItLogger.getInstance().error("Errore lettura notifiche JSON per lo shop: " + e.getMessage(), e);
+            return Collections.emptyList();
         }
-        catch(Exception e){
-            JustItLogger.getInstance().error(e.getMessage(), e);
-        }
-        return Collections.emptyList();
     }
 
     @Override
@@ -232,19 +163,35 @@ public class NotificationDAOFile implements NotificationDAO{
 
     }
 
-    private String findShopName(Integer shopId){
-        try{
-            List<Shop> shops = JsonHandler.readCollectionOnJsonFile(FILENAME_SHOPS, new TypeReference<>() {});
 
-            for (Shop shop : shops){
-                if(shop.getId().equals(shopId)){
-                    return shop.getName();
+    private Notification convertDtoToEntity(NotificationDTO dto, BookingDAO bookingDao, ReviewDAO reviewDao) {
+        Notification notification = null;
+
+        try {
+            if (dto.getBookingId() != null) {
+                Booking booking = bookingDao.getBookingById(dto.getBookingId());
+                if (booking != null) {
+                    User recipient = booking.getUser();
+                    notification = NotificationFactory.createBookingStatusNotification(recipient, dto.getMessage(), booking);
+                }
+            } else if (dto.getReviewId() != null) {
+                Review review = reviewDao.retrieveReview(dto.getReviewId());
+                if (review != null) {
+                    User recipient = review.getBooking().getUser();
+                    notification = NotificationFactory.createReviewNotification(recipient, dto.getMessage(), review);
                 }
             }
-        }catch(Exception e){
+
+            if (notification != null) {
+                notification.setId(dto.getId());
+                notification.setCreatedAt(dto.getCreatedTime());
+                notification.setRead(dto.isRead());
+            }
+
+        } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
-        return "";
 
+        return notification;
     }
 }

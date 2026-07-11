@@ -6,13 +6,11 @@ import java.time.ZoneId;
 public class ReviewCreatedDTO {
     private final String username;
     private final Integer shopId;
-    private final Integer reviewId;
     private final LocalDateTime occurredAt;
 
-    public ReviewCreatedDTO(String username, Integer shopId, Integer reviewId) {
+    public ReviewCreatedDTO(String username, Integer shopId) {
         this.username = username;
         this.shopId = shopId;
-        this.reviewId = reviewId;
         this.occurredAt = LocalDateTime.now(ZoneId.systemDefault());
     }
 
@@ -22,10 +20,6 @@ public class ReviewCreatedDTO {
 
     public Integer getShopId() {
         return shopId;
-    }
-
-    public Integer getReviewId() {
-        return reviewId;
     }
 
     public LocalDateTime getOccurredAt() {
