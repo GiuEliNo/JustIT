@@ -7,12 +7,8 @@ class Booking <<state machine>> {
     + changeToState(state: BookingState)
 }
 
-interface BookingStateMachine <<interface state machine>> {
-    + goNext(event: BookingEvent)
-    + changeToState(state: BookingState)
-}
-
 abstract class BookingState <<abstract state>>{
+    + pay(booking: Booking)
     + confirm(booking: Booking)
     + reject(booking: Booking)
     + complete(booking: Booking)
@@ -20,40 +16,40 @@ abstract class BookingState <<abstract state>>{
 }
 
 enum BookingEvent <<enumeration>> {
+    PAYMENT_RECEIVED,
     CONFIRM,
     REJECT,
     COMPLETE
 }
 
 enum BookingStatus <<enumeration>> {
-    PENDING,
+    PENDING_PAYMENT,
+    PENDING_CONFIRM,
     CONFIRMED,
     REJECTED,
     COMPLETED
 }
 
-class PendingState <<concrete state>> {
+class PendingPaymentState <<concrete state>> {
+    +pay(booking: Booking)
+    +reject(booking: Booking)
+    +getStatus(): BookingStatus
+}
+
+class PendingConfirmState <<concrete state>> {
     +confirm(booking: Booking)
     +reject(booking: Booking)
-    +complete(booking: Booking)
     +getStatus(): BookingStatus
 }
 class ConfirmedState <<concrete state>> {
-    +confirm(booking: Booking)
-    +reject(booking: Booking)
     +complete(booking: Booking)
     +getStatus(): BookingStatus
 }
 class RejectedState <<concrete state>> {
-    +confirm(booking: Booking)
-    +reject(booking: Booking)
-    +complete(booking: Booking)
     +getStatus(): BookingStatus
 }
 class CompletedState <<concrete state>> {
-    +confirm(booking: Booking)
-    +reject(booking: Booking)
-    +complete(booking: Booking)
+
     +getStatus(): BookingStatus
 }
 
@@ -66,11 +62,10 @@ Booking -- BookingStatus
 Booking --> BookingStateFactory
 Booking --> BookingState
 
-BookingState <|-- PendingState
+BookingState <|-- PendingPaymentState
+BookingState <|-- PendingConfirmState
 BookingState <|-- ConfirmedState
 BookingState <|-- RejectedState
 BookingState <|-- CompletedState
-
-BookingStateMachine <|-- Booking
 
 @enduml

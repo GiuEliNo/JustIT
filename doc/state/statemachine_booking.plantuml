@@ -1,23 +1,29 @@
 @startuml
 
-[*] --> PENDING
+[*] --> PENDING_PAYMENT
 
-state PENDING : confirm / changeToState(CONFIRMED)
+state PENDING_PAYMENT : pay / changeToState(PENDING_CONFIRM)
 
-state PENDING : reject / changeToState(REJECTED)
+state PENDING_PAYMENT : reject / changeToState(REJECTED)
+
+state PENDING_CONFIRM : confirm / changeToState(CONFIRMED)
+
+state PENDING_CONFIRM : reject / changeToState(REJECTED)
 
 state CONFIRMED : complete / changeToState(COMPLETED)
 
 state REJECTED
 
 state COMPLETED
-
-PENDING --> CONFIRMED : CONFIRM
-PENDING --> REJECTED : REJECT
+PENDING_PAYMENT --> PENDING_CONFIRM : PAY
+PENDING_PAYMENT --> PENDING_PAYMENT : CONFIRM / COMPLETE\n InvalidBookingStateException
+PENDING_PAYMENT --> REJECTED : REJECT
+PENDING_CONFIRM --> CONFIRMED : CONFIRM
+PENDING_CONFIRM --> REJECTED : REJECT
 
 CONFIRMED --> COMPLETED : COMPLETE
 
-PENDING --> PENDING : COMPLETE\nInvalidBookingStateException
+PENDING_CONFIRM --> PENDING_CONFIRM : COMPLETE\nInvalidBookingStateException
 
 CONFIRMED --> CONFIRMED : CONFIRM / REJECT\nInvalidBookingStateException
 

@@ -6,22 +6,16 @@ BackgroundColor<<singleton>> LightYellow
 
 class SessionManager <<(S) singleton>> {
     - {static} instance: SessionManager
-    - loggedUser: User
-    - selectedShop: Shop
-    - ownedShop: Shop
+    - activeSessions: Map<String, Session>
     - persistencyType: PersistencyType
 
     - SessionManager()
 
     + {static} getInstance(): SessionManager
-    + getLoggedUser(): User
-    + setLoggedUser(User user): void
-    + isClient(): boolean
-    + isTechnician(): boolean
-    + setCurrentShop(Shop shop): void
-    + getCurrentShop(): Shop
-    + logout(): void
+    + createSession(): String
     + setPersistencyType(PersistencyType persistencyType): void
     + getPersistencyType(): PersistencyType
+    + logout(String sessionId): void
+
 }
 @enduml

@@ -1,11 +1,11 @@
 @startuml
 
 object BookingStatusObserver <<interface observer>>{
-+onStatusChanged(BookingStatusDTO change)
++onStatusChanged(Booking change)
 }
 
 object ReviewCreatedObserver <<interface observer>>{
-+onReviewCreated(ReviewCreatedDTO change)
++onReviewCreated(Review change)
 }
 
 object NotificationObserver <<concrete observer>>{
@@ -31,11 +31,6 @@ object ReviewCreatedPublisher <<singleton subject>> {
 +notify()
 }
 
-object BookingStatusDTO <<DTO>> {
-}
-
-object ReviewCreatedDTO <<DTO>> {
-}
 
 note left of ReviewCreatedPublisher::notify
   for (ReviewCreatedObserver observer : observers) {
@@ -51,10 +46,6 @@ NotificationObserver --|> BookingStatusObserver
 NotificationObserver --|> ReviewCreatedObserver
 
 ReviewCreatedPublisher --> ReviewCreatedObserver
-ReviewCreatedPublisher -- ReviewCreatedDTO
-ReviewCreatedObserver -- ReviewCreatedDTO
 BookingStatusPublisher --> BookingStatusObserver
-BookingStatusPublisher -- BookingStatusDTO
-BookingStatusObserver -- BookingStatusDTO
 
 @enduml

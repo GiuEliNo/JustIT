@@ -1,6 +1,6 @@
 @startuml
 
-title VOPC Add Booking
+title VOPC Book Appointment
 
 skinparam class {
 BackgroundColor<<controller>> PowderBlue
@@ -12,13 +12,23 @@ BackgroundColor<<dao>> Silver
 
 }
 
-class BookingController <<(C) controller>> {
-    + addBooking(BookingBean: bookingBean): Boolean
-    + getBookingsByUser(): List<BookingBean>
+class BookAppointmentController <<(C) controller>> {
+    + reserveSlotBooking(BookingBean: bookingBean, SessionBean: bean): PaymentQuoteBean
+    + getAvailableSlots(SessionBean session, LocalDate date): List<BookingBean>: TimeSlotBean
+    + finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean): void
+    + cancelBookingByBoundary(PaymentQuoteBean bean): void
+    - abortBooking(Booking booking): void
+    - notifyStatusChange(Booking booking)
 }
 
-class AddBookingBoundary <<(B) boundary>>{
-    + addBooking(): void
+class ProcessPaymentController <<(C) controller>> {
++ refundReservationPayment(Booking booking, double amount): void
++ processPayment(Booking booking, String cardNumber, double amount): void
+}
+
+class BookAppointmentBoundary <<(B) boundary>>{
+    + bookAppointment(): void
+    + payReservationFee(): void
 }
 
 class ShopPageBoundary <<(B) boundary>>{
@@ -27,52 +37,58 @@ class ShopPageBoundary <<(B) boundary>>{
 }
 
 class SessionManager <<(S) singleton>>{
-    - selectedShop: Shop
-    - loggedUser: User
-    + getSelectedShop(): Shop
-    + getLoggedUser(): User
+    + getActiveSession(String sessionId): session
 }
 
 entity User <<entity>>{
-    - username: String
-    + getUsername(): String
 }
 
 entity Shop <<entity>>{
-    - id: Integer
-    + getId(): Integer
 }
 
 
 entity BookingBean <<(B) bean>> {
-    - bookingID: Integer
-    - shop: Shop
-    - shopId: Integer
-    - username: String
-    - date: LocalDate
-    - timeSlot: TimeSlot
-    - description: String
-    - status: BookingStatus
-    - homeAssistance: Boolean
-    - userAddress: String
+
+}
+
+entity TimeSlotBean <<(B) bean>> {
+}
+
+entity PaymentQuoteBean <<(B) bean>>{
+}
+entity PaymentDataBean <<(B) bean>> {
 }
 
 class BookingDAO <<(D) DAO>>{
+  + existBooking(Booking booking): boolean
   + addBooking(Booking: booking): Integer
-  + updateStatus(Integer: bookingId, BookingStatus status): void
+  + updateStatus(Booking booking): void
 }
 
 entity Booking <<entity>>{
-    - bookingId: Integer
-    - shopId: Integer
-    - username: String
-    - date: LocalDate
-    - timeSlot: TimeSlot
-    - description: String
-    - homeAssistance: Boolean
-    - status: BookingStatus
-    + changeStatus(BookingStatus newStatus): void
-    + notifyStatusChange(Booking booking, BookingStatus oldStatus): void
+-bookingId: Long;
+-shop: Shop
+-user: User
+-date: LocalDate
+-timeSlot: TimeSlot
+-description: String
+-homeAssistance: boolean
+-reservationPaymentTransactionId: String
+-createdAt: LocalDateTime
+-currentState: BookingState
+-status: BookingStatus
+-repairReport: RepairReport
+-invoice: Invoice
+    + calculateTotalReservationPrice(): double
+    + pay(BookingStatus newStatus): void
+
+}
+
+entity Session{
+-User loggedUser
+-Shop selectedShop
++getLoggedUser(): User
++getCurrentShop(): Shop
 }
 
 enum TimeSlot {
@@ -82,7 +98,8 @@ enum TimeSlot {
 }
 
 enum BookingStatus {
-  PENDING,
+  PENDING_PAYMENT
+  PENDING_CONFIRM
   CONFIRMED
   REJECTED
   COMPLETED
@@ -90,15 +107,24 @@ enum BookingStatus {
 
 
 
-ShopPageBoundary -d- BookingController
-AddBookingBoundary -d- BookingController
-AddBookingBoundary .r. BookingBean
-BookingController .u. BookingBean
-BookingController -l- SessionManager
-BookingController -r- User
-BookingController -- Shop
-BookingController -d- BookingDAO
-BookingController -- Booking
+ShopPageBoundary -d- BookAppointmentController
+BookAppointmentBoundary -d- BookAppointmentController
+BookAppointmentBoundary .r. BookingBean
+BookAppointmentController .u. BookingBean
+BookAppointmentController -l- SessionManager
+Booking -- User
+Booking -- Shop
+BookAppointmentController -d- BookingDAO
+BookAppointmentController -- Booking
+BookAppointmentController -u- ProcessPaymentController
+BookAppointmentBoundary .r. TimeSlotBean
+BookAppointmentBoundary .r. PaymentQuoteBean
+BookAppointmentBoundary .r. PaymentDataBean
+BookAppointmentController .u. TimeSlotBean
+BookAppointmentController .u. PaymentQuoteBean
+BookAppointmentController .u. PaymentDataBean
+Session -- SessionManager
+
 BookingDAO -- Booking
 Booking -r- TimeSlot
 Booking -l- BookingStatus

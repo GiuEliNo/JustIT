@@ -1,0 +1,139 @@
+@startuml
+
+
+skinparam class {
+BackgroundColor<<controller>> PowderBlue
+BackgroundColor<<bean>> White
+BackgroundColor<<entity>> MistyRose
+BackgroundColor<<boundary>> LemonChiffon
+BackgroundColor<<singleton>> palegreen
+BackgroundColor<<dao>> Silver
+
+}
+
+class ManageBookingStatusController <<(C) controller>> {
+    + approveBooking(BookingBean bean): void
+    + rejectBooking(BookingBean bean, RepairReportBean rBean): void
+    + completeBooking(BookingBean bean, RepairReportBean rBean): void
+    - addRepairReportToBooking(Booking booking, RepairReportBean rBean): void
+    - refundPayment(Booking booking) : void
+    - sendInvoice(Booking booking): void
+    - notifyStatusChange(Booking booking, BookingStatus oldStatus): void
+    - sendEmailAlert(Booking booking): void
+    - removeBookingStatusInvalid(Booking booking): void
+    - retrieveBookingFromPersistence(BookingBean bean): Booking
+}
+
+class ManageBookingStatusBoundary <<(B) boundary>>{
+    + rejectBooking(): void
+    + confirmBooking(): void
+    + completeBooking(): void
+}
+
+class SessionManager <<(S) singleton>>{
++ getActiveSession(String sessionId): session
+}
+
+class Session{
+-User loggedUser
+-Shop selectedShop
++getLoggedUser(): User
++getCurrentShop(): Shop
+}
+
+entity Invoice <<entity>>{
+-totalCost: double
+-paid: boolean
+
+}
+
+interface RepairReport <<interface>>{
++getTechNotes(): String
+}
+
+class RepairReportCompleted <<(E) entity>>{
+-techNotes: String
+-laborHours: double
+-costHours: double
+-partCosts: double
++calculateTotalCost(): double
++getTechNotes(): String
+}
+
+class RepairReportRejected <<(E) entity>>{
+-techNotes: String
++getTechNotes(): String
+}
+
+class BookingBean <<(B) bean>>{
+}
+
+class RepairReportBean<<(B) bean>>{
+}
+
+class BookingDAO <<(D) DAO>>{
++ updateStatus(Booking booking): void
++ retrieveBooking(Long bookingId): Booking
++ deleteReservedBookingSlot(Long bookingId): boolean
++ saveInvoice(Booking booking): void
++ saveRepairReport(Booking booking)
+}
+class ProcessPaymentController<<(C) controller>>
+
+entity Booking <<entity>>{
+-bookingId: Long;
+-shop: Shop
+-user: User
+-date: LocalDate
+-timeSlot: TimeSlot
+-description: String
+-homeAssistance: boolean
+-reservationPaymentTransactionId: String
+-createdAt: LocalDateTime
+-currentState: BookingState
+-status: BookingStatus
+-repairReport: RepairReport
+-invoice: Invoice
+    + calculateTotalReservationPrice(): double
+    + reject(BookingStatus newStatus): void
+    + confirm(BookingStatus newStatus): void
+    + complete(BookingStatus newStatus): void
+    + issueInvoice(): void
+}
+
+enum TimeSlot {
+  MORNING,
+  AFTERNOON
+  EVENING
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  PENDING_CONFIRM
+  CONFIRMED
+  REJECTED
+  COMPLETED
+}
+
+ManageBookingStatusBoundary -d- ManageBookingStatusController
+ManageBookingStatusBoundary .r. BookingBean
+ManageBookingStatusController .u. BookingBean
+ManageBookingStatusController -l- SessionManager
+Booking -r- Invoice
+Booking -- RepairReport
+ManageBookingStatusController -d- BookingDAO
+ManageBookingStatusController -- Booking
+ManageBookingStatusBoundary .r. RepairReportBean
+ManageBookingStatusController .u. RepairReportBean
+Booking -- TimeSlot
+Booking -- BookingStatus
+RepairReport <|-- RepairReportCompleted
+RepairReport <|-- RepairReportRejected
+
+BookingDAO -- Booking
+Session -- SessionManager
+
+ManageBookingStatusController -- ProcessPaymentController
+
+
+@enduml
