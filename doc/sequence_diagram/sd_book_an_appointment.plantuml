@@ -1,68 +1,149 @@
-@startuml
+ @startuml
+
 
 title Book an appointment
 
+
 actor User
+
 participant LoginGUI <<boundary>>
+
 participant ShopPageGUI <<boundary>>
+
 participant BookingGUI <<boundary>>
+
 participant ShopController <<controller>>
-participant BookingController <<controller>>
+
+participant BookAppointmentController <<controller>>
+
 participant Shop <<entity>>
+
 participant Booking <<entity>>
+
 database DB
+
 actor PaymentServiceProvider
+
+actor EmailGateway
+participant Notification <<entity>>
+participant NotificationController <<controller>>
 
 
 User -> LoginGUI ++: Login
 
+
 LoginGUI -> ShopPageGUI ++ :  initialize ShopPageGUI
+
 ShopPageGUI -> ShopController ++ :  initialize ShopController
 
+
 ShopController -->> ShopPageGUI --:
+
 ShopPageGUI -->> LoginGUI --:
+
 LoginGUI -->> User --:
 
+
 User -> ShopPageGUI ++: select shop
+
 ShopPageGUI -> ShopController ++: get shop info
+
 ShopController -> Shop ++: <<create>>
+
 deactivate Shop
 
-ShopController ->> DB ++: getShopDB
-DB -->> ShopController --
+
+ShopController -> DB ++: getShopDB
+
+deactivate DB
+
 ShopController -->> ShopPageGUI --: show shop details
+
 ShopPageGUI -->> User --:
+
 
 User -> ShopPageGUI ++: select book now
 
+
 ShopPageGUI -> BookingGUI ++: initialize BookingGUI
-BookingGUI -> BookingController++: initialize BookingController
-BookingController -->> BookingGUI --:
+
+BookingGUI -> BookAppointmentController++: initialize BookAppointmentController
+
+BookAppointmentController -->> BookingGUI --:
+
 BookingGUI -->> ShopPageGUI --:
+
 ShopPageGUI -->> User --:
 
+
 User -> BookingGUI ++: insert booking data
-BookingGUI -> BookingController ++: add booking
 
-BookingController ->> Booking ++: <<create>>
-BookingController ->> Shop ++: get shop data
-Booking -->> BookingController --
-Shop -->> BookingController --
+BookingGUI -> BookAppointmentController ++: BookButtonPressed
 
-BookingController -> Booking ++: setup booking
+
+BookAppointmentController -> Booking ++: <<create>>
 deactivate Booking
 
-BookingController -> PaymentServiceProvider ++: pay with card
-deactivate PaymentServiceProvider
-BookingController ->> DB ++: commit data to DB
-DB -->> BookingController --:
+BookAppointmentController -> Shop ++: setup shop data
+deactivate Shop
 
-BookingController -->> BookingGUI
+BookAppointmentController -> Booking ++: setup booking
 
-deactivate BookingController
+deactivate Booking
+
+
+
+BookAppointmentController ->> Booking ++: calculateBookingReservationFee
+
+BookAppointmentController ->> DB ++: CheckReservationSlot
+
+DB -->> BookAppointmentController --:
+
+Booking -->> BookAppointmentController --:
+
+
+BookAppointmentController -->> BookingGUI : return ReservationFee
+
+
+deactivate BookAppointmentController
+
 
 BookingGUI -->> User
 
+
 deactivate BookingGUI
+
+
+User -> BookingGUI ++: Insert Payment Data
+
+BookingGUI -> BookAppointmentController ++: PayButtonPressed
+
+
+BookAppointmentController -> PaymentServiceProvider ++: chargePaymentOnCard
+
+deactivate PaymentServiceProvider
+
+
+BookAppointmentController -> Booking ++: updateBookingStatus
+
+deactivate Booking
+
+BookAppointmentController -> Notification ++: <<create>>
+deactivate Notification
+
+BookAppointmentController ->> DB ++: commitDataToDb
+BookAppointmentController ->> NotificationController ++: sendAppointmentNotification
+NotificationController -->> BookAppointmentController --
+BookAppointmentController ->> EmailGateway ++: sendEmailAlert
+EmailGateway -->> BookAppointmentController --:
+DB -->> BookAppointmentController --:
+
+
+BookAppointmentController -->> BookingGUI --: return Confirm
+
+BookingGUI -->> User --: Show Confirmation
+
+
+
 
 @enduml
