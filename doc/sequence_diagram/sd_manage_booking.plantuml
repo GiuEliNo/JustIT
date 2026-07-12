@@ -1,6 +1,6 @@
 @startuml
 
-title Manage Booking
+title Manage Booking Status
 
 actor Technician
 
@@ -10,7 +10,9 @@ participant BookingController <<controller>>
 participant Booking <<entity>>
 participant Client <<entity>>
 database DB
-actor NotificationService
+participant Notification <<entity>>
+participant NotificationController <<controller>>
+actor EmailGateway
 
 Technician -> HomePageGUI: select ManageBooking
 activate HomePageGUI
@@ -20,8 +22,8 @@ activate BookingPageGUI
 BookingPageGUI -> BookingController ++: <<create>>
 BookingController -> Booking ++: <<create>>
 deactivate Booking
-BookingController ->> DB ++: getAllBookingsDB
-DB -->> BookingController --: return Bookings data
+BookingController -> DB ++: getAllBookingsDB
+deactivate DB
 
 
 BookingController -->> BookingPageGUI --: return bookings data
@@ -35,6 +37,8 @@ Technician -> BookingPageGUI: select show booking info
 activate BookingPageGUI
 
 BookingPageGUI -> BookingController ++: get selected booking
+BookingController -> Client ++: <<create>>
+deactivate Client
 BookingController ->> Booking : load booking details
 activate Booking
 BookingController ->> Client : load user info
@@ -50,10 +54,16 @@ Technician -> BookingPageGUI: change booking status
 activate BookingPageGUI
 
 BookingPageGUI -> BookingController ++: update Booking
+BookingController -> Booking ++: updateBookingStatus
+deactivate Booking
+BookingController -> Notification ++: <<create>>
+deactivate Notification
 BookingController ->> DB ++: save on db
+BookingController ->> NotificationController ++: send notification to client
+BookingController ->> EmailGateway ++: sendEmailAlert
 DB -->> BookingController --:
-BookingController ->> NotificationService ++: send notification to client
-NotificationService  -->> BookingController --:
+NotificationController  -->> BookingController --:
+EmailGateway -->> BookingController --:
 BookingController -->> BookingPageGUI --:
 BookingPageGUI -->> Technician --:
 
