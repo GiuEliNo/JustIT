@@ -21,7 +21,7 @@ public interface BookingDAO {
 
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
 
-    Booking getBookingById(Long bookingId);
+    Booking retrieveBooking(Long bookingId);
 
     List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId);
 

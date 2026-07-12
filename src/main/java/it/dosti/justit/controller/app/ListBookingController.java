@@ -55,7 +55,7 @@ public class ListBookingController {
 
     public void payInvoice(BookingBean bookingBean, PaymentDataBean paymentData) throws PaymentException {
 
-        Booking booking = dao.getBookingById(bookingBean.getBookingID());
+        Booking booking = dao.retrieveBooking(bookingBean.getBookingID());
 
         if (booking == null) {
             throw new PaymentException("Booking not found");

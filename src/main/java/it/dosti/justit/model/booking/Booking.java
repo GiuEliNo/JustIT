@@ -206,7 +206,7 @@ public class Booking {
     }
 
 
-    public void goNext(BookingEvent event){
+    public void goNext(BookingEvent event) throws InvalidBookingStateException {
 
         switch(event){
             case PAYMENT_RECEIVED -> this.currentState.pay(this);

@@ -5,6 +5,7 @@ import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ListBookingController;
 import it.dosti.justit.controller.app.ManageBookingStatusController;
+import it.dosti.justit.exceptions.*;
 import it.dosti.justit.view.gui.DialogRepairReport;
 import it.dosti.justit.view.gui.DialogViewRepairReport;
 import javafx.collections.FXCollections;
@@ -155,8 +156,16 @@ public class BookingsListTechGController extends BaseGController {
         BookingBean selected = getSelectedBooking();
         if (selected == null) return;
 
-        manageBookingStatusController.approveBooking(selected);
-        reloadTable();
+        try {
+            manageBookingStatusController.approveBooking(selected);
+            reloadTable();
+        } catch (InvalidBookingStateException e) {
+            showError("cannot approving the booking, try again later.");
+        } catch (NoPaymentReservationException e) {
+            showError("the customer did not pay correctly for the booking; the booking has been cancelled.");
+        } catch (BookingNotFoundException e) {
+            showError("booking to approve not found. Try to refresh the list.");
+        }
     }
 
     @FXML
@@ -166,9 +175,18 @@ public class BookingsListTechGController extends BaseGController {
 
         RepairReportBean repairReportBean = showDialogRepairReport();
 
-        manageBookingStatusController.rejectBooking(selected, repairReportBean);
-
-        reloadTable();
+        try {
+            manageBookingStatusController.rejectBooking(selected, repairReportBean);
+            reloadTable();
+        } catch (InvalidBookingStateException e) {
+            showError("cannot rejecting the booking, try again later");
+        } catch (PaymentException e) {
+            showError("sorry, the refund didn’t go through. Please try again later.");
+        } catch (BookingNotFoundException e) {
+            showError("booking to reject not found. Try to refresh the list.");
+        } catch (PaymentCircuitNotSupported e) {
+            showError("payment circuit not supported");
+        }
     }
 
     @FXML
@@ -178,8 +196,14 @@ public class BookingsListTechGController extends BaseGController {
 
         RepairReportBean repairReportBean = showDialogRepairReport();
 
-        manageBookingStatusController.completeBooking(selected, repairReportBean);
-        reloadTable();
+        try {
+             manageBookingStatusController.completeBooking(selected, repairReportBean);
+             reloadTable();
+        } catch (InvalidBookingStateException e) {
+            showError("cannot completing the booking, try again later.");
+        } catch (BookingNotFoundException e) {
+        showError("booking not found. Try to refresh the list.");
+    }
     }
 
     @FXML

@@ -21,8 +21,8 @@ public class BookingDAODemo implements BookingDAO {
     private int nextId = 1004;
 
     private static final String SHOP_NAME_DEMO = "Arindale Riparazione";
-    private static final User user1 = new ClientUser("demo_client");
-    private static final User user2 = new ClientUser("Valentino mastrota");
+    private static final User user1 = new ClientUser("Furryo Camillo", "demo_client", "Furrrryo@demo.it", "Via di Tor Pignattara 38", new Coordinates(41.87, 12.54));
+    private static final User user2 = new ClientUser("Lindo Mastrolindo", "demo_client2", "lindo@demo.it", "Via Tuscolana 850", new Coordinates(41.5, 12.21));
     private static final Shop shop = new Shop.Builder(SHOP_NAME_DEMO)
             .id(1)
             .address("Via di Tor Pignattara 38")
@@ -50,6 +50,7 @@ public class BookingDAODemo implements BookingDAO {
                 .status(BookingStatus.COMPLETED)
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(15))
+                .reservationPaymentTransactionId("tx-visa-001")
                 .build();
 
         completed.setRepairReport(
@@ -74,6 +75,7 @@ public class BookingDAODemo implements BookingDAO {
                 .status(BookingStatus.CONFIRMED)
                 .homeAssistance(true)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(10))
+                .reservationPaymentTransactionId("tx-visa-002")
                 .build());
 
 
@@ -82,10 +84,11 @@ public class BookingDAODemo implements BookingDAO {
                 .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
-                .description("Pulizia steam controller")
+                .description("TEST CON METOOD NON SUPPORTATO")
                 .status(BookingStatus.PENDING_CONFIRM)
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()))
+                .reservationPaymentTransactionId("tx-amex-003")
                 .build());
 
 
@@ -98,6 +101,7 @@ public class BookingDAODemo implements BookingDAO {
                 .status(BookingStatus.REJECTED)
                 .homeAssistance(false)
                 .createdAt(LocalDateTime.now(ZoneId.systemDefault()).minusDays(8))
+                .reservationPaymentTransactionId("tx-visa-003")
                 .build();
 
         rejected.setRepairReport(
@@ -228,7 +232,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
     @Override
-    public Booking getBookingById(Long bookingId) {
+    public Booking retrieveBooking(Long bookingId) {
 
         return bookings.stream()
                 .filter(b -> b.getBookingId().equals(bookingId))

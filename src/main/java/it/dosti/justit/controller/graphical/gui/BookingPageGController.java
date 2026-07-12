@@ -102,7 +102,7 @@ public class BookingPageGController extends BaseGController {
             navigation.navigate(Screen.PAYMENTS_PAGE_BOOKING, sessionId, bean);
         }
         catch (RegisterOnBackEndException e){
-            JustItLogger.getInstance().error(e.getMessage());
+            showError("error booking slot");
         }
     }
 }

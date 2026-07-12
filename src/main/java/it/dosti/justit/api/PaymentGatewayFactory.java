@@ -1,11 +1,22 @@
 package it.dosti.justit.api;
 
+import it.dosti.justit.exceptions.PaymentCircuitNotSupported;
+
 public final class PaymentGatewayFactory {
+
+    private static PaymentGatewayFactory instance;
 
     private PaymentGatewayFactory() {
     }
 
-    public static PaymentGateway createFromCard(String cardNumber) {
+    public static synchronized PaymentGatewayFactory getInstance() {
+        if (instance == null) {
+            instance = new PaymentGatewayFactory();
+        }
+        return instance;
+    }
+
+    public PaymentGateway createFromCard(String cardNumber) throws PaymentCircuitNotSupported {
 
         if (cardNumber == null || cardNumber.isBlank()) {
             throw new IllegalArgumentException("Missing card number");
@@ -19,11 +30,11 @@ public final class PaymentGatewayFactory {
             return new MastercardPaymentGatewayStub();
         }
 
-        throw new IllegalArgumentException("Unsupported card");
+        throw new PaymentCircuitNotSupported("Unsupported card");
     }
 
 
-    public static PaymentGateway createFromTransactionId(String transactionId) {
+    public PaymentGateway createFromTransactionId(String transactionId) throws PaymentCircuitNotSupported{
 
         if (transactionId == null || transactionId.isBlank()) {
             throw new IllegalArgumentException("Missing transaction id");
@@ -37,6 +48,6 @@ public final class PaymentGatewayFactory {
             return new MastercardPaymentGatewayStub();
         }
 
-        throw new IllegalArgumentException("Unknown transaction provider");
+        throw new PaymentCircuitNotSupported("Unknown transaction provider");
     }
 }

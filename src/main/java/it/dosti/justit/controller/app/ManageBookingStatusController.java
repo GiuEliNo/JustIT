@@ -1,8 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
-import it.dosti.justit.exceptions.BookingNotFoundException;
-import it.dosti.justit.exceptions.PaymentException;
+import it.dosti.justit.exceptions.*;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.dao.DaoFactory;
@@ -14,7 +13,6 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.booking.state.BookingEvent;
 import it.dosti.justit.utils.JustItLogger;
-import it.dosti.justit.exceptions.InvalidBookingStateException;
 
 
 public class ManageBookingStatusController {
@@ -26,13 +24,14 @@ public class ManageBookingStatusController {
         this.processPaymentController = new ProcessPaymentController();
     }
 
-    public void approveBooking(BookingBean bookingBean) {
+    public void approveBooking(BookingBean bookingBean) throws InvalidBookingStateException, NoPaymentReservationException, BookingNotFoundException {
+
         Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
         if (booking.getReservationPaymentTransactionId() == null) {
             this.removeBookingStatusInvalid(booking);
-            return;
+            throw new NoPaymentReservationException("Payment has no transaction id");
         }
 
         try {
@@ -41,10 +40,11 @@ public class ManageBookingStatusController {
             notifyStatusChange(booking, oldStatus);
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error approving booking", e);
+            throw e;
         }
     }
 
-    public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
+    public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) throws InvalidBookingStateException, PaymentException, BookingNotFoundException, PaymentCircuitNotSupported {
         Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
@@ -52,18 +52,22 @@ public class ManageBookingStatusController {
             this.refundPayment(booking);
             booking.goNext(BookingEvent.REJECT);
             this.addRepairReportToBooking(booking, repairReportBean);
-            bookingDao.saveRepairReport(booking);
             bookingDao.updateStatus(booking);
             this.notifyStatusChange(booking, oldStatus);
             this.sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error rejecting booking", e);
+            throw e;
         } catch (PaymentException e) {
             JustItLogger.getInstance().error("Error refunding payment", e);
+            throw e;
+        } catch (PaymentCircuitNotSupported e) {
+            JustItLogger.getInstance().error("Error circuit not supported", e);
+            throw e;
         }
     }
 
-    public void completeBooking(BookingBean bookingBean, RepairReportBean repairReportBean) {
+    public void completeBooking(BookingBean bookingBean, RepairReportBean repairReportBean) throws InvalidBookingStateException, BookingNotFoundException {
         Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
@@ -77,6 +81,7 @@ public class ManageBookingStatusController {
             sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error completing booking", e);
+            throw e;
         }
     }
 
@@ -85,13 +90,13 @@ public class ManageBookingStatusController {
             return;
         }
 
-        RepairReport report = RepairReportFactory.create(booking.getStatus(), repairReportBean);
+        RepairReport report = RepairReportFactory.getInstance().create(booking.getStatus(), repairReportBean);
 
         booking.setRepairReport(report);
         bookingDao.saveRepairReport(booking);
     }
 
-    private void refundPayment(Booking booking) throws PaymentException {
+    private void refundPayment(Booking booking) throws PaymentException, PaymentCircuitNotSupported {
         double totalRefund = booking.calculateTotalReservationPrice();
         processPaymentController.refundReservationPayment(booking, totalRefund);
 
@@ -109,21 +114,23 @@ public class ManageBookingStatusController {
         }
     }
     private void sendEmailAlert(Booking booking) {
-        EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
+        EmailGatewayService.sendEMailInvoice(booking.getUser().getEmail());
     }
-    private void removeBookingStatusInvalid(Booking booking) {
+    private void removeBookingStatusInvalid(Booking booking) throws NoPaymentReservationException {
 
         booking.goNext(BookingEvent.REJECT);
-        if(bookingDao.deleteReservedBookingSlot(booking.getBookingId())){
-            JustItLogger.getInstance().info("Booking removed, status invalid no payment");
+
+        if (bookingDao.deleteReservedBookingSlot(booking.getBookingId())) {
+            JustItLogger.getInstance().info("Booking removed, no payment");
+            throw new NoPaymentReservationException("Payment missing: booking cancelled");
         }
-        else{
-            JustItLogger.getInstance().error("Booking deletion failed");
-        }
+
+        JustItLogger.getInstance().error("Booking deletion failed");
+        throw new NoPaymentReservationException("Payment missing and booking cancellation failed");
     }
 
-    private Booking retrieveBookingFromPersistence(BookingBean bean) {
-        Booking booking = bookingDao.getBookingById(bean.getBookingID());
+    private Booking retrieveBookingFromPersistence(BookingBean bean) throws BookingNotFoundException {
+        Booking booking = bookingDao.retrieveBooking(bean.getBookingID());
 
         if (booking == null) {
             throw new BookingNotFoundException("Booking not found");

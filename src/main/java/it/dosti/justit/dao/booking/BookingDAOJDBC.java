@@ -254,7 +254,7 @@ public class BookingDAOJDBC implements BookingDAO {
     }
 
     @Override
-    public Booking getBookingById(Long bookingId) {
+    public Booking retrieveBooking(Long bookingId) {
 
         String sql = BookingQuery.SELECT_BOOKING_ID;
 

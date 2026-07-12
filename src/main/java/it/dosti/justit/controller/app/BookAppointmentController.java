@@ -65,8 +65,8 @@ public class BookAppointmentController {
     }
 
 
-    public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws RegisterOnBackEndException {
-        Booking booking = dao.getBookingById(paymentQuoteBean.getBookingId());
+    public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws BookingExpiredException, PaymentException {
+        Booking booking = dao.retrieveBooking(paymentQuoteBean.getBookingId());
 
         try{
             if( booking.isExpired()){
@@ -82,10 +82,13 @@ public class BookAppointmentController {
             sendEmailAlert(booking);
 
         }
-        catch(BookingExpiredException | PaymentException e) {
+        catch(BookingExpiredException e) {
             abortBooking(booking);
             JustItLogger.getInstance().error(e.getMessage());
-            throw new RegisterOnBackEndException("Error finalizing the payment. Booking aborted.");
+            throw e;
+        } catch (PaymentException e) {
+            JustItLogger.getInstance().error(e.getMessage());
+            throw e;
         }
 
     }
@@ -104,7 +107,7 @@ public class BookAppointmentController {
 
 
     public void cancelBookingByBoundary(PaymentQuoteBean bean) {
-        Booking booking = dao.getBookingById(bean.getBookingId());
+        Booking booking = dao.retrieveBooking(bean.getBookingId());
         abortBooking(booking);
     }
 

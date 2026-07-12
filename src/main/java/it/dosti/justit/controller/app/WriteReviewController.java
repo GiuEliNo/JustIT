@@ -43,7 +43,7 @@ public class WriteReviewController {
 
         var activeSession = SessionManager.getInstance().getActiveSession(session.getSessionId());
 
-        Booking booking = bookingDAO.getBookingById(reviewBean.getBookingId());
+        Booking booking = bookingDAO.retrieveBooking(reviewBean.getBookingId());
 
         if (booking == null) {
             throw new ReviewWithoutBookingException(

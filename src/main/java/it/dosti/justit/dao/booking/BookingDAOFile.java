@@ -157,7 +157,7 @@ public class BookingDAOFile implements BookingDAO {
     }
 
     @Override
-    public Booking getBookingById(Long bookingId){
+    public Booking retrieveBooking(Long bookingId){
         try{
 
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});

@@ -3,8 +3,9 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.PaymentDataBean;
 import it.dosti.justit.bean.PaymentQuoteBean;
 import it.dosti.justit.controller.app.BookAppointmentController;
+import it.dosti.justit.exceptions.BookingExpiredException;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.LoadingOverlayUtils;
@@ -76,7 +77,7 @@ public class PaymentPageGController extends BaseGController {
             LoadingOverlayUtils.animateTransition(rootPane, loadingOverlay, navigation, Screen.BOOKINGS_LIST_USER, sessionId);
             navigation.navigate(Screen.BOOKINGS_LIST_USER, sessionId);
         }
-        catch(RegisterOnBackEndException e){
+        catch(BookingExpiredException | PaymentException e){
             JustItLogger.getInstance().error(e.getMessage());
             VBox loadingOverlayError = LoadingOverlayUtils.buildLoadingOverlay("Payment Failed, you will be redirected");
             rootPane.getChildren().add(loadingOverlayError);
