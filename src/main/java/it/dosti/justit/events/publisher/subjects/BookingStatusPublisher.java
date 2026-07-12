@@ -1,15 +1,16 @@
 package it.dosti.justit.events.publisher.subjects;
 
-import it.dosti.justit.events.publisher.observers.BookingStatusObserver;
+import it.dosti.justit.events.publisher.observers.Observer;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class BookingStatusPublisher {
+public class BookingStatusPublisher implements Subject {
     private static BookingStatusPublisher instance;
-    private final List<BookingStatusObserver> observers = new CopyOnWriteArrayList<>();
+    private final List<Observer> observers = new CopyOnWriteArrayList<>();
+    private Booking state;
 
     private BookingStatusPublisher() {
     }
@@ -20,8 +21,8 @@ public class BookingStatusPublisher {
         }
         return instance;
     }
-
-    public void attach(BookingStatusObserver observer) {
+    @Override
+    public void attach(Observer observer) {
         if (observer != null) {
             observers.add(observer);
             JustItLogger.getInstance().info(
@@ -32,18 +33,32 @@ public class BookingStatusPublisher {
         }
     }
 
-    public void notify(Booking change) {
+    @Override
+    public void notifyObservers() {
         JustItLogger.getInstance().info(
                 "BookingStatusPublisher notifying " + observers.size()
-                        + " observers for booking #" + change.getBookingId()
-                        + " status=" + change.getStatus()
         );
-        for (BookingStatusObserver observer : observers) {
+        for (Observer observer : observers) {
             JustItLogger.getInstance().info(
                     "BookingStatusPublisher dispatching to "
                             + observer.getClass().getSimpleName()
             );
-            observer.onStatusChanged(change);
+            observer.update(this);
         }
+    }
+
+    @Override
+    public void detach(Observer observer) {
+        observers.remove(observer);
+
+    }
+
+    public Booking getState() {
+        return this.state;
+    }
+
+    public void setState(Booking state){
+        this.state = state;
+        notifyObservers();
     }
 }

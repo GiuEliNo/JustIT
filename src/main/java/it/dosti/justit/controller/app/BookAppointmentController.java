@@ -132,7 +132,7 @@ public class BookAppointmentController {
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
-                    .notify(booking);
+                    .setState(booking);
         }
     }
 }

@@ -110,7 +110,7 @@ public class ManageBookingStatusController {
     private void notifyStatusChange(Booking booking, BookingStatus oldStatus) {
         if (oldStatus != booking.getStatus()) {
             BookingStatusPublisher.getInstance()
-                    .notify(booking);
+                    .setState(booking);
         }
     }
     private void sendEmailAlert(Booking booking) {

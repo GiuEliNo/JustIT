@@ -82,6 +82,6 @@ public class WriteReviewController {
                         + ", shop=" + review.getShop().getName()
         );
         ReviewCreatedPublisher.getInstance()
-                .notify(review);
+                .setState(review);
     }
 }

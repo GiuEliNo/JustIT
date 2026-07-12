@@ -2,6 +2,9 @@ package it.dosti.justit.events.publisher.observers;
 
 import it.dosti.justit.dao.DaoFactory;
 import it.dosti.justit.dao.notification.NotificationDAO;
+import it.dosti.justit.events.publisher.subjects.BookingStatusPublisher;
+import it.dosti.justit.events.publisher.subjects.ReviewCreatedPublisher;
+import it.dosti.justit.events.publisher.subjects.Subject;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
@@ -10,18 +13,26 @@ import it.dosti.justit.model.notification.NotificationMessageBuilder;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
 
-public class NotificationObserver implements BookingStatusObserver, ReviewCreatedObserver {
+public class NotificationObserver implements Observer {
     private final NotificationDAO notificationDAO = DaoFactory.getInstance().getNotificationDAO();
 
     @Override
-    public void onStatusChanged(Booking booking) {
+    public void update(Subject subject) {
+        if (subject instanceof BookingStatusPublisher bookingStatusPublisher) {
+            handleBookingStatusEvent(bookingStatusPublisher);
+        } else if (subject instanceof ReviewCreatedPublisher reviewCreatedPublisher) {
+            handleReviewCreatedEvent(reviewCreatedPublisher);
+        }
+    }
 
-        try{
-            JustItLogger.getInstance().info(
-                    "NotificationObserver received booking status event: booking #"
-                            + booking.getBookingId()
-                            + ", status=" + booking.getStatus()
-            );
+
+    private void handleBookingStatusEvent(BookingStatusPublisher publisher) {
+        try {
+            Booking booking = publisher.getState();
+            if (booking == null) {
+                return;
+            }
+            JustItLogger.getInstance().info("NotificationObserver received booking status event: booking #" + booking.getBookingId() + ", status=" + booking.getStatus());
             User from;
             User to;
             if (booking.getStatus() == BookingStatus.PENDING_CONFIRM || booking.getStatus() == BookingStatus.PENDING_PAYMENT) {
@@ -33,59 +44,50 @@ public class NotificationObserver implements BookingStatusObserver, ReviewCreate
             }
 
             if (from == null || to == null) {
-                JustItLogger.getInstance().error(
-                        "Cannot create BOOKING_STATUS notification for booking #"
-                                + booking.getBookingId()
-                                + ": missing sender or recipient"
-                );
+                JustItLogger.getInstance().error("Cannot create BOOKING_STATUS notification for booking #" + booking.getBookingId() + ": missing sender or recipient");
                 return;
             }
-
             String message = NotificationMessageBuilder.buildForBooking(booking);
             Notification notification = new Notification(from, to, message);
             notificationDAO.insertNotification(notification);
-            JustItLogger.getInstance().info(
-                    "NotificationObserver created BOOKING_STATUS notification for booking #"
-                            + booking.getBookingId()
-                            + ", from=" + from.getUsername()
-                            + ", to=" + to.getUsername()
+
+            JustItLogger.getInstance().info("NotificationObserver created BOOKING_STATUS notification for booking #" + booking.getBookingId() + ", from=" + from.getUsername() + ", to=" + to.getUsername()
             );
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
-    @Override
-    public void onReviewCreated(Review review) {
-        try{
-            JustItLogger.getInstance().info(
-                    "NotificationObserver received review event: booking #"
-                            + review.getBooking().getBookingId()
-                            + ", reviewer=" + review.getBooking().getUser().getUsername()
-            );
-            User from = review.getBooking().getUser();
-            User to = review.getShop().getTech();
-            if (from == null || to == null) {
-                JustItLogger.getInstance().error(
-                        "Cannot create REVIEW_CREATED notification for booking #"
-                                + review.getBooking().getBookingId()
-                                + ": missing sender or recipient"
-                );
+
+
+    private void handleReviewCreatedEvent(ReviewCreatedPublisher publisher) {
+        try {
+            Review review = publisher.getState();
+            if (review == null) {
                 return;
             }
+
+            JustItLogger.getInstance().info("NotificationObserver received review event: booking #" + review.getBooking().getBookingId() + ", reviewer=" + review.getBooking().getUser().getUsername());
+
+            User from = review.getBooking().getUser();
+            User to = review.getShop().getTech();
+
+            if (from == null || to == null) {
+                JustItLogger.getInstance().error("Cannot create REVIEW_CREATED notification for booking #" + review.getBooking().getBookingId() + ": missing sender or recipient");
+                return;
+            }
+
             String message = NotificationMessageBuilder.buildForReview(review);
             Notification notification = new Notification(from, to, message);
-
             notificationDAO.insertNotification(notification);
-            JustItLogger.getInstance().info(
-                    "NotificationObserver created REVIEW_CREATED notification for technician ="
-                            + to.getUsername()
-                            + ", reviewer=" + from.getUsername()
-            );
-        }
-        catch (Exception e) {JustItLogger.getInstance().error(e.getMessage(), e);
+
+            JustItLogger.getInstance().info("NotificationObserver created REVIEW_CREATED notification for technician =" + to.getUsername() + ", reviewer=" + from.getUsername());
+
+        } catch (Exception e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
         }
     }
 
 }
+
