@@ -1,51 +1,51 @@
 @startuml
 
-object BookingStatusObserver <<interface observer>>{
-+onStatusChanged(Booking change)
+interface Subject <<interface>> {
+  +attach(Observer observer)
+  +detach(Observer observer)
+  +notifyObservers()
 }
 
-object ReviewCreatedObserver <<interface observer>>{
-+onReviewCreated(Review change)
+interface Observer <<interface>> {
+  +update(Subject subject)
 }
 
-object NotificationObserver <<concrete observer>>{
-+onStatusChanged()
-+onReviewCreated()
+class BookingStatusPublisher <<concrete subject>> {
+  - observers: List<Observer>
+  - state: Booking
+  + attach(Observer observer)
+  + detach(Observer observer)
+  + notifyObservers()
+  + getState(): Booking
+  + setState(Booking state)
 }
 
-object BookingStatusPublisher <<singleton subject>>{
-- {static} instance: BookingStatusPublisher
-- observers: List<BookingStatusObserver>
-
-+getInstance(): BookingStatusPublisher
-+attach()
-+notify()
+class ReviewCreatedPublisher <<concrete subject>> {
+  - observers: List<Observer>
+  - state: Review
+  + attach(Observer observer)
+  + detach(Observer observer)
+  + notifyObservers()
+  + getState(): Review
+  + setState(Review state)
 }
 
-object ReviewCreatedPublisher <<singleton subject>> {
-- {static} instance: ReviewCreatedPublisher
-- observers: List<ReviewCreatedObserver>
-
-+getInstance(): ReviewCreatedPublisher
-+attach()
-+notify()
+class NotificationObserver <<concrete observer>> {
+  + update(Subject subject)
 }
 
+BookingStatusPublisher .up.|> Subject
+ReviewCreatedPublisher .up.|> Subject
+NotificationObserver .up.|> Observer
+NotificationObserver --> BookingStatusPublisher
+NotificationObserver -left-> ReviewCreatedPublisher
 
-note left of ReviewCreatedPublisher::notify
-  for (ReviewCreatedObserver observer : observers) {
-            observer.onReviewCreated(change);
+
+Subject o-> Observer : " -observers"
+
+note right of BookingStatusPublisher::notifyObservers
+  for (Observer observer : observers) {
+      observer.update(this);
+  }
 end note
-
-note right of BookingStatusPublisher::notify
-  for (BookingStatusObserver observer : observers) {
-            observer.onStatusChanged(change);
-end note
-
-NotificationObserver --|> BookingStatusObserver
-NotificationObserver --|> ReviewCreatedObserver
-
-ReviewCreatedPublisher --> ReviewCreatedObserver
-BookingStatusPublisher --> BookingStatusObserver
-
 @enduml
