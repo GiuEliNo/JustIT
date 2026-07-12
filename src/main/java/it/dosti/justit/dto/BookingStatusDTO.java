@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class BookingStatusDTO {
-    private final Integer bookingId;
+    private final Long bookingId;
     private final String username;
     private final Integer shopId;
     private final BookingStatus oldStatus;
@@ -23,7 +23,7 @@ public class BookingStatusDTO {
         this.occurredAt = LocalDateTime.now(ZoneId.systemDefault());
     }
 
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
 

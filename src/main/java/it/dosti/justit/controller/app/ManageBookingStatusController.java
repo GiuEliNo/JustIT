@@ -48,13 +48,12 @@ public class ManageBookingStatusController {
         Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
 
-        this.addRepairReportToBooking(booking, repairReportBean);
-
         try {
             this.refundPayment(booking);
             booking.goNext(BookingEvent.REJECT);
-            bookingDao.updateStatus(booking);
+            this.addRepairReportToBooking(booking, repairReportBean);
             bookingDao.saveRepairReport(booking);
+            bookingDao.updateStatus(booking);
             this.notifyStatusChange(booking, oldStatus);
             this.sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {

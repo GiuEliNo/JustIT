@@ -10,7 +10,7 @@ public class BookingCSVBean {
 
         @CsvBindByPosition(position = 0)
         @CsvBindByName(column = "Booking ID")
-        public Integer bookingId;
+        public Long bookingId;
 
         @CsvBindByPosition(position = 1)
         @CsvBindByName(column = "User")
@@ -32,7 +32,7 @@ public class BookingCSVBean {
         @CsvBindByName(column = "Description")
         public String description;
 
-        public void setBookingId(Integer bookingId) {
+        public void setBookingId(Long bookingId) {
                 this.bookingId = bookingId;
         }
 

@@ -42,7 +42,7 @@ public class BookingDAODemo implements BookingDAO {
     public BookingDAODemo() {
 
         Booking completed = new Booking.Builder(user1)
-                .bookingId(1001)
+                .bookingId(1001L)
                 .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(12))
                 .timeSlot(TimeSlot.MORNING)
@@ -66,7 +66,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
         bookings.add(new Booking.Builder(user1)
-                .bookingId(1002)
+                .bookingId(1002L)
                 .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(2))
                 .timeSlot(TimeSlot.AFTERNOON)
@@ -78,7 +78,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
         bookings.add(new Booking.Builder(user1)
-                .bookingId(1003)
+                .bookingId(1003L)
                 .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).plusDays(3))
                 .timeSlot(TimeSlot.EVENING)
@@ -90,7 +90,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
         Booking rejected = new Booking.Builder(user2)
-                .bookingId(2001)
+                .bookingId(2001L)
                 .shopEntity(shop)
                 .date(LocalDate.now(ZoneId.systemDefault()).minusDays(5))
                 .timeSlot(TimeSlot.MORNING)
@@ -111,9 +111,9 @@ public class BookingDAODemo implements BookingDAO {
 
 
     @Override
-    public int addBooking(Booking booking) {
+    public Long addBooking(Booking booking) {
 
-        int generatedId = nextId++;
+        Long generatedId = (long) nextId++;
 
         Booking newBooking = new Booking.Builder(booking.getUser())
                 .bookingId(generatedId)
@@ -228,7 +228,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
     @Override
-    public Booking getBookingById(Integer bookingId) {
+    public Booking getBookingById(Long bookingId) {
 
         return bookings.stream()
                 .filter(b -> b.getBookingId().equals(bookingId))
@@ -321,7 +321,7 @@ public class BookingDAODemo implements BookingDAO {
 
 
     @Override
-    public boolean deleteReservedBookingSlot(Integer bookingId) {
+    public boolean deleteReservedBookingSlot(Long bookingId) {
 
         for (Booking booking : bookings) {
 
@@ -333,5 +333,20 @@ public class BookingDAODemo implements BookingDAO {
         }
 
         return false;
+    }
+    @Override
+    public void updateReservationPaymentTransactionId(Booking updatedBooking) {
+
+        for (Booking booking : bookings) {
+
+            if (booking.getBookingId().equals(updatedBooking.getBookingId())) {
+
+                booking.setReservationPaymentTransactionId(
+                        updatedBooking.getReservationPaymentTransactionId()
+                );
+
+                return;
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ public class ReviewDAODemo implements ReviewDAO {
     }
 
     private static final Booking booking = new Booking.Builder(user1)
-            .bookingId(1001)
+            .bookingId(1001L)
             .shopEntity(shop)
             .date(LocalDate.now(ZoneId.systemDefault()).minusDays(12))
             .timeSlot(TimeSlot.MORNING)

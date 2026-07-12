@@ -35,11 +35,12 @@ public class BookAppointmentController {
             if (dao.existsBooking(newBooking)) {
                 throw new BookingAlreadyExistsException("Booking already active for shop/date/timeslot");
             }
-            Integer bookingId = dao.addBooking(newBooking);
-            newBooking.setBookingId(bookingId);
+            Long generateId = System.currentTimeMillis() + newBooking.hashCode();
+            newBooking.setBookingId(generateId);
+            dao.addBooking(newBooking);
             this.notifyStatusChange(newBooking, null);
             JustItLogger.getInstance().info("Booking reservation added successfully");
-            return new PaymentQuoteBean(bookingId, newBooking.calculateTotalReservationPrice());
+            return new PaymentQuoteBean(newBooking.getBookingId(), newBooking.calculateTotalReservationPrice());
 
         } catch (RegisterOnBackEndException e) {
             JustItLogger.getInstance().error("Error reserving the slot booking");

@@ -1,6 +1,8 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.*;
+import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.booking.BookingDAO;
 import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.model.booking.Booking;
 
@@ -25,6 +27,8 @@ public class ProcessPaymentController {
 
         if (booking != null) {
             booking.setReservationPaymentTransactionId(receipt.getTransactionId());
+            BookingDAO bookingDao = DaoFactory.getBookingDAO();
+            bookingDao.updateReservationPaymentTransactionId(booking);
         }
     }
 }

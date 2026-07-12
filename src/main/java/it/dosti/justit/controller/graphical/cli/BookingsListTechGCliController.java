@@ -18,7 +18,7 @@ public class BookingsListTechGCliController extends BaseCliController{
     private CBookingListTechView bookingListTechView;
     private ManageBookingStatusController manageController;
     private List<BookingBean> bookingList = new ArrayList<>();
-    private Map<Integer, BookingBean> bookingMap = new HashMap<>();
+    private Map<Long, BookingBean> bookingMap = new HashMap<>();
 
     @Override
     public void initialize() throws NavigationException {

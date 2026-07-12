@@ -29,19 +29,19 @@ public class BookingDAOFile implements BookingDAO {
     private static final String FILENAME_INVOICES = "invoices";
 
     @Override
-    public int addBooking(Booking booking) throws RegisterOnBackEndException {
+    public Long addBooking(Booking booking) throws RegisterOnBackEndException {
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {
             });
             if(!bookings.isEmpty()){
-                booking.setBookingId(bookings.stream().mapToInt(Booking::getBookingId).max().getAsInt() +1);
+                booking.setBookingId(bookings.stream().mapToLong(Booking::getBookingId).max().getAsLong() +1);
             }
             else{
-                booking.setBookingId(1);
+                booking.setBookingId(1L);
             }
             bookings.add(booking);
             JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
-            return 1;
+            return 1L;
         }catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
             throw new RegisterOnBackEndException(e.getMessage());
@@ -157,13 +157,13 @@ public class BookingDAOFile implements BookingDAO {
     }
 
     @Override
-    public Booking getBookingById(Integer bookingId){
+    public Booking getBookingById(Long bookingId){
         try{
 
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookings.isEmpty()){
                 for(Booking booking : bookings){
-                    if(booking.getBookingId().compareTo(bookingId)==0){
+                    if (Objects.equals(booking.getBookingId(), bookingId)) {
                         booking.setUser(retrieveUser(booking));
                         booking.setShop(retrieveShop(booking));
                         booking.setRepairReport(retrieveReport(booking.getBookingId()));
@@ -281,7 +281,7 @@ public class BookingDAOFile implements BookingDAO {
     }
 
     @Override
-    public boolean deleteReservedBookingSlot(Integer bookingId) {
+    public boolean deleteReservedBookingSlot(Long bookingId) {
         try{
             List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(FILENAME_BOOKINGS, new TypeReference<>() {});
             if(!bookings.isEmpty()){
@@ -319,7 +319,7 @@ public class BookingDAOFile implements BookingDAO {
     }
 
 
-    private RepairReportCompleted retrieveReport(Integer bookingId) {
+    private RepairReportCompleted retrieveReport(Long bookingId) {
         try{
             List<ReportDTO> reports = JsonHandler.readCollectionOnJsonFile(FILENAME_REPORTS, new TypeReference<>() {});
             if (!reports.isEmpty()) {
@@ -382,4 +382,28 @@ public class BookingDAOFile implements BookingDAO {
         }
         return null;
     }
+    @Override
+    public void updateReservationPaymentTransactionId(Booking updatedBooking) {
+        try {
+            List<Booking> bookings = JsonHandler.readCollectionOnJsonFile(
+                    FILENAME_BOOKINGS,
+                    new TypeReference<>() {}
+            );
+
+            for (Booking booking : bookings) {
+                if (Objects.equals(booking.getBookingId(), updatedBooking.getBookingId())) {
+                    booking.setReservationPaymentTransactionId(
+                            updatedBooking.getReservationPaymentTransactionId()
+                    );
+                    break;
+                }
+            }
+
+            JsonHandler.writeJsonFile(bookings, FILENAME_BOOKINGS);
+
+        } catch (Exception e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+    }
+
 }

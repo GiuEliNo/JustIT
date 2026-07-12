@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface BookingDAO {
-    int addBooking(Booking booking) throws RegisterOnBackEndException;
+    Long addBooking(Booking booking) throws RegisterOnBackEndException;
 
     boolean existsBooking(Booking booking);
 
@@ -21,17 +21,19 @@ public interface BookingDAO {
 
     List<TimeSlot> getOccupiedSlots(Integer shopId, LocalDate date);
 
-    Booking getBookingById(Integer bookingId);
+    Booking getBookingById(Long bookingId);
 
     List<Booking> getCompletedBookingsWithoutReviewPerShop(String username, Integer shopId);
 
     List<Booking> getCompletedBookingsWithoutReview(String username);
 
-    boolean deleteReservedBookingSlot(Integer bookingId);
+    boolean deleteReservedBookingSlot(Long bookingId);
 
     void saveRepairReport(Booking booking);
 
     void saveInvoice(Booking booking);
 
     void updateInvoice(Booking booking);
+
+    void updateReservationPaymentTransactionId(Booking booking);
 }
