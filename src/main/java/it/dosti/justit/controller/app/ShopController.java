@@ -1,15 +1,21 @@
 package it.dosti.justit.controller.app;
 
+import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.bean.ShopBean;
+import it.dosti.justit.bean.mapper.ReviewMapper;
 import it.dosti.justit.dao.DaoFactory;
+import it.dosti.justit.dao.review.ReviewDAO;
 import it.dosti.justit.dao.shop.ShopDAO;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.UpdateOnBackEndException;
+import it.dosti.justit.model.Review;
 import it.dosti.justit.model.Shop;
 import it.dosti.justit.utils.SessionManager;
 import javafx.scene.image.Image;
+
+import java.util.List;
 
 public class ShopController {
 
@@ -91,5 +97,12 @@ public class ShopController {
     public boolean isHomeAssistance(SessionBean session){
         Shop shop = SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop();
         return shop.isHomeAssistance();
+    }
+
+    public List<ReviewBean> getShopReviews(SessionBean session) {
+        ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+        List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
+
+        return ReviewMapper.toBeans(reviews);
     }
 }

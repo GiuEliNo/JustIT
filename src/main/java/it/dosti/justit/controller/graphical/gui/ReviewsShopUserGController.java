@@ -3,7 +3,7 @@ package it.dosti.justit.controller.graphical.gui;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.controller.app.WriteReviewController;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
 import it.dosti.justit.view.gui.DialogAddReview;
@@ -19,12 +19,12 @@ public class ReviewsShopUserGController extends BaseGController{
     @FXML
     private ListView<ReviewBean> listReview;
 
-    private ReviewController appControllerReviewPageShop;
+    private ShopController shopController;
     private WriteReviewController writeReviewController;
 
     @Override
     public void onSessionReady() {
-        appControllerReviewPageShop = new ReviewController();
+        shopController = new ShopController();
         writeReviewController = new WriteReviewController();
         listReview.setCellFactory(lr -> new ReviewListCell());
         this.updateReviewList();
@@ -34,7 +34,7 @@ public class ReviewsShopUserGController extends BaseGController{
         ReviewBean reviewBean = new ReviewBean();
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        List<BookingBean> availableBookings = appControllerReviewPageShop.getCompletedBookingsWithoutReviewUserPerShop(session);
+        List<BookingBean> availableBookings = writeReviewController.getAvailableBookingsToReview(session);
 
         if (availableBookings.isEmpty()) {
             Notifications.create()
@@ -74,7 +74,7 @@ public class ReviewsShopUserGController extends BaseGController{
     public void updateReviewList() {
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
-        listReview.getItems().setAll(appControllerReviewPageShop.getReviews(session));
+        listReview.getItems().setAll(shopController.getShopReviews(session));
     }
 
 }

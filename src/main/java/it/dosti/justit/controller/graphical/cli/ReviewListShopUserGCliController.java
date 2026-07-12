@@ -2,7 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.controller.app.ShopController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
@@ -14,13 +14,13 @@ public class ReviewListShopUserGCliController extends BaseCliController {
 
     @Override
     public void initialize() throws NavigationException {
-        ReviewController appController = new ReviewController();
+        ShopController appController = new ShopController();
         CReviewListView reviewView = (CReviewListView) view;
 
         SessionBean session = new SessionBean();
         session.setSessionId(sessionId);
 
-        List<ReviewBean> reviewBeanList = appController.getReviews(session);
+        List<ReviewBean> reviewBeanList = appController.getShopReviews(session);
 
         if (reviewBeanList.isEmpty()) {
             JustItLogger.getInstance().warn("No reviews found");

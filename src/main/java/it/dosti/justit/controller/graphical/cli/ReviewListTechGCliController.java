@@ -2,7 +2,7 @@ package it.dosti.justit.controller.graphical.cli;
 
 import it.dosti.justit.bean.ReviewBean;
 import it.dosti.justit.bean.SessionBean;
-import it.dosti.justit.controller.app.ReviewController;
+import it.dosti.justit.controller.app.ManageReviewController;
 import it.dosti.justit.exceptions.NavigationException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.view.cli.CReviewListView;
@@ -13,7 +13,7 @@ public class ReviewListTechGCliController extends BaseCliController {
 
     @Override
     public void initialize() throws NavigationException {
-        ReviewController appController = new ReviewController();
+        ManageReviewController appController = new ManageReviewController();
         CReviewListView reviewView = (CReviewListView) view;
 
         SessionBean session = new SessionBean();
