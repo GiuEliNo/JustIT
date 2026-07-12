@@ -82,7 +82,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1, booking.getShop().getId());
+            pstmt.setLong(1, booking.getShop().getId());
             pstmt.setString(2, booking.getDate().toString());
             pstmt.setString(3, booking.getTimeSlot().name());
             try (ResultSet rs = pstmt.executeQuery()) {

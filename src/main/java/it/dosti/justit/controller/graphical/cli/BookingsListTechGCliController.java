@@ -69,10 +69,10 @@ public class BookingsListTechGCliController extends BaseCliController{
     }
 
     private void bookingManager() throws NavigationException {
-        Integer bookId;
+        Long bookId;
 
         do {
-            bookId = bookingListTechView.askBooking();
+            bookId = Long.valueOf(bookingListTechView.askBooking());
         } while (bookingMap.get(bookId) == null);
 
 

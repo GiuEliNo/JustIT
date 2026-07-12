@@ -14,6 +14,7 @@ public class BookingBean {
     private String userAddress;
     private RepairReportBean repairReport;
     private InvoiceBean invoice;
+    private String reservationPaymentTransactionId;
 
 
     public String getUsername() {
@@ -88,6 +89,14 @@ public class BookingBean {
             return "N/A";
         }
         return homeAssistance.booleanValue() ? "Yes" : "No";
+    }
+
+    public String getReservationPaymentTransactionId() {
+        return reservationPaymentTransactionId;
+    }
+
+    public void setReservationPaymentTransactionId(String reservationPaymentTransactionId) {
+        this.reservationPaymentTransactionId = reservationPaymentTransactionId;
     }
 
     public boolean hasRepairReport() {

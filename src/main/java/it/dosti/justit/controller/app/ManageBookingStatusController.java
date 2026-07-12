@@ -80,7 +80,7 @@ public class ManageBookingStatusController {
             this.notifyStatusChange(booking, oldStatus);
             sendEmailAlert(booking);
         } catch (InvalidBookingStateException e) {
-            JustItLogger.getInstance().error("Error completing booking", e);
+            JustItLogger.getInstance().error("Error completing booking not valid transaction to complete");
             throw e;
         }
     }

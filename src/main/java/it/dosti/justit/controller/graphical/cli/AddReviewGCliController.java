@@ -64,11 +64,11 @@ public class AddReviewGCliController extends BaseCliController {
         ReviewBean reviewBean = new ReviewBean();
         BrowseShopController browseShopController = new BrowseShopController();
 
-        Integer bookingId;
+        Long bookingId;
         BookingBean selectedBooking;
 
         do {
-            bookingId = addReviewView.askBookingToReview();
+            bookingId = Long.valueOf(addReviewView.askBookingToReview());
             selectedBooking = findBookingById(bookingId, bookingCompleted);
         } while (selectedBooking == null);
 
@@ -98,9 +98,9 @@ public class AddReviewGCliController extends BaseCliController {
         }
     }
 
-    private BookingBean findBookingById(Integer bookingId, List<BookingBean> bookingCompleted) {
+    private BookingBean findBookingById(Long bookingId, List<BookingBean> bookingCompleted) {
         for (BookingBean booking : bookingCompleted) {
-            if (booking.getBookingID().equals(bookingId)) {
+            if (bookingId.equals(booking.getBookingID())) {
                 return booking;
             }
         }

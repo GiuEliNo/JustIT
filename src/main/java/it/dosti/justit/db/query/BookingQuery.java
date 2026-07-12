@@ -20,7 +20,7 @@ public class BookingQuery {
             "B.description, B.state, B.isHomeAssistance, B.transaction_id FROM Booking B LEFT JOIN reviews R ON R.booking_id = B.id " +
             "WHERE B.username = ? AND B.idShop = ? AND B.state IN ('COMPLETED') AND R.booking_id IS NULL";
 
-    public static final String EXIST_BOOKING = "SELECT 1 FROM Booking WHERE idShop = ? AND date = ? AND timeSlot = ? " + "AND state IN ('PENDING_CONFIRM', 'CONFIRMED') LIMIT 1";
+    public static final String EXIST_BOOKING = "SELECT 1 FROM Booking WHERE idShop = ? AND date = ? AND timeSlot = ? " + "AND state IN ('PENDING_CONFIRM', 'CONFIRMED', 'PENDING_PAYMENT') LIMIT 1";
     public static final String DELETE_BOOKING_RESERVATION= "DELETE FROM Booking WHERE id = ?";
 
     public static final String INSERT_REPAIR_REPORT =

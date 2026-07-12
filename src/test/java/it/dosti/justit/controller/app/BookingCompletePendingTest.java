@@ -47,6 +47,7 @@ class BookingCompletePendingTest {
             .build();
 
     private static final TimeSlot TIME_SLOT = TimeSlot.MORNING;
+    private static final LocalDate bookingDate = LocalDate.of(2050, Month.JANUARY, 1);
 
     private Long bookingId;
 
@@ -56,15 +57,18 @@ class BookingCompletePendingTest {
         SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
         BookingDAO dao = new BookingDAOJDBC();
 
-        LocalDate date = LocalDate.of(2050, Month.JANUARY, 1);
+        Long generateBookingOrder = System.currentTimeMillis();
 
         Booking booking = new Booking.Builder(user)
+                .bookingId(generateBookingOrder)
                 .shopEntity(shop)
-                .date(date)
+                .date(bookingDate)
                 .timeSlot(TIME_SLOT)
                 .description("Booking pending test")
-                .status(BookingStatus.PENDING_CONFIRM)
+                .status(BookingStatus.PENDING_PAYMENT)
                 .homeAssistance(false)
+                .createdAt()
+                .reservationPaymentTransactionId("tx-visa-0000")
                 .build();
 
         try{

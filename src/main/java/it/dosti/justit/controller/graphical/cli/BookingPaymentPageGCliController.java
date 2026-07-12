@@ -4,7 +4,7 @@ import it.dosti.justit.bean.PaymentDataBean;
 import it.dosti.justit.bean.PaymentQuoteBean;
 import it.dosti.justit.controller.app.BookAppointmentController;
 import it.dosti.justit.exceptions.NavigationException;
-import it.dosti.justit.exceptions.RegisterOnBackEndException;
+import it.dosti.justit.exceptions.PaymentException;
 import it.dosti.justit.ui.navigation.Screen;
 import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.cli.CBookingPaymentPageView;
@@ -28,7 +28,7 @@ public class BookingPaymentPageGCliController extends BaseCliController{
                 appController.finalizePayment(bean, quoteBean);
                 paymentPageView.paymentSuccess();
                 navigation.navigate(Screen.MAIN_USER, sessionId);
-            } catch (RegisterOnBackEndException e) {
+            } catch (PaymentException e) {
                 paymentPageView.failedPayment();
             } catch (NavigationException e) {
                 JustItLogger.getInstance().error(e.getMessage(), e);

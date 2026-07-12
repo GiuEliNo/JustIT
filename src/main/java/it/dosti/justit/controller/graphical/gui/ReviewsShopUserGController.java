@@ -64,7 +64,7 @@ public class ReviewsShopUserGController extends BaseGController{
                 try {
                     writeReviewController.addReview(session,reviewBean);
                 }catch(ReviewWithoutBookingException e){
-                    JustItLogger.getInstance().error(e.getMessage(),e);
+                    showError("Sorry, you can't write a review without a booking");
                 }
                 this.updateReviewList();
 

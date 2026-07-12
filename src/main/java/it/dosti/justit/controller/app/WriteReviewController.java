@@ -24,8 +24,7 @@ public class WriteReviewController {
 
     public List<BookingBean> getAvailableBookingsToReview(SessionBean session) {
 
-        String username = SessionManager.getInstance()
-                .getActiveSession(
+        String username = SessionManager.getInstance().getActiveSession(
                         session.getSessionId()).getLoggedUser().getUsername();
 
         Integer shopId = SessionManager.getInstance().getActiveSession(
@@ -34,27 +33,20 @@ public class WriteReviewController {
 
         List<Booking> bookings = bookingDAO.getCompletedBookingsWithoutReviewPerShop(username, shopId);
 
-
         return BookingMapper.toBeans(bookings);
     }
 
 
     public void addReview(SessionBean session, ReviewBean reviewBean) throws ReviewWithoutBookingException {
 
-        var activeSession = SessionManager.getInstance().getActiveSession(session.getSessionId());
-
         Booking booking = bookingDAO.retrieveBooking(reviewBean.getBookingId());
 
         if (booking == null) {
-            throw new ReviewWithoutBookingException(
-                    "Booking not found"
-            );
+            throw new ReviewWithoutBookingException("Booking not found");
         }
 
         if (!booking.canBeReviewed()) {
-            throw new ReviewWithoutBookingException(
-                    "Booking cannot be reviewed"
-            );
+            throw new ReviewWithoutBookingException("Booking cannot be reviewed");
         }
 
 
@@ -62,7 +54,7 @@ public class WriteReviewController {
                 new Review.Builder(reviewBean.getTitle())
                         .star(reviewBean.getStars())
                         .review(reviewBean.getReview())
-                        .shop(activeSession.getCurrentShop())
+                        .shop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop())
                         .booking(booking)
                         .build();
 

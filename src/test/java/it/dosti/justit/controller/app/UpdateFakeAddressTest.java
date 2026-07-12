@@ -13,6 +13,7 @@ import it.dosti.justit.exceptions.InvalidAddressException;
 import it.dosti.justit.exceptions.ShopNotFoundException;
 import it.dosti.justit.exceptions.UserNotFoundException;
 import it.dosti.justit.model.user.User;
+import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ class UpdateFakeAddressTest {
     //setup account demo esistente già popolato nel DB
     @BeforeEach
     void setUp() {
-
+        SessionManager.getInstance().setPersistencyType(PersistencyType.DATABASE);
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
         sessionId = SessionManager.getInstance().createSession();
 

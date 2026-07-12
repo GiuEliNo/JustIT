@@ -53,7 +53,7 @@ class BookingAlreadyExistsTest {
 
     @BeforeEach
     void setupInsertBooking(){
-        //aggiunta di una prenotazione per l'account di test allo shop id 1. DB già popolato preso dalle resources. Questa prenotaione ancora non esiste
+        //aggiunta di una prenotazione per l'account di test allo shop id 1. DB già popolato preso dalle resources. Questa prenotazione ancora non esiste
         SessionManager.getInstance().getActiveSession(SESSION_ID).setLoggedUser(user);
         SessionManager.getInstance().getActiveSession(SESSION_ID).setCurrentShop(shop);
         ConnectionDB.getInstance().setDbPath(Path.of("src/main/resources/DB/justit.db"));
@@ -61,7 +61,10 @@ class BookingAlreadyExistsTest {
 
         BookingDAO dao = new BookingDAOJDBC();
 
+        Long generateBookOrder = System.currentTimeMillis();
+
         Booking booking = new Booking.Builder(user)
+                .bookingId(generateBookOrder)
                 .shopEntity(shop)
                 .date(bookingDate)
                 .timeSlot(TIME_SLOT)
@@ -69,6 +72,7 @@ class BookingAlreadyExistsTest {
                 .status(BookingStatus.PENDING_CONFIRM)
                 .homeAssistance(false)
                 .createdAt()
+                .reservationPaymentTransactionId("tx-visa-0000")
                 .build();
 
         if (!dao.existsBooking(booking)) {
@@ -91,6 +95,7 @@ class BookingAlreadyExistsTest {
         bookingBean.setHomeAssistance(false);
         SessionBean sessionBean = new SessionBean();
         sessionBean.setSessionId(SESSION_ID);
+        bookingBean.setReservationPaymentTransactionId("tx-visa-0000");
 
         assertThrows(BookingAlreadyExistsException.class, () -> appController.reserveSlotBooking(bookingBean, sessionBean ));
     }

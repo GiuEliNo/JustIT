@@ -23,11 +23,12 @@ import java.util.List;
 public class BookAppointmentController {
     private final BookingDAO dao = DaoFactory.getBookingDAO();
     private final ProcessPaymentController processPaymentController;
+
     public BookAppointmentController() {
         this.processPaymentController = new ProcessPaymentController();
     }
 
-    public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean, SessionBean session) throws RegisterOnBackEndException {
+    public PaymentQuoteBean reserveSlotBooking(BookingBean bookingBean, SessionBean session) throws RegisterOnBackEndException, BookingAlreadyExistsException {
 
         Booking newBooking = BookingFactory.createBookingFromBean(bookingBean, SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop(), SessionManager.getInstance().getActiveSession(session.getSessionId()).getLoggedUser());
 
@@ -41,10 +42,12 @@ public class BookAppointmentController {
             this.notifyStatusChange(newBooking, null);
             JustItLogger.getInstance().info("Booking reservation added successfully");
             return new PaymentQuoteBean(newBooking.getBookingId(), newBooking.calculateTotalReservationPrice());
-
+        } catch (BookingAlreadyExistsException e) {
+            throw e;
         } catch (RegisterOnBackEndException e) {
             JustItLogger.getInstance().error("Error reserving the slot booking");
             throw new RegisterOnBackEndException(e.getMessage(), e);
+
         }
     }
 
@@ -65,11 +68,12 @@ public class BookAppointmentController {
     }
 
 
-    public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws BookingExpiredException, PaymentException {
+    public void finalizePayment(PaymentDataBean paymentDataBean, PaymentQuoteBean paymentQuoteBean) throws
+            BookingExpiredException, PaymentException {
         Booking booking = dao.retrieveBooking(paymentQuoteBean.getBookingId());
 
-        try{
-            if( booking.isExpired()){
+        try {
+            if (booking.isExpired()) {
                 throw new BookingExpiredException("The payment timer is expired");
             }
             BookingStatus oldStatus = booking.getStatus();
@@ -81,8 +85,7 @@ public class BookAppointmentController {
             notifyStatusChange(booking, oldStatus);
             sendEmailAlert(booking);
 
-        }
-        catch(BookingExpiredException e) {
+        } catch (BookingExpiredException e) {
             abortBooking(booking);
             JustItLogger.getInstance().error(e.getMessage());
             throw e;
@@ -97,10 +100,9 @@ public class BookAppointmentController {
     private void abortBooking(Booking booking) {
 
         booking.goNext(BookingEvent.REJECT);
-        if(dao.deleteReservedBookingSlot(booking.getBookingId())){
+        if (dao.deleteReservedBookingSlot(booking.getBookingId())) {
             JustItLogger.getInstance().info("Booking aborted successfully");
-        }
-        else{
+        } else {
             JustItLogger.getInstance().error("Booking aborted failed");
         }
     }
@@ -112,7 +114,7 @@ public class BookAppointmentController {
     }
 
     private void sendEmailAlert(Booking booking) {
-            EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
+        EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
     }
 
     public boolean hasAvailableSlots(SessionBean session, LocalDate date) {

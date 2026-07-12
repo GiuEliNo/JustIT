@@ -249,8 +249,7 @@ public class BookingDAODemo implements BookingDAO {
         for (Booking booking : bookings) {
             if (booking.getUser().getUsername().equals(username)
                     && booking.getShop().getId().equals(shopId)
-                    && booking.getStatus() == BookingStatus.COMPLETED
-                    && booking.getBookingId().equals(1001)) {
+                    && booking.getStatus() == BookingStatus.COMPLETED) {
 
                 result.add(booking);
             }
@@ -267,8 +266,7 @@ public class BookingDAODemo implements BookingDAO {
 
         for (Booking booking : bookings) {
             if (booking.getUser().getUsername().equals(username)
-                    && booking.getStatus() == BookingStatus.COMPLETED
-                    && booking.getBookingId().equals(1001)) {
+                    && booking.getStatus() == BookingStatus.COMPLETED) {
 
                 result.add(booking);
             }
