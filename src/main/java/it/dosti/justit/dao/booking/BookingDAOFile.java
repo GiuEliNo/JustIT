@@ -359,7 +359,7 @@ public class BookingDAOFile implements BookingDAO {
 
     private Shop retrieveShop(Booking booking){
         try{
-            return DaoFactory.getShopDAO().retrieveShopById(booking.getShop().getId());
+            return DaoFactory.getInstance().getShopDAO().retrieveShopById(booking.getShop().getId());
         }catch(Exception e){
             JustItLogger.getInstance().error(e.getMessage(), e);
         }

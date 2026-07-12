@@ -19,7 +19,7 @@ public final class RepairReportFactory {
     }
 
 
-    public RepairReport create(BookingStatus status, RepairReportBean bean) {
+    public RepairReport create(BookingStatus status, RepairReportBean bean) throws IllegalArgumentException {
 
         if (status == null || bean == null) {
             throw new IllegalArgumentException("Status or report data cannot be null");

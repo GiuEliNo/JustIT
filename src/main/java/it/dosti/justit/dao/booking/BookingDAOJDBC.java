@@ -122,8 +122,8 @@ public class BookingDAOJDBC implements BookingDAO {
                 LocalDateTime createdAt = LocalDateTime.parse(rs.getString(CREATEDAT));
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                ShopDAO shopDAO = DaoFactory.getShopDAO();
-                UserDAO userDao = DaoFactory.getClientUserDAO();
+                ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
+                UserDAO userDao = DaoFactory.getInstance().getClientUserDAO();
                 Shop shop = shopDAO.retrieveShopById(shopId);
                 User user = userDao.findByUsername(username);
 
@@ -177,8 +177,8 @@ public class BookingDAOJDBC implements BookingDAO {
 
                 boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
 
-                ShopDAO shopDAO = DaoFactory.getShopDAO();
-                UserDAO userDao = DaoFactory.getClientUserDAO();
+                ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
+                UserDAO userDao = DaoFactory.getInstance().getClientUserDAO();
                 Shop shop = shopDAO.retrieveShopById(shopId);
                 User user = userDao.findByUsername(username);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
@@ -268,8 +268,8 @@ public class BookingDAOJDBC implements BookingDAO {
 
             if (rs.next()) {
 
-                ShopDAO shopDAO = DaoFactory.getShopDAO();
-                UserDAO userDao = DaoFactory.getClientUserDAO();
+                ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
+                UserDAO userDao = DaoFactory.getInstance().getClientUserDAO();
                 Shop shop = shopDAO.retrieveShopById(rs.getInt(IDSHOP));
                 User user = userDao.findByUsername(rs.getString(USERNAME));
 
@@ -319,8 +319,8 @@ public class BookingDAOJDBC implements BookingDAO {
                 boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                ShopDAO shopDAO = DaoFactory.getShopDAO();
-                UserDAO userDao = DaoFactory.getClientUserDAO();
+                ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
+                UserDAO userDao = DaoFactory.getInstance().getClientUserDAO();
                 Shop shop = shopDAO.retrieveShopById(shopId);
                 User user = userDao.findByUsername(username);
 
@@ -371,8 +371,8 @@ public class BookingDAOJDBC implements BookingDAO {
                 Boolean homeAssistance = rs.getBoolean(ISHOMEASSISTANCE);
                 String reservationPaymentTransactionId = rs.getString(RESERVATION_PAYMENT_TRANSACTION_ID);
 
-                ShopDAO shopDAO = DaoFactory.getShopDAO();
-                UserDAO userDao = DaoFactory.getClientUserDAO();
+                ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
+                UserDAO userDao = DaoFactory.getInstance().getClientUserDAO();
                 Shop shop = shopDAO.retrieveShopById(shopId);
                 User user = userDao.findByUsername(username);
 

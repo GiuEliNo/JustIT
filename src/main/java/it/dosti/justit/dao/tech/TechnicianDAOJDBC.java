@@ -98,7 +98,7 @@ public class TechnicianDAOJDBC implements TechnicianDAO {
 
 
         String sql = TechnicianQuery.SELECT_BY_USERNAME;
-        ShopDAO shopDAO = DaoFactory.getShopDAO();
+        ShopDAO shopDAO = DaoFactory.getInstance().getShopDAO();
 
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();

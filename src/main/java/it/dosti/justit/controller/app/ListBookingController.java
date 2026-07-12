@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListBookingController {
-    private final BookingDAO dao = DaoFactory.getBookingDAO();
+    private final BookingDAO dao = DaoFactory.getInstance().getBookingDAO();
     private final BookingExportFileDAO daoFile = new BookingExportFileDAOCSV();
     private final ProcessPaymentController processPaymentController;
 

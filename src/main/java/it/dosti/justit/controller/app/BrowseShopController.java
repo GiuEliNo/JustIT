@@ -23,7 +23,7 @@ public class BrowseShopController {
 
     private static final Random RANDOM = new Random();
 
-    private final ShopDAO dao = DaoFactory.getShopDAO();
+    private final ShopDAO dao = DaoFactory.getInstance().getShopDAO();
 
 
     public List<ShopBean> getAllShops() {

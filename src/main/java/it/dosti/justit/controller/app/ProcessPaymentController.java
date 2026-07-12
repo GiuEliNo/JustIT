@@ -28,7 +28,7 @@ public class ProcessPaymentController {
 
         if (booking != null) {
             booking.setReservationPaymentTransactionId(receipt.getTransactionId());
-            BookingDAO bookingDao = DaoFactory.getBookingDAO();
+            BookingDAO bookingDao = DaoFactory.getInstance().getBookingDAO();
             bookingDao.updateReservationPaymentTransactionId(booking);
         }
     }

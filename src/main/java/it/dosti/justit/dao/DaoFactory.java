@@ -24,55 +24,96 @@ import it.dosti.justit.dao.tech.TechnicianDAO;
 import it.dosti.justit.dao.tech.TechnicianDAODemo;
 import it.dosti.justit.dao.tech.TechnicianDAOFile;
 import it.dosti.justit.dao.tech.TechnicianDAOJDBC;
+import it.dosti.justit.utils.PersistencyType;
 import it.dosti.justit.utils.SessionManager;
 
+
 public class DaoFactory {
-    private DaoFactory(){}
-    public static BookingDAO getBookingDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()) {
-            case DATABASE -> new BookingDAOJDBC();
-            case FILESYSTEM -> new BookingDAOFile();
-            case DEMOMODE -> new BookingDAODemo();
-        };
+
+    private static DaoFactory instance = null;
+
+    private final BookingDAO bookingDAO;
+    private final ClientUserDAO clientUserDAO;
+    private final NotificationDAO notificationDAO;
+    private final ReviewDAO reviewDAO;
+    private final ShopDAO shopDAO;
+    private final TechnicianDAO technicianDAO;
+
+
+    private DaoFactory() {
+
+        PersistencyType type = SessionManager.getInstance().getPersistencyType();
+
+        switch (type) {
+
+            case DATABASE -> {
+                bookingDAO = new BookingDAOJDBC();
+                clientUserDAO = new ClientUserDAOJDBC();
+                notificationDAO = new NotificationDAOJDBC();
+                reviewDAO = new ReviewDAOJDBC();
+                shopDAO = new ShopDAOJDBC();
+                technicianDAO = new TechnicianDAOJDBC();
+            }
+
+            case FILESYSTEM -> {
+                bookingDAO = new BookingDAOFile();
+                clientUserDAO = new ClientUserDAOFile();
+                notificationDAO = new NotificationDAOFile();
+                reviewDAO = new ReviewDAOFile();
+                shopDAO = new ShopDAOFile();
+                technicianDAO = new TechnicianDAOFile();
+            }
+
+            case DEMOMODE -> {
+                bookingDAO = new BookingDAODemo();
+                clientUserDAO = new ClientUserDAODemo();
+                notificationDAO = new NotificationDAODemo();
+                reviewDAO = new ReviewDAODemo();
+                shopDAO = new ShopDAODemo();
+                technicianDAO = new TechnicianDAODemo();
+            }
+
+            default -> throw new IllegalStateException("Unknown persistency type");
+        }
     }
 
-    public static ClientUserDAO getClientUserDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()){
-            case DATABASE -> new ClientUserDAOJDBC();
-            case FILESYSTEM -> new ClientUserDAOFile();
-            case DEMOMODE -> new ClientUserDAODemo();
-        };
+
+    public static synchronized DaoFactory getInstance() {
+
+        if (instance == null) {
+            instance = new DaoFactory();
+        }
+
+        return instance;
     }
 
-    public static NotificationDAO getNotificationDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()){
-            case DATABASE -> new NotificationDAOJDBC();
-            case FILESYSTEM -> new NotificationDAOFile();
-            case DEMOMODE ->  new NotificationDAODemo();
-        };
+
+    public BookingDAO getBookingDAO() {
+        return bookingDAO;
     }
 
-    public static ReviewDAO getReviewDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()){
-            case DATABASE -> new ReviewDAOJDBC();
-            case FILESYSTEM -> new ReviewDAOFile();
-            case DEMOMODE -> new ReviewDAODemo();
-        };
+
+    public ClientUserDAO getClientUserDAO() {
+        return clientUserDAO;
     }
 
-    public static ShopDAO getShopDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()){
-            case DATABASE -> new ShopDAOJDBC();
-            case FILESYSTEM -> new ShopDAOFile();
-            case DEMOMODE ->  new ShopDAODemo();
-        };
+
+    public NotificationDAO getNotificationDAO() {
+        return notificationDAO;
     }
 
-    public static TechnicianDAO getTechnicianDAO(){
-        return switch (SessionManager.getInstance().getPersistencyType()){
-            case DATABASE -> new TechnicianDAOJDBC();
-            case FILESYSTEM -> new TechnicianDAOFile();
-            case DEMOMODE ->   new TechnicianDAODemo();
-        };
+
+    public ReviewDAO getReviewDAO() {
+        return reviewDAO;
+    }
+
+
+    public ShopDAO getShopDAO() {
+        return shopDAO;
+    }
+
+
+    public TechnicianDAO getTechnicianDAO() {
+        return technicianDAO;
     }
 }

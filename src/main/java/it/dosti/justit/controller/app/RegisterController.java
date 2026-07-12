@@ -24,7 +24,7 @@ public class RegisterController {
 
     public boolean registerNewUser(ClientRegisterBean registerBean) throws RegisterOnBackEndException {
 
-        ClientUserDAO dao = DaoFactory.getClientUserDAO();
+        ClientUserDAO dao = DaoFactory.getInstance().getClientUserDAO();
         CoordinatesDAO coordDAO= new CoordinatesDAOAPI();
         Coordinates coord = coordDAO.getCoordinates(registerBean.getAddress()).join();
         if(coord!=null) {
@@ -49,7 +49,7 @@ public class RegisterController {
     }
 
     public boolean registerNewTechnician(TechnicRegisterBean registerBean) throws RegisterOnBackEndException, ShopNotFoundException {
-        TechnicianDAO dao = DaoFactory.getTechnicianDAO();
+        TechnicianDAO dao = DaoFactory.getInstance().getTechnicianDAO();
         registerBean.setShop(dao.getShopbyName(registerBean.getShopName()));
         if ( registerBean.getShop() == null){
             JustItLogger.getInstance().warn("Shop name not found");
@@ -67,7 +67,7 @@ public class RegisterController {
 
     public boolean registerNewShop(ShopBean registerBean) throws RegisterOnBackEndException {
 
-        ShopDAO dao = DaoFactory.getShopDAO();
+        ShopDAO dao = DaoFactory.getInstance().getShopDAO();
 
         CoordinatesDAO coordDao = new CoordinatesDAOAPI();
 

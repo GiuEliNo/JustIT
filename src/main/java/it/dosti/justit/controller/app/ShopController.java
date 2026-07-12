@@ -50,7 +50,7 @@ public class ShopController {
         if (shop == null) {
             throw new ShopNotFoundException("Shop not set in session.");
         }
-        ShopDAO dao = DaoFactory.getShopDAO();
+        ShopDAO dao = DaoFactory.getInstance().getShopDAO();
         return dao.retrieveShopImageById(shop.getId());
     }
 
@@ -100,7 +100,7 @@ public class ShopController {
     }
 
     public List<ReviewBean> getShopReviews(SessionBean session) {
-        ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+        ReviewDAO reviewDao = DaoFactory.getInstance().getReviewDAO();
         List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());
 
         return ReviewMapper.toBeans(reviews);

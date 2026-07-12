@@ -18,11 +18,11 @@ public class UserDaoFactory {
     }
 
     private ClientUserDAO createClientUserDAO() {
-        return DaoFactory.getClientUserDAO();
+        return DaoFactory.getInstance().getClientUserDAO();
     }
 
     private TechnicianDAO createTechnicianUserDAO() {
-        return DaoFactory.getTechnicianDAO();
+        return DaoFactory.getInstance().getTechnicianDAO();
     }
 
 }

@@ -18,8 +18,8 @@ import java.util.List;
 
 public class WriteReviewController {
 
-    private final ReviewDAO reviewDAO = DaoFactory.getReviewDAO();
-    private final BookingDAO bookingDAO = DaoFactory.getBookingDAO();
+    private final ReviewDAO reviewDAO = DaoFactory.getInstance().getReviewDAO();
+    private final BookingDAO bookingDAO = DaoFactory.getInstance().getBookingDAO();
 
 
     public List<BookingBean> getAvailableBookingsToReview(SessionBean session) {

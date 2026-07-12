@@ -11,7 +11,7 @@ import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
 
 public class NotificationObserver implements BookingStatusObserver, ReviewCreatedObserver {
-    private final NotificationDAO notificationDAO = DaoFactory.getNotificationDAO();
+    private final NotificationDAO notificationDAO = DaoFactory.getInstance().getNotificationDAO();
 
     @Override
     public void onStatusChanged(Booking booking) {

@@ -15,7 +15,7 @@ public class LoginController {
         String sessionId = SessionManager.getInstance().createSession();
         switch (loginBean.getRoleType()) {
             case "CLIENT" -> {
-                ClientUserDAO dao = DaoFactory.getClientUserDAO();
+                ClientUserDAO dao = DaoFactory.getInstance().getClientUserDAO();
 
                 if (dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
                     SessionManager.getInstance().getActiveSession(sessionId).setLoggedUser(dao.findByUsername(loginBean.getUsername()));
@@ -25,7 +25,7 @@ public class LoginController {
                 throw new LoginFromBackEndException("Invalid username or password");
             }
             case "TECHNICIAN" -> {
-                TechnicianDAO dao = DaoFactory.getTechnicianDAO();
+                TechnicianDAO dao = DaoFactory.getInstance().getTechnicianDAO();
                 if(dao.login(new Credentials(loginBean.getUsername(), loginBean.getPassword()))) {
                     Session session = SessionManager.getInstance().getActiveSession(sessionId);
                     session.setLoggedUser(dao.findByUsername(loginBean.getUsername()));

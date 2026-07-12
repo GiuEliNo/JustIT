@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class BookAppointmentController {
-    private final BookingDAO dao = DaoFactory.getBookingDAO();
+    private final BookingDAO dao = DaoFactory.getInstance().getBookingDAO();
     private final ProcessPaymentController processPaymentController;
 
     public BookAppointmentController() {

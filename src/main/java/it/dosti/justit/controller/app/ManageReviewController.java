@@ -12,7 +12,7 @@ import it.dosti.justit.utils.SessionManager;
 import java.util.List;
 
 public class ManageReviewController {
-    private final ReviewDAO reviewDao = DaoFactory.getReviewDAO();
+    private final ReviewDAO reviewDao = DaoFactory.getInstance().getReviewDAO();
 
     public List<ReviewBean> getReviews(SessionBean session) {
         List<Review> reviews = reviewDao.retrieveReviewsByShop(SessionManager.getInstance().getActiveSession(session.getSessionId()).getCurrentShop().getId());

@@ -73,7 +73,7 @@ public class ReviewDAOFile implements ReviewDAO{
 
     private void populateShopTech(Review review) {
         try {
-            Shop shop = DaoFactory.getShopDAO().retrieveShopById(review.getShop().getId());
+            Shop shop = DaoFactory.getInstance().getShopDAO().retrieveShopById(review.getShop().getId());
             review.setShop(shop);
         } catch (Exception e) {
             JustItLogger.getInstance().error(e.getMessage(), e);

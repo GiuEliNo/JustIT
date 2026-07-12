@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ViewNotificationController {
 
-    private final NotificationDAO dao = DaoFactory.getNotificationDAO();
+    private final NotificationDAO dao = DaoFactory.getInstance().getNotificationDAO();
 
     public List<NotificationBean> getNotifications(SessionBean session) {
 

@@ -17,7 +17,7 @@ import it.dosti.justit.utils.JustItLogger;
 
 public class ManageBookingStatusController {
 
-    private final BookingDAO bookingDao = DaoFactory.getBookingDAO();
+    private final BookingDAO bookingDao = DaoFactory.getInstance().getBookingDAO();
     private final ProcessPaymentController processPaymentController;
 
     public ManageBookingStatusController() {
