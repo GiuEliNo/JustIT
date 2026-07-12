@@ -1,7 +1,7 @@
 package it.dosti.justit.bean;
 
 public class PaymentQuoteBean {
-    private Integer bookingId;
+    private Long bookingId;
     private double quote;
 
 
@@ -13,14 +13,14 @@ public class PaymentQuoteBean {
         return quote;
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
 
-    public PaymentQuoteBean(Integer bookingId, double quote) {
+    public PaymentQuoteBean(Long bookingId, double quote) {
         this.bookingId = bookingId;
         this.quote = quote;
     }

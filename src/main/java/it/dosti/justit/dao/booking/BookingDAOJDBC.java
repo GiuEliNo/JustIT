@@ -44,34 +44,35 @@ public class BookingDAOJDBC implements BookingDAO {
 
 
     @Override
-    public int addBooking(Booking booking) throws RegisterOnBackEndException {
+    public Long addBooking(Booking booking) throws RegisterOnBackEndException {
         String sql = BookingQuery.INSERT_BOOKING;
         try(
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
                 ) {
 
-            pstmt.setInt(1, booking.getShop().getId());
-            pstmt.setString(2, booking.getUser().getUsername());
-            pstmt.setString(3, booking.getDate().toString());
-            pstmt.setString(4, booking.getTimeSlot().toString());
-            pstmt.setString(5, booking.getDescription());
-            pstmt.setBoolean(6, booking.getHomeAssistance());
-            pstmt.setString(7, booking.getCreatedAt().toString());
-            pstmt.setString(8, booking.getReservationPaymentTransactionId());
+            pstmt.setLong(1, booking.getBookingId());
+            pstmt.setInt(2, booking.getShop().getId());
+            pstmt.setString(3, booking.getUser().getUsername());
+            pstmt.setString(4, booking.getDate().toString());
+            pstmt.setString(5, booking.getTimeSlot().toString());
+            pstmt.setString(6, booking.getDescription());
+            pstmt.setBoolean(7, booking.getHomeAssistance());
+            pstmt.setString(8, booking.getCreatedAt().toString());
+            pstmt.setString(9, booking.getReservationPaymentTransactionId());
 
             pstmt.executeUpdate();
 
             ResultSet rs = pstmt.getGeneratedKeys();
             if(rs.next()) {
-                return rs.getInt(1);
+                return rs.getLong(1);
             }
 
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
             throw new RegisterOnBackEndException("Errore nell'aggiunta della prenotazione");
         }
-        return -1;
+        return (long) -1;
     }
 
     @Override
@@ -110,7 +111,7 @@ public class BookingDAOJDBC implements BookingDAO {
             while (rs.next()) {
 
                 Integer shopId = rs.getInt(IDSHOP);
-                Integer bookingId = rs.getInt(ID);
+                Long bookingId = rs.getLong(ID);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
@@ -164,7 +165,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
-                Integer bookingId = rs.getInt(ID);
+                Long bookingId = rs.getLong(ID);
                 String username = rs.getString(USERNAME);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
@@ -216,7 +217,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 ) {
 
             pstmt.setString(1, booking.getStatus().name());
-            pstmt.setInt(2, booking.getBookingId());
+            pstmt.setLong(2, booking.getBookingId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
@@ -253,7 +254,7 @@ public class BookingDAOJDBC implements BookingDAO {
     }
 
     @Override
-    public Booking getBookingById(Integer bookingId) {
+    public Booking getBookingById(Long bookingId) {
 
         String sql = BookingQuery.SELECT_BOOKING_ID;
 
@@ -262,7 +263,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 )
         {
-            pstmt.setInt(1, bookingId);
+            pstmt.setLong(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -308,7 +309,7 @@ public class BookingDAOJDBC implements BookingDAO {
             ResultSet rs = pstmt.executeQuery();
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
-                Integer bookingId = rs.getInt(ID);
+                Long bookingId = rs.getLong(ID);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
@@ -360,7 +361,7 @@ public class BookingDAOJDBC implements BookingDAO {
             List<Booking> bookings = new ArrayList<>();
             while (rs.next()) {
                 Integer shopId = rs.getInt(IDSHOP);
-                Integer bookingId = rs.getInt(ID);
+                Long bookingId = rs.getLong(ID);
                 String dateString = rs.getString(DATE);
                 String timeSlotString = rs.getString(TIMESLOT);
                 String description = rs.getString(DESCRIPTION);
@@ -412,7 +413,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1, booking.getBookingId());
+            pstmt.setLong(1, booking.getBookingId());
             pstmt.setString(2, report.getTechNotes());
 
             if (report instanceof RepairReportCompleted completedReport) {
@@ -434,13 +435,13 @@ public class BookingDAOJDBC implements BookingDAO {
         }
     }
 
-    private RepairReportCompleted getRepairReport(Integer bookingId) {
+    private RepairReportCompleted getRepairReport(Long bookingId) {
         String sql = BookingQuery.SELECT_REPAIR_REPORT;
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
-            pstmt.setInt(1, bookingId);
+            pstmt.setLong(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new RepairReportCompleted(
@@ -463,7 +464,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(BookingQuery.INSERT_INVOICE)
         ) {
-            pstmt.setInt(1, booking.getBookingId());
+            pstmt.setLong(1, booking.getBookingId());
             pstmt.setDouble(2, booking.getInvoice().getTotalCost());
             pstmt.setBoolean(3, booking.getInvoice().isPaid());
             pstmt.executeUpdate();
@@ -472,12 +473,12 @@ public class BookingDAOJDBC implements BookingDAO {
         }
     }
 
-    private Invoice getInvoice(Integer bookingId) {
+    private Invoice getInvoice(Long bookingId) {
         try (
                 Connection conn = ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(BookingQuery.SELECT_INVOICE)
         ) {
-            pstmt.setInt(1, bookingId);
+            pstmt.setLong(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new Invoice(
@@ -492,7 +493,7 @@ public class BookingDAOJDBC implements BookingDAO {
     }
 
     @Override
-    public boolean deleteReservedBookingSlot(Integer bookingId) {
+    public boolean deleteReservedBookingSlot(Long bookingId) {
         String sql = BookingQuery.DELETE_BOOKING_RESERVATION;
 
 
@@ -500,7 +501,7 @@ public class BookingDAOJDBC implements BookingDAO {
                 Connection conn= ConnectionDB.getInstance().connectDB();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
                 ){
-            pstmt.setInt(1, bookingId);
+            pstmt.setLong(1, bookingId);
             int i = pstmt.executeUpdate();
 
             if(i>0) {
@@ -530,13 +531,27 @@ public class BookingDAOJDBC implements BookingDAO {
                     booking.getInvoice().isPaid()
             );
 
-            pstmt.setInt(
+            pstmt.setLong(
                     2,
                     booking.getBookingId()
             );
 
             pstmt.executeUpdate();
 
+        } catch (SQLException e) {
+            JustItLogger.getInstance().error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateReservationPaymentTransactionId(Booking booking) {
+        try (
+                Connection conn = ConnectionDB.getInstance().connectDB();
+                PreparedStatement pstmt = conn.prepareStatement(BookingQuery.UPDATE_RESERVATION_PAYMENT_TRANSACTION_ID)
+        ) {
+            pstmt.setString(1, booking.getReservationPaymentTransactionId());
+            pstmt.setLong(2, booking.getBookingId());
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);
         }

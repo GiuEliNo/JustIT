@@ -3,7 +3,7 @@ package it.dosti.justit.bean;
 import java.time.LocalDate;
 
 public class BookingBean {
-    private Integer bookingID;
+    private Long bookingID;
     private String username;
     private LocalDate date;
     private String timeSlot;
@@ -40,10 +40,10 @@ public class BookingBean {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Integer getBookingID() {
+    public Long getBookingID() {
         return this.bookingID;
     }
-    public void setBookingID(Integer bookingID) {
+    public void setBookingID(Long bookingID) {
         this.bookingID = bookingID;
     }
     public String getStatus() {

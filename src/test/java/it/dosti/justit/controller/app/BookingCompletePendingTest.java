@@ -48,7 +48,7 @@ class BookingCompletePendingTest {
 
     private static final TimeSlot TIME_SLOT = TimeSlot.MORNING;
 
-    private Integer bookingId;
+    private Long bookingId;
 
     @BeforeEach
     void setupBooking() {
@@ -94,7 +94,7 @@ class BookingCompletePendingTest {
         String sql = "DELETE FROM Booking WHERE id = ?";
         try (Connection conn = ConnectionDB.getInstance().connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, bookingId);
+            stmt.setLong(1, bookingId);
             stmt.executeUpdate();
         } catch (SQLException e) {
             JustItLogger.getInstance().error(e.getMessage(), e);

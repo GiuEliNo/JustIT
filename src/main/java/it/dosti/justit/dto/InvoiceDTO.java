@@ -3,7 +3,7 @@ package it.dosti.justit.dto;
 
 public class InvoiceDTO {
 
-    private Integer bookingId;
+    private Long bookingId;
     private double totalAmount;
     private boolean paid;
 
@@ -11,7 +11,7 @@ public class InvoiceDTO {
         //Only needed for Jackson databinding
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
     public void setTotalAmount(double totalAmount) {
@@ -21,7 +21,7 @@ public class InvoiceDTO {
         this.paid = paid;
     }
 
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
     public double getTotalAmount() {

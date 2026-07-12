@@ -34,7 +34,7 @@ public class ReviewDAOJDBC implements ReviewDAO {
                 String title = rs.getString("title");
                 Integer star = rs.getInt("stars");
                 String text = rs.getString("review");
-                Integer bookingId = rs.getInt("booking_id");
+                Long bookingId = rs.getLong("booking_id");
 
                 BookingDAO bookingDao = DaoFactory.getBookingDAO();
                 Booking booking = bookingDao.getBookingById(bookingId);

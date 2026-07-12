@@ -38,7 +38,7 @@ class ReviewNotEditableWithoutCompleteBookingTest {
 
     private Review createReview() {
         BookingDAO bookingDAO = new BookingDAOJDBC();
-        Booking booking = bookingDAO.getBookingById(1);
+        Booking booking = bookingDAO.getBookingById(1L);
 
         return new Review.Builder("Recensione")
                 .star(4)

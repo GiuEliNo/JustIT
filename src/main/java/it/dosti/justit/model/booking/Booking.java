@@ -19,7 +19,7 @@ import it.dosti.justit.model.user.User;
 
 @JsonDeserialize(builder = Booking.Builder.class)
 public class Booking {
-    private Integer bookingId;
+    private Long bookingId;
     private Shop shop;
     private User user;
     private LocalDate date;
@@ -59,7 +59,7 @@ public class Booking {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
-        private Integer bookingId;
+        private Long bookingId;
         private Shop shop;
         private User user;
         private LocalDate date;
@@ -85,7 +85,7 @@ public class Booking {
             return this;
         }
 
-        public Builder bookingId(Integer bookingId) {
+        public Builder bookingId(Long bookingId) {
             this.bookingId = bookingId;
             return this;
         }
@@ -153,7 +153,7 @@ public class Booking {
     }
 
 
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
 
@@ -181,7 +181,7 @@ public class Booking {
         return status;
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
 

@@ -4,8 +4,8 @@ public class BookingQuery {
 
     private BookingQuery() {}
 
-    public static final String INSERT_BOOKING = "INSERT INTO Booking(idShop, username, date, timeSlot, description, isHomeAssistance, createdAt, transaction_id)"+
-            " VALUES (?,?,?,?,?,?,?,?)";
+    public static final String INSERT_BOOKING = "INSERT INTO Booking(id, idShop, username, date, timeSlot, description, isHomeAssistance, createdAt, transaction_id)"+
+            " VALUES (?,?,?,?,?,?,?,?,?)";
 
     public static final String UPDATE_STATUS = "UPDATE Booking SET state = ? WHERE id = ?";
     public static final String SELECT_BOOKING_USER = "SELECT B.idShop, B.id, S.name,B.date,B.timeSlot,B.description, B.state, B.isHomeAssistance, B.createdAt, B.transaction_id FROM Booking B join Shop S ON B.idShop = S.id WHERE B.username = ?";
@@ -37,4 +37,7 @@ public class BookingQuery {
 
     public static final String UPDATE_INVOICE_PAID =
             "UPDATE invoice SET paid = ? WHERE booking_id = ?";
+
+    public static final String UPDATE_RESERVATION_PAYMENT_TRANSACTION_ID =
+            "UPDATE Booking SET transaction_id = ? WHERE id = ?";
 }

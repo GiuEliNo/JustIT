@@ -5,7 +5,7 @@ public class ReviewBean {
     private String review;
     private Integer stars;
     private String username;
-    private Integer bookingId;
+    private Long bookingId;
 
     public String getTitle() {
         return title;
@@ -39,11 +39,11 @@ public class ReviewBean {
         return this.username;
     }
 
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
 }

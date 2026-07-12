@@ -2,7 +2,7 @@ package it.dosti.justit.dto;
 
 public class ReportDTO {
 
-    private Integer bookingId;
+    private Long bookingId;
     private String techNotes;
     private double laborHours;
     private double costHours;
@@ -13,7 +13,7 @@ public class ReportDTO {
         //Only needed for jackson databinding
     }
 
-    public void setBookingId(Integer bookingId) {
+    public void setBookingId(Long bookingId) {
         this.bookingId = bookingId;
     }
     public void setTechNotes(String techNotes) {
@@ -30,7 +30,7 @@ public class ReportDTO {
         this.partCosts = partCosts;
     }
 
-    public Integer getBookingId() {
+    public Long getBookingId() {
         return bookingId;
     }
     public String getTechNotes() {
