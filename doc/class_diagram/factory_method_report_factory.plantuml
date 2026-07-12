@@ -2,6 +2,11 @@
 
 object client
 
+enum BookingStatus {
+    REJECTED
+    COMPLETED
+}
+
 class RepairReportFactory {
     - instance : RepairReportFactory
     - RepairReportFactory()
@@ -39,6 +44,8 @@ RepairReportFactory ..> RepairReportCompleted : create
 
 RepairReportRejected ..|> RepairReport
 RepairReportCompleted ..|> RepairReport
+
+BookingStatus -- RepairReportFactory
 
 
 @enduml
