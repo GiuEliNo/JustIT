@@ -6,7 +6,6 @@ import it.dosti.justit.bean.SessionBean;
 import it.dosti.justit.controller.app.ReviewController;
 import it.dosti.justit.controller.app.WriteReviewController;
 import it.dosti.justit.exceptions.ReviewWithoutBookingException;
-import it.dosti.justit.utils.JustItLogger;
 import it.dosti.justit.view.gui.DialogAddReview;
 import it.dosti.justit.view.gui.ReviewListCell;
 import javafx.fxml.FXML;
