@@ -1,15 +1,16 @@
 package it.dosti.justit.events.publisher.subjects;
 
-import it.dosti.justit.events.publisher.observers.ReviewCreatedObserver;
+import it.dosti.justit.events.publisher.observers.Observer;
 import it.dosti.justit.model.Review;
 import it.dosti.justit.utils.JustItLogger;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ReviewCreatedPublisher {
+public class ReviewCreatedPublisher implements Subject {
     private static ReviewCreatedPublisher instance;
-    private final List<ReviewCreatedObserver> observers = new CopyOnWriteArrayList<>();
+    private final List<Observer> observers = new CopyOnWriteArrayList<>();
+    private Review state;
 
     private ReviewCreatedPublisher() {
     }
@@ -21,7 +22,8 @@ public class ReviewCreatedPublisher {
         return instance;
     }
 
-    public void attach(ReviewCreatedObserver observer) {
+    @Override
+    public void attach(Observer observer) {
         if (observer != null) {
             observers.add(observer);
             JustItLogger.getInstance().info(
@@ -31,19 +33,31 @@ public class ReviewCreatedPublisher {
             );
         }
     }
+    @Override
+    public void detach(Observer observer) {
+        observers.remove(observer);
+    }
 
-    public void notify(Review review) {
+
+    @Override
+    public void notifyObservers() {
         JustItLogger.getInstance().info(
-                "ReviewCreatedPublisher notifying " + observers.size()
-                        + " observers for booking #" + review.getBooking().getBookingId()
-                        + ", tech=" + review.getShop().getTech().getUsername()
-        );
-        for (ReviewCreatedObserver observer : observers) {
+                "ReviewCreatedPublisher notifying " + observers.size());
+        for (Observer observer : observers) {
             JustItLogger.getInstance().info(
                     "ReviewCreatedPublisher dispatching to "
                             + observer.getClass().getSimpleName()
             );
-            observer.onReviewCreated(review);
+            observer.update(this);
         }
+    }
+
+    public Review getState() {
+        return this.state;
+    }
+
+    public void setState(Review state){
+        this.state = state;
+        notifyObservers();
     }
 }
