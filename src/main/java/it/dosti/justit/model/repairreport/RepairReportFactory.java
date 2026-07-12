@@ -35,7 +35,7 @@ public final class RepairReportFactory {
 
 
     private RepairReportRejected createRejected(RepairReportBean bean) {
-        return new RepairReportRejected(bean.getTechNotes());
+        return new RepairReportRejected(bean.getTechNotes(), bean.getRefundAmount());
     }
 
 

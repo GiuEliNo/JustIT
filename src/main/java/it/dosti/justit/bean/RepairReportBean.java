@@ -6,6 +6,8 @@ public class RepairReportBean {
     private double costHours;
     private double partCosts;
 
+    private double refundAmount;
+
     public void setTechNotes(String techNotes) {
         this.techNotes = techNotes;
     }
@@ -33,5 +35,13 @@ public class RepairReportBean {
 
     public double getPartCosts() {
         return partCosts;
+    }
+
+    public double getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(double refundAmount) {
+        this.refundAmount = refundAmount;
     }
 }

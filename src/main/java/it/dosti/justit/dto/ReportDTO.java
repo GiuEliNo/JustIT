@@ -8,6 +8,8 @@ public class ReportDTO {
     private double costHours;
     private double partCosts;
 
+    private double refundAmount;
+
 
     public ReportDTO(){
         //Only needed for jackson databinding
@@ -44,6 +46,14 @@ public class ReportDTO {
     }
     public double getPartCosts() {
         return partCosts;
+    }
+
+    public double getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(double refundAmount) {
+        this.refundAmount = refundAmount;
     }
 
 }

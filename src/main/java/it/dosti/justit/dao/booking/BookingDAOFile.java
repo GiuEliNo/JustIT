@@ -10,6 +10,7 @@ import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
 import it.dosti.justit.model.repairreport.RepairReport;
 import it.dosti.justit.model.repairreport.RepairReportCompleted;
+import it.dosti.justit.model.repairreport.RepairReportRejected;
 import it.dosti.justit.model.user.ClientUser;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JsonHandler;
@@ -252,6 +253,10 @@ public class BookingDAOFile implements BookingDAO {
                 report.setCostHours(completedReport.getCostHours());
                 report.setLaborHours(completedReport.getLaborHours());
                 report.setPartCosts(completedReport.getPartCosts());
+            }
+
+            if (repairReport instanceof RepairReportRejected rejectedReport) {
+                report.setRefundAmount(rejectedReport.getRefundAmount());
             }
 
             reports.add(report);

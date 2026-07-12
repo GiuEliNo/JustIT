@@ -106,7 +106,7 @@ public class BookingDAODemo implements BookingDAO {
 
         rejected.setRepairReport(
                 new RepairReportRejected(
-                        "Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale."
+                        "Impossibile completare l'aggiornamento: dipendenze incompatibili con il kernel attuale.", rejected.calculateTotalReservationPrice()
                 )
         );
 

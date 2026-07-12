@@ -1,0 +1,44 @@
+@startuml
+
+object client
+
+class RepairReportFactory {
+    - instance : RepairReportFactory
+    - RepairReportFactory()
+
+    + {static} getInstance() : RepairReportFactory
+    + create(status : BookingStatus, bean : RepairReportBean) : RepairReport
+    - createRejected(bean : RepairReportBean) : RepairReportRejected
+    - createCompleted(bean : RepairReportBean) : RepairReportCompleted
+}
+
+interface RepairReport {
+    - techNotes : String
+}
+
+class RepairReportRejected {
+    - techNotes : String
+    - refund: Double
+}
+
+class RepairReportCompleted {
+    - techNotes : String
+    - laborHours : int
+    - costHours : double
+    - partCosts : double
+
+    +calculateTotalCost(): double
+}
+
+client -r-> RepairReport : uses
+client --> RepairReportFactory : asks for new objects
+
+
+RepairReportFactory ..> RepairReportRejected : create
+RepairReportFactory ..> RepairReportCompleted : create
+
+RepairReportRejected ..|> RepairReport
+RepairReportCompleted ..|> RepairReport
+
+
+@enduml

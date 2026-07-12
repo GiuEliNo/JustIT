@@ -3,6 +3,7 @@ package it.dosti.justit.bean.mapper;
 import it.dosti.justit.bean.RepairReportBean;
 import it.dosti.justit.model.repairreport.RepairReport;
 import it.dosti.justit.model.repairreport.RepairReportCompleted;
+import it.dosti.justit.model.repairreport.RepairReportRejected;
 
 public class RepairReportMapper {
 
@@ -26,6 +27,9 @@ public class RepairReportMapper {
             bean.setPartCosts(completed.getPartCosts());
         }
 
+        if (report instanceof RepairReportRejected rejected) {
+            bean.setRefundAmount(rejected.getRefundAmount());
+        }
 
         return bean;
     }

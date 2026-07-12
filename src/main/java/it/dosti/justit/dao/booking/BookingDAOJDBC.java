@@ -13,6 +13,7 @@ import it.dosti.justit.model.repairreport.RepairReport;
 import it.dosti.justit.model.repairreport.RepairReportCompleted;
 import it.dosti.justit.model.booking.Booking;
 import it.dosti.justit.model.booking.BookingStatus;
+import it.dosti.justit.model.repairreport.RepairReportRejected;
 import it.dosti.justit.model.user.User;
 import it.dosti.justit.utils.JustItLogger;
 
@@ -421,11 +422,13 @@ public class BookingDAOJDBC implements BookingDAO {
                 pstmt.setDouble(3, completedReport.getLaborHours());
                 pstmt.setDouble(4, completedReport.getCostHours());
                 pstmt.setDouble(5, completedReport.getPartCosts());
+                pstmt.setNull(6, Types.DOUBLE);
 
-            } else {
+            } else if (report instanceof RepairReportRejected rejectedReport){
                 pstmt.setNull(3, Types.DOUBLE);
                 pstmt.setNull(4, Types.DOUBLE);
                 pstmt.setNull(5, Types.DOUBLE);
+                pstmt.setDouble(6, rejectedReport.getRefundAmount());
             }
 
             pstmt.executeUpdate();

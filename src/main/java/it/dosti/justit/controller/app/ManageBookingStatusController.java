@@ -47,6 +47,7 @@ public class ManageBookingStatusController {
     public void rejectBooking(BookingBean bookingBean, RepairReportBean repairReportBean) throws InvalidBookingStateException, PaymentException, BookingNotFoundException, PaymentCircuitNotSupported {
         Booking booking = this.retrieveBookingFromPersistence(bookingBean);
         BookingStatus oldStatus = booking.getStatus();
+        repairReportBean.setRefundAmount(booking.calculateTotalReservationPrice());
 
         try {
             this.refundPayment(booking);
