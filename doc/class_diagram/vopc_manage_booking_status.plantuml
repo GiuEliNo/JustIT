@@ -19,15 +19,22 @@ class ManageBookingStatusController <<(C) controller>> {
     - refundPayment(Booking booking) : void
     - sendInvoice(Booking booking): void
     - notifyStatusChange(Booking booking, BookingStatus oldStatus): void
-    - sendEmailAlert(Booking booking): void
+    - sendEmailAlert(String email): void
     - removeBookingStatusInvalid(Booking booking): void
     - retrieveBookingFromPersistence(BookingBean bean): Booking
 }
 
-class ManageBookingStatusBoundary <<(B) boundary>>{
+class ManageBookingStatusTechBoundary <<(B) boundary>>{
     + rejectBooking(): void
     + confirmBooking(): void
     + completeBooking(): void
+}
+
+class ManageBookingStatusClientBoundary <<(B) boundary>>{
+}
+
+class EmailProviderBoundary <<(B) boundary>>{
+    + sendEMailInvoice(): void
 }
 
 class SessionManager <<(S) singleton>>{
@@ -66,6 +73,9 @@ class RepairReportRejected <<(E) entity>>{
 }
 
 class BookingBean <<(B) bean>>{
+}
+
+class EmailBean <<(B) bean>>{
 }
 
 class RepairReportBean<<(B) bean>>{
@@ -115,15 +125,12 @@ enum BookingStatus {
   COMPLETED
 }
 
-ManageBookingStatusBoundary -d- ManageBookingStatusController
-ManageBookingStatusBoundary .r. BookingBean
 ManageBookingStatusController .u. BookingBean
 ManageBookingStatusController -l- SessionManager
 Booking -r- Invoice
 Booking -- RepairReport
 ManageBookingStatusController -d- BookingDAO
 ManageBookingStatusController -- Booking
-ManageBookingStatusBoundary .r. RepairReportBean
 ManageBookingStatusController .u. RepairReportBean
 Booking -- TimeSlot
 Booking -- BookingStatus
@@ -134,6 +141,13 @@ BookingDAO -- Booking
 Session -- SessionManager
 
 ManageBookingStatusController -- ProcessPaymentController
+ManageBookingStatusController -u- EmailProviderBoundary
+ManageBookingStatusController .. EmailBean
+EmailProviderBoundary .u. EmailBean
+ManageBookingStatusClientBoundary -l- ManageBookingStatusController
+ManageBookingStatusTechBoundary -d- ManageBookingStatusController
+ManageBookingStatusTechBoundary .r. BookingBean
+ManageBookingStatusTechBoundary .. RepairReportBean
 
 
 @enduml

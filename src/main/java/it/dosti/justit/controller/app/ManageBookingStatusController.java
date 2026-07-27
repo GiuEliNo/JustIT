@@ -1,6 +1,7 @@
 package it.dosti.justit.controller.app;
 
 import it.dosti.justit.api.EmailGatewayService;
+import it.dosti.justit.bean.EmailBean;
 import it.dosti.justit.exceptions.*;
 import it.dosti.justit.bean.BookingBean;
 import it.dosti.justit.bean.RepairReportBean;
@@ -55,7 +56,7 @@ public class ManageBookingStatusController {
             this.addRepairReportToBooking(booking, repairReportBean);
             bookingDao.updateStatus(booking);
             this.notifyStatusChange(booking, oldStatus);
-            this.sendEmailAlert(booking);
+            this.sendEmailAlert(booking.getUser().getEmail());
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error rejecting booking", e);
             throw e;
@@ -79,7 +80,7 @@ public class ManageBookingStatusController {
             bookingDao.updateStatus(booking);
             this.sendInvoice(booking);
             this.notifyStatusChange(booking, oldStatus);
-            sendEmailAlert(booking);
+            this.sendEmailAlert(booking.getUser().getEmail());
         } catch (InvalidBookingStateException e) {
             JustItLogger.getInstance().error("Error completing booking not valid transaction to complete");
             throw e;
@@ -114,8 +115,10 @@ public class ManageBookingStatusController {
                     .setState(booking);
         }
     }
-    private void sendEmailAlert(Booking booking) {
-        EmailGatewayService.sendEMailInvoice(booking.getUser().getEmail());
+    private void sendEmailAlert(String email) {
+        EmailBean emailBean = new EmailBean();
+        emailBean.setEmail(email);
+        EmailGatewayService.sendEMailInvoice(emailBean);
     }
     private void removeBookingStatusInvalid(Booking booking) throws NoPaymentReservationException {
 

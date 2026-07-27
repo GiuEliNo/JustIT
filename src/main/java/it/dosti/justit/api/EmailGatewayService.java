@@ -1,5 +1,6 @@
 package it.dosti.justit.api;
 
+import it.dosti.justit.bean.EmailBean;
 import it.dosti.justit.utils.JustItLogger;
 
 public class EmailGatewayService {
@@ -8,8 +9,8 @@ public class EmailGatewayService {
     }
 
 
-    public static void sendEMailInvoice(String to ) {
+    public static void sendEMailInvoice(EmailBean emailBean) {
         //SEND SOMETHING
-        JustItLogger.getInstance().info("Email Sent to: " + to);
+        JustItLogger.getInstance().info("Email Sent to: " + emailBean);
     }
 }

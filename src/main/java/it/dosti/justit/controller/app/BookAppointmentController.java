@@ -83,7 +83,7 @@ public class BookAppointmentController {
             booking.goNext(BookingEvent.PAYMENT_RECEIVED);
             dao.updateStatus(booking);
             notifyStatusChange(booking, oldStatus);
-            sendEmailAlert(booking);
+            sendEmailAlert(booking.getUser().getEmail());
 
         } catch (BookingExpiredException e) {
             abortBooking(booking);
@@ -113,8 +113,10 @@ public class BookAppointmentController {
         abortBooking(booking);
     }
 
-    private void sendEmailAlert(Booking booking) {
-        EmailGatewayService.sendEMailInvoice(booking.getShop().getEmail());
+    private void sendEmailAlert(String email) {
+        EmailBean emailBean = new EmailBean();
+        emailBean.setEmail(email);
+        EmailGatewayService.sendEMailInvoice(emailBean);
     }
 
     public boolean hasAvailableSlots(SessionBean session, LocalDate date) {

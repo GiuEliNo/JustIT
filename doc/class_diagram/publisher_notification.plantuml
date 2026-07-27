@@ -1,9 +1,9 @@
 @startuml
 
-interface Subject <<interface>> {
+abstract Subject <<abstract>> {
   +attach(Observer observer)
   +detach(Observer observer)
-  +notifyObservers()
+  #notifyObservers()
 }
 
 interface Observer <<interface>> {
@@ -15,7 +15,7 @@ class BookingStatusPublisher <<concrete subject>> {
   - state: Booking
   + attach(Observer observer)
   + detach(Observer observer)
-  + notifyObservers()
+  # notifyObservers()
   + getState(): Booking
   + setState(Booking state)
 }
